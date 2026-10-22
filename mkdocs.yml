@@ -139,6 +139,7 @@ nav:
       - Models and unions: guides/models.md
       - Pagination: guides/pagination.md
       - Events and streaming: guides/events.md
+      - Interactive terminals: guides/terminals.md
       - Errors: guides/errors.md
       - Retries and timeouts: guides/retries.md
       - The project directory: guides/directory.md
@@ -150,6 +151,7 @@ nav:
       - Server launcher: reference/server.md
       - Resources: reference/resources.md
       - Pagination and streams: reference/pagination.md
+      - Terminals: reference/terminals.md
       - Exceptions: reference/exceptions.md
       - Types: reference/types/index.md
   - Project:
