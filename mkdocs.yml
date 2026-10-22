@@ -135,6 +135,8 @@ nav:
   - Guides:
       - guides/index.md
       - Sessions and prompts: guides/sessions.md
+      - Running agents headless: guides/headless.md
+      - Testing with the fake server: guides/testing.md
       - Async: guides/async.md
       - Models and unions: guides/models.md
       - Pagination: guides/pagination.md
@@ -155,6 +157,7 @@ nav:
       - Shared events and RPC: reference/events.md
       - Terminals: reference/terminals.md
       - Exceptions: reference/exceptions.md
+      - Helpers and testing: reference/testing.md
       - Types: reference/types/index.md
   - Project:
       - How it's built: project/how-its-built.md
