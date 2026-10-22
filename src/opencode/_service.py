@@ -78,8 +78,8 @@ class BasicAuth:
 
     username: str
     """Basic auth user name, always ``opencode``."""
-    password: str
-    """The service's private password."""
+    password: str = field(repr=False)
+    """The service's private password. Hidden from ``repr`` so it stays out of logs."""
 
 
 @dataclass(frozen=True)
@@ -101,7 +101,7 @@ class _Info:
     pid: int
     id: str | None = None
     version: str | None = None
-    password: str | None = None
+    password: str | None = field(default=None, repr=False)
 
 
 @dataclass(frozen=True)
@@ -540,7 +540,7 @@ class _Contender:
     def __init__(self, command: Sequence[str], env: Mapping[str, str | None]) -> None:
         merged = {**os.environ, **env}
         environment = {key: value for key, value in merged.items() if value is not None}
-        executable = shutil.which(command[0]) or command[0]
+        executable = _resolve(command[0])
         if sys.platform == "win32":  # pragma: no cover - Windows only
             self.process = subprocess.Popen(
                 [executable, *command[1:]],
@@ -602,6 +602,20 @@ class _Contender:
         except ValueError:
             name = str(-code)
         return _startup_error(f"Server process terminated by {name}", self.stderr())
+
+
+def _resolve(command: str) -> str:
+    """Find ``command`` on ``PATH`` only.
+
+    ``shutil.which`` on Windows also searches the current directory first, which Node's spawn in the TypeScript
+    client does not, so a planted ``opencode.exe`` there could run. A command with a directory part is used as is.
+    """
+    if os.path.dirname(command):
+        return command
+    for directory in os.environ.get("PATH", os.defpath).split(os.pathsep):
+        if directory and (found := shutil.which(os.path.join(directory, command))) is not None:
+            return found
+    return command
 
 
 def _startup_error(message: str, stderr: str) -> ServiceError:
