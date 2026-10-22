@@ -99,12 +99,19 @@ ol.steps li::marker { font-family: var(--mono); color: var(--accent); }
 
 <main>
 <header>
-  <span class="eyebrow">Design doc · draft</span>
+  <span class="eyebrow">Design doc · implemented</span>
   <h1>opencode-python-sdk</h1>
   <p class="lede">A maintained, typed Python client for the OpenCode 2.x server API, generated from the upstream OpenAPI spec and kept in sync automatically.</p>
   <div class="meta"><span>Target: OpenCode 2.1.x</span><span>Spec: packages/protocol/openapi.json</span><span>22 Oct 2026</span></div>
 </header>
 
+<div class="note" style="margin-bottom:24px"><b>Implemented.</b> This was the original proposal. The shipped design differs in four places; the README is the current reference.
+<ul>
+<li>The contract is exported from the Effect <code>HttpApi</code> in <code>@opencode/protocol</code> (<code>spec/contract.json</code>), not from <code>openapi.json</code>. That source includes all 96 event schemas and decoded query types, so nothing is scraped from TypeScript.</li>
+<li>Method names follow the official TypeScript client exactly. Experimental endpoints are not moved under <code>client.experimental</code>; their docstrings say they are experimental. So it is <code>client.session.wait()</code>.</li>
+<li>One Python generator (<code>codegen/</code>, no Jinja2 or datamodel-code-generator) emits models, resources, errors and <code>api.md</code>.</li>
+<li>Type checking is gated on pyright strict and mypy strict. The minimum pydantic version is 2.12.</li>
+</ul></div>
 <section id="verdict">
   <h2>Verdict</h2>
   <div class="verdict">
