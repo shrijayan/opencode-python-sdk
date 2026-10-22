@@ -540,7 +540,7 @@ class _Contender:
     def __init__(self, command: Sequence[str], env: Mapping[str, str | None]) -> None:
         merged = {**os.environ, **env}
         environment = {key: value for key, value in merged.items() if value is not None}
-        executable = _resolve(command[0])
+        executable = _resolve(command[0], environment.get("PATH", os.defpath))
         if sys.platform == "win32":  # pragma: no cover - Windows only
             self.process = subprocess.Popen(
                 [executable, *command[1:]],
@@ -604,18 +604,22 @@ class _Contender:
         return _startup_error(f"Server process terminated by {name}", self.stderr())
 
 
-def _resolve(command: str) -> str:
-    """Find ``command`` on ``PATH`` only.
+def _resolve(command: str, search_path: str) -> str:
+    """Find ``command`` on ``search_path``, the child's ``PATH``, as Node's spawn does.
 
     ``shutil.which`` on Windows also searches the current directory first, which Node's spawn in the TypeScript
     client does not, so a planted ``opencode.exe`` there could run. A command with a directory part is used as is.
+
+    Raises:
+        FileNotFoundError: ``command`` is not on ``PATH``.
     """
     if os.path.dirname(command):
         return command
-    for directory in os.environ.get("PATH", os.defpath).split(os.pathsep):
+    for directory in search_path.split(os.pathsep):
         if directory and (found := shutil.which(os.path.join(directory, command))) is not None:
             return found
-    return command
+    # Never hand Popen a bare name: Windows CreateProcess would search the current directory for it.
+    raise FileNotFoundError(f"{command!r} was not found on PATH")
 
 
 def _startup_error(message: str, stderr: str) -> ServiceError:
