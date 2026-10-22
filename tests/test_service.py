@@ -282,8 +282,7 @@ def test_resolve_searches_path_only(tmp_path: Path, monkeypatch: pytest.MonkeyPa
         (folder / name).write_text("")
         (folder / name).chmod(0o755)
     monkeypatch.chdir(cwd)
-    monkeypatch.setenv("PATH", str(bin_dir))
-    assert Path(impl._resolve("tool")).parent == bin_dir
-    monkeypatch.setenv("PATH", "")
-    assert impl._resolve("tool") == "tool"
-    assert impl._resolve(str(cwd / name)) == str(cwd / name)
+    assert Path(impl._resolve("tool", str(bin_dir))).parent == bin_dir
+    with pytest.raises(FileNotFoundError, match="not found on PATH"):
+        impl._resolve("tool", "")  # the copy in the current directory is never used
+    assert impl._resolve(str(cwd / name), "") == str(cwd / name)
