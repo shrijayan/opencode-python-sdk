@@ -3,8 +3,32 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: daily
+    commit-message:
+      prefix: "ci"
+    groups:
+      actions-minor-patch:
+        update-types: [minor, patch]
   - package-ecosystem: uv
     directory: /
     schedule:
-      interval: weekly
+      interval: daily
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+    groups:
+      python-minor-patch:
+        update-types: [minor, patch]
+  - package-ecosystem: npm
+    directory: /codegen/extract
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: "codegen"
+    # The spec-sync workflow manages these to match the OpenCode release.
+    ignore:
+      - dependency-name: "@opencode/protocol"
+      - dependency-name: "effect"
+    groups:
+      codegen-minor-patch:
+        update-types: [minor, patch]
