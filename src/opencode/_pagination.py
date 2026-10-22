@@ -79,6 +79,13 @@ class SyncCursorPage(_PageBase[_T]):
     @classmethod
     def fetch(cls, client: SyncAPIClient, options: RequestOptions, response_type: Any) -> SyncCursorPage[Any]:
         payload = client.request(options, response_type=response_type)
+        return cls.build(client, options, response_type, payload)
+
+    @classmethod
+    def build(
+        cls, client: SyncAPIClient, options: RequestOptions, response_type: Any, payload: Any
+    ) -> SyncCursorPage[Any]:
+        """Builds a page from an already parsed response."""
         data, next_cursor, previous_cursor = _page_parts(payload)
         return cls(
             client=client,
@@ -134,6 +141,13 @@ class AsyncCursorPage(_PageBase[_T]):
     @classmethod
     async def fetch(cls, client: AsyncAPIClient, options: RequestOptions, response_type: Any) -> AsyncCursorPage[Any]:
         payload = await client.request(options, response_type=response_type)
+        return cls.build(client, options, response_type, payload)
+
+    @classmethod
+    def build(
+        cls, client: AsyncAPIClient, options: RequestOptions, response_type: Any, payload: Any
+    ) -> AsyncCursorPage[Any]:
+        """Builds a page from an already parsed response."""
         data, next_cursor, previous_cursor = _page_parts(payload)
         return cls(
             client=client,

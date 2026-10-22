@@ -10,6 +10,12 @@ from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +30,16 @@ __all__ = ["MigrationResource", "AsyncMigrationResource"]
 
 class MigrationV1Resource(SyncAPIResource):
     """Operations under ``client.migration.v1`` (OpenCode ``migration.v1``)."""
+
+    @cached_property
+    def with_raw_response(self) -> MigrationV1ResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return MigrationV1ResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> MigrationV1ResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return MigrationV1ResourceWithStreamingResponse(self)
 
     def status(
         self,
@@ -61,6 +77,22 @@ class MigrationV1Resource(SyncAPIResource):
         )
 
 
+class MigrationV1ResourceWithRawResponse:
+    """``client.migration.v1.with_raw_response``."""
+
+    def __init__(self, resource: MigrationV1Resource) -> None:
+        self._resource = resource
+        self.status = to_raw_response_wrapper(resource.status)
+
+
+class MigrationV1ResourceWithStreamingResponse:
+    """``client.migration.v1.with_streaming_response``."""
+
+    def __init__(self, resource: MigrationV1Resource) -> None:
+        self._resource = resource
+        self.status = to_streamed_response_wrapper(resource.status)
+
+
 class MigrationResource(SyncAPIResource):
     """Operations under ``client.migration`` (OpenCode ``migration``)."""
 
@@ -69,9 +101,53 @@ class MigrationResource(SyncAPIResource):
         """Operations under ``client.migration.v1``."""
         return MigrationV1Resource(self._client)
 
+    @cached_property
+    def with_raw_response(self) -> MigrationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return MigrationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> MigrationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return MigrationResourceWithStreamingResponse(self)
+
+
+class MigrationResourceWithRawResponse:
+    """``client.migration.with_raw_response``."""
+
+    def __init__(self, resource: MigrationResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def v1(self) -> MigrationV1ResourceWithRawResponse:
+        """``client.migration.v1.with_raw_response``."""
+        return MigrationV1ResourceWithRawResponse(self._resource.v1)
+
+
+class MigrationResourceWithStreamingResponse:
+    """``client.migration.with_streaming_response``."""
+
+    def __init__(self, resource: MigrationResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def v1(self) -> MigrationV1ResourceWithStreamingResponse:
+        """``client.migration.v1.with_streaming_response``."""
+        return MigrationV1ResourceWithStreamingResponse(self._resource.v1)
+
 
 class AsyncMigrationV1Resource(AsyncAPIResource):
     """Operations under ``client.migration.v1`` (OpenCode ``migration.v1``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncMigrationV1ResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncMigrationV1ResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncMigrationV1ResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncMigrationV1ResourceWithStreamingResponse(self)
 
     async def status(
         self,
@@ -109,6 +185,22 @@ class AsyncMigrationV1Resource(AsyncAPIResource):
         )
 
 
+class AsyncMigrationV1ResourceWithRawResponse:
+    """``client.migration.v1.with_raw_response``."""
+
+    def __init__(self, resource: AsyncMigrationV1Resource) -> None:
+        self._resource = resource
+        self.status = async_to_raw_response_wrapper(resource.status)
+
+
+class AsyncMigrationV1ResourceWithStreamingResponse:
+    """``client.migration.v1.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncMigrationV1Resource) -> None:
+        self._resource = resource
+        self.status = async_to_streamed_response_wrapper(resource.status)
+
+
 class AsyncMigrationResource(AsyncAPIResource):
     """Operations under ``client.migration`` (OpenCode ``migration``)."""
 
@@ -116,3 +208,37 @@ class AsyncMigrationResource(AsyncAPIResource):
     def v1(self) -> AsyncMigrationV1Resource:
         """Operations under ``client.migration.v1``."""
         return AsyncMigrationV1Resource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncMigrationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncMigrationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncMigrationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncMigrationResourceWithStreamingResponse(self)
+
+
+class AsyncMigrationResourceWithRawResponse:
+    """``client.migration.with_raw_response``."""
+
+    def __init__(self, resource: AsyncMigrationResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def v1(self) -> AsyncMigrationV1ResourceWithRawResponse:
+        """``client.migration.v1.with_raw_response``."""
+        return AsyncMigrationV1ResourceWithRawResponse(self._resource.v1)
+
+
+class AsyncMigrationResourceWithStreamingResponse:
+    """``client.migration.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncMigrationResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def v1(self) -> AsyncMigrationV1ResourceWithStreamingResponse:
+        """``client.migration.v1.with_streaming_response``."""
+        return AsyncMigrationV1ResourceWithStreamingResponse(self._resource.v1)

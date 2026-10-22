@@ -359,7 +359,13 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
             "        )",
         ]
     elif operation.kind == "void":
-        lines += [f"        {awaiting}self._client.request(", *request_options, '            kind="void",', "        )"]
+        # Returned so ``with_raw_response`` can hand back the response; a plain call returns ``None``.
+        lines += [
+            f'        return cast("None", {awaiting}self._client.request(',
+            *request_options,
+            '            kind="void",',
+            "        ))",
+        ]
     elif operation.kind == "binary":
         lines += [
             f'        return cast("bytes", {awaiting}self._client.request(',
@@ -412,11 +418,65 @@ def _resource_classes(resource: Resource, errors: dict[str, dict[str, Any]], *, 
             f'        """Operations under ``client.{_attr_path(child)}``."""',
             f"        return {prefix}{child.class_name}Resource(self._client)\n",
         ]
+    for kind, summary in _WRAPPERS:
+        lines += [
+            "    @cached_property",
+            f"    def {kind}(self) -> {prefix}{resource.class_name}Resource{_WRAPPER_SUFFIX[kind]}:",
+            f'        """{summary}"""',
+            f"        return {prefix}{resource.class_name}Resource{_WRAPPER_SUFFIX[kind]}(self)\n",
+        ]
     for operation in resource.operations:
         lines += _render_method(operation, errors, is_async=is_async)
         lines.append("")
     blocks.append("\n".join(lines).rstrip() + "\n")
+    for kind, _ in _WRAPPERS:
+        blocks.append(_wrapper_class(resource, kind, is_async=is_async))
     return blocks
+
+
+_WRAPPERS = (
+    (
+        "with_raw_response",
+        "Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value.",
+    ),
+    (
+        "with_streaming_response",
+        "Same methods, returning a context manager over the HTTP response without reading the body.",
+    ),
+)
+_WRAPPER_SUFFIX = {"with_raw_response": "WithRawResponse", "with_streaming_response": "WithStreamingResponse"}
+_WRAPPER_FUNCTION = {
+    ("with_raw_response", False): "to_raw_response_wrapper",
+    ("with_streaming_response", False): "to_streamed_response_wrapper",
+    ("with_raw_response", True): "async_to_raw_response_wrapper",
+    ("with_streaming_response", True): "async_to_streamed_response_wrapper",
+}
+
+
+def _wrapper_class(resource: Resource, kind: str, *, is_async: bool) -> str:
+    prefix = "Async" if is_async else ""
+    suffix = _WRAPPER_SUFFIX[kind]
+    name = f"{prefix}{resource.class_name}Resource"
+    wrap = _WRAPPER_FUNCTION[(kind, is_async)]
+    lines = [
+        f"class {name}{suffix}:",
+        f'    """``client.{_attr_path(resource)}.{kind}``."""\n',
+        f"    def __init__(self, resource: {name}) -> None:",
+        "        self._resource = resource",
+        *[
+            f"        self.{operation.method_name} = {wrap}(resource.{operation.method_name})"
+            for operation in resource.operations
+        ],
+        "",
+    ]
+    for child_name, child in resource.children.items():
+        lines += [
+            "    @cached_property",
+            f"    def {child_name}(self) -> {prefix}{child.class_name}Resource{suffix}:",
+            f'        """``client.{_attr_path(child)}.{kind}``."""',
+            f"        return {prefix}{child.class_name}Resource{suffix}(self._resource.{child_name})\n",
+        ]
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def _attr_path(resource: Resource) -> str:
@@ -478,6 +538,12 @@ def render_resource_module(
         *[f"from ..{module} import {', '.join(sorted({sync, async_}))}" for module, sync, async_ in _mixins(resource)],
         *([f"from .._qs import {', '.join(runtime)}"] if runtime else []),
         "from .._resource import AsyncAPIResource, SyncAPIResource",
+        "from .._response import (",
+        "    async_to_raw_response_wrapper,",
+        "    async_to_streamed_response_wrapper,",
+        "    to_raw_response_wrapper,",
+        "    to_streamed_response_wrapper,",
+        ")",
         *(["from .._streaming import AsyncStream, Stream"] if any(op.kind == "stream" for op in operations) else []),
         "from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout"
         + (", OpenEnum" if "OpenEnum" in uses else ""),

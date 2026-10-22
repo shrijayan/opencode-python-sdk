@@ -5,11 +5,18 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -23,6 +30,16 @@ __all__ = ["RpcResource", "AsyncRpcResource"]
 
 class RpcResource(SyncAPIResource):
     """Operations under ``client.rpc`` (OpenCode ``rpc``)."""
+
+    @cached_property
+    def with_raw_response(self) -> RpcResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return RpcResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> RpcResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return RpcResourceWithStreamingResponse(self)
 
     def call(
         self,
@@ -67,8 +84,34 @@ class RpcResource(SyncAPIResource):
         )
 
 
+class RpcResourceWithRawResponse:
+    """``client.rpc.with_raw_response``."""
+
+    def __init__(self, resource: RpcResource) -> None:
+        self._resource = resource
+        self.call = to_raw_response_wrapper(resource.call)
+
+
+class RpcResourceWithStreamingResponse:
+    """``client.rpc.with_streaming_response``."""
+
+    def __init__(self, resource: RpcResource) -> None:
+        self._resource = resource
+        self.call = to_streamed_response_wrapper(resource.call)
+
+
 class AsyncRpcResource(AsyncAPIResource):
     """Operations under ``client.rpc`` (OpenCode ``rpc``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncRpcResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncRpcResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncRpcResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncRpcResourceWithStreamingResponse(self)
 
     async def call(
         self,
@@ -111,3 +154,19 @@ class AsyncRpcResource(AsyncAPIResource):
                 response_type="RpcOutput",
             ),
         )
+
+
+class AsyncRpcResourceWithRawResponse:
+    """``client.rpc.with_raw_response``."""
+
+    def __init__(self, resource: AsyncRpcResource) -> None:
+        self._resource = resource
+        self.call = async_to_raw_response_wrapper(resource.call)
+
+
+class AsyncRpcResourceWithStreamingResponse:
+    """``client.rpc.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncRpcResource) -> None:
+        self._resource = resource
+        self.call = async_to_streamed_response_wrapper(resource.call)

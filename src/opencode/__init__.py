@@ -80,6 +80,7 @@ from ._logs import setup_logging as _setup_logging
 from ._models import BaseModel
 from ._pagination import AsyncCursorPage, AsyncPaginator, SyncCursorPage
 from ._pty import AsyncPtyConnection, PtyConnection, PtyConnectionError
+from ._response import APIResponse, AsyncAPIResponse
 from ._server import AsyncOpencodeServer, OpencodeServer, ServerStartError
 from ._service import Endpoint, ServiceError
 from ._streaming import AsyncStream, Stream
@@ -125,10 +126,12 @@ __all__ = [
     "API_VERSION",
     "NOT_GIVEN",
     "APIConnectionError",
+    "APIResponse",
     "APIError",
     "APIResponseValidationError",
     "APIStatusError",
     "APITimeoutError",
+    "AsyncAPIResponse",
     "AsyncCursorPage",
     "AsyncOpencode",
     "AsyncOpencodeServer",

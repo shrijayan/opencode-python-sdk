@@ -6,11 +6,18 @@
 from __future__ import annotations
 
 import builtins
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -26,6 +33,16 @@ __all__ = ["CredentialResource", "AsyncCredentialResource"]
 
 class CredentialResource(SyncAPIResource):
     """Operations under ``client.credential`` (OpenCode ``credential``)."""
+
+    @cached_property
+    def with_raw_response(self) -> CredentialResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return CredentialResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> CredentialResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return CredentialResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -128,17 +145,20 @@ class CredentialResource(SyncAPIResource):
 
         ``PATCH /api/credential/:credentialID``
         """
-        self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/credential/{encode_path_segment(credential_id)}",
-                body={"label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/credential/{encode_path_segment(credential_id)}",
+                    body={"label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def activate(
@@ -160,16 +180,19 @@ class CredentialResource(SyncAPIResource):
 
         ``POST /api/credential/:credentialID/activate``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/credential/{encode_path_segment(credential_id)}/activate",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/credential/{encode_path_segment(credential_id)}/activate",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def remove(
@@ -191,21 +214,58 @@ class CredentialResource(SyncAPIResource):
 
         ``DELETE /api/credential/:credentialID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/credential/{encode_path_segment(credential_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/credential/{encode_path_segment(credential_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class CredentialResourceWithRawResponse:
+    """``client.credential.with_raw_response``."""
+
+    def __init__(self, resource: CredentialResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.create = to_raw_response_wrapper(resource.create)
+        self.update = to_raw_response_wrapper(resource.update)
+        self.activate = to_raw_response_wrapper(resource.activate)
+        self.remove = to_raw_response_wrapper(resource.remove)
+
+
+class CredentialResourceWithStreamingResponse:
+    """``client.credential.with_streaming_response``."""
+
+    def __init__(self, resource: CredentialResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.update = to_streamed_response_wrapper(resource.update)
+        self.activate = to_streamed_response_wrapper(resource.activate)
+        self.remove = to_streamed_response_wrapper(resource.remove)
 
 
 class AsyncCredentialResource(AsyncAPIResource):
     """Operations under ``client.credential`` (OpenCode ``credential``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncCredentialResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncCredentialResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncCredentialResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncCredentialResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -308,17 +368,20 @@ class AsyncCredentialResource(AsyncAPIResource):
 
         ``PATCH /api/credential/:credentialID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/credential/{encode_path_segment(credential_id)}",
-                body={"label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/credential/{encode_path_segment(credential_id)}",
+                    body={"label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def activate(
@@ -340,16 +403,19 @@ class AsyncCredentialResource(AsyncAPIResource):
 
         ``POST /api/credential/:credentialID/activate``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/credential/{encode_path_segment(credential_id)}/activate",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/credential/{encode_path_segment(credential_id)}/activate",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def remove(
@@ -371,14 +437,41 @@ class AsyncCredentialResource(AsyncAPIResource):
 
         ``DELETE /api/credential/:credentialID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/credential/{encode_path_segment(credential_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/credential/{encode_path_segment(credential_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncCredentialResourceWithRawResponse:
+    """``client.credential.with_raw_response``."""
+
+    def __init__(self, resource: AsyncCredentialResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.update = async_to_raw_response_wrapper(resource.update)
+        self.activate = async_to_raw_response_wrapper(resource.activate)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+
+
+class AsyncCredentialResourceWithStreamingResponse:
+    """``client.credential.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncCredentialResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.update = async_to_streamed_response_wrapper(resource.update)
+        self.activate = async_to_streamed_response_wrapper(resource.activate)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)

@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -22,6 +29,16 @@ __all__ = ["ReferenceResource", "AsyncReferenceResource"]
 
 class ReferenceResource(SyncAPIResource):
     """Operations under ``client.reference`` (OpenCode ``reference``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ReferenceResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ReferenceResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ReferenceResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ReferenceResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -60,8 +77,34 @@ class ReferenceResource(SyncAPIResource):
         )
 
 
+class ReferenceResourceWithRawResponse:
+    """``client.reference.with_raw_response``."""
+
+    def __init__(self, resource: ReferenceResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+
+
+class ReferenceResourceWithStreamingResponse:
+    """``client.reference.with_streaming_response``."""
+
+    def __init__(self, resource: ReferenceResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+
+
 class AsyncReferenceResource(AsyncAPIResource):
     """Operations under ``client.reference`` (OpenCode ``reference``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncReferenceResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncReferenceResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncReferenceResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncReferenceResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -98,3 +141,19 @@ class AsyncReferenceResource(AsyncAPIResource):
                 response_type="ReferenceListResponse",
             ),
         )
+
+
+class AsyncReferenceResourceWithRawResponse:
+    """``client.reference.with_raw_response``."""
+
+    def __init__(self, resource: AsyncReferenceResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+
+
+class AsyncReferenceResourceWithStreamingResponse:
+    """``client.reference.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncReferenceResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)

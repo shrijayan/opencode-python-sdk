@@ -14,6 +14,12 @@ from .._base_client import RequestOptions
 from .._pty import AsyncPersistentPtyAttachMixin, PersistentPtyAttachMixin
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -35,6 +41,16 @@ __all__ = ["ExperimentalResource", "AsyncExperimentalResource"]
 
 class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
     """Operations under ``client.experimental.persistent_pty`` (OpenCode ``experimental.persistentPty``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ExperimentalPersistentPtyResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ExperimentalPersistentPtyResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ExperimentalPersistentPtyResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ExperimentalPersistentPtyResourceWithStreamingResponse(self)
 
     def read(
         self,
@@ -168,16 +184,19 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
 
         ``POST /api/experimental/persistent-pty/shutdown``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/persistent-pty/shutdown",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/persistent-pty/shutdown",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def handoff(
@@ -339,16 +358,19 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
 
         ``DELETE /api/experimental/persistent-pty/:ptyID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def connect_token(
@@ -390,6 +412,40 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
         )
 
 
+class ExperimentalPersistentPtyResourceWithRawResponse:
+    """``client.experimental.persistent_pty.with_raw_response``."""
+
+    def __init__(self, resource: ExperimentalPersistentPtyResource) -> None:
+        self._resource = resource
+        self.read = to_raw_response_wrapper(resource.read)
+        self.list = to_raw_response_wrapper(resource.list)
+        self.create = to_raw_response_wrapper(resource.create)
+        self.shutdown = to_raw_response_wrapper(resource.shutdown)
+        self.handoff = to_raw_response_wrapper(resource.handoff)
+        self.get = to_raw_response_wrapper(resource.get)
+        self.update = to_raw_response_wrapper(resource.update)
+        self.snapshot = to_raw_response_wrapper(resource.snapshot)
+        self.remove = to_raw_response_wrapper(resource.remove)
+        self.connect_token = to_raw_response_wrapper(resource.connect_token)
+
+
+class ExperimentalPersistentPtyResourceWithStreamingResponse:
+    """``client.experimental.persistent_pty.with_streaming_response``."""
+
+    def __init__(self, resource: ExperimentalPersistentPtyResource) -> None:
+        self._resource = resource
+        self.read = to_streamed_response_wrapper(resource.read)
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.shutdown = to_streamed_response_wrapper(resource.shutdown)
+        self.handoff = to_streamed_response_wrapper(resource.handoff)
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.update = to_streamed_response_wrapper(resource.update)
+        self.snapshot = to_streamed_response_wrapper(resource.snapshot)
+        self.remove = to_streamed_response_wrapper(resource.remove)
+        self.connect_token = to_streamed_response_wrapper(resource.connect_token)
+
+
 class ExperimentalResource(SyncAPIResource):
     """Operations under ``client.experimental`` (OpenCode ``experimental``)."""
 
@@ -398,9 +454,53 @@ class ExperimentalResource(SyncAPIResource):
         """Operations under ``client.experimental.persistent_pty``."""
         return ExperimentalPersistentPtyResource(self._client)
 
+    @cached_property
+    def with_raw_response(self) -> ExperimentalResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ExperimentalResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ExperimentalResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ExperimentalResourceWithStreamingResponse(self)
+
+
+class ExperimentalResourceWithRawResponse:
+    """``client.experimental.with_raw_response``."""
+
+    def __init__(self, resource: ExperimentalResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def persistent_pty(self) -> ExperimentalPersistentPtyResourceWithRawResponse:
+        """``client.experimental.persistent_pty.with_raw_response``."""
+        return ExperimentalPersistentPtyResourceWithRawResponse(self._resource.persistent_pty)
+
+
+class ExperimentalResourceWithStreamingResponse:
+    """``client.experimental.with_streaming_response``."""
+
+    def __init__(self, resource: ExperimentalResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def persistent_pty(self) -> ExperimentalPersistentPtyResourceWithStreamingResponse:
+        """``client.experimental.persistent_pty.with_streaming_response``."""
+        return ExperimentalPersistentPtyResourceWithStreamingResponse(self._resource.persistent_pty)
+
 
 class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
     """Operations under ``client.experimental.persistent_pty`` (OpenCode ``experimental.persistentPty``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncExperimentalPersistentPtyResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncExperimentalPersistentPtyResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncExperimentalPersistentPtyResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncExperimentalPersistentPtyResourceWithStreamingResponse(self)
 
     async def read(
         self,
@@ -534,16 +634,19 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
 
         ``POST /api/experimental/persistent-pty/shutdown``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/persistent-pty/shutdown",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/persistent-pty/shutdown",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def handoff(
@@ -705,16 +808,19 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
 
         ``DELETE /api/experimental/persistent-pty/:ptyID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def connect_token(
@@ -756,6 +862,40 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
         )
 
 
+class AsyncExperimentalPersistentPtyResourceWithRawResponse:
+    """``client.experimental.persistent_pty.with_raw_response``."""
+
+    def __init__(self, resource: AsyncExperimentalPersistentPtyResource) -> None:
+        self._resource = resource
+        self.read = async_to_raw_response_wrapper(resource.read)
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.shutdown = async_to_raw_response_wrapper(resource.shutdown)
+        self.handoff = async_to_raw_response_wrapper(resource.handoff)
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.update = async_to_raw_response_wrapper(resource.update)
+        self.snapshot = async_to_raw_response_wrapper(resource.snapshot)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+        self.connect_token = async_to_raw_response_wrapper(resource.connect_token)
+
+
+class AsyncExperimentalPersistentPtyResourceWithStreamingResponse:
+    """``client.experimental.persistent_pty.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncExperimentalPersistentPtyResource) -> None:
+        self._resource = resource
+        self.read = async_to_streamed_response_wrapper(resource.read)
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.shutdown = async_to_streamed_response_wrapper(resource.shutdown)
+        self.handoff = async_to_streamed_response_wrapper(resource.handoff)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.update = async_to_streamed_response_wrapper(resource.update)
+        self.snapshot = async_to_streamed_response_wrapper(resource.snapshot)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)
+        self.connect_token = async_to_streamed_response_wrapper(resource.connect_token)
+
+
 class AsyncExperimentalResource(AsyncAPIResource):
     """Operations under ``client.experimental`` (OpenCode ``experimental``)."""
 
@@ -763,3 +903,37 @@ class AsyncExperimentalResource(AsyncAPIResource):
     def persistent_pty(self) -> AsyncExperimentalPersistentPtyResource:
         """Operations under ``client.experimental.persistent_pty``."""
         return AsyncExperimentalPersistentPtyResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncExperimentalResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncExperimentalResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncExperimentalResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncExperimentalResourceWithStreamingResponse(self)
+
+
+class AsyncExperimentalResourceWithRawResponse:
+    """``client.experimental.with_raw_response``."""
+
+    def __init__(self, resource: AsyncExperimentalResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def persistent_pty(self) -> AsyncExperimentalPersistentPtyResourceWithRawResponse:
+        """``client.experimental.persistent_pty.with_raw_response``."""
+        return AsyncExperimentalPersistentPtyResourceWithRawResponse(self._resource.persistent_pty)
+
+
+class AsyncExperimentalResourceWithStreamingResponse:
+    """``client.experimental.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncExperimentalResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def persistent_pty(self) -> AsyncExperimentalPersistentPtyResourceWithStreamingResponse:
+        """``client.experimental.persistent_pty.with_streaming_response``."""
+        return AsyncExperimentalPersistentPtyResourceWithStreamingResponse(self._resource.persistent_pty)

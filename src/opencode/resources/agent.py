@@ -5,11 +5,18 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -25,6 +32,16 @@ __all__ = ["AgentResource", "AsyncAgentResource"]
 
 class AgentResource(SyncAPIResource):
     """Operations under ``client.agent`` (OpenCode ``agent``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AgentResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AgentResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AgentResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AgentResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -101,8 +118,36 @@ class AgentResource(SyncAPIResource):
         )
 
 
+class AgentResourceWithRawResponse:
+    """``client.agent.with_raw_response``."""
+
+    def __init__(self, resource: AgentResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.get = to_raw_response_wrapper(resource.get)
+
+
+class AgentResourceWithStreamingResponse:
+    """``client.agent.with_streaming_response``."""
+
+    def __init__(self, resource: AgentResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.get = to_streamed_response_wrapper(resource.get)
+
+
 class AsyncAgentResource(AsyncAPIResource):
     """Operations under ``client.agent`` (OpenCode ``agent``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncAgentResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncAgentResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncAgentResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncAgentResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -177,3 +222,21 @@ class AsyncAgentResource(AsyncAPIResource):
                 response_type="AgentGetResponse",
             ),
         )
+
+
+class AsyncAgentResourceWithRawResponse:
+    """``client.agent.with_raw_response``."""
+
+    def __init__(self, resource: AsyncAgentResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.get = async_to_raw_response_wrapper(resource.get)
+
+
+class AsyncAgentResourceWithStreamingResponse:
+    """``client.agent.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncAgentResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.get = async_to_streamed_response_wrapper(resource.get)

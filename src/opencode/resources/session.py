@@ -14,6 +14,12 @@ from .._base_client import RequestOptions
 from .._pagination import AsyncPaginator, SyncCursorPage
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._streaming import AsyncStream, Stream
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, OpenEnum, Query, Timeout
 from ..lib._session import AsyncSessionHelpers, SessionHelpers
@@ -65,6 +71,16 @@ __all__ = ["SessionResource", "AsyncSessionResource"]
 
 class SessionRevertResource(SyncAPIResource):
     """Operations under ``client.session.revert`` (OpenCode ``session.revert``)."""
+
+    @cached_property
+    def with_raw_response(self) -> SessionRevertResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return SessionRevertResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> SessionRevertResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return SessionRevertResourceWithStreamingResponse(self)
 
     def stage(
         self,
@@ -130,16 +146,19 @@ class SessionRevertResource(SyncAPIResource):
 
         ``DELETE /api/session/:sessionID/revert``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}/revert",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}/revert",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def commit(
@@ -162,21 +181,54 @@ class SessionRevertResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/revert/commit``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/revert/commit",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/revert/commit",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class SessionRevertResourceWithRawResponse:
+    """``client.session.revert.with_raw_response``."""
+
+    def __init__(self, resource: SessionRevertResource) -> None:
+        self._resource = resource
+        self.stage = to_raw_response_wrapper(resource.stage)
+        self.clear = to_raw_response_wrapper(resource.clear)
+        self.commit = to_raw_response_wrapper(resource.commit)
+
+
+class SessionRevertResourceWithStreamingResponse:
+    """``client.session.revert.with_streaming_response``."""
+
+    def __init__(self, resource: SessionRevertResource) -> None:
+        self._resource = resource
+        self.stage = to_streamed_response_wrapper(resource.stage)
+        self.clear = to_streamed_response_wrapper(resource.clear)
+        self.commit = to_streamed_response_wrapper(resource.commit)
 
 
 class SessionInboxResource(SyncAPIResource):
     """Operations under ``client.session.inbox`` (OpenCode ``session.inbox``)."""
+
+    @cached_property
+    def with_raw_response(self) -> SessionInboxResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return SessionInboxResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> SessionInboxResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return SessionInboxResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -235,16 +287,19 @@ class SessionInboxResource(SyncAPIResource):
 
         ``DELETE /api/session/:sessionID/inbox/:inboxID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def update(
@@ -270,22 +325,55 @@ class SessionInboxResource(SyncAPIResource):
 
         ``PATCH /api/session/:sessionID/inbox/:inboxID``
         """
-        self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
-                body={"delivery": delivery},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
+                    body={"delivery": delivery},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class SessionInboxResourceWithRawResponse:
+    """``client.session.inbox.with_raw_response``."""
+
+    def __init__(self, resource: SessionInboxResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.cancel = to_raw_response_wrapper(resource.cancel)
+        self.update = to_raw_response_wrapper(resource.update)
+
+
+class SessionInboxResourceWithStreamingResponse:
+    """``client.session.inbox.with_streaming_response``."""
+
+    def __init__(self, resource: SessionInboxResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.cancel = to_streamed_response_wrapper(resource.cancel)
+        self.update = to_streamed_response_wrapper(resource.update)
 
 
 class SessionInstructionsEntryResource(SyncAPIResource):
     """Operations under ``client.session.instructions.entry`` (OpenCode ``session.instructions.entry``)."""
+
+    @cached_property
+    def with_raw_response(self) -> SessionInstructionsEntryResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return SessionInstructionsEntryResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> SessionInstructionsEntryResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return SessionInstructionsEntryResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -352,17 +440,20 @@ class SessionInstructionsEntryResource(SyncAPIResource):
 
         ``PUT /api/experimental/session/:sessionID/instructions/entries/:key``
         """
-        self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
-                body={"value": value},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
+                    body={"value": value},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def remove(
@@ -389,17 +480,40 @@ class SessionInstructionsEntryResource(SyncAPIResource):
 
         ``DELETE /api/experimental/session/:sessionID/instructions/entries/:key``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class SessionInstructionsEntryResourceWithRawResponse:
+    """``client.session.instructions.entry.with_raw_response``."""
+
+    def __init__(self, resource: SessionInstructionsEntryResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.put = to_raw_response_wrapper(resource.put)
+        self.remove = to_raw_response_wrapper(resource.remove)
+
+
+class SessionInstructionsEntryResourceWithStreamingResponse:
+    """``client.session.instructions.entry.with_streaming_response``."""
+
+    def __init__(self, resource: SessionInstructionsEntryResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.put = to_streamed_response_wrapper(resource.put)
+        self.remove = to_streamed_response_wrapper(resource.remove)
 
 
 class SessionInstructionsResource(SyncAPIResource):
@@ -410,9 +524,53 @@ class SessionInstructionsResource(SyncAPIResource):
         """Operations under ``client.session.instructions.entry``."""
         return SessionInstructionsEntryResource(self._client)
 
+    @cached_property
+    def with_raw_response(self) -> SessionInstructionsResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return SessionInstructionsResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> SessionInstructionsResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return SessionInstructionsResourceWithStreamingResponse(self)
+
+
+class SessionInstructionsResourceWithRawResponse:
+    """``client.session.instructions.with_raw_response``."""
+
+    def __init__(self, resource: SessionInstructionsResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def entry(self) -> SessionInstructionsEntryResourceWithRawResponse:
+        """``client.session.instructions.entry.with_raw_response``."""
+        return SessionInstructionsEntryResourceWithRawResponse(self._resource.entry)
+
+
+class SessionInstructionsResourceWithStreamingResponse:
+    """``client.session.instructions.with_streaming_response``."""
+
+    def __init__(self, resource: SessionInstructionsResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def entry(self) -> SessionInstructionsEntryResourceWithStreamingResponse:
+        """``client.session.instructions.entry.with_streaming_response``."""
+        return SessionInstructionsEntryResourceWithStreamingResponse(self._resource.entry)
+
 
 class SessionMessageResource(SyncAPIResource):
     """Operations under ``client.session.message`` (OpenCode ``session.message``)."""
+
+    @cached_property
+    def with_raw_response(self) -> SessionMessageResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return SessionMessageResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> SessionMessageResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return SessionMessageResourceWithStreamingResponse(self)
 
     def get(
         self,
@@ -453,8 +611,34 @@ class SessionMessageResource(SyncAPIResource):
         )
 
 
+class SessionMessageResourceWithRawResponse:
+    """``client.session.message.with_raw_response``."""
+
+    def __init__(self, resource: SessionMessageResource) -> None:
+        self._resource = resource
+        self.get = to_raw_response_wrapper(resource.get)
+
+
+class SessionMessageResourceWithStreamingResponse:
+    """``client.session.message.with_streaming_response``."""
+
+    def __init__(self, resource: SessionMessageResource) -> None:
+        self._resource = resource
+        self.get = to_streamed_response_wrapper(resource.get)
+
+
 class SessionFormResource(SyncAPIResource):
     """Operations under ``client.session.form`` (OpenCode ``session.form``)."""
+
+    @cached_property
+    def with_raw_response(self) -> SessionFormResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return SessionFormResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> SessionFormResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return SessionFormResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -601,17 +785,20 @@ class SessionFormResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/form/:formID/reply``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}/reply",
-                body={"answer": answer},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}/reply",
+                    body={"answer": answer},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def cancel(
@@ -639,18 +826,45 @@ class SessionFormResource(SyncAPIResource):
 
         ``DELETE /api/session/:sessionID/form/:formID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
-                query={"message": message},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
+                    query={"message": message},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class SessionFormResourceWithRawResponse:
+    """``client.session.form.with_raw_response``."""
+
+    def __init__(self, resource: SessionFormResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.create = to_raw_response_wrapper(resource.create)
+        self.get = to_raw_response_wrapper(resource.get)
+        self.reply = to_raw_response_wrapper(resource.reply)
+        self.cancel = to_raw_response_wrapper(resource.cancel)
+
+
+class SessionFormResourceWithStreamingResponse:
+    """``client.session.form.with_streaming_response``."""
+
+    def __init__(self, resource: SessionFormResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.reply = to_streamed_response_wrapper(resource.reply)
+        self.cancel = to_streamed_response_wrapper(resource.cancel)
 
 
 class SessionResource(SessionHelpers):
@@ -680,6 +894,16 @@ class SessionResource(SessionHelpers):
     def form(self) -> SessionFormResource:
         """Operations under ``client.session.form``."""
         return SessionFormResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> SessionResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return SessionResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> SessionResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return SessionResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -1006,16 +1230,19 @@ class SessionResource(SessionHelpers):
 
         ``DELETE /api/session/:sessionID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def fork(
@@ -1080,17 +1307,20 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/session/:sessionID/agent``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/agent",
-                body={"agent": agent},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/agent",
+                    body={"agent": agent},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def switch_model(
@@ -1115,17 +1345,20 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/session/:sessionID/model``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/model",
-                body={"model": model},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/model",
+                    body={"model": model},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def update(
@@ -1156,17 +1389,20 @@ class SessionResource(SessionHelpers):
 
         ``PATCH /api/session/:sessionID``
         """
-        self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/session/{encode_path_segment(session_id)}",
-                body={"title": title, "metadata": metadata, "permissions": permissions, "archived": archived},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/session/{encode_path_segment(session_id)}",
+                    body={"title": title, "metadata": metadata, "permissions": permissions, "archived": archived},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def move(
@@ -1191,17 +1427,20 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/session/:sessionID/move``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/move",
-                body={"directory": directory, "delivery": delivery},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/move",
+                    body={"directory": directory, "delivery": delivery},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def prompt(
@@ -1289,24 +1528,27 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/session/:sessionID/command``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/command",
-                body={
-                    "name": name,
-                    "text": text,
-                    "files": files,
-                    "agents": agents,
-                    "skills": skills,
-                    "delivery": delivery,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/command",
+                    body={
+                        "name": name,
+                        "text": text,
+                        "files": files,
+                        "agents": agents,
+                        "skills": skills,
+                        "delivery": delivery,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def skill(
@@ -1335,17 +1577,20 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/experimental/session/:sessionID/skill``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/skill",
-                body={"id": id, "resume": resume},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/skill",
+                    body={"id": id, "resume": resume},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def synthetic(
@@ -1423,17 +1668,20 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/session/:sessionID/shell``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/shell",
-                body={"id": id, "command": command},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/shell",
+                    body={"id": id, "command": command},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def compact(
@@ -1501,16 +1749,19 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/experimental/session/:sessionID/wait``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/wait",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/wait",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def context(
@@ -1734,16 +1985,19 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/session/:sessionID/background``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/background",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/background",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def environment(
@@ -1767,17 +2021,20 @@ class SessionResource(SessionHelpers):
 
         ``PUT /api/session/:sessionID/environment``
         """
-        self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/session/{encode_path_segment(session_id)}/environment",
-                body={"variables": variables},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/session/{encode_path_segment(session_id)}/environment",
+                    body={"variables": variables},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def view(
@@ -1801,22 +2058,155 @@ class SessionResource(SessionHelpers):
 
         ``POST /api/session/:sessionID/view``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/view",
-                body={"idle": idle},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/view",
+                    body={"idle": idle},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class SessionResourceWithRawResponse:
+    """``client.session.with_raw_response``."""
+
+    def __init__(self, resource: SessionResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.stats = to_raw_response_wrapper(resource.stats)
+        self.create = to_raw_response_wrapper(resource.create)
+        self.import_ = to_raw_response_wrapper(resource.import_)
+        self.export = to_raw_response_wrapper(resource.export)
+        self.active = to_raw_response_wrapper(resource.active)
+        self.get = to_raw_response_wrapper(resource.get)
+        self.remove = to_raw_response_wrapper(resource.remove)
+        self.fork = to_raw_response_wrapper(resource.fork)
+        self.switch_agent = to_raw_response_wrapper(resource.switch_agent)
+        self.switch_model = to_raw_response_wrapper(resource.switch_model)
+        self.update = to_raw_response_wrapper(resource.update)
+        self.move = to_raw_response_wrapper(resource.move)
+        self.prompt = to_raw_response_wrapper(resource.prompt)
+        self.command = to_raw_response_wrapper(resource.command)
+        self.skill = to_raw_response_wrapper(resource.skill)
+        self.synthetic = to_raw_response_wrapper(resource.synthetic)
+        self.shell = to_raw_response_wrapper(resource.shell)
+        self.compact = to_raw_response_wrapper(resource.compact)
+        self.wait = to_raw_response_wrapper(resource.wait)
+        self.context = to_raw_response_wrapper(resource.context)
+        self.diff = to_raw_response_wrapper(resource.diff)
+        self.generate = to_raw_response_wrapper(resource.generate)
+        self.log = to_raw_response_wrapper(resource.log)
+        self.interrupt = to_raw_response_wrapper(resource.interrupt)
+        self.background = to_raw_response_wrapper(resource.background)
+        self.environment = to_raw_response_wrapper(resource.environment)
+        self.view = to_raw_response_wrapper(resource.view)
+
+    @cached_property
+    def revert(self) -> SessionRevertResourceWithRawResponse:
+        """``client.session.revert.with_raw_response``."""
+        return SessionRevertResourceWithRawResponse(self._resource.revert)
+
+    @cached_property
+    def inbox(self) -> SessionInboxResourceWithRawResponse:
+        """``client.session.inbox.with_raw_response``."""
+        return SessionInboxResourceWithRawResponse(self._resource.inbox)
+
+    @cached_property
+    def instructions(self) -> SessionInstructionsResourceWithRawResponse:
+        """``client.session.instructions.with_raw_response``."""
+        return SessionInstructionsResourceWithRawResponse(self._resource.instructions)
+
+    @cached_property
+    def message(self) -> SessionMessageResourceWithRawResponse:
+        """``client.session.message.with_raw_response``."""
+        return SessionMessageResourceWithRawResponse(self._resource.message)
+
+    @cached_property
+    def form(self) -> SessionFormResourceWithRawResponse:
+        """``client.session.form.with_raw_response``."""
+        return SessionFormResourceWithRawResponse(self._resource.form)
+
+
+class SessionResourceWithStreamingResponse:
+    """``client.session.with_streaming_response``."""
+
+    def __init__(self, resource: SessionResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.stats = to_streamed_response_wrapper(resource.stats)
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.import_ = to_streamed_response_wrapper(resource.import_)
+        self.export = to_streamed_response_wrapper(resource.export)
+        self.active = to_streamed_response_wrapper(resource.active)
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.remove = to_streamed_response_wrapper(resource.remove)
+        self.fork = to_streamed_response_wrapper(resource.fork)
+        self.switch_agent = to_streamed_response_wrapper(resource.switch_agent)
+        self.switch_model = to_streamed_response_wrapper(resource.switch_model)
+        self.update = to_streamed_response_wrapper(resource.update)
+        self.move = to_streamed_response_wrapper(resource.move)
+        self.prompt = to_streamed_response_wrapper(resource.prompt)
+        self.command = to_streamed_response_wrapper(resource.command)
+        self.skill = to_streamed_response_wrapper(resource.skill)
+        self.synthetic = to_streamed_response_wrapper(resource.synthetic)
+        self.shell = to_streamed_response_wrapper(resource.shell)
+        self.compact = to_streamed_response_wrapper(resource.compact)
+        self.wait = to_streamed_response_wrapper(resource.wait)
+        self.context = to_streamed_response_wrapper(resource.context)
+        self.diff = to_streamed_response_wrapper(resource.diff)
+        self.generate = to_streamed_response_wrapper(resource.generate)
+        self.log = to_streamed_response_wrapper(resource.log)
+        self.interrupt = to_streamed_response_wrapper(resource.interrupt)
+        self.background = to_streamed_response_wrapper(resource.background)
+        self.environment = to_streamed_response_wrapper(resource.environment)
+        self.view = to_streamed_response_wrapper(resource.view)
+
+    @cached_property
+    def revert(self) -> SessionRevertResourceWithStreamingResponse:
+        """``client.session.revert.with_streaming_response``."""
+        return SessionRevertResourceWithStreamingResponse(self._resource.revert)
+
+    @cached_property
+    def inbox(self) -> SessionInboxResourceWithStreamingResponse:
+        """``client.session.inbox.with_streaming_response``."""
+        return SessionInboxResourceWithStreamingResponse(self._resource.inbox)
+
+    @cached_property
+    def instructions(self) -> SessionInstructionsResourceWithStreamingResponse:
+        """``client.session.instructions.with_streaming_response``."""
+        return SessionInstructionsResourceWithStreamingResponse(self._resource.instructions)
+
+    @cached_property
+    def message(self) -> SessionMessageResourceWithStreamingResponse:
+        """``client.session.message.with_streaming_response``."""
+        return SessionMessageResourceWithStreamingResponse(self._resource.message)
+
+    @cached_property
+    def form(self) -> SessionFormResourceWithStreamingResponse:
+        """``client.session.form.with_streaming_response``."""
+        return SessionFormResourceWithStreamingResponse(self._resource.form)
 
 
 class AsyncSessionRevertResource(AsyncAPIResource):
     """Operations under ``client.session.revert`` (OpenCode ``session.revert``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncSessionRevertResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncSessionRevertResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncSessionRevertResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncSessionRevertResourceWithStreamingResponse(self)
 
     async def stage(
         self,
@@ -1882,16 +2272,19 @@ class AsyncSessionRevertResource(AsyncAPIResource):
 
         ``DELETE /api/session/:sessionID/revert``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}/revert",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}/revert",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def commit(
@@ -1914,21 +2307,54 @@ class AsyncSessionRevertResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/revert/commit``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/revert/commit",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/revert/commit",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncSessionRevertResourceWithRawResponse:
+    """``client.session.revert.with_raw_response``."""
+
+    def __init__(self, resource: AsyncSessionRevertResource) -> None:
+        self._resource = resource
+        self.stage = async_to_raw_response_wrapper(resource.stage)
+        self.clear = async_to_raw_response_wrapper(resource.clear)
+        self.commit = async_to_raw_response_wrapper(resource.commit)
+
+
+class AsyncSessionRevertResourceWithStreamingResponse:
+    """``client.session.revert.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncSessionRevertResource) -> None:
+        self._resource = resource
+        self.stage = async_to_streamed_response_wrapper(resource.stage)
+        self.clear = async_to_streamed_response_wrapper(resource.clear)
+        self.commit = async_to_streamed_response_wrapper(resource.commit)
 
 
 class AsyncSessionInboxResource(AsyncAPIResource):
     """Operations under ``client.session.inbox`` (OpenCode ``session.inbox``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncSessionInboxResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncSessionInboxResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncSessionInboxResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncSessionInboxResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -1987,16 +2413,19 @@ class AsyncSessionInboxResource(AsyncAPIResource):
 
         ``DELETE /api/session/:sessionID/inbox/:inboxID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def update(
@@ -2022,22 +2451,55 @@ class AsyncSessionInboxResource(AsyncAPIResource):
 
         ``PATCH /api/session/:sessionID/inbox/:inboxID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
-                body={"delivery": delivery},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/session/{encode_path_segment(session_id)}/inbox/{encode_path_segment(inbox_id)}",
+                    body={"delivery": delivery},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncSessionInboxResourceWithRawResponse:
+    """``client.session.inbox.with_raw_response``."""
+
+    def __init__(self, resource: AsyncSessionInboxResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.cancel = async_to_raw_response_wrapper(resource.cancel)
+        self.update = async_to_raw_response_wrapper(resource.update)
+
+
+class AsyncSessionInboxResourceWithStreamingResponse:
+    """``client.session.inbox.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncSessionInboxResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.cancel = async_to_streamed_response_wrapper(resource.cancel)
+        self.update = async_to_streamed_response_wrapper(resource.update)
 
 
 class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
     """Operations under ``client.session.instructions.entry`` (OpenCode ``session.instructions.entry``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncSessionInstructionsEntryResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncSessionInstructionsEntryResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncSessionInstructionsEntryResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncSessionInstructionsEntryResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -2104,17 +2566,20 @@ class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
 
         ``PUT /api/experimental/session/:sessionID/instructions/entries/:key``
         """
-        await self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
-                body={"value": value},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
+                    body={"value": value},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def remove(
@@ -2141,17 +2606,40 @@ class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
 
         ``DELETE /api/experimental/session/:sessionID/instructions/entries/:key``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries/{encode_path_segment(key)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncSessionInstructionsEntryResourceWithRawResponse:
+    """``client.session.instructions.entry.with_raw_response``."""
+
+    def __init__(self, resource: AsyncSessionInstructionsEntryResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.put = async_to_raw_response_wrapper(resource.put)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+
+
+class AsyncSessionInstructionsEntryResourceWithStreamingResponse:
+    """``client.session.instructions.entry.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncSessionInstructionsEntryResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.put = async_to_streamed_response_wrapper(resource.put)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)
 
 
 class AsyncSessionInstructionsResource(AsyncAPIResource):
@@ -2162,9 +2650,53 @@ class AsyncSessionInstructionsResource(AsyncAPIResource):
         """Operations under ``client.session.instructions.entry``."""
         return AsyncSessionInstructionsEntryResource(self._client)
 
+    @cached_property
+    def with_raw_response(self) -> AsyncSessionInstructionsResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncSessionInstructionsResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncSessionInstructionsResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncSessionInstructionsResourceWithStreamingResponse(self)
+
+
+class AsyncSessionInstructionsResourceWithRawResponse:
+    """``client.session.instructions.with_raw_response``."""
+
+    def __init__(self, resource: AsyncSessionInstructionsResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def entry(self) -> AsyncSessionInstructionsEntryResourceWithRawResponse:
+        """``client.session.instructions.entry.with_raw_response``."""
+        return AsyncSessionInstructionsEntryResourceWithRawResponse(self._resource.entry)
+
+
+class AsyncSessionInstructionsResourceWithStreamingResponse:
+    """``client.session.instructions.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncSessionInstructionsResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def entry(self) -> AsyncSessionInstructionsEntryResourceWithStreamingResponse:
+        """``client.session.instructions.entry.with_streaming_response``."""
+        return AsyncSessionInstructionsEntryResourceWithStreamingResponse(self._resource.entry)
+
 
 class AsyncSessionMessageResource(AsyncAPIResource):
     """Operations under ``client.session.message`` (OpenCode ``session.message``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncSessionMessageResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncSessionMessageResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncSessionMessageResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncSessionMessageResourceWithStreamingResponse(self)
 
     async def get(
         self,
@@ -2205,8 +2737,34 @@ class AsyncSessionMessageResource(AsyncAPIResource):
         )
 
 
+class AsyncSessionMessageResourceWithRawResponse:
+    """``client.session.message.with_raw_response``."""
+
+    def __init__(self, resource: AsyncSessionMessageResource) -> None:
+        self._resource = resource
+        self.get = async_to_raw_response_wrapper(resource.get)
+
+
+class AsyncSessionMessageResourceWithStreamingResponse:
+    """``client.session.message.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncSessionMessageResource) -> None:
+        self._resource = resource
+        self.get = async_to_streamed_response_wrapper(resource.get)
+
+
 class AsyncSessionFormResource(AsyncAPIResource):
     """Operations under ``client.session.form`` (OpenCode ``session.form``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncSessionFormResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncSessionFormResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncSessionFormResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncSessionFormResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -2353,17 +2911,20 @@ class AsyncSessionFormResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/form/:formID/reply``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}/reply",
-                body={"answer": answer},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}/reply",
+                    body={"answer": answer},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def cancel(
@@ -2391,18 +2952,45 @@ class AsyncSessionFormResource(AsyncAPIResource):
 
         ``DELETE /api/session/:sessionID/form/:formID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
-                query={"message": message},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
+                    query={"message": message},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncSessionFormResourceWithRawResponse:
+    """``client.session.form.with_raw_response``."""
+
+    def __init__(self, resource: AsyncSessionFormResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.reply = async_to_raw_response_wrapper(resource.reply)
+        self.cancel = async_to_raw_response_wrapper(resource.cancel)
+
+
+class AsyncSessionFormResourceWithStreamingResponse:
+    """``client.session.form.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncSessionFormResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.reply = async_to_streamed_response_wrapper(resource.reply)
+        self.cancel = async_to_streamed_response_wrapper(resource.cancel)
 
 
 class AsyncSessionResource(AsyncSessionHelpers):
@@ -2432,6 +3020,16 @@ class AsyncSessionResource(AsyncSessionHelpers):
     def form(self) -> AsyncSessionFormResource:
         """Operations under ``client.session.form``."""
         return AsyncSessionFormResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncSessionResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncSessionResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncSessionResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncSessionResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -2758,16 +3356,19 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``DELETE /api/session/:sessionID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/session/{encode_path_segment(session_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/session/{encode_path_segment(session_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def fork(
@@ -2832,17 +3433,20 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/session/:sessionID/agent``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/agent",
-                body={"agent": agent},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/agent",
+                    body={"agent": agent},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def switch_model(
@@ -2867,17 +3471,20 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/session/:sessionID/model``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/model",
-                body={"model": model},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/model",
+                    body={"model": model},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def update(
@@ -2908,17 +3515,20 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``PATCH /api/session/:sessionID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/session/{encode_path_segment(session_id)}",
-                body={"title": title, "metadata": metadata, "permissions": permissions, "archived": archived},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/session/{encode_path_segment(session_id)}",
+                    body={"title": title, "metadata": metadata, "permissions": permissions, "archived": archived},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def move(
@@ -2943,17 +3553,20 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/session/:sessionID/move``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/move",
-                body={"directory": directory, "delivery": delivery},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/move",
+                    body={"directory": directory, "delivery": delivery},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def prompt(
@@ -3041,24 +3654,27 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/session/:sessionID/command``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/command",
-                body={
-                    "name": name,
-                    "text": text,
-                    "files": files,
-                    "agents": agents,
-                    "skills": skills,
-                    "delivery": delivery,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/command",
+                    body={
+                        "name": name,
+                        "text": text,
+                        "files": files,
+                        "agents": agents,
+                        "skills": skills,
+                        "delivery": delivery,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def skill(
@@ -3087,17 +3703,20 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/experimental/session/:sessionID/skill``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/skill",
-                body={"id": id, "resume": resume},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/skill",
+                    body={"id": id, "resume": resume},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def synthetic(
@@ -3175,17 +3794,20 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/session/:sessionID/shell``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/shell",
-                body={"id": id, "command": command},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/shell",
+                    body={"id": id, "command": command},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def compact(
@@ -3253,16 +3875,19 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/experimental/session/:sessionID/wait``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/wait",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/wait",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def context(
@@ -3486,16 +4111,19 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/session/:sessionID/background``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/background",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/background",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def environment(
@@ -3519,17 +4147,20 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``PUT /api/session/:sessionID/environment``
         """
-        await self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/session/{encode_path_segment(session_id)}/environment",
-                body={"variables": variables},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/session/{encode_path_segment(session_id)}/environment",
+                    body={"variables": variables},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def view(
@@ -3553,15 +4184,138 @@ class AsyncSessionResource(AsyncSessionHelpers):
 
         ``POST /api/session/:sessionID/view``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/view",
-                body={"idle": idle},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/view",
+                    body={"idle": idle},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncSessionResourceWithRawResponse:
+    """``client.session.with_raw_response``."""
+
+    def __init__(self, resource: AsyncSessionResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.stats = async_to_raw_response_wrapper(resource.stats)
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.import_ = async_to_raw_response_wrapper(resource.import_)
+        self.export = async_to_raw_response_wrapper(resource.export)
+        self.active = async_to_raw_response_wrapper(resource.active)
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+        self.fork = async_to_raw_response_wrapper(resource.fork)
+        self.switch_agent = async_to_raw_response_wrapper(resource.switch_agent)
+        self.switch_model = async_to_raw_response_wrapper(resource.switch_model)
+        self.update = async_to_raw_response_wrapper(resource.update)
+        self.move = async_to_raw_response_wrapper(resource.move)
+        self.prompt = async_to_raw_response_wrapper(resource.prompt)
+        self.command = async_to_raw_response_wrapper(resource.command)
+        self.skill = async_to_raw_response_wrapper(resource.skill)
+        self.synthetic = async_to_raw_response_wrapper(resource.synthetic)
+        self.shell = async_to_raw_response_wrapper(resource.shell)
+        self.compact = async_to_raw_response_wrapper(resource.compact)
+        self.wait = async_to_raw_response_wrapper(resource.wait)
+        self.context = async_to_raw_response_wrapper(resource.context)
+        self.diff = async_to_raw_response_wrapper(resource.diff)
+        self.generate = async_to_raw_response_wrapper(resource.generate)
+        self.log = async_to_raw_response_wrapper(resource.log)
+        self.interrupt = async_to_raw_response_wrapper(resource.interrupt)
+        self.background = async_to_raw_response_wrapper(resource.background)
+        self.environment = async_to_raw_response_wrapper(resource.environment)
+        self.view = async_to_raw_response_wrapper(resource.view)
+
+    @cached_property
+    def revert(self) -> AsyncSessionRevertResourceWithRawResponse:
+        """``client.session.revert.with_raw_response``."""
+        return AsyncSessionRevertResourceWithRawResponse(self._resource.revert)
+
+    @cached_property
+    def inbox(self) -> AsyncSessionInboxResourceWithRawResponse:
+        """``client.session.inbox.with_raw_response``."""
+        return AsyncSessionInboxResourceWithRawResponse(self._resource.inbox)
+
+    @cached_property
+    def instructions(self) -> AsyncSessionInstructionsResourceWithRawResponse:
+        """``client.session.instructions.with_raw_response``."""
+        return AsyncSessionInstructionsResourceWithRawResponse(self._resource.instructions)
+
+    @cached_property
+    def message(self) -> AsyncSessionMessageResourceWithRawResponse:
+        """``client.session.message.with_raw_response``."""
+        return AsyncSessionMessageResourceWithRawResponse(self._resource.message)
+
+    @cached_property
+    def form(self) -> AsyncSessionFormResourceWithRawResponse:
+        """``client.session.form.with_raw_response``."""
+        return AsyncSessionFormResourceWithRawResponse(self._resource.form)
+
+
+class AsyncSessionResourceWithStreamingResponse:
+    """``client.session.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncSessionResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.stats = async_to_streamed_response_wrapper(resource.stats)
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.import_ = async_to_streamed_response_wrapper(resource.import_)
+        self.export = async_to_streamed_response_wrapper(resource.export)
+        self.active = async_to_streamed_response_wrapper(resource.active)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)
+        self.fork = async_to_streamed_response_wrapper(resource.fork)
+        self.switch_agent = async_to_streamed_response_wrapper(resource.switch_agent)
+        self.switch_model = async_to_streamed_response_wrapper(resource.switch_model)
+        self.update = async_to_streamed_response_wrapper(resource.update)
+        self.move = async_to_streamed_response_wrapper(resource.move)
+        self.prompt = async_to_streamed_response_wrapper(resource.prompt)
+        self.command = async_to_streamed_response_wrapper(resource.command)
+        self.skill = async_to_streamed_response_wrapper(resource.skill)
+        self.synthetic = async_to_streamed_response_wrapper(resource.synthetic)
+        self.shell = async_to_streamed_response_wrapper(resource.shell)
+        self.compact = async_to_streamed_response_wrapper(resource.compact)
+        self.wait = async_to_streamed_response_wrapper(resource.wait)
+        self.context = async_to_streamed_response_wrapper(resource.context)
+        self.diff = async_to_streamed_response_wrapper(resource.diff)
+        self.generate = async_to_streamed_response_wrapper(resource.generate)
+        self.log = async_to_streamed_response_wrapper(resource.log)
+        self.interrupt = async_to_streamed_response_wrapper(resource.interrupt)
+        self.background = async_to_streamed_response_wrapper(resource.background)
+        self.environment = async_to_streamed_response_wrapper(resource.environment)
+        self.view = async_to_streamed_response_wrapper(resource.view)
+
+    @cached_property
+    def revert(self) -> AsyncSessionRevertResourceWithStreamingResponse:
+        """``client.session.revert.with_streaming_response``."""
+        return AsyncSessionRevertResourceWithStreamingResponse(self._resource.revert)
+
+    @cached_property
+    def inbox(self) -> AsyncSessionInboxResourceWithStreamingResponse:
+        """``client.session.inbox.with_streaming_response``."""
+        return AsyncSessionInboxResourceWithStreamingResponse(self._resource.inbox)
+
+    @cached_property
+    def instructions(self) -> AsyncSessionInstructionsResourceWithStreamingResponse:
+        """``client.session.instructions.with_streaming_response``."""
+        return AsyncSessionInstructionsResourceWithStreamingResponse(self._resource.instructions)
+
+    @cached_property
+    def message(self) -> AsyncSessionMessageResourceWithStreamingResponse:
+        """``client.session.message.with_streaming_response``."""
+        return AsyncSessionMessageResourceWithStreamingResponse(self._resource.message)
+
+    @cached_property
+    def form(self) -> AsyncSessionFormResourceWithStreamingResponse:
+        """``client.session.form.with_streaming_response``."""
+        return AsyncSessionFormResourceWithStreamingResponse(self._resource.form)

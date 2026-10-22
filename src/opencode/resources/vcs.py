@@ -10,6 +10,12 @@ from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -28,6 +34,16 @@ __all__ = ["VcsResource", "AsyncVcsResource"]
 
 class VcsBranchResource(SyncAPIResource):
     """Operations under ``client.vcs.branch`` (OpenCode ``vcs.branch``)."""
+
+    @cached_property
+    def with_raw_response(self) -> VcsBranchResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return VcsBranchResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> VcsBranchResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return VcsBranchResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -68,6 +84,22 @@ class VcsBranchResource(SyncAPIResource):
         )
 
 
+class VcsBranchResourceWithRawResponse:
+    """``client.vcs.branch.with_raw_response``."""
+
+    def __init__(self, resource: VcsBranchResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+
+
+class VcsBranchResourceWithStreamingResponse:
+    """``client.vcs.branch.with_streaming_response``."""
+
+    def __init__(self, resource: VcsBranchResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+
+
 class VcsResource(SyncAPIResource):
     """Operations under ``client.vcs`` (OpenCode ``vcs``)."""
 
@@ -75,6 +107,16 @@ class VcsResource(SyncAPIResource):
     def branch(self) -> VcsBranchResource:
         """Operations under ``client.vcs.branch``."""
         return VcsBranchResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> VcsResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return VcsResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> VcsResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return VcsResourceWithStreamingResponse(self)
 
     def init(
         self,
@@ -100,17 +142,20 @@ class VcsResource(SyncAPIResource):
 
         ``POST /api/vcs/init``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/vcs/init",
-                query={"location": self._location(location), "provider": provider},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/vcs/init",
+                    query={"location": self._location(location), "provider": provider},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def get(
@@ -263,8 +308,52 @@ class VcsResource(SyncAPIResource):
         )
 
 
+class VcsResourceWithRawResponse:
+    """``client.vcs.with_raw_response``."""
+
+    def __init__(self, resource: VcsResource) -> None:
+        self._resource = resource
+        self.init = to_raw_response_wrapper(resource.init)
+        self.get = to_raw_response_wrapper(resource.get)
+        self.base = to_raw_response_wrapper(resource.base)
+        self.status = to_raw_response_wrapper(resource.status)
+        self.diff = to_raw_response_wrapper(resource.diff)
+
+    @cached_property
+    def branch(self) -> VcsBranchResourceWithRawResponse:
+        """``client.vcs.branch.with_raw_response``."""
+        return VcsBranchResourceWithRawResponse(self._resource.branch)
+
+
+class VcsResourceWithStreamingResponse:
+    """``client.vcs.with_streaming_response``."""
+
+    def __init__(self, resource: VcsResource) -> None:
+        self._resource = resource
+        self.init = to_streamed_response_wrapper(resource.init)
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.base = to_streamed_response_wrapper(resource.base)
+        self.status = to_streamed_response_wrapper(resource.status)
+        self.diff = to_streamed_response_wrapper(resource.diff)
+
+    @cached_property
+    def branch(self) -> VcsBranchResourceWithStreamingResponse:
+        """``client.vcs.branch.with_streaming_response``."""
+        return VcsBranchResourceWithStreamingResponse(self._resource.branch)
+
+
 class AsyncVcsBranchResource(AsyncAPIResource):
     """Operations under ``client.vcs.branch`` (OpenCode ``vcs.branch``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncVcsBranchResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncVcsBranchResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncVcsBranchResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncVcsBranchResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -305,6 +394,22 @@ class AsyncVcsBranchResource(AsyncAPIResource):
         )
 
 
+class AsyncVcsBranchResourceWithRawResponse:
+    """``client.vcs.branch.with_raw_response``."""
+
+    def __init__(self, resource: AsyncVcsBranchResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+
+
+class AsyncVcsBranchResourceWithStreamingResponse:
+    """``client.vcs.branch.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncVcsBranchResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+
+
 class AsyncVcsResource(AsyncAPIResource):
     """Operations under ``client.vcs`` (OpenCode ``vcs``)."""
 
@@ -312,6 +417,16 @@ class AsyncVcsResource(AsyncAPIResource):
     def branch(self) -> AsyncVcsBranchResource:
         """Operations under ``client.vcs.branch``."""
         return AsyncVcsBranchResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncVcsResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncVcsResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncVcsResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncVcsResourceWithStreamingResponse(self)
 
     async def init(
         self,
@@ -337,17 +452,20 @@ class AsyncVcsResource(AsyncAPIResource):
 
         ``POST /api/vcs/init``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/vcs/init",
-                query={"location": self._location(location), "provider": provider},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/vcs/init",
+                    query={"location": self._location(location), "provider": provider},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def get(
@@ -498,3 +616,37 @@ class AsyncVcsResource(AsyncAPIResource):
                 response_type="VcsDiffResponse",
             ),
         )
+
+
+class AsyncVcsResourceWithRawResponse:
+    """``client.vcs.with_raw_response``."""
+
+    def __init__(self, resource: AsyncVcsResource) -> None:
+        self._resource = resource
+        self.init = async_to_raw_response_wrapper(resource.init)
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.base = async_to_raw_response_wrapper(resource.base)
+        self.status = async_to_raw_response_wrapper(resource.status)
+        self.diff = async_to_raw_response_wrapper(resource.diff)
+
+    @cached_property
+    def branch(self) -> AsyncVcsBranchResourceWithRawResponse:
+        """``client.vcs.branch.with_raw_response``."""
+        return AsyncVcsBranchResourceWithRawResponse(self._resource.branch)
+
+
+class AsyncVcsResourceWithStreamingResponse:
+    """``client.vcs.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncVcsResource) -> None:
+        self._resource = resource
+        self.init = async_to_streamed_response_wrapper(resource.init)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.base = async_to_streamed_response_wrapper(resource.base)
+        self.status = async_to_streamed_response_wrapper(resource.status)
+        self.diff = async_to_streamed_response_wrapper(resource.diff)
+
+    @cached_property
+    def branch(self) -> AsyncVcsBranchResourceWithStreamingResponse:
+        """``client.vcs.branch.with_streaming_response``."""
+        return AsyncVcsBranchResourceWithStreamingResponse(self._resource.branch)

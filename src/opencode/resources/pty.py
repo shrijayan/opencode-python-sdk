@@ -13,6 +13,12 @@ from .._base_client import RequestOptions
 from .._pty import AsyncPtyAttachMixin, PtyAttachMixin
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -32,6 +38,16 @@ __all__ = ["PtyResource", "AsyncPtyResource"]
 
 class PtyConnectResource(SyncAPIResource):
     """Operations under ``client.pty.connect`` (OpenCode ``pty.connect``)."""
+
+    @cached_property
+    def with_raw_response(self) -> PtyConnectResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return PtyConnectResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> PtyConnectResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return PtyConnectResourceWithStreamingResponse(self)
 
     def token(
         self,
@@ -75,6 +91,22 @@ class PtyConnectResource(SyncAPIResource):
         )
 
 
+class PtyConnectResourceWithRawResponse:
+    """``client.pty.connect.with_raw_response``."""
+
+    def __init__(self, resource: PtyConnectResource) -> None:
+        self._resource = resource
+        self.token = to_raw_response_wrapper(resource.token)
+
+
+class PtyConnectResourceWithStreamingResponse:
+    """``client.pty.connect.with_streaming_response``."""
+
+    def __init__(self, resource: PtyConnectResource) -> None:
+        self._resource = resource
+        self.token = to_streamed_response_wrapper(resource.token)
+
+
 class PtyResource(PtyAttachMixin):
     """Operations under ``client.pty`` (OpenCode ``pty``)."""
 
@@ -82,6 +114,16 @@ class PtyResource(PtyAttachMixin):
     def connect(self) -> PtyConnectResource:
         """Operations under ``client.pty.connect``."""
         return PtyConnectResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> PtyResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return PtyResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> PtyResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return PtyResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -262,22 +304,69 @@ class PtyResource(PtyAttachMixin):
 
         ``DELETE /api/pty/:ptyID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class PtyResourceWithRawResponse:
+    """``client.pty.with_raw_response``."""
+
+    def __init__(self, resource: PtyResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.create = to_raw_response_wrapper(resource.create)
+        self.get = to_raw_response_wrapper(resource.get)
+        self.update = to_raw_response_wrapper(resource.update)
+        self.remove = to_raw_response_wrapper(resource.remove)
+
+    @cached_property
+    def connect(self) -> PtyConnectResourceWithRawResponse:
+        """``client.pty.connect.with_raw_response``."""
+        return PtyConnectResourceWithRawResponse(self._resource.connect)
+
+
+class PtyResourceWithStreamingResponse:
+    """``client.pty.with_streaming_response``."""
+
+    def __init__(self, resource: PtyResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.update = to_streamed_response_wrapper(resource.update)
+        self.remove = to_streamed_response_wrapper(resource.remove)
+
+    @cached_property
+    def connect(self) -> PtyConnectResourceWithStreamingResponse:
+        """``client.pty.connect.with_streaming_response``."""
+        return PtyConnectResourceWithStreamingResponse(self._resource.connect)
 
 
 class AsyncPtyConnectResource(AsyncAPIResource):
     """Operations under ``client.pty.connect`` (OpenCode ``pty.connect``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncPtyConnectResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncPtyConnectResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncPtyConnectResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncPtyConnectResourceWithStreamingResponse(self)
 
     async def token(
         self,
@@ -321,6 +410,22 @@ class AsyncPtyConnectResource(AsyncAPIResource):
         )
 
 
+class AsyncPtyConnectResourceWithRawResponse:
+    """``client.pty.connect.with_raw_response``."""
+
+    def __init__(self, resource: AsyncPtyConnectResource) -> None:
+        self._resource = resource
+        self.token = async_to_raw_response_wrapper(resource.token)
+
+
+class AsyncPtyConnectResourceWithStreamingResponse:
+    """``client.pty.connect.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncPtyConnectResource) -> None:
+        self._resource = resource
+        self.token = async_to_streamed_response_wrapper(resource.token)
+
+
 class AsyncPtyResource(AsyncPtyAttachMixin):
     """Operations under ``client.pty`` (OpenCode ``pty``)."""
 
@@ -328,6 +433,16 @@ class AsyncPtyResource(AsyncPtyAttachMixin):
     def connect(self) -> AsyncPtyConnectResource:
         """Operations under ``client.pty.connect``."""
         return AsyncPtyConnectResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncPtyResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncPtyResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncPtyResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncPtyResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -508,15 +623,52 @@ class AsyncPtyResource(AsyncPtyAttachMixin):
 
         ``DELETE /api/pty/:ptyID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncPtyResourceWithRawResponse:
+    """``client.pty.with_raw_response``."""
+
+    def __init__(self, resource: AsyncPtyResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.update = async_to_raw_response_wrapper(resource.update)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+
+    @cached_property
+    def connect(self) -> AsyncPtyConnectResourceWithRawResponse:
+        """``client.pty.connect.with_raw_response``."""
+        return AsyncPtyConnectResourceWithRawResponse(self._resource.connect)
+
+
+class AsyncPtyResourceWithStreamingResponse:
+    """``client.pty.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncPtyResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.update = async_to_streamed_response_wrapper(resource.update)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)
+
+    @cached_property
+    def connect(self) -> AsyncPtyConnectResourceWithStreamingResponse:
+        """``client.pty.connect.with_streaming_response``."""
+        return AsyncPtyConnectResourceWithStreamingResponse(self._resource.connect)

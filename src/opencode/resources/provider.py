@@ -5,11 +5,18 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -25,6 +32,16 @@ __all__ = ["ProviderResource", "AsyncProviderResource"]
 
 class ProviderResource(SyncAPIResource):
     """Operations under ``client.provider`` (OpenCode ``provider``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ProviderResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ProviderResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ProviderResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ProviderResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -103,8 +120,36 @@ class ProviderResource(SyncAPIResource):
         )
 
 
+class ProviderResourceWithRawResponse:
+    """``client.provider.with_raw_response``."""
+
+    def __init__(self, resource: ProviderResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.get = to_raw_response_wrapper(resource.get)
+
+
+class ProviderResourceWithStreamingResponse:
+    """``client.provider.with_streaming_response``."""
+
+    def __init__(self, resource: ProviderResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.get = to_streamed_response_wrapper(resource.get)
+
+
 class AsyncProviderResource(AsyncAPIResource):
     """Operations under ``client.provider`` (OpenCode ``provider``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncProviderResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncProviderResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncProviderResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncProviderResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -181,3 +226,21 @@ class AsyncProviderResource(AsyncAPIResource):
                 response_type="ProviderGetResponse",
             ),
         )
+
+
+class AsyncProviderResourceWithRawResponse:
+    """``client.provider.with_raw_response``."""
+
+    def __init__(self, resource: AsyncProviderResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.get = async_to_raw_response_wrapper(resource.get)
+
+
+class AsyncProviderResourceWithStreamingResponse:
+    """``client.provider.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncProviderResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.get = async_to_streamed_response_wrapper(resource.get)
