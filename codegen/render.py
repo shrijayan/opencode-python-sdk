@@ -391,6 +391,7 @@ def _resource_classes(resource: Resource, errors: dict[str, dict[str, Any]], *, 
         lines += [
             "    @cached_property",
             f"    def {name}(self) -> {prefix}{child.class_name}Resource:",
+            f'        """Operations under ``client.{_attr_path(child)}``."""',
             f"        return {prefix}{child.class_name}Resource(self._client)\n",
         ]
     for operation in resource.operations:

@@ -16,6 +16,8 @@
 
 ::: opencode.NOT_GIVEN
 
+::: opencode.NotGiven
+
 ::: opencode.BaseModel
     options:
       members: [to_dict, to_json]

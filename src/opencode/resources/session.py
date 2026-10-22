@@ -405,6 +405,7 @@ class SessionInstructionsResource(SyncAPIResource):
 
     @cached_property
     def entry(self) -> SessionInstructionsEntryResource:
+        """Operations under ``client.session.instructions.entry``."""
         return SessionInstructionsEntryResource(self._client)
 
 
@@ -655,22 +656,27 @@ class SessionResource(SyncAPIResource):
 
     @cached_property
     def revert(self) -> SessionRevertResource:
+        """Operations under ``client.session.revert``."""
         return SessionRevertResource(self._client)
 
     @cached_property
     def inbox(self) -> SessionInboxResource:
+        """Operations under ``client.session.inbox``."""
         return SessionInboxResource(self._client)
 
     @cached_property
     def instructions(self) -> SessionInstructionsResource:
+        """Operations under ``client.session.instructions``."""
         return SessionInstructionsResource(self._client)
 
     @cached_property
     def message(self) -> SessionMessageResource:
+        """Operations under ``client.session.message``."""
         return SessionMessageResource(self._client)
 
     @cached_property
     def form(self) -> SessionFormResource:
+        """Operations under ``client.session.form``."""
         return SessionFormResource(self._client)
 
     def list(
@@ -2151,6 +2157,7 @@ class AsyncSessionInstructionsResource(AsyncAPIResource):
 
     @cached_property
     def entry(self) -> AsyncSessionInstructionsEntryResource:
+        """Operations under ``client.session.instructions.entry``."""
         return AsyncSessionInstructionsEntryResource(self._client)
 
 
@@ -2401,22 +2408,27 @@ class AsyncSessionResource(AsyncAPIResource):
 
     @cached_property
     def revert(self) -> AsyncSessionRevertResource:
+        """Operations under ``client.session.revert``."""
         return AsyncSessionRevertResource(self._client)
 
     @cached_property
     def inbox(self) -> AsyncSessionInboxResource:
+        """Operations under ``client.session.inbox``."""
         return AsyncSessionInboxResource(self._client)
 
     @cached_property
     def instructions(self) -> AsyncSessionInstructionsResource:
+        """Operations under ``client.session.instructions``."""
         return AsyncSessionInstructionsResource(self._client)
 
     @cached_property
     def message(self) -> AsyncSessionMessageResource:
+        """Operations under ``client.session.message``."""
         return AsyncSessionMessageResource(self._client)
 
     @cached_property
     def form(self) -> AsyncSessionFormResource:
+        """Operations under ``client.session.form``."""
         return AsyncSessionFormResource(self._client)
 
     def list(

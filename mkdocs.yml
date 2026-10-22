@@ -133,6 +133,7 @@ nav:
       - Connect to a server: getting-started/connect.md
       - Run a server from Python: getting-started/server.md
   - Guides:
+      - guides/index.md
       - Sessions and prompts: guides/sessions.md
       - Async: guides/async.md
       - Models and unions: guides/models.md

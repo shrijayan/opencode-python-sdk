@@ -191,10 +191,12 @@ class PermissionResource(SyncAPIResource):
 
     @cached_property
     def request_(self) -> PermissionRequestResource:
+        """Operations under ``client.permission.request``."""
         return PermissionRequestResource(self._client)
 
     @cached_property
     def saved(self) -> PermissionSavedResource:
+        """Operations under ``client.permission.saved``."""
         return PermissionSavedResource(self._client)
 
     def create(
@@ -524,10 +526,12 @@ class AsyncPermissionResource(AsyncAPIResource):
 
     @cached_property
     def request_(self) -> AsyncPermissionRequestResource:
+        """Operations under ``client.permission.request``."""
         return AsyncPermissionRequestResource(self._client)
 
     @cached_property
     def saved(self) -> AsyncPermissionSavedResource:
+        """Operations under ``client.permission.saved``."""
         return AsyncPermissionSavedResource(self._client)
 
     async def create(

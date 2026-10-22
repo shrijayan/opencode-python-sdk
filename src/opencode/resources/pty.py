@@ -77,6 +77,7 @@ class PtyResource(SyncAPIResource):
 
     @cached_property
     def connect(self) -> PtyConnectResource:
+        """Operations under ``client.pty.connect``."""
         return PtyConnectResource(self._client)
 
     def list(
@@ -322,6 +323,7 @@ class AsyncPtyResource(AsyncAPIResource):
 
     @cached_property
     def connect(self) -> AsyncPtyConnectResource:
+        """Operations under ``client.pty.connect``."""
         return AsyncPtyConnectResource(self._client)
 
     async def list(

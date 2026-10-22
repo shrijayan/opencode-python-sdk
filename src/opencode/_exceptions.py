@@ -147,47 +147,69 @@ class APIStatusError(APIError):
 
 
 class BadRequestError(APIStatusError):
+    """The server rejected the request as malformed (400)."""
+
     status = 400
 
 
 class AuthenticationError(APIStatusError):
+    """The password was missing or wrong (401)."""
+
     status = 401
 
 
 class PermissionDeniedError(APIStatusError):
+    """The request is not allowed (403)."""
+
     status = 403
 
 
 class NotFoundError(APIStatusError):
+    """The requested resource does not exist (404)."""
+
     status = 404
 
 
 class ConflictError(APIStatusError):
+    """The request conflicts with the current state, for example a busy session (409)."""
+
     status = 409
     tag = "ConflictError"
 
 
 class ContentTooLargeError(APIStatusError):
+    """The request body is too large (413)."""
+
     status = 413
 
 
 class UnprocessableEntityError(APIStatusError):
+    """The request was well formed but could not be processed (422)."""
+
     status = 422
 
 
 class RateLimitError(APIStatusError):
+    """Too many requests (429). Retried automatically, honoring ``Retry-After``."""
+
     status = 429
 
 
 class InternalServerError(APIStatusError):
+    """The server failed (500, and the base class for every 5xx)."""
+
     status = 500
 
 
 class NotImplementedServerError(InternalServerError):
+    """The server does not implement this endpoint (501)."""
+
     status = 501
 
 
 class ServiceUnavailableError(InternalServerError):
+    """The server is temporarily unavailable (503). Retried automatically."""
+
     status = 503
     tag = "ServiceUnavailableError"
 

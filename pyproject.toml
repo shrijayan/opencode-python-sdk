@@ -97,6 +97,7 @@ src = ["src", "tests", "codegen"]
 select = [
   "B",   # bugbear
   "C4",  # comprehensions
+  "D1",  # missing docstrings (public modules only; tests/test_docs_coverage.py covers the private runtime modules)
   "E",   # pycodestyle errors
   "F",   # pyflakes
   "FA",  # future annotations
@@ -111,6 +112,8 @@ select = [
   "W",   # pycodestyle warnings
 ]
 ignore = [
+  "D105",   # magic methods
+  "D107",   # __init__: arguments are documented on the class
   "E501",   # line length is handled by the formatter
   "RUF022", # __all__ keeps a readable, grouped order
 ]
@@ -120,10 +123,12 @@ ignore = [
 "src/opencode/types/**" = ["E741", "TC"]
 "src/opencode/resources/**" = ["TC"]
 "src/opencode/_errors.py" = ["TC"]
-"codegen/**" = ["T20"]
-"scripts/**" = ["T20"]
-"examples/**" = ["T20"]
-"tests/**" = ["E501", "TC"]
+# D1 applies to the published package only.
+"codegen/**" = ["T20", "D1"]
+"scripts/**" = ["T20", "D1"]
+"examples/**" = ["T20", "D1"]
+"tests/**" = ["E501", "TC", "D1"]
+"docs/**" = ["D1"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["opencode", "codegen"]
