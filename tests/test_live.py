@@ -9,9 +9,19 @@ import shutil
 from collections.abc import Iterator
 from pathlib import Path
 
+import anyio
 import pytest
 
-from opencode import AsyncOpencodeServer, Opencode, OpencodeServer, SessionNotFoundError
+from opencode import (
+    AsyncOpencodeServer,
+    Opencode,
+    OpencodeServer,
+    RpcCallError,
+    RpcDefinition,
+    SessionNotFoundError,
+    rpc_method,
+    session_id_of,
+)
 from opencode.types import ServerConnectedEvent
 
 pytestmark = [
@@ -103,3 +113,41 @@ def test_pty_attach_echo(client: Opencode) -> None:
                 output += chunk
     finally:
         client.pty.remove(pty.id)
+
+
+def test_shared_events_multiplex_and_filter_by_session(client: Opencode) -> None:
+    beats: list[None] = []
+    with client.events.subscribe(on_activity=lambda: beats.append(None)) as everything:
+        assert isinstance(everything.get(10), ServerConnectedEvent)
+        session = client.session.create(title="events")
+        with client.events.for_session(session.id) as only_session:
+            client.session.prompt(session.id, text="hello", resume=False)
+            event = only_session.get(10)
+        assert session_id_of(event) == session.id
+        assert client.events._current is not None
+        client.session.remove(session.id)
+    assert beats
+    assert client.events._current is None
+
+
+class Missing(RpcDefinition, id="opencode-python-sdk-missing"):
+    ping = rpc_method(None, str)
+
+
+def test_typed_rpc_maps_errors(client: Opencode) -> None:
+    with pytest.raises(RpcCallError) as caught:
+        client.rpc(Missing).call(Missing.ping)
+    assert caught.value.rpc_id == "opencode-python-sdk-missing"
+    assert caught.value.method == "ping"
+
+
+@pytest.mark.anyio
+async def test_async_shared_events(tmp_path: Path) -> None:
+    running = AsyncOpencodeServer(cwd=tmp_path, isolated=True, env=_sandbox_env(tmp_path))
+    async with running, running.client() as client:
+        async with client.events.subscribe() as first, client.events.subscribe() as second:
+            with anyio.fail_after(10):
+                assert isinstance(await first.get(), ServerConnectedEvent)
+                assert isinstance(await second.get(), ServerConnectedEvent)
+        with pytest.raises(RpcCallError):
+            await client.rpc(Missing).call(Missing.ping)

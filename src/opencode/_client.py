@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING
 
 from typing_extensions import Self
 
 from ._base_client import AsyncAPIClient, SyncAPIClient
 from ._constants import DEFAULT_MAX_RETRIES, DEFAULT_TIMEOUT, DEFAULT_USERNAME
+from ._events import AsyncEventHub, EventHub
+from ._rpc import AsyncTypedRpcResource, TypedRpcResource
 from ._types import NOT_GIVEN, NotGiven, Timeout
 from .resources import AsyncResources, SyncResources
 
@@ -69,6 +72,16 @@ class Opencode(SyncAPIClient, SyncResources):
             default_query=default_query,
             http_client=http_client,
         )
+
+    @cached_property
+    def events(self) -> EventHub:
+        """The shared event stream: one connection for every subscriber. See :class:`opencode.EventHub`."""
+        return EventHub(self)
+
+    @cached_property
+    def rpc(self) -> TypedRpcResource:
+        """Plugin RPC calls: ``client.rpc.call(...)``, or ``client.rpc(Definition)`` for typed access."""
+        return TypedRpcResource(self)
 
     def with_options(
         self,
@@ -137,6 +150,16 @@ class AsyncOpencode(AsyncAPIClient, AsyncResources):
             default_query=default_query,
             http_client=http_client,
         )
+
+    @cached_property
+    def events(self) -> AsyncEventHub:
+        """The shared event stream: one connection for every subscriber. See :class:`opencode.AsyncEventHub`."""
+        return AsyncEventHub(self)
+
+    @cached_property
+    def rpc(self) -> AsyncTypedRpcResource:
+        """Plugin RPC calls: ``client.rpc.call(...)``, or ``client.rpc(Definition)`` for typed access."""
+        return AsyncTypedRpcResource(self)
 
     def with_options(
         self,

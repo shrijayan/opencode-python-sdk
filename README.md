@@ -169,6 +169,82 @@ Events are typed (`SessionCreatedEvent`, `SessionTextDeltaEvent`, and so on). Ev
 not know arrive as `UnknownEvent` with all their fields kept. Streams apply only the connect timeout by default, since
 they stay open between events.
 
+### Shared event stream
+
+`client.events` shares one connection among every subscriber, like `client.event` in the TypeScript client. The
+connection opens with the first subscriber and closes when the last one leaves. Each subscriber has its own queue of
+up to 4096 events; one that falls further behind fails with `EventOverflowError` without affecting the others. The
+latest `server.connected` event is replayed to subscribers that join later.
+
+```python
+from opencode.types import SessionIdleEvent
+
+with client.events.of_type(SessionIdleEvent).for_session(session.id) as idle:
+    client.session.prompt(session.id, text="Hello")
+    event = idle.get(timeout=300)  # typed as SessionIdleEvent
+```
+
+- Filters chain: `of_type(*classes)` narrows the yielded type, `for_session(id)` keeps one session's events, and
+  `where(predicate)` takes any test. Entering the `with` block joins the stream, so nothing published after that is
+  missed.
+- `subscribe(on_activity=callback)` calls `callback` for every chunk received, keepalive comments included, as a
+  liveness signal.
+- `close()` (or leaving the `with` block) ends the subscription, also from another thread. In async code, cancel a wait
+  with `anyio.fail_after`, `asyncio.timeout` or a trio cancel scope; the subscription stays usable.
+- Reconnection is opt-in: `EventHub(client, reconnect=True)` (or `AsyncEventHub`, or a `Reconnect(...)` policy) reopens
+  the connection with exponential backoff after connection errors, 5xx and 429. Subscribers see `server.connected`
+  once. **The stream is volatile**: events published while disconnected are lost, so re-read state through the API
+  after a reconnect when it matters.
+
+The async hub works the same way under asyncio and trio:
+
+```python
+async with client.events.for_session(session.id) as events:
+    async for event in events:
+        print(event.type)
+```
+
+`client.event.subscribe()` still opens a dedicated connection.
+
+### Plugin RPC
+
+Declare a plugin RPC once as a class, then call it with typed inputs and outputs:
+
+```python
+from pydantic import BaseModel
+from opencode import RpcCallError, RpcDefinition, rpc_event, rpc_method
+
+
+class AddInput(BaseModel):
+    amount: int
+
+
+class Total(BaseModel):
+    total: int
+
+
+class Counter(RpcDefinition, id="counter"):
+    add = rpc_method(AddInput, Total)
+    reset = rpc_method(None, Total)
+    changed = rpc_event(Total)
+
+
+counter = client.rpc(Counter)
+try:
+    print(counter.call(Counter.add, AddInput(amount=2)).total)
+except RpcCallError as error:
+    print(error.type, error.message, error.data)
+
+with counter.subscribe(Counter.changed) as changes:  # only rpc.counter.changed, with validated data
+    for change in changes:
+        print(change.data.total)
+```
+
+Any type pydantic validates works for inputs, outputs and event data. `rpc_method(..., errors={"not_found": Model})`
+validates the `data` of declared errors. Failures raise `RpcCallError`; crashes and outputs that do not match the
+declared type raise `RpcCallInternalError`. `counter.events()` yields every raw event of the RPC. The untyped
+`client.rpc.call(rpc_id, method, input=...)` is still available.
+
 ## Terminals
 
 `client.pty.attach()` opens an interactive connection to a PTY over a WebSocket. It needs the `pty` extra:
