@@ -5,12 +5,19 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 from .._base_client import RequestOptions
 from .._pagination import AsyncPaginator, SyncCursorPage
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, OpenEnum, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +31,16 @@ __all__ = ["MessageResource", "AsyncMessageResource"]
 
 class MessageResource(SyncAPIResource):
     """Operations under ``client.message`` (OpenCode ``message``)."""
+
+    @cached_property
+    def with_raw_response(self) -> MessageResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return MessageResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> MessageResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return MessageResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -87,8 +104,34 @@ class MessageResource(SyncAPIResource):
         )
 
 
+class MessageResourceWithRawResponse:
+    """``client.message.with_raw_response``."""
+
+    def __init__(self, resource: MessageResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+
+
+class MessageResourceWithStreamingResponse:
+    """``client.message.with_streaming_response``."""
+
+    def __init__(self, resource: MessageResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+
+
 class AsyncMessageResource(AsyncAPIResource):
     """Operations under ``client.message`` (OpenCode ``message``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncMessageResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncMessageResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncMessageResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncMessageResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -150,3 +193,19 @@ class AsyncMessageResource(AsyncAPIResource):
             ),
             response_type="SessionMessagesResponse",
         )
+
+
+class AsyncMessageResourceWithRawResponse:
+    """``client.message.with_raw_response``."""
+
+    def __init__(self, resource: AsyncMessageResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+
+
+class AsyncMessageResourceWithStreamingResponse:
+    """``client.message.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncMessageResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)

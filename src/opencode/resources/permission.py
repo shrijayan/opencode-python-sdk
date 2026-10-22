@@ -13,6 +13,12 @@ from typing import TYPE_CHECKING, Any, cast
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -36,6 +42,16 @@ __all__ = ["PermissionResource", "AsyncPermissionResource"]
 
 class PermissionRequestResource(SyncAPIResource):
     """Operations under ``client.permission.request`` (OpenCode ``permission.request``)."""
+
+    @cached_property
+    def with_raw_response(self) -> PermissionRequestResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return PermissionRequestResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> PermissionRequestResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return PermissionRequestResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -74,8 +90,34 @@ class PermissionRequestResource(SyncAPIResource):
         )
 
 
+class PermissionRequestResourceWithRawResponse:
+    """``client.permission.request.with_raw_response``."""
+
+    def __init__(self, resource: PermissionRequestResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+
+
+class PermissionRequestResourceWithStreamingResponse:
+    """``client.permission.request.with_streaming_response``."""
+
+    def __init__(self, resource: PermissionRequestResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+
+
 class PermissionSavedResource(SyncAPIResource):
     """Operations under ``client.permission.saved`` (OpenCode ``permission.saved``)."""
+
+    @cached_property
+    def with_raw_response(self) -> PermissionSavedResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return PermissionSavedResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> PermissionSavedResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return PermissionSavedResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -175,17 +217,40 @@ class PermissionSavedResource(SyncAPIResource):
 
         ``DELETE /api/permission/saved/:id``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/permission/saved/{encode_path_segment(id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/permission/saved/{encode_path_segment(id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class PermissionSavedResourceWithRawResponse:
+    """``client.permission.saved.with_raw_response``."""
+
+    def __init__(self, resource: PermissionSavedResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.update = to_raw_response_wrapper(resource.update)
+        self.remove = to_raw_response_wrapper(resource.remove)
+
+
+class PermissionSavedResourceWithStreamingResponse:
+    """``client.permission.saved.with_streaming_response``."""
+
+    def __init__(self, resource: PermissionSavedResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.update = to_streamed_response_wrapper(resource.update)
+        self.remove = to_streamed_response_wrapper(resource.remove)
 
 
 class PermissionResource(SyncAPIResource):
@@ -200,6 +265,16 @@ class PermissionResource(SyncAPIResource):
     def saved(self) -> PermissionSavedResource:
         """Operations under ``client.permission.saved``."""
         return PermissionSavedResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> PermissionResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return PermissionResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> PermissionResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return PermissionResourceWithStreamingResponse(self)
 
     def create(
         self,
@@ -355,22 +430,77 @@ class PermissionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/permission/:requestID/reply``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}/reply",
-                body={"decision": decision, "message": message},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}/reply",
+                    body={"decision": decision, "message": message},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class PermissionResourceWithRawResponse:
+    """``client.permission.with_raw_response``."""
+
+    def __init__(self, resource: PermissionResource) -> None:
+        self._resource = resource
+        self.create = to_raw_response_wrapper(resource.create)
+        self.list = to_raw_response_wrapper(resource.list)
+        self.get = to_raw_response_wrapper(resource.get)
+        self.reply = to_raw_response_wrapper(resource.reply)
+
+    @cached_property
+    def request_(self) -> PermissionRequestResourceWithRawResponse:
+        """``client.permission.request.with_raw_response``."""
+        return PermissionRequestResourceWithRawResponse(self._resource.request_)
+
+    @cached_property
+    def saved(self) -> PermissionSavedResourceWithRawResponse:
+        """``client.permission.saved.with_raw_response``."""
+        return PermissionSavedResourceWithRawResponse(self._resource.saved)
+
+
+class PermissionResourceWithStreamingResponse:
+    """``client.permission.with_streaming_response``."""
+
+    def __init__(self, resource: PermissionResource) -> None:
+        self._resource = resource
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.reply = to_streamed_response_wrapper(resource.reply)
+
+    @cached_property
+    def request_(self) -> PermissionRequestResourceWithStreamingResponse:
+        """``client.permission.request.with_streaming_response``."""
+        return PermissionRequestResourceWithStreamingResponse(self._resource.request_)
+
+    @cached_property
+    def saved(self) -> PermissionSavedResourceWithStreamingResponse:
+        """``client.permission.saved.with_streaming_response``."""
+        return PermissionSavedResourceWithStreamingResponse(self._resource.saved)
 
 
 class AsyncPermissionRequestResource(AsyncAPIResource):
     """Operations under ``client.permission.request`` (OpenCode ``permission.request``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncPermissionRequestResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncPermissionRequestResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncPermissionRequestResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncPermissionRequestResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -409,8 +539,34 @@ class AsyncPermissionRequestResource(AsyncAPIResource):
         )
 
 
+class AsyncPermissionRequestResourceWithRawResponse:
+    """``client.permission.request.with_raw_response``."""
+
+    def __init__(self, resource: AsyncPermissionRequestResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+
+
+class AsyncPermissionRequestResourceWithStreamingResponse:
+    """``client.permission.request.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncPermissionRequestResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+
+
 class AsyncPermissionSavedResource(AsyncAPIResource):
     """Operations under ``client.permission.saved`` (OpenCode ``permission.saved``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncPermissionSavedResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncPermissionSavedResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncPermissionSavedResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncPermissionSavedResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -510,17 +666,40 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
 
         ``DELETE /api/permission/saved/:id``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/permission/saved/{encode_path_segment(id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/permission/saved/{encode_path_segment(id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncPermissionSavedResourceWithRawResponse:
+    """``client.permission.saved.with_raw_response``."""
+
+    def __init__(self, resource: AsyncPermissionSavedResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.update = async_to_raw_response_wrapper(resource.update)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+
+
+class AsyncPermissionSavedResourceWithStreamingResponse:
+    """``client.permission.saved.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncPermissionSavedResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.update = async_to_streamed_response_wrapper(resource.update)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)
 
 
 class AsyncPermissionResource(AsyncAPIResource):
@@ -535,6 +714,16 @@ class AsyncPermissionResource(AsyncAPIResource):
     def saved(self) -> AsyncPermissionSavedResource:
         """Operations under ``client.permission.saved``."""
         return AsyncPermissionSavedResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncPermissionResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncPermissionResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncPermissionResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncPermissionResourceWithStreamingResponse(self)
 
     async def create(
         self,
@@ -690,15 +879,60 @@ class AsyncPermissionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/permission/:requestID/reply``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}/reply",
-                body={"decision": decision, "message": message},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}/reply",
+                    body={"decision": decision, "message": message},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncPermissionResourceWithRawResponse:
+    """``client.permission.with_raw_response``."""
+
+    def __init__(self, resource: AsyncPermissionResource) -> None:
+        self._resource = resource
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.reply = async_to_raw_response_wrapper(resource.reply)
+
+    @cached_property
+    def request_(self) -> AsyncPermissionRequestResourceWithRawResponse:
+        """``client.permission.request.with_raw_response``."""
+        return AsyncPermissionRequestResourceWithRawResponse(self._resource.request_)
+
+    @cached_property
+    def saved(self) -> AsyncPermissionSavedResourceWithRawResponse:
+        """``client.permission.saved.with_raw_response``."""
+        return AsyncPermissionSavedResourceWithRawResponse(self._resource.saved)
+
+
+class AsyncPermissionResourceWithStreamingResponse:
+    """``client.permission.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncPermissionResource) -> None:
+        self._resource = resource
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.reply = async_to_streamed_response_wrapper(resource.reply)
+
+    @cached_property
+    def request_(self) -> AsyncPermissionRequestResourceWithStreamingResponse:
+        """``client.permission.request.with_streaming_response``."""
+        return AsyncPermissionRequestResourceWithStreamingResponse(self._resource.request_)
+
+    @cached_property
+    def saved(self) -> AsyncPermissionSavedResourceWithStreamingResponse:
+        """``client.permission.saved.with_streaming_response``."""
+        return AsyncPermissionSavedResourceWithStreamingResponse(self._resource.saved)

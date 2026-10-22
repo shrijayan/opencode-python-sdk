@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -22,6 +29,16 @@ __all__ = ["LocationResource", "AsyncLocationResource"]
 
 class LocationResource(SyncAPIResource):
     """Operations under ``client.location`` (OpenCode ``location``)."""
+
+    @cached_property
+    def with_raw_response(self) -> LocationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return LocationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> LocationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return LocationResourceWithStreamingResponse(self)
 
     def get(
         self,
@@ -78,21 +95,52 @@ class LocationResource(SyncAPIResource):
 
         ``POST /api/location/reload``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/location/reload",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/location/reload",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class LocationResourceWithRawResponse:
+    """``client.location.with_raw_response``."""
+
+    def __init__(self, resource: LocationResource) -> None:
+        self._resource = resource
+        self.get = to_raw_response_wrapper(resource.get)
+        self.reload = to_raw_response_wrapper(resource.reload)
+
+
+class LocationResourceWithStreamingResponse:
+    """``client.location.with_streaming_response``."""
+
+    def __init__(self, resource: LocationResource) -> None:
+        self._resource = resource
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.reload = to_streamed_response_wrapper(resource.reload)
 
 
 class AsyncLocationResource(AsyncAPIResource):
     """Operations under ``client.location`` (OpenCode ``location``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncLocationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncLocationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncLocationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncLocationResourceWithStreamingResponse(self)
 
     async def get(
         self,
@@ -149,14 +197,35 @@ class AsyncLocationResource(AsyncAPIResource):
 
         ``POST /api/location/reload``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/location/reload",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/location/reload",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncLocationResourceWithRawResponse:
+    """``client.location.with_raw_response``."""
+
+    def __init__(self, resource: AsyncLocationResource) -> None:
+        self._resource = resource
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.reload = async_to_raw_response_wrapper(resource.reload)
+
+
+class AsyncLocationResourceWithStreamingResponse:
+    """``client.location.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncLocationResource) -> None:
+        self._resource = resource
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.reload = async_to_streamed_response_wrapper(resource.reload)

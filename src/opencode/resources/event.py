@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._streaming import AsyncStream, Stream
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
@@ -22,6 +29,16 @@ __all__ = ["EventResource", "AsyncEventResource"]
 
 class EventResource(SyncAPIResource):
     """Operations under ``client.event`` (OpenCode ``event``)."""
+
+    @cached_property
+    def with_raw_response(self) -> EventResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return EventResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> EventResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return EventResourceWithStreamingResponse(self)
 
     def subscribe(
         self,
@@ -54,8 +71,34 @@ class EventResource(SyncAPIResource):
         )
 
 
+class EventResourceWithRawResponse:
+    """``client.event.with_raw_response``."""
+
+    def __init__(self, resource: EventResource) -> None:
+        self._resource = resource
+        self.subscribe = to_raw_response_wrapper(resource.subscribe)
+
+
+class EventResourceWithStreamingResponse:
+    """``client.event.with_streaming_response``."""
+
+    def __init__(self, resource: EventResource) -> None:
+        self._resource = resource
+        self.subscribe = to_streamed_response_wrapper(resource.subscribe)
+
+
 class AsyncEventResource(AsyncAPIResource):
     """Operations under ``client.event`` (OpenCode ``event``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncEventResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncEventResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncEventResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncEventResourceWithStreamingResponse(self)
 
     async def subscribe(
         self,
@@ -86,3 +129,19 @@ class AsyncEventResource(AsyncAPIResource):
             ),
             item_type="Event",
         )
+
+
+class AsyncEventResourceWithRawResponse:
+    """``client.event.with_raw_response``."""
+
+    def __init__(self, resource: AsyncEventResource) -> None:
+        self._resource = resource
+        self.subscribe = async_to_raw_response_wrapper(resource.subscribe)
+
+
+class AsyncEventResourceWithStreamingResponse:
+    """``client.event.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncEventResource) -> None:
+        self._resource = resource
+        self.subscribe = async_to_streamed_response_wrapper(resource.subscribe)

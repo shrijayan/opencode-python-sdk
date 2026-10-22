@@ -453,6 +453,61 @@ Logs go to the `opencode` logger. `logging.getLogger("opencode").setLevel(loggin
 retry; credentials are never logged. Set `OPENCODE_LOG=debug` (or `info`) to have the SDK attach a stderr handler at
 that level on import, without touching your own logging config.
 
+### Accessing raw response data
+
+Prefix any method with `.with_raw_response` to get the HTTP response (headers, status, request) instead of the
+parsed value. `.parse()` returns what the plain call would have returned:
+
+```python
+response = client.session.with_raw_response.get("ses_...")
+print(response.status_code, response.headers.get("content-type"))
+session = response.parse()  # SessionInfo
+```
+
+`.with_raw_response` reads the body before returning. `.with_streaming_response` does not: it is a context manager
+that sends the request on entry and closes the connection on exit, so you can read large bodies incrementally with
+`iter_bytes()`, `iter_text()` or `iter_lines()`, or still call `parse()`:
+
+```python
+with client.file.with_streaming_response.read("big.log") as response:
+    for line in response.iter_lines():
+        ...
+```
+
+Both exist on every resource and sub-resource of both clients (`async with` and `await response.parse()` on
+`AsyncOpencode`). `APIResponse` also has `.http_response`, `.request`, `.text`, `.json()` and `.read()`.
+
+- **List methods** give the response of the first page; `parse()` returns a `SyncCursorPage` / `AsyncCursorPage`
+  that fetches the following pages as usual.
+- **Event streams** are never read eagerly: `parse()` returns the `Stream` / `AsyncStream`, which reads events as
+  you iterate. Close the stream (or the response) when done.
+- Error statuses still raise `APIStatusError` subclasses; the response is on the exception as `error.response`.
+- Hand-written helpers such as `client.session.run()` and `client.pty.attach()` are not wrapped.
+
+### Making custom/undocumented requests
+
+Undocumented parameters go through `extra_headers`, `extra_query` and `extra_body` on every method (see above). For
+an endpoint the client has no method for, `client.get`, `post`, `put`, `patch` and `delete` send a request relative
+to `base_url` with the client's authentication, retries and typed errors, and return the decoded JSON:
+
+```python
+data = client.post("/api/new-endpoint", body={"key": "value"}, query={"directory": "/repo"})
+
+# Validate into a type, e.g. a response wrapped in {"data": ...}:
+from opencode.types import SessionInfo
+
+payload = client.get("/api/session/ses_...", cast_to=dict[str, SessionInfo])
+```
+
+### Determining the installed version
+
+```python
+import opencode
+
+print(opencode.__version__)  # this package
+print(opencode.API_VERSION)  # the OpenCode server version it was generated from
+```
+
 ## Versioning
 
 | `opencode-python-sdk` (this package) | OpenCode server |

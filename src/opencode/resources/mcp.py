@@ -11,6 +11,12 @@ from typing import TYPE_CHECKING, cast
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -26,6 +32,16 @@ __all__ = ["McpResource", "AsyncMcpResource"]
 
 class McpResourceResource(SyncAPIResource):
     """Operations under ``client.mcp.resource`` (OpenCode ``mcp.resource``)."""
+
+    @cached_property
+    def with_raw_response(self) -> McpResourceResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return McpResourceResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> McpResourceResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return McpResourceResourceWithStreamingResponse(self)
 
     def catalog(
         self,
@@ -64,6 +80,22 @@ class McpResourceResource(SyncAPIResource):
         )
 
 
+class McpResourceResourceWithRawResponse:
+    """``client.mcp.resource.with_raw_response``."""
+
+    def __init__(self, resource: McpResourceResource) -> None:
+        self._resource = resource
+        self.catalog = to_raw_response_wrapper(resource.catalog)
+
+
+class McpResourceResourceWithStreamingResponse:
+    """``client.mcp.resource.with_streaming_response``."""
+
+    def __init__(self, resource: McpResourceResource) -> None:
+        self._resource = resource
+        self.catalog = to_streamed_response_wrapper(resource.catalog)
+
+
 class McpResource(SyncAPIResource):
     """Operations under ``client.mcp`` (OpenCode ``mcp``)."""
 
@@ -71,6 +103,16 @@ class McpResource(SyncAPIResource):
     def resource(self) -> McpResourceResource:
         """Operations under ``client.mcp.resource``."""
         return McpResourceResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> McpResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return McpResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> McpResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return McpResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -132,18 +174,21 @@ class McpResource(SyncAPIResource):
 
         ``PUT /api/experimental/mcp/:server``
         """
-        self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._location(location)},
-                body={"config": config},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}",
+                    query={"location": self._location(location)},
+                    body={"config": config},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def remove(
@@ -170,17 +215,20 @@ class McpResource(SyncAPIResource):
 
         ``DELETE /api/experimental/mcp/:server``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def connect(
@@ -207,17 +255,20 @@ class McpResource(SyncAPIResource):
 
         ``POST /api/experimental/mcp/:server/connect``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}/connect",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}/connect",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def disconnect(
@@ -244,22 +295,69 @@ class McpResource(SyncAPIResource):
 
         ``POST /api/experimental/mcp/:server/disconnect``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}/disconnect",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}/disconnect",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class McpResourceWithRawResponse:
+    """``client.mcp.with_raw_response``."""
+
+    def __init__(self, resource: McpResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.add = to_raw_response_wrapper(resource.add)
+        self.remove = to_raw_response_wrapper(resource.remove)
+        self.connect = to_raw_response_wrapper(resource.connect)
+        self.disconnect = to_raw_response_wrapper(resource.disconnect)
+
+    @cached_property
+    def resource(self) -> McpResourceResourceWithRawResponse:
+        """``client.mcp.resource.with_raw_response``."""
+        return McpResourceResourceWithRawResponse(self._resource.resource)
+
+
+class McpResourceWithStreamingResponse:
+    """``client.mcp.with_streaming_response``."""
+
+    def __init__(self, resource: McpResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.add = to_streamed_response_wrapper(resource.add)
+        self.remove = to_streamed_response_wrapper(resource.remove)
+        self.connect = to_streamed_response_wrapper(resource.connect)
+        self.disconnect = to_streamed_response_wrapper(resource.disconnect)
+
+    @cached_property
+    def resource(self) -> McpResourceResourceWithStreamingResponse:
+        """``client.mcp.resource.with_streaming_response``."""
+        return McpResourceResourceWithStreamingResponse(self._resource.resource)
 
 
 class AsyncMcpResourceResource(AsyncAPIResource):
     """Operations under ``client.mcp.resource`` (OpenCode ``mcp.resource``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncMcpResourceResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncMcpResourceResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncMcpResourceResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncMcpResourceResourceWithStreamingResponse(self)
 
     async def catalog(
         self,
@@ -298,6 +396,22 @@ class AsyncMcpResourceResource(AsyncAPIResource):
         )
 
 
+class AsyncMcpResourceResourceWithRawResponse:
+    """``client.mcp.resource.with_raw_response``."""
+
+    def __init__(self, resource: AsyncMcpResourceResource) -> None:
+        self._resource = resource
+        self.catalog = async_to_raw_response_wrapper(resource.catalog)
+
+
+class AsyncMcpResourceResourceWithStreamingResponse:
+    """``client.mcp.resource.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncMcpResourceResource) -> None:
+        self._resource = resource
+        self.catalog = async_to_streamed_response_wrapper(resource.catalog)
+
+
 class AsyncMcpResource(AsyncAPIResource):
     """Operations under ``client.mcp`` (OpenCode ``mcp``)."""
 
@@ -305,6 +419,16 @@ class AsyncMcpResource(AsyncAPIResource):
     def resource(self) -> AsyncMcpResourceResource:
         """Operations under ``client.mcp.resource``."""
         return AsyncMcpResourceResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncMcpResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncMcpResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncMcpResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncMcpResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -366,18 +490,21 @@ class AsyncMcpResource(AsyncAPIResource):
 
         ``PUT /api/experimental/mcp/:server``
         """
-        await self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._location(location)},
-                body={"config": config},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}",
+                    query={"location": self._location(location)},
+                    body={"config": config},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def remove(
@@ -404,17 +531,20 @@ class AsyncMcpResource(AsyncAPIResource):
 
         ``DELETE /api/experimental/mcp/:server``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def connect(
@@ -441,17 +571,20 @@ class AsyncMcpResource(AsyncAPIResource):
 
         ``POST /api/experimental/mcp/:server/connect``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}/connect",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}/connect",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def disconnect(
@@ -478,15 +611,52 @@ class AsyncMcpResource(AsyncAPIResource):
 
         ``POST /api/experimental/mcp/:server/disconnect``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/mcp/{encode_path_segment(server)}/disconnect",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/mcp/{encode_path_segment(server)}/disconnect",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncMcpResourceWithRawResponse:
+    """``client.mcp.with_raw_response``."""
+
+    def __init__(self, resource: AsyncMcpResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.add = async_to_raw_response_wrapper(resource.add)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+        self.connect = async_to_raw_response_wrapper(resource.connect)
+        self.disconnect = async_to_raw_response_wrapper(resource.disconnect)
+
+    @cached_property
+    def resource(self) -> AsyncMcpResourceResourceWithRawResponse:
+        """``client.mcp.resource.with_raw_response``."""
+        return AsyncMcpResourceResourceWithRawResponse(self._resource.resource)
+
+
+class AsyncMcpResourceWithStreamingResponse:
+    """``client.mcp.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncMcpResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.add = async_to_streamed_response_wrapper(resource.add)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)
+        self.connect = async_to_streamed_response_wrapper(resource.connect)
+        self.disconnect = async_to_streamed_response_wrapper(resource.disconnect)
+
+    @cached_property
+    def resource(self) -> AsyncMcpResourceResourceWithStreamingResponse:
+        """``client.mcp.resource.with_streaming_response``."""
+        return AsyncMcpResourceResourceWithStreamingResponse(self._resource.resource)

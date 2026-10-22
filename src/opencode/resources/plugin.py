@@ -6,10 +6,17 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +31,16 @@ __all__ = ["PluginResource", "AsyncPluginResource"]
 
 class PluginResource(SyncAPIResource):
     """Operations under ``client.plugin`` (OpenCode ``plugin``)."""
+
+    @cached_property
+    def with_raw_response(self) -> PluginResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return PluginResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> PluginResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return PluginResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -121,23 +138,56 @@ class PluginResource(SyncAPIResource):
 
         ``POST /api/plugin/update``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/plugin/update",
-                query={"location": self._location(location)},
-                body={"targets": targets},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/plugin/update",
+                    query={"location": self._location(location)},
+                    body={"targets": targets},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class PluginResourceWithRawResponse:
+    """``client.plugin.with_raw_response``."""
+
+    def __init__(self, resource: PluginResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.check = to_raw_response_wrapper(resource.check)
+        self.update = to_raw_response_wrapper(resource.update)
+
+
+class PluginResourceWithStreamingResponse:
+    """``client.plugin.with_streaming_response``."""
+
+    def __init__(self, resource: PluginResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.check = to_streamed_response_wrapper(resource.check)
+        self.update = to_streamed_response_wrapper(resource.update)
 
 
 class AsyncPluginResource(AsyncAPIResource):
     """Operations under ``client.plugin`` (OpenCode ``plugin``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncPluginResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncPluginResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncPluginResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncPluginResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -235,16 +285,39 @@ class AsyncPluginResource(AsyncAPIResource):
 
         ``POST /api/plugin/update``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/plugin/update",
-                query={"location": self._location(location)},
-                body={"targets": targets},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/plugin/update",
+                    query={"location": self._location(location)},
+                    body={"targets": targets},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncPluginResourceWithRawResponse:
+    """``client.plugin.with_raw_response``."""
+
+    def __init__(self, resource: AsyncPluginResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.check = async_to_raw_response_wrapper(resource.check)
+        self.update = async_to_raw_response_wrapper(resource.update)
+
+
+class AsyncPluginResourceWithStreamingResponse:
+    """``client.plugin.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncPluginResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.check = async_to_streamed_response_wrapper(resource.check)
+        self.update = async_to_streamed_response_wrapper(resource.update)

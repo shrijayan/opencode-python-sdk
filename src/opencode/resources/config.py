@@ -6,10 +6,17 @@
 from __future__ import annotations
 
 import builtins
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +31,16 @@ __all__ = ["ConfigResource", "AsyncConfigResource"]
 
 class ConfigResource(SyncAPIResource):
     """Operations under ``client.config`` (OpenCode ``config``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ConfigResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ConfigResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ConfigResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ConfigResourceWithStreamingResponse(self)
 
     def get(
         self,
@@ -117,22 +134,55 @@ class ConfigResource(SyncAPIResource):
 
         ``PATCH /api/experimental/config``
         """
-        self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path="/api/experimental/config",
-                body={"shell": shell},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path="/api/experimental/config",
+                    body={"shell": shell},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class ConfigResourceWithRawResponse:
+    """``client.config.with_raw_response``."""
+
+    def __init__(self, resource: ConfigResource) -> None:
+        self._resource = resource
+        self.get = to_raw_response_wrapper(resource.get)
+        self.shells = to_raw_response_wrapper(resource.shells)
+        self.update = to_raw_response_wrapper(resource.update)
+
+
+class ConfigResourceWithStreamingResponse:
+    """``client.config.with_streaming_response``."""
+
+    def __init__(self, resource: ConfigResource) -> None:
+        self._resource = resource
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.shells = to_streamed_response_wrapper(resource.shells)
+        self.update = to_streamed_response_wrapper(resource.update)
 
 
 class AsyncConfigResource(AsyncAPIResource):
     """Operations under ``client.config`` (OpenCode ``config``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncConfigResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncConfigResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncConfigResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncConfigResourceWithStreamingResponse(self)
 
     async def get(
         self,
@@ -226,15 +276,38 @@ class AsyncConfigResource(AsyncAPIResource):
 
         ``PATCH /api/experimental/config``
         """
-        await self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path="/api/experimental/config",
-                body={"shell": shell},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path="/api/experimental/config",
+                    body={"shell": shell},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncConfigResourceWithRawResponse:
+    """``client.config.with_raw_response``."""
+
+    def __init__(self, resource: AsyncConfigResource) -> None:
+        self._resource = resource
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.shells = async_to_raw_response_wrapper(resource.shells)
+        self.update = async_to_raw_response_wrapper(resource.update)
+
+
+class AsyncConfigResourceWithStreamingResponse:
+    """``client.config.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncConfigResource) -> None:
+        self._resource = resource
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.shells = async_to_streamed_response_wrapper(resource.shells)
+        self.update = async_to_streamed_response_wrapper(resource.update)

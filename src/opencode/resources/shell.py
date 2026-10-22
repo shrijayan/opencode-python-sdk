@@ -6,11 +6,18 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from functools import cached_property
 from typing import TYPE_CHECKING, Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -28,6 +35,16 @@ __all__ = ["ShellResource", "AsyncShellResource"]
 
 class ShellResource(SyncAPIResource):
     """Operations under ``client.shell`` (OpenCode ``shell``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ShellResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ShellResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ShellResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ShellResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -205,22 +222,59 @@ class ShellResource(SyncAPIResource):
 
         ``DELETE /api/shell/:id``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/shell/{encode_path_segment(id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/shell/{encode_path_segment(id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class ShellResourceWithRawResponse:
+    """``client.shell.with_raw_response``."""
+
+    def __init__(self, resource: ShellResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.create = to_raw_response_wrapper(resource.create)
+        self.get = to_raw_response_wrapper(resource.get)
+        self.output = to_raw_response_wrapper(resource.output)
+        self.remove = to_raw_response_wrapper(resource.remove)
+
+
+class ShellResourceWithStreamingResponse:
+    """``client.shell.with_streaming_response``."""
+
+    def __init__(self, resource: ShellResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.get = to_streamed_response_wrapper(resource.get)
+        self.output = to_streamed_response_wrapper(resource.output)
+        self.remove = to_streamed_response_wrapper(resource.remove)
 
 
 class AsyncShellResource(AsyncAPIResource):
     """Operations under ``client.shell`` (OpenCode ``shell``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncShellResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncShellResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncShellResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncShellResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -398,15 +452,42 @@ class AsyncShellResource(AsyncAPIResource):
 
         ``DELETE /api/shell/:id``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/shell/{encode_path_segment(id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/shell/{encode_path_segment(id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncShellResourceWithRawResponse:
+    """``client.shell.with_raw_response``."""
+
+    def __init__(self, resource: AsyncShellResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.get = async_to_raw_response_wrapper(resource.get)
+        self.output = async_to_raw_response_wrapper(resource.output)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+
+
+class AsyncShellResourceWithStreamingResponse:
+    """``client.shell.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncShellResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+        self.output = async_to_streamed_response_wrapper(resource.output)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)

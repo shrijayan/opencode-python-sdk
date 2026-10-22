@@ -5,11 +5,18 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +31,16 @@ __all__ = ["ServerResource", "AsyncServerResource"]
 
 class ServerResource(SyncAPIResource):
     """Operations under ``client.server`` (OpenCode ``server``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ServerResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ServerResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ServerResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ServerResourceWithStreamingResponse(self)
 
     def info(
         self,
@@ -126,8 +143,38 @@ class ServerResource(SyncAPIResource):
         )
 
 
+class ServerResourceWithRawResponse:
+    """``client.server.with_raw_response``."""
+
+    def __init__(self, resource: ServerResource) -> None:
+        self._resource = resource
+        self.info = to_raw_response_wrapper(resource.info)
+        self.pair = to_raw_response_wrapper(resource.pair)
+        self.connect = to_raw_response_wrapper(resource.connect)
+
+
+class ServerResourceWithStreamingResponse:
+    """``client.server.with_streaming_response``."""
+
+    def __init__(self, resource: ServerResource) -> None:
+        self._resource = resource
+        self.info = to_streamed_response_wrapper(resource.info)
+        self.pair = to_streamed_response_wrapper(resource.pair)
+        self.connect = to_streamed_response_wrapper(resource.connect)
+
+
 class AsyncServerResource(AsyncAPIResource):
     """Operations under ``client.server`` (OpenCode ``server``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncServerResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncServerResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncServerResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncServerResourceWithStreamingResponse(self)
 
     async def info(
         self,
@@ -228,3 +275,23 @@ class AsyncServerResource(AsyncAPIResource):
                 response_type="PairingSession",
             ),
         )
+
+
+class AsyncServerResourceWithRawResponse:
+    """``client.server.with_raw_response``."""
+
+    def __init__(self, resource: AsyncServerResource) -> None:
+        self._resource = resource
+        self.info = async_to_raw_response_wrapper(resource.info)
+        self.pair = async_to_raw_response_wrapper(resource.pair)
+        self.connect = async_to_raw_response_wrapper(resource.connect)
+
+
+class AsyncServerResourceWithStreamingResponse:
+    """``client.server.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncServerResource) -> None:
+        self._resource = resource
+        self.info = async_to_streamed_response_wrapper(resource.info)
+        self.pair = async_to_streamed_response_wrapper(resource.pair)
+        self.connect = async_to_streamed_response_wrapper(resource.connect)

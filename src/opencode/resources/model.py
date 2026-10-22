@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -23,6 +30,16 @@ __all__ = ["ModelResource", "AsyncModelResource"]
 
 class ModelResource(SyncAPIResource):
     """Operations under ``client.model`` (OpenCode ``model``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ModelResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ModelResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ModelResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ModelResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -99,8 +116,36 @@ class ModelResource(SyncAPIResource):
         )
 
 
+class ModelResourceWithRawResponse:
+    """``client.model.with_raw_response``."""
+
+    def __init__(self, resource: ModelResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.default = to_raw_response_wrapper(resource.default)
+
+
+class ModelResourceWithStreamingResponse:
+    """``client.model.with_streaming_response``."""
+
+    def __init__(self, resource: ModelResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.default = to_streamed_response_wrapper(resource.default)
+
+
 class AsyncModelResource(AsyncAPIResource):
     """Operations under ``client.model`` (OpenCode ``model``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncModelResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncModelResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncModelResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncModelResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -175,3 +220,21 @@ class AsyncModelResource(AsyncAPIResource):
                 response_type="ModelDefaultResponse",
             ),
         )
+
+
+class AsyncModelResourceWithRawResponse:
+    """``client.model.with_raw_response``."""
+
+    def __init__(self, resource: AsyncModelResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.default = async_to_raw_response_wrapper(resource.default)
+
+
+class AsyncModelResourceWithStreamingResponse:
+    """``client.model.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncModelResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.default = async_to_streamed_response_wrapper(resource.default)

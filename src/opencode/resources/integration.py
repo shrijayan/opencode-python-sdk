@@ -11,6 +11,12 @@ from typing import TYPE_CHECKING, cast
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -33,6 +39,16 @@ __all__ = ["IntegrationResource", "AsyncIntegrationResource"]
 
 class IntegrationWellknownResource(SyncAPIResource):
     """Operations under ``client.integration.wellknown`` (OpenCode ``integration.wellknown``)."""
+
+    @cached_property
+    def with_raw_response(self) -> IntegrationWellknownResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return IntegrationWellknownResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> IntegrationWellknownResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return IntegrationWellknownResourceWithStreamingResponse(self)
 
     def add(
         self,
@@ -57,23 +73,52 @@ class IntegrationWellknownResource(SyncAPIResource):
 
         ``POST /api/experimental/integration/wellknown``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/integration/wellknown",
-                query={"location": self._location(location)},
-                body={"url": url},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/integration/wellknown",
+                    query={"location": self._location(location)},
+                    body={"url": url},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class IntegrationWellknownResourceWithRawResponse:
+    """``client.integration.wellknown.with_raw_response``."""
+
+    def __init__(self, resource: IntegrationWellknownResource) -> None:
+        self._resource = resource
+        self.add = to_raw_response_wrapper(resource.add)
+
+
+class IntegrationWellknownResourceWithStreamingResponse:
+    """``client.integration.wellknown.with_streaming_response``."""
+
+    def __init__(self, resource: IntegrationWellknownResource) -> None:
+        self._resource = resource
+        self.add = to_streamed_response_wrapper(resource.add)
 
 
 class IntegrationConnectResource(SyncAPIResource):
     """Operations under ``client.integration.connect`` (OpenCode ``integration.connect``)."""
+
+    @cached_property
+    def with_raw_response(self) -> IntegrationConnectResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return IntegrationConnectResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> IntegrationConnectResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return IntegrationConnectResourceWithStreamingResponse(self)
 
     def key(
         self,
@@ -100,18 +145,21 @@ class IntegrationConnectResource(SyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/key``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/key",
-                query={"location": self._location(location)},
-                body={"key": key, "answer": answer, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/key",
+                    query={"location": self._location(location)},
+                    body={"key": key, "answer": answer, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def external(
@@ -139,23 +187,54 @@ class IntegrationConnectResource(SyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/external``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/external",
-                query={"location": self._location(location)},
-                body={"methodID": method_id, "answer": answer, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/external",
+                    query={"location": self._location(location)},
+                    body={"methodID": method_id, "answer": answer, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class IntegrationConnectResourceWithRawResponse:
+    """``client.integration.connect.with_raw_response``."""
+
+    def __init__(self, resource: IntegrationConnectResource) -> None:
+        self._resource = resource
+        self.key = to_raw_response_wrapper(resource.key)
+        self.external = to_raw_response_wrapper(resource.external)
+
+
+class IntegrationConnectResourceWithStreamingResponse:
+    """``client.integration.connect.with_streaming_response``."""
+
+    def __init__(self, resource: IntegrationConnectResource) -> None:
+        self._resource = resource
+        self.key = to_streamed_response_wrapper(resource.key)
+        self.external = to_streamed_response_wrapper(resource.external)
 
 
 class IntegrationOauthResource(SyncAPIResource):
     """Operations under ``client.integration.oauth`` (OpenCode ``integration.oauth``)."""
+
+    @cached_property
+    def with_raw_response(self) -> IntegrationOauthResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return IntegrationOauthResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> IntegrationOauthResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return IntegrationOauthResourceWithStreamingResponse(self)
 
     def connect(
         self,
@@ -263,18 +342,21 @@ class IntegrationOauthResource(SyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/oauth/:attemptID/complete``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}/complete",
-                query={"location": self._location(location)},
-                body={"code": code},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}/complete",
+                    query={"location": self._location(location)},
+                    body={"code": code},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def cancel(
@@ -299,22 +381,57 @@ class IntegrationOauthResource(SyncAPIResource):
 
         ``DELETE /api/integration/:integrationID/connect/oauth/:attemptID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class IntegrationOauthResourceWithRawResponse:
+    """``client.integration.oauth.with_raw_response``."""
+
+    def __init__(self, resource: IntegrationOauthResource) -> None:
+        self._resource = resource
+        self.connect = to_raw_response_wrapper(resource.connect)
+        self.status = to_raw_response_wrapper(resource.status)
+        self.complete = to_raw_response_wrapper(resource.complete)
+        self.cancel = to_raw_response_wrapper(resource.cancel)
+
+
+class IntegrationOauthResourceWithStreamingResponse:
+    """``client.integration.oauth.with_streaming_response``."""
+
+    def __init__(self, resource: IntegrationOauthResource) -> None:
+        self._resource = resource
+        self.connect = to_streamed_response_wrapper(resource.connect)
+        self.status = to_streamed_response_wrapper(resource.status)
+        self.complete = to_streamed_response_wrapper(resource.complete)
+        self.cancel = to_streamed_response_wrapper(resource.cancel)
 
 
 class IntegrationCommandResource(SyncAPIResource):
     """Operations under ``client.integration.command`` (OpenCode ``integration.command``)."""
+
+    @cached_property
+    def with_raw_response(self) -> IntegrationCommandResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return IntegrationCommandResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> IntegrationCommandResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return IntegrationCommandResourceWithStreamingResponse(self)
 
     def connect(
         self,
@@ -420,18 +537,41 @@ class IntegrationCommandResource(SyncAPIResource):
 
         ``DELETE /api/integration/:integrationID/connect/command/:attemptID``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class IntegrationCommandResourceWithRawResponse:
+    """``client.integration.command.with_raw_response``."""
+
+    def __init__(self, resource: IntegrationCommandResource) -> None:
+        self._resource = resource
+        self.connect = to_raw_response_wrapper(resource.connect)
+        self.status = to_raw_response_wrapper(resource.status)
+        self.cancel = to_raw_response_wrapper(resource.cancel)
+
+
+class IntegrationCommandResourceWithStreamingResponse:
+    """``client.integration.command.with_streaming_response``."""
+
+    def __init__(self, resource: IntegrationCommandResource) -> None:
+        self._resource = resource
+        self.connect = to_streamed_response_wrapper(resource.connect)
+        self.status = to_streamed_response_wrapper(resource.status)
+        self.cancel = to_streamed_response_wrapper(resource.cancel)
 
 
 class IntegrationResource(SyncAPIResource):
@@ -456,6 +596,16 @@ class IntegrationResource(SyncAPIResource):
     def command(self) -> IntegrationCommandResource:
         """Operations under ``client.integration.command``."""
         return IntegrationCommandResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> IntegrationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return IntegrationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> IntegrationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return IntegrationResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -532,8 +682,76 @@ class IntegrationResource(SyncAPIResource):
         )
 
 
+class IntegrationResourceWithRawResponse:
+    """``client.integration.with_raw_response``."""
+
+    def __init__(self, resource: IntegrationResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.get = to_raw_response_wrapper(resource.get)
+
+    @cached_property
+    def wellknown(self) -> IntegrationWellknownResourceWithRawResponse:
+        """``client.integration.wellknown.with_raw_response``."""
+        return IntegrationWellknownResourceWithRawResponse(self._resource.wellknown)
+
+    @cached_property
+    def connect(self) -> IntegrationConnectResourceWithRawResponse:
+        """``client.integration.connect.with_raw_response``."""
+        return IntegrationConnectResourceWithRawResponse(self._resource.connect)
+
+    @cached_property
+    def oauth(self) -> IntegrationOauthResourceWithRawResponse:
+        """``client.integration.oauth.with_raw_response``."""
+        return IntegrationOauthResourceWithRawResponse(self._resource.oauth)
+
+    @cached_property
+    def command(self) -> IntegrationCommandResourceWithRawResponse:
+        """``client.integration.command.with_raw_response``."""
+        return IntegrationCommandResourceWithRawResponse(self._resource.command)
+
+
+class IntegrationResourceWithStreamingResponse:
+    """``client.integration.with_streaming_response``."""
+
+    def __init__(self, resource: IntegrationResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.get = to_streamed_response_wrapper(resource.get)
+
+    @cached_property
+    def wellknown(self) -> IntegrationWellknownResourceWithStreamingResponse:
+        """``client.integration.wellknown.with_streaming_response``."""
+        return IntegrationWellknownResourceWithStreamingResponse(self._resource.wellknown)
+
+    @cached_property
+    def connect(self) -> IntegrationConnectResourceWithStreamingResponse:
+        """``client.integration.connect.with_streaming_response``."""
+        return IntegrationConnectResourceWithStreamingResponse(self._resource.connect)
+
+    @cached_property
+    def oauth(self) -> IntegrationOauthResourceWithStreamingResponse:
+        """``client.integration.oauth.with_streaming_response``."""
+        return IntegrationOauthResourceWithStreamingResponse(self._resource.oauth)
+
+    @cached_property
+    def command(self) -> IntegrationCommandResourceWithStreamingResponse:
+        """``client.integration.command.with_streaming_response``."""
+        return IntegrationCommandResourceWithStreamingResponse(self._resource.command)
+
+
 class AsyncIntegrationWellknownResource(AsyncAPIResource):
     """Operations under ``client.integration.wellknown`` (OpenCode ``integration.wellknown``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncIntegrationWellknownResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncIntegrationWellknownResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncIntegrationWellknownResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncIntegrationWellknownResourceWithStreamingResponse(self)
 
     async def add(
         self,
@@ -558,23 +776,52 @@ class AsyncIntegrationWellknownResource(AsyncAPIResource):
 
         ``POST /api/experimental/integration/wellknown``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/integration/wellknown",
-                query={"location": self._location(location)},
-                body={"url": url},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/integration/wellknown",
+                    query={"location": self._location(location)},
+                    body={"url": url},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncIntegrationWellknownResourceWithRawResponse:
+    """``client.integration.wellknown.with_raw_response``."""
+
+    def __init__(self, resource: AsyncIntegrationWellknownResource) -> None:
+        self._resource = resource
+        self.add = async_to_raw_response_wrapper(resource.add)
+
+
+class AsyncIntegrationWellknownResourceWithStreamingResponse:
+    """``client.integration.wellknown.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncIntegrationWellknownResource) -> None:
+        self._resource = resource
+        self.add = async_to_streamed_response_wrapper(resource.add)
 
 
 class AsyncIntegrationConnectResource(AsyncAPIResource):
     """Operations under ``client.integration.connect`` (OpenCode ``integration.connect``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncIntegrationConnectResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncIntegrationConnectResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncIntegrationConnectResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncIntegrationConnectResourceWithStreamingResponse(self)
 
     async def key(
         self,
@@ -601,18 +848,21 @@ class AsyncIntegrationConnectResource(AsyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/key``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/key",
-                query={"location": self._location(location)},
-                body={"key": key, "answer": answer, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/key",
+                    query={"location": self._location(location)},
+                    body={"key": key, "answer": answer, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def external(
@@ -640,23 +890,54 @@ class AsyncIntegrationConnectResource(AsyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/external``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/external",
-                query={"location": self._location(location)},
-                body={"methodID": method_id, "answer": answer, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/external",
+                    query={"location": self._location(location)},
+                    body={"methodID": method_id, "answer": answer, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncIntegrationConnectResourceWithRawResponse:
+    """``client.integration.connect.with_raw_response``."""
+
+    def __init__(self, resource: AsyncIntegrationConnectResource) -> None:
+        self._resource = resource
+        self.key = async_to_raw_response_wrapper(resource.key)
+        self.external = async_to_raw_response_wrapper(resource.external)
+
+
+class AsyncIntegrationConnectResourceWithStreamingResponse:
+    """``client.integration.connect.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncIntegrationConnectResource) -> None:
+        self._resource = resource
+        self.key = async_to_streamed_response_wrapper(resource.key)
+        self.external = async_to_streamed_response_wrapper(resource.external)
 
 
 class AsyncIntegrationOauthResource(AsyncAPIResource):
     """Operations under ``client.integration.oauth`` (OpenCode ``integration.oauth``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncIntegrationOauthResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncIntegrationOauthResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncIntegrationOauthResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncIntegrationOauthResourceWithStreamingResponse(self)
 
     async def connect(
         self,
@@ -764,18 +1045,21 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/oauth/:attemptID/complete``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}/complete",
-                query={"location": self._location(location)},
-                body={"code": code},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}/complete",
+                    query={"location": self._location(location)},
+                    body={"code": code},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def cancel(
@@ -800,22 +1084,57 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
 
         ``DELETE /api/integration/:integrationID/connect/oauth/:attemptID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncIntegrationOauthResourceWithRawResponse:
+    """``client.integration.oauth.with_raw_response``."""
+
+    def __init__(self, resource: AsyncIntegrationOauthResource) -> None:
+        self._resource = resource
+        self.connect = async_to_raw_response_wrapper(resource.connect)
+        self.status = async_to_raw_response_wrapper(resource.status)
+        self.complete = async_to_raw_response_wrapper(resource.complete)
+        self.cancel = async_to_raw_response_wrapper(resource.cancel)
+
+
+class AsyncIntegrationOauthResourceWithStreamingResponse:
+    """``client.integration.oauth.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncIntegrationOauthResource) -> None:
+        self._resource = resource
+        self.connect = async_to_streamed_response_wrapper(resource.connect)
+        self.status = async_to_streamed_response_wrapper(resource.status)
+        self.complete = async_to_streamed_response_wrapper(resource.complete)
+        self.cancel = async_to_streamed_response_wrapper(resource.cancel)
 
 
 class AsyncIntegrationCommandResource(AsyncAPIResource):
     """Operations under ``client.integration.command`` (OpenCode ``integration.command``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncIntegrationCommandResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncIntegrationCommandResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncIntegrationCommandResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncIntegrationCommandResourceWithStreamingResponse(self)
 
     async def connect(
         self,
@@ -921,18 +1240,41 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
 
         ``DELETE /api/integration/:integrationID/connect/command/:attemptID``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncIntegrationCommandResourceWithRawResponse:
+    """``client.integration.command.with_raw_response``."""
+
+    def __init__(self, resource: AsyncIntegrationCommandResource) -> None:
+        self._resource = resource
+        self.connect = async_to_raw_response_wrapper(resource.connect)
+        self.status = async_to_raw_response_wrapper(resource.status)
+        self.cancel = async_to_raw_response_wrapper(resource.cancel)
+
+
+class AsyncIntegrationCommandResourceWithStreamingResponse:
+    """``client.integration.command.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncIntegrationCommandResource) -> None:
+        self._resource = resource
+        self.connect = async_to_streamed_response_wrapper(resource.connect)
+        self.status = async_to_streamed_response_wrapper(resource.status)
+        self.cancel = async_to_streamed_response_wrapper(resource.cancel)
 
 
 class AsyncIntegrationResource(AsyncAPIResource):
@@ -957,6 +1299,16 @@ class AsyncIntegrationResource(AsyncAPIResource):
     def command(self) -> AsyncIntegrationCommandResource:
         """Operations under ``client.integration.command``."""
         return AsyncIntegrationCommandResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncIntegrationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncIntegrationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncIntegrationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncIntegrationResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -1031,3 +1383,61 @@ class AsyncIntegrationResource(AsyncAPIResource):
                 response_type="IntegrationGetResponse",
             ),
         )
+
+
+class AsyncIntegrationResourceWithRawResponse:
+    """``client.integration.with_raw_response``."""
+
+    def __init__(self, resource: AsyncIntegrationResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.get = async_to_raw_response_wrapper(resource.get)
+
+    @cached_property
+    def wellknown(self) -> AsyncIntegrationWellknownResourceWithRawResponse:
+        """``client.integration.wellknown.with_raw_response``."""
+        return AsyncIntegrationWellknownResourceWithRawResponse(self._resource.wellknown)
+
+    @cached_property
+    def connect(self) -> AsyncIntegrationConnectResourceWithRawResponse:
+        """``client.integration.connect.with_raw_response``."""
+        return AsyncIntegrationConnectResourceWithRawResponse(self._resource.connect)
+
+    @cached_property
+    def oauth(self) -> AsyncIntegrationOauthResourceWithRawResponse:
+        """``client.integration.oauth.with_raw_response``."""
+        return AsyncIntegrationOauthResourceWithRawResponse(self._resource.oauth)
+
+    @cached_property
+    def command(self) -> AsyncIntegrationCommandResourceWithRawResponse:
+        """``client.integration.command.with_raw_response``."""
+        return AsyncIntegrationCommandResourceWithRawResponse(self._resource.command)
+
+
+class AsyncIntegrationResourceWithStreamingResponse:
+    """``client.integration.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncIntegrationResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.get = async_to_streamed_response_wrapper(resource.get)
+
+    @cached_property
+    def wellknown(self) -> AsyncIntegrationWellknownResourceWithStreamingResponse:
+        """``client.integration.wellknown.with_streaming_response``."""
+        return AsyncIntegrationWellknownResourceWithStreamingResponse(self._resource.wellknown)
+
+    @cached_property
+    def connect(self) -> AsyncIntegrationConnectResourceWithStreamingResponse:
+        """``client.integration.connect.with_streaming_response``."""
+        return AsyncIntegrationConnectResourceWithStreamingResponse(self._resource.connect)
+
+    @cached_property
+    def oauth(self) -> AsyncIntegrationOauthResourceWithStreamingResponse:
+        """``client.integration.oauth.with_streaming_response``."""
+        return AsyncIntegrationOauthResourceWithStreamingResponse(self._resource.oauth)
+
+    @cached_property
+    def command(self) -> AsyncIntegrationCommandResourceWithStreamingResponse:
+        """``client.integration.command.with_streaming_response``."""
+        return AsyncIntegrationCommandResourceWithStreamingResponse(self._resource.command)

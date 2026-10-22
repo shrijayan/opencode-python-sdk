@@ -11,6 +11,12 @@ from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +30,16 @@ __all__ = ["DebugResource", "AsyncDebugResource"]
 
 class DebugLocationResource(SyncAPIResource):
     """Operations under ``client.debug.location`` (OpenCode ``debug.location``)."""
+
+    @cached_property
+    def with_raw_response(self) -> DebugLocationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return DebugLocationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> DebugLocationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return DebugLocationResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -77,18 +93,39 @@ class DebugLocationResource(SyncAPIResource):
 
         ``DELETE /api/debug/location``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path="/api/debug/location",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path="/api/debug/location",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class DebugLocationResourceWithRawResponse:
+    """``client.debug.location.with_raw_response``."""
+
+    def __init__(self, resource: DebugLocationResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.evict = to_raw_response_wrapper(resource.evict)
+
+
+class DebugLocationResourceWithStreamingResponse:
+    """``client.debug.location.with_streaming_response``."""
+
+    def __init__(self, resource: DebugLocationResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.evict = to_streamed_response_wrapper(resource.evict)
 
 
 class DebugResource(SyncAPIResource):
@@ -99,9 +136,53 @@ class DebugResource(SyncAPIResource):
         """Operations under ``client.debug.location``."""
         return DebugLocationResource(self._client)
 
+    @cached_property
+    def with_raw_response(self) -> DebugResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return DebugResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> DebugResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return DebugResourceWithStreamingResponse(self)
+
+
+class DebugResourceWithRawResponse:
+    """``client.debug.with_raw_response``."""
+
+    def __init__(self, resource: DebugResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def location(self) -> DebugLocationResourceWithRawResponse:
+        """``client.debug.location.with_raw_response``."""
+        return DebugLocationResourceWithRawResponse(self._resource.location)
+
+
+class DebugResourceWithStreamingResponse:
+    """``client.debug.with_streaming_response``."""
+
+    def __init__(self, resource: DebugResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def location(self) -> DebugLocationResourceWithStreamingResponse:
+        """``client.debug.location.with_streaming_response``."""
+        return DebugLocationResourceWithStreamingResponse(self._resource.location)
+
 
 class AsyncDebugLocationResource(AsyncAPIResource):
     """Operations under ``client.debug.location`` (OpenCode ``debug.location``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncDebugLocationResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncDebugLocationResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncDebugLocationResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncDebugLocationResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -155,18 +236,39 @@ class AsyncDebugLocationResource(AsyncAPIResource):
 
         ``DELETE /api/debug/location``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path="/api/debug/location",
-                query={"location": self._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path="/api/debug/location",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncDebugLocationResourceWithRawResponse:
+    """``client.debug.location.with_raw_response``."""
+
+    def __init__(self, resource: AsyncDebugLocationResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.evict = async_to_raw_response_wrapper(resource.evict)
+
+
+class AsyncDebugLocationResourceWithStreamingResponse:
+    """``client.debug.location.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncDebugLocationResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.evict = async_to_streamed_response_wrapper(resource.evict)
 
 
 class AsyncDebugResource(AsyncAPIResource):
@@ -176,3 +278,37 @@ class AsyncDebugResource(AsyncAPIResource):
     def location(self) -> AsyncDebugLocationResource:
         """Operations under ``client.debug.location``."""
         return AsyncDebugLocationResource(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncDebugResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncDebugResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncDebugResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncDebugResourceWithStreamingResponse(self)
+
+
+class AsyncDebugResourceWithRawResponse:
+    """``client.debug.with_raw_response``."""
+
+    def __init__(self, resource: AsyncDebugResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def location(self) -> AsyncDebugLocationResourceWithRawResponse:
+        """``client.debug.location.with_raw_response``."""
+        return AsyncDebugLocationResourceWithRawResponse(self._resource.location)
+
+
+class AsyncDebugResourceWithStreamingResponse:
+    """``client.debug.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncDebugResource) -> None:
+        self._resource = resource
+
+    @cached_property
+    def location(self) -> AsyncDebugLocationResourceWithStreamingResponse:
+        """``client.debug.location.with_streaming_response``."""
+        return AsyncDebugLocationResourceWithStreamingResponse(self._resource.location)

@@ -37,12 +37,13 @@ from ._exceptions import (
     validation_summary,
 )
 from ._qs import encode_query, to_jsonable
+from ._response import APIResponse, AsyncAPIResponse, raw_mode
 from ._streaming import AsyncStream, Stream
 from ._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 from ._version import __version__
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import Callable, Coroutine, Mapping
     from types import TracebackType
 
     from ._pagination import AsyncPaginator, SyncCursorPage
@@ -354,13 +355,13 @@ class SyncAPIClient(_BaseClient):
     ) -> None:
         self.close()
 
-    def _send(self, options: RequestOptions) -> httpx.Response:
+    def _send(self, options: RequestOptions, *, stream_body: bool = False) -> httpx.Response:
         attempt = 0
         while True:
             request = self._build_request(options)
             log.debug("Request %s %s (attempt %d)", request.method, request.url, attempt + 1)
             try:
-                response = self._http.send(request, stream=options.stream)
+                response = self._http.send(request, stream=options.stream or stream_body)
             except httpx.TransportError as exc:
                 if attempt < self.max_retries and self._should_retry_error(options, exc):
                     delay = self._retry_delay(attempt, None)
@@ -384,7 +385,7 @@ class SyncAPIClient(_BaseClient):
                 time.sleep(delay)
                 attempt += 1
                 continue
-            if options.stream:
+            if options.stream or stream_body:
                 response.read()
             raise self._status_error(response, self._decode_error_body(response))
 
@@ -397,13 +398,23 @@ class SyncAPIClient(_BaseClient):
         unwrap: bool = False,
     ) -> Any:
         """Sends a request and returns the decoded response."""
+        if raw_mode() is not None:
+            return self._raw(options, lambda response: self._parse(response, kind, response_type, unwrap))
         response = self._send(options)
         return self._parse(response, kind, response_type, unwrap)
+
+    def _raw(self, options: RequestOptions, parser: Callable[[httpx.Response], Any]) -> APIResponse[Any]:
+        response = self._send(options, stream_body=raw_mode() == "stream")
+        return APIResponse(response, parser, event_stream=options.stream)
 
     def stream(self, options: RequestOptions, *, item_type: type[_T] | Any) -> Stream[Any]:
         """Opens a server-sent event stream."""
         options.stream = True
-        response = self._send(options)
+        if raw_mode() is not None:
+            return cast("Stream[Any]", self._raw(options, lambda response: self._open_stream(response, item_type)))
+        return self._open_stream(self._send(options), item_type)
+
+    def _open_stream(self, response: httpx.Response, item_type: Any) -> Stream[Any]:
         content_type = response.headers.get("content-type", "")
         if content_type.split(";", 1)[0].strip().lower() != "text/event-stream":
             response.read()
@@ -413,10 +424,109 @@ class SyncAPIClient(_BaseClient):
             )
         return Stream(response, type_adapter(item_type))
 
+    def get(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``GET path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(method="GET", path=path, extra_query=query, extra_headers=headers, timeout=timeout)
+        return self.request(options, response_type=cast_to)
+
+    def post(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        body: object | NotGiven = NOT_GIVEN,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``POST path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(
+            method="POST", path=path, body=body, extra_query=query, extra_headers=headers, timeout=timeout
+        )
+        return self.request(options, response_type=cast_to)
+
+    def put(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        body: object | NotGiven = NOT_GIVEN,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``PUT path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(
+            method="PUT", path=path, body=body, extra_query=query, extra_headers=headers, timeout=timeout
+        )
+        return self.request(options, response_type=cast_to)
+
+    def patch(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        body: object | NotGiven = NOT_GIVEN,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``PATCH path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(
+            method="PATCH", path=path, body=body, extra_query=query, extra_headers=headers, timeout=timeout
+        )
+        return self.request(options, response_type=cast_to)
+
+    def delete(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``DELETE path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(method="DELETE", path=path, extra_query=query, extra_headers=headers, timeout=timeout)
+        return self.request(options, response_type=cast_to)
+
     def page(self, options: RequestOptions, *, response_type: Any) -> SyncCursorPage[Any]:
         """Fetches the first page of a cursor-paginated list."""
         from ._pagination import SyncCursorPage
 
+        if raw_mode() is not None:
+            return cast(
+                "SyncCursorPage[Any]",
+                self._raw(
+                    options,
+                    lambda response: SyncCursorPage.build(
+                        self, options, response_type, self._parse(response, "json", response_type, False)
+                    ),
+                ),
+            )
         return SyncCursorPage.fetch(self, options, response_type)
 
 
@@ -473,13 +583,13 @@ class AsyncAPIClient(_BaseClient):
     ) -> None:
         await self.close()
 
-    async def _send(self, options: RequestOptions) -> httpx.Response:
+    async def _send(self, options: RequestOptions, *, stream_body: bool = False) -> httpx.Response:
         attempt = 0
         while True:
             request = self._build_request(options)
             log.debug("Request %s %s (attempt %d)", request.method, request.url, attempt + 1)
             try:
-                response = await self._http.send(request, stream=options.stream)
+                response = await self._http.send(request, stream=options.stream or stream_body)
             except httpx.TransportError as exc:
                 if attempt < self.max_retries and self._should_retry_error(options, exc):
                     delay = self._retry_delay(attempt, None)
@@ -503,7 +613,7 @@ class AsyncAPIClient(_BaseClient):
                 await anyio.sleep(delay)
                 attempt += 1
                 continue
-            if options.stream:
+            if options.stream or stream_body:
                 await response.aread()
             raise self._status_error(response, self._decode_error_body(response))
 
@@ -516,13 +626,31 @@ class AsyncAPIClient(_BaseClient):
         unwrap: bool = False,
     ) -> Any:
         """Sends a request and returns the decoded response."""
+        if raw_mode() is not None:
+            return await self._raw(options, lambda response: self._parse(response, kind, response_type, unwrap))
         response = await self._send(options)
         return self._parse(response, kind, response_type, unwrap)
+
+    async def _raw(self, options: RequestOptions, parser: Callable[[httpx.Response], Any]) -> AsyncAPIResponse[Any]:
+        response = await self._send(options, stream_body=raw_mode() == "stream")
+        return AsyncAPIResponse(response, parser, event_stream=options.stream)
 
     async def stream(self, options: RequestOptions, *, item_type: type[_T] | Any) -> AsyncStream[Any]:
         """Opens a server-sent event stream."""
         options.stream = True
-        response = await self._send(options)
+        if raw_mode() is not None:
+            raw = await self._raw(options, lambda response: self._open_stream(response, item_type))
+            return cast("AsyncStream[Any]", raw)
+        return await self._open_async_stream(await self._send(options), item_type)
+
+    @staticmethod
+    def _open_stream(response: httpx.Response, item_type: Any) -> AsyncStream[Any]:
+        content_type = response.headers.get("content-type", "")
+        if content_type.split(";", 1)[0].strip().lower() != "text/event-stream":
+            raise APIResponseValidationError(response, None, message=f"Expected an event stream, got {content_type!r}")
+        return AsyncStream(response, type_adapter(item_type))
+
+    async def _open_async_stream(self, response: httpx.Response, item_type: Any) -> AsyncStream[Any]:
         content_type = response.headers.get("content-type", "")
         if content_type.split(";", 1)[0].strip().lower() != "text/event-stream":
             await response.aread()
@@ -532,8 +660,106 @@ class AsyncAPIClient(_BaseClient):
             )
         return AsyncStream(response, type_adapter(item_type))
 
+    async def get(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``GET path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(method="GET", path=path, extra_query=query, extra_headers=headers, timeout=timeout)
+        return await self.request(options, response_type=cast_to)
+
+    async def post(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        body: object | NotGiven = NOT_GIVEN,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``POST path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(
+            method="POST", path=path, body=body, extra_query=query, extra_headers=headers, timeout=timeout
+        )
+        return await self.request(options, response_type=cast_to)
+
+    async def put(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        body: object | NotGiven = NOT_GIVEN,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``PUT path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(
+            method="PUT", path=path, body=body, extra_query=query, extra_headers=headers, timeout=timeout
+        )
+        return await self.request(options, response_type=cast_to)
+
+    async def patch(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        body: object | NotGiven = NOT_GIVEN,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``PATCH path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(
+            method="PATCH", path=path, body=body, extra_query=query, extra_headers=headers, timeout=timeout
+        )
+        return await self.request(options, response_type=cast_to)
+
+    async def delete(
+        self,
+        path: str,
+        *,
+        cast_to: Any = object,
+        query: Query | None = None,
+        headers: Headers | None = None,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+    ) -> Any:
+        """Sends ``DELETE path`` (relative to ``base_url``) with the client's auth, retries and error mapping.
+
+        For endpoints this client does not cover yet. The JSON response is validated against ``cast_to``.
+        """
+        options = RequestOptions(method="DELETE", path=path, extra_query=query, extra_headers=headers, timeout=timeout)
+        return await self.request(options, response_type=cast_to)
+
     def page(self, options: RequestOptions, *, response_type: Any) -> AsyncPaginator[Any]:
         """Returns an awaitable, async-iterable paginator over a cursor-paginated list."""
-        from ._pagination import AsyncPaginator
+        from ._pagination import AsyncCursorPage, AsyncPaginator
 
+        if raw_mode() is not None:
+            # Awaited by the raw-response wrapper: the raw form of a list call is the first page's response.
+            raw: Coroutine[Any, Any, AsyncAPIResponse[Any]] = self._raw(
+                options,
+                lambda response: AsyncCursorPage.build(
+                    self, options, response_type, self._parse(response, "json", response_type, False)
+                ),
+            )
+            return cast("AsyncPaginator[Any]", raw)
         return AsyncPaginator(self, options, response_type)

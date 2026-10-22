@@ -8,7 +8,7 @@ Generated from the docstrings in `src/opencode`.
 | [Server launcher](server.md) | `OpencodeServer`, `AsyncOpencodeServer` |
 | [Background service](service.md) | `opencode.service`, `Endpoint`, `ServiceError` |
 | [Resources](resources.md) | Every `client.<group>` and its methods |
-| [Pagination and streams](pagination.md) | `SyncCursorPage`, `AsyncPaginator`, `Stream`, `AsyncStream` |
+| [Pagination and streams](pagination.md) | `SyncCursorPage`, `AsyncPaginator`, `Stream`, `AsyncStream`, `APIResponse` |
 | [Shared events and RPC](events.md) | `EventHub`, `Subscription`, `RpcDefinition`, `RpcClient` |
 | [Exceptions](exceptions.md) | Status errors and every declared server error |
 | [Types](types/index.md) | The models in `opencode.types`, grouped by domain |

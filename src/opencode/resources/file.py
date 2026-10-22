@@ -5,11 +5,18 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, Literal, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, OpenEnum, Query, Timeout
 
 if TYPE_CHECKING:
@@ -25,6 +32,16 @@ __all__ = ["FileResource", "AsyncFileResource"]
 
 class FileResource(SyncAPIResource):
     """Operations under ``client.file`` (OpenCode ``file``)."""
+
+    @cached_property
+    def with_raw_response(self) -> FileResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return FileResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> FileResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return FileResourceWithStreamingResponse(self)
 
     def read(
         self,
@@ -189,8 +206,40 @@ class FileResource(SyncAPIResource):
         )
 
 
+class FileResourceWithRawResponse:
+    """``client.file.with_raw_response``."""
+
+    def __init__(self, resource: FileResource) -> None:
+        self._resource = resource
+        self.read = to_raw_response_wrapper(resource.read)
+        self.list = to_raw_response_wrapper(resource.list)
+        self.find = to_raw_response_wrapper(resource.find)
+        self.write = to_raw_response_wrapper(resource.write)
+
+
+class FileResourceWithStreamingResponse:
+    """``client.file.with_streaming_response``."""
+
+    def __init__(self, resource: FileResource) -> None:
+        self._resource = resource
+        self.read = to_streamed_response_wrapper(resource.read)
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.find = to_streamed_response_wrapper(resource.find)
+        self.write = to_streamed_response_wrapper(resource.write)
+
+
 class AsyncFileResource(AsyncAPIResource):
     """Operations under ``client.file`` (OpenCode ``file``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncFileResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncFileResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncFileResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncFileResourceWithStreamingResponse(self)
 
     async def read(
         self,
@@ -353,3 +402,25 @@ class AsyncFileResource(AsyncAPIResource):
                 response_type="FileWriteResponse",
             ),
         )
+
+
+class AsyncFileResourceWithRawResponse:
+    """``client.file.with_raw_response``."""
+
+    def __init__(self, resource: AsyncFileResource) -> None:
+        self._resource = resource
+        self.read = async_to_raw_response_wrapper(resource.read)
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.find = async_to_raw_response_wrapper(resource.find)
+        self.write = async_to_raw_response_wrapper(resource.write)
+
+
+class AsyncFileResourceWithStreamingResponse:
+    """``client.file.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncFileResource) -> None:
+        self._resource = resource
+        self.read = async_to_streamed_response_wrapper(resource.read)
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.find = async_to_streamed_response_wrapper(resource.find)
+        self.write = async_to_streamed_response_wrapper(resource.write)

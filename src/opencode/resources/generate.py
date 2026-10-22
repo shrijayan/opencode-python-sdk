@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -22,6 +29,16 @@ __all__ = ["GenerateResource", "AsyncGenerateResource"]
 
 class GenerateResource(SyncAPIResource):
     """Operations under ``client.generate`` (OpenCode ``generate``)."""
+
+    @cached_property
+    def with_raw_response(self) -> GenerateResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return GenerateResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> GenerateResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return GenerateResourceWithStreamingResponse(self)
 
     def text(
         self,
@@ -65,8 +82,34 @@ class GenerateResource(SyncAPIResource):
         )
 
 
+class GenerateResourceWithRawResponse:
+    """``client.generate.with_raw_response``."""
+
+    def __init__(self, resource: GenerateResource) -> None:
+        self._resource = resource
+        self.text = to_raw_response_wrapper(resource.text)
+
+
+class GenerateResourceWithStreamingResponse:
+    """``client.generate.with_streaming_response``."""
+
+    def __init__(self, resource: GenerateResource) -> None:
+        self._resource = resource
+        self.text = to_streamed_response_wrapper(resource.text)
+
+
 class AsyncGenerateResource(AsyncAPIResource):
     """Operations under ``client.generate`` (OpenCode ``generate``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncGenerateResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncGenerateResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncGenerateResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncGenerateResourceWithStreamingResponse(self)
 
     async def text(
         self,
@@ -108,3 +151,19 @@ class AsyncGenerateResource(AsyncAPIResource):
                 unwrap=True,
             ),
         )
+
+
+class AsyncGenerateResourceWithRawResponse:
+    """``client.generate.with_raw_response``."""
+
+    def __init__(self, resource: AsyncGenerateResource) -> None:
+        self._resource = resource
+        self.text = async_to_raw_response_wrapper(resource.text)
+
+
+class AsyncGenerateResourceWithStreamingResponse:
+    """``client.generate.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncGenerateResource) -> None:
+        self._resource = resource
+        self.text = async_to_streamed_response_wrapper(resource.text)

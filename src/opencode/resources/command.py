@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -22,6 +29,16 @@ __all__ = ["CommandResource", "AsyncCommandResource"]
 
 class CommandResource(SyncAPIResource):
     """Operations under ``client.command`` (OpenCode ``command``)."""
+
+    @cached_property
+    def with_raw_response(self) -> CommandResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return CommandResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> CommandResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return CommandResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -60,8 +77,34 @@ class CommandResource(SyncAPIResource):
         )
 
 
+class CommandResourceWithRawResponse:
+    """``client.command.with_raw_response``."""
+
+    def __init__(self, resource: CommandResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+
+
+class CommandResourceWithStreamingResponse:
+    """``client.command.with_streaming_response``."""
+
+    def __init__(self, resource: CommandResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+
+
 class AsyncCommandResource(AsyncAPIResource):
     """Operations under ``client.command`` (OpenCode ``command``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncCommandResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncCommandResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncCommandResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncCommandResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -98,3 +141,19 @@ class AsyncCommandResource(AsyncAPIResource):
                 response_type="CommandListResponse",
             ),
         )
+
+
+class AsyncCommandResourceWithRawResponse:
+    """``client.command.with_raw_response``."""
+
+    def __init__(self, resource: AsyncCommandResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+
+
+class AsyncCommandResourceWithStreamingResponse:
+    """``client.command.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncCommandResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)

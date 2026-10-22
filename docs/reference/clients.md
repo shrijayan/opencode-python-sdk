@@ -3,6 +3,7 @@
 ::: opencode.Opencode
     options:
       members: [with_options, copy, close, wait_until_ready, fake]
+      members: [with_options, close, wait_until_ready, fake, get, post, put, patch, delete]
       show_bases: false
 
 ::: opencode.AsyncOpencode
@@ -13,6 +14,7 @@
 ::: opencode.DefaultAioHttpClient
     options:
       members: false
+      members: [with_options, close, wait_until_ready, fake, get, post, put, patch, delete]
       show_bases: false
 
 ## Module constants

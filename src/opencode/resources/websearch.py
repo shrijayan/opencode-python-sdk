@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +31,16 @@ __all__ = ["WebsearchResource", "AsyncWebsearchResource"]
 
 class WebsearchResource(SyncAPIResource):
     """Operations under ``client.websearch`` (OpenCode ``websearch``)."""
+
+    @cached_property
+    def with_raw_response(self) -> WebsearchResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return WebsearchResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> WebsearchResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return WebsearchResourceWithStreamingResponse(self)
 
     def providers(
         self,
@@ -103,8 +120,36 @@ class WebsearchResource(SyncAPIResource):
         )
 
 
+class WebsearchResourceWithRawResponse:
+    """``client.websearch.with_raw_response``."""
+
+    def __init__(self, resource: WebsearchResource) -> None:
+        self._resource = resource
+        self.providers = to_raw_response_wrapper(resource.providers)
+        self.query = to_raw_response_wrapper(resource.query)
+
+
+class WebsearchResourceWithStreamingResponse:
+    """``client.websearch.with_streaming_response``."""
+
+    def __init__(self, resource: WebsearchResource) -> None:
+        self._resource = resource
+        self.providers = to_streamed_response_wrapper(resource.providers)
+        self.query = to_streamed_response_wrapper(resource.query)
+
+
 class AsyncWebsearchResource(AsyncAPIResource):
     """Operations under ``client.websearch`` (OpenCode ``websearch``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncWebsearchResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncWebsearchResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncWebsearchResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncWebsearchResourceWithStreamingResponse(self)
 
     async def providers(
         self,
@@ -182,3 +227,21 @@ class AsyncWebsearchResource(AsyncAPIResource):
                 response_type="WebsearchQueryResponse",
             ),
         )
+
+
+class AsyncWebsearchResourceWithRawResponse:
+    """``client.websearch.with_raw_response``."""
+
+    def __init__(self, resource: AsyncWebsearchResource) -> None:
+        self._resource = resource
+        self.providers = async_to_raw_response_wrapper(resource.providers)
+        self.query = async_to_raw_response_wrapper(resource.query)
+
+
+class AsyncWebsearchResourceWithStreamingResponse:
+    """``client.websearch.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncWebsearchResource) -> None:
+        self._resource = resource
+        self.providers = async_to_streamed_response_wrapper(resource.providers)
+        self.query = async_to_streamed_response_wrapper(resource.query)

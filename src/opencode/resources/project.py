@@ -6,11 +6,18 @@
 from __future__ import annotations
 
 import builtins
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -27,6 +34,16 @@ __all__ = ["ProjectResource", "AsyncProjectResource"]
 
 class ProjectResource(SyncAPIResource):
     """Operations under ``client.project`` (OpenCode ``project``)."""
+
+    @cached_property
+    def with_raw_response(self) -> ProjectResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return ProjectResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> ProjectResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return ProjectResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -106,8 +123,36 @@ class ProjectResource(SyncAPIResource):
         )
 
 
+class ProjectResourceWithRawResponse:
+    """``client.project.with_raw_response``."""
+
+    def __init__(self, resource: ProjectResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.update = to_raw_response_wrapper(resource.update)
+
+
+class ProjectResourceWithStreamingResponse:
+    """``client.project.with_streaming_response``."""
+
+    def __init__(self, resource: ProjectResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.update = to_streamed_response_wrapper(resource.update)
+
+
 class AsyncProjectResource(AsyncAPIResource):
     """Operations under ``client.project`` (OpenCode ``project``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncProjectResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncProjectResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncProjectResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncProjectResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -185,3 +230,21 @@ class AsyncProjectResource(AsyncAPIResource):
                 response_type="Project",
             ),
         )
+
+
+class AsyncProjectResourceWithRawResponse:
+    """``client.project.with_raw_response``."""
+
+    def __init__(self, resource: AsyncProjectResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.update = async_to_raw_response_wrapper(resource.update)
+
+
+class AsyncProjectResourceWithStreamingResponse:
+    """``client.project.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncProjectResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.update = async_to_streamed_response_wrapper(resource.update)

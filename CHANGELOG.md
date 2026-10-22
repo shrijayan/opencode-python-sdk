@@ -16,6 +16,10 @@ Releases are published automatically on every merge to `main`. Release notes for
   and do not close it.
 - `DefaultAioHttpClient`: an optional aiohttp transport for `AsyncOpencode`, installed with the `aiohttp` extra
   (`pip install 'opencode-python-sdk[aiohttp]'`) and passed as `http_client=`.
+- `.with_raw_response` and `.with_streaming_response` on every resource (sync and async): return an
+  `APIResponse` / `AsyncAPIResponse` with `headers`, `status_code`, `http_response`, `request`, `text`, `json()`,
+  `iter_bytes()` / `iter_lines()` and `parse()` for the usual typed value.
+- `client.get` / `post` / `put` / `patch` / `delete` for endpoints the client has no method for.
 
 ## 0.1.0
 

@@ -5,10 +5,17 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
+from .._response import (
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+)
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
 
 if TYPE_CHECKING:
@@ -24,6 +31,16 @@ __all__ = ["WorktreeResource", "AsyncWorktreeResource"]
 
 class WorktreeResource(SyncAPIResource):
     """Operations under ``client.worktree`` (OpenCode ``worktree``)."""
+
+    @cached_property
+    def with_raw_response(self) -> WorktreeResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return WorktreeResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> WorktreeResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return WorktreeResourceWithStreamingResponse(self)
 
     def list(
         self,
@@ -131,17 +148,20 @@ class WorktreeResource(SyncAPIResource):
 
         ``DELETE /api/worktree``
         """
-        self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path="/api/worktree",
-                body={"projectID": project_id, "directory": directory, "force": force},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path="/api/worktree",
+                    body={"projectID": project_id, "directory": directory, "force": force},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     def refresh(
@@ -165,22 +185,57 @@ class WorktreeResource(SyncAPIResource):
 
         ``POST /api/worktree/refresh``
         """
-        self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/worktree/refresh",
-                body={"projectID": project_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/worktree/refresh",
+                    body={"projectID": project_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class WorktreeResourceWithRawResponse:
+    """``client.worktree.with_raw_response``."""
+
+    def __init__(self, resource: WorktreeResource) -> None:
+        self._resource = resource
+        self.list = to_raw_response_wrapper(resource.list)
+        self.create = to_raw_response_wrapper(resource.create)
+        self.remove = to_raw_response_wrapper(resource.remove)
+        self.refresh = to_raw_response_wrapper(resource.refresh)
+
+
+class WorktreeResourceWithStreamingResponse:
+    """``client.worktree.with_streaming_response``."""
+
+    def __init__(self, resource: WorktreeResource) -> None:
+        self._resource = resource
+        self.list = to_streamed_response_wrapper(resource.list)
+        self.create = to_streamed_response_wrapper(resource.create)
+        self.remove = to_streamed_response_wrapper(resource.remove)
+        self.refresh = to_streamed_response_wrapper(resource.refresh)
 
 
 class AsyncWorktreeResource(AsyncAPIResource):
     """Operations under ``client.worktree`` (OpenCode ``worktree``)."""
+
+    @cached_property
+    def with_raw_response(self) -> AsyncWorktreeResourceWithRawResponse:
+        """Same methods, returning the raw HTTP response; call ``.parse()`` on it for the usual value."""
+        return AsyncWorktreeResourceWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncWorktreeResourceWithStreamingResponse:
+        """Same methods, returning a context manager over the HTTP response without reading the body."""
+        return AsyncWorktreeResourceWithStreamingResponse(self)
 
     async def list(
         self,
@@ -288,17 +343,20 @@ class AsyncWorktreeResource(AsyncAPIResource):
 
         ``DELETE /api/worktree``
         """
-        await self._client.request(
-            RequestOptions(
-                method="DELETE",
-                path="/api/worktree",
-                body={"projectID": project_id, "directory": directory, "force": force},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="DELETE",
+                    path="/api/worktree",
+                    body={"projectID": project_id, "directory": directory, "force": force},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
 
     async def refresh(
@@ -322,15 +380,40 @@ class AsyncWorktreeResource(AsyncAPIResource):
 
         ``POST /api/worktree/refresh``
         """
-        await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/worktree/refresh",
-                body={"projectID": project_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "None",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/worktree/refresh",
+                    body={"projectID": project_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="void",
             ),
-            kind="void",
         )
+
+
+class AsyncWorktreeResourceWithRawResponse:
+    """``client.worktree.with_raw_response``."""
+
+    def __init__(self, resource: AsyncWorktreeResource) -> None:
+        self._resource = resource
+        self.list = async_to_raw_response_wrapper(resource.list)
+        self.create = async_to_raw_response_wrapper(resource.create)
+        self.remove = async_to_raw_response_wrapper(resource.remove)
+        self.refresh = async_to_raw_response_wrapper(resource.refresh)
+
+
+class AsyncWorktreeResourceWithStreamingResponse:
+    """``client.worktree.with_streaming_response``."""
+
+    def __init__(self, resource: AsyncWorktreeResource) -> None:
+        self._resource = resource
+        self.list = async_to_streamed_response_wrapper(resource.list)
+        self.create = async_to_streamed_response_wrapper(resource.create)
+        self.remove = async_to_streamed_response_wrapper(resource.remove)
+        self.refresh = async_to_streamed_response_wrapper(resource.refresh)

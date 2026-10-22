@@ -121,7 +121,11 @@ def resources_page() -> str:
         if path.name.startswith("_"):
             continue
         tree = ast.parse(path.read_text())
-        classes = [n.name for n in tree.body if isinstance(n, ast.ClassDef) and not n.name.startswith("Async")]
+        classes = [
+            n.name
+            for n in tree.body
+            if isinstance(n, ast.ClassDef) and not n.name.startswith("Async") and n.name.endswith("Resource")
+        ]
         for cls in classes:
             lines += [f"::: opencode.resources.{path.stem}.{cls}", "    options:", "      show_bases: false", ""]
     return "\n".join(lines)
