@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -42,18 +43,21 @@ class MigrationV1Resource(SyncAPIResource):
 
         ``GET /api/experimental/migration/v1``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/experimental/migration/v1",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "MigrationV1StatusResponseOption1 | MigrationV1StatusResponseOption2 | MigrationV1StatusResponseOption3",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/experimental/migration/v1",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=MigrationV1StatusResponseOption1
+                | MigrationV1StatusResponseOption2
+                | MigrationV1StatusResponseOption3,
             ),
-            response_type=MigrationV1StatusResponseOption1
-            | MigrationV1StatusResponseOption2
-            | MigrationV1StatusResponseOption3,
         )
 
 
@@ -88,18 +92,21 @@ class AsyncMigrationV1Resource(AsyncAPIResource):
 
         ``GET /api/experimental/migration/v1``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/experimental/migration/v1",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "MigrationV1StatusResponseOption1 | MigrationV1StatusResponseOption2 | MigrationV1StatusResponseOption3",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/experimental/migration/v1",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=MigrationV1StatusResponseOption1
+                | MigrationV1StatusResponseOption2
+                | MigrationV1StatusResponseOption3,
             ),
-            response_type=MigrationV1StatusResponseOption1
-            | MigrationV1StatusResponseOption2
-            | MigrationV1StatusResponseOption3,
         )
 
 

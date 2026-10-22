@@ -8,7 +8,7 @@ from __future__ import annotations
 import builtins
 from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Any
+from typing import Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -55,17 +55,20 @@ class PermissionRequestResource(SyncAPIResource):
 
         ``GET /api/permission/request``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/permission/request",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionRequestListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/permission/request",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionRequestListResponse,
             ),
-            response_type=PermissionRequestListResponse,
         )
 
 
@@ -92,18 +95,21 @@ class PermissionSavedResource(SyncAPIResource):
 
         ``GET /api/permission/saved``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/permission/saved",
-                query={"projectID": project_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[PermissionSavedInfo]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/permission/saved",
+                    query={"projectID": project_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[PermissionSavedInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[PermissionSavedInfo],
-            unwrap=True,
         )
 
     def update(
@@ -130,18 +136,21 @@ class PermissionSavedResource(SyncAPIResource):
 
         ``PATCH /api/permission/saved/:id``
         """
-        return self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/permission/saved/{encode_path_segment(id)}",
-                body={"action": action, "resource": resource},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionSavedInfo",
+            self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/permission/saved/{encode_path_segment(id)}",
+                    body={"action": action, "resource": resource},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionSavedInfo,
+                unwrap=True,
             ),
-            response_type=PermissionSavedInfo,
-            unwrap=True,
         )
 
     def remove(
@@ -216,26 +225,29 @@ class PermissionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/permission``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission",
-                body={
-                    "id": id,
-                    "action": action,
-                    "resources": resources,
-                    "save": save,
-                    "metadata": metadata,
-                    "source": source,
-                    "agent": agent,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionCreateResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission",
+                    body={
+                        "id": id,
+                        "action": action,
+                        "resources": resources,
+                        "save": save,
+                        "metadata": metadata,
+                        "source": source,
+                        "agent": agent,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionCreateResponse,
+                unwrap=True,
             ),
-            response_type=PermissionCreateResponse,
-            unwrap=True,
         )
 
     def list(
@@ -259,17 +271,20 @@ class PermissionResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/permission``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[PermissionRequest]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[PermissionRequest],
+                unwrap=True,
             ),
-            response_type=builtins.list[PermissionRequest],
-            unwrap=True,
         )
 
     def get(
@@ -295,17 +310,20 @@ class PermissionResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/permission/:requestID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionRequest",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionRequest,
+                unwrap=True,
             ),
-            response_type=PermissionRequest,
-            unwrap=True,
         )
 
     def reply(
@@ -370,17 +388,20 @@ class AsyncPermissionRequestResource(AsyncAPIResource):
 
         ``GET /api/permission/request``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/permission/request",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionRequestListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/permission/request",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionRequestListResponse,
             ),
-            response_type=PermissionRequestListResponse,
         )
 
 
@@ -407,18 +428,21 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
 
         ``GET /api/permission/saved``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/permission/saved",
-                query={"projectID": project_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[PermissionSavedInfo]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/permission/saved",
+                    query={"projectID": project_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[PermissionSavedInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[PermissionSavedInfo],
-            unwrap=True,
         )
 
     async def update(
@@ -445,18 +469,21 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
 
         ``PATCH /api/permission/saved/:id``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/permission/saved/{encode_path_segment(id)}",
-                body={"action": action, "resource": resource},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionSavedInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/permission/saved/{encode_path_segment(id)}",
+                    body={"action": action, "resource": resource},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionSavedInfo,
+                unwrap=True,
             ),
-            response_type=PermissionSavedInfo,
-            unwrap=True,
         )
 
     async def remove(
@@ -531,26 +558,29 @@ class AsyncPermissionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/permission``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission",
-                body={
-                    "id": id,
-                    "action": action,
-                    "resources": resources,
-                    "save": save,
-                    "metadata": metadata,
-                    "source": source,
-                    "agent": agent,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionCreateResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission",
+                    body={
+                        "id": id,
+                        "action": action,
+                        "resources": resources,
+                        "save": save,
+                        "metadata": metadata,
+                        "source": source,
+                        "agent": agent,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionCreateResponse,
+                unwrap=True,
             ),
-            response_type=PermissionCreateResponse,
-            unwrap=True,
         )
 
     async def list(
@@ -574,17 +604,20 @@ class AsyncPermissionResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/permission``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[PermissionRequest]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[PermissionRequest],
+                unwrap=True,
             ),
-            response_type=builtins.list[PermissionRequest],
-            unwrap=True,
         )
 
     async def get(
@@ -610,17 +643,20 @@ class AsyncPermissionResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/permission/:requestID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PermissionRequest",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/permission/{encode_path_segment(request_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PermissionRequest,
+                unwrap=True,
             ),
-            response_type=PermissionRequest,
-            unwrap=True,
         )
 
     async def reply(

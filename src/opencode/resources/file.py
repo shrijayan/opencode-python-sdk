@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path
@@ -46,17 +46,20 @@ class FileResource(SyncAPIResource):
 
         ``GET /api/fs/read/*``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/fs/read/{encode_path(path)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "bytes",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/fs/read/{encode_path(path)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="binary",
             ),
-            kind="binary",
         )
 
     def list(
@@ -84,17 +87,20 @@ class FileResource(SyncAPIResource):
 
         ``GET /api/fs/list``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/fs/list",
-                query={"location": self._client._location(location), "path": path},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FileListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/fs/list",
+                    query={"location": self._location(location), "path": path},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FileListResponse,
             ),
-            response_type=FileListResponse,
         )
 
     def find(
@@ -120,17 +126,20 @@ class FileResource(SyncAPIResource):
 
         ``GET /api/fs/find``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/fs/find",
-                query={"location": self._client._location(location), "query": query, "type": type, "limit": limit},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FileFindResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/fs/find",
+                    query={"location": self._location(location), "query": query, "type": type, "limit": limit},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FileFindResponse,
             ),
-            response_type=FileFindResponse,
         )
 
     def write(
@@ -160,18 +169,21 @@ class FileResource(SyncAPIResource):
 
         ``POST /api/experimental/fs/write``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/fs/write",
-                query={"location": self._client._location(location), "path": path},
-                content=bytes(payload),
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FileWriteResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/fs/write",
+                    query={"location": self._location(location), "path": path},
+                    content=bytes(payload),
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FileWriteResponse,
             ),
-            response_type=FileWriteResponse,
         )
 
 
@@ -200,17 +212,20 @@ class AsyncFileResource(AsyncAPIResource):
 
         ``GET /api/fs/read/*``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/fs/read/{encode_path(path)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "bytes",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/fs/read/{encode_path(path)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                kind="binary",
             ),
-            kind="binary",
         )
 
     async def list(
@@ -238,17 +253,20 @@ class AsyncFileResource(AsyncAPIResource):
 
         ``GET /api/fs/list``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/fs/list",
-                query={"location": self._client._location(location), "path": path},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FileListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/fs/list",
+                    query={"location": self._location(location), "path": path},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FileListResponse,
             ),
-            response_type=FileListResponse,
         )
 
     async def find(
@@ -274,17 +292,20 @@ class AsyncFileResource(AsyncAPIResource):
 
         ``GET /api/fs/find``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/fs/find",
-                query={"location": self._client._location(location), "query": query, "type": type, "limit": limit},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FileFindResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/fs/find",
+                    query={"location": self._location(location), "query": query, "type": type, "limit": limit},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FileFindResponse,
             ),
-            response_type=FileFindResponse,
         )
 
     async def write(
@@ -314,16 +335,19 @@ class AsyncFileResource(AsyncAPIResource):
 
         ``POST /api/experimental/fs/write``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/fs/write",
-                query={"location": self._client._location(location), "path": path},
-                content=bytes(payload),
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FileWriteResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/fs/write",
+                    query={"location": self._location(location), "path": path},
+                    content=bytes(payload),
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FileWriteResponse,
             ),
-            response_type=FileWriteResponse,
         )

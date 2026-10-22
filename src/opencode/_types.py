@@ -43,6 +43,7 @@ class NotGiven:
     def __repr__(self) -> str:
         return "NOT_GIVEN"
 
+    @override
     def __reduce__(self) -> str:
         return "NOT_GIVEN"
 

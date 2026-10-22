@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -47,18 +47,21 @@ class RpcResource(SyncAPIResource):
 
         ``POST /api/rpc/:rpcID/:method``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/rpc/{encode_path_segment(rpc_id)}/{encode_path_segment(method)}",
-                query={"location": self._client._location(location)},
-                body={"input": input},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "RpcOutput",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/rpc/{encode_path_segment(rpc_id)}/{encode_path_segment(method)}",
+                    query={"location": self._location(location)},
+                    body={"input": input},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=RpcOutput,
             ),
-            response_type=RpcOutput,
         )
 
 
@@ -90,16 +93,19 @@ class AsyncRpcResource(AsyncAPIResource):
 
         ``POST /api/rpc/:rpcID/:method``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/rpc/{encode_path_segment(rpc_id)}/{encode_path_segment(method)}",
-                query={"location": self._client._location(location)},
-                body={"input": input},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "RpcOutput",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/rpc/{encode_path_segment(rpc_id)}/{encode_path_segment(method)}",
+                    query={"location": self._location(location)},
+                    body={"input": input},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=RpcOutput,
             ),
-            response_type=RpcOutput,
         )

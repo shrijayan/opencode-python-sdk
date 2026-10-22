@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import builtins
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -45,17 +46,20 @@ class ProjectResource(SyncAPIResource):
 
         ``GET /api/project``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/project",
-                query={"archived": archived},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[Project]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/project",
+                    query={"archived": archived},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[Project],
             ),
-            response_type=builtins.list[Project],
         )
 
     def update(
@@ -83,17 +87,20 @@ class ProjectResource(SyncAPIResource):
 
         ``PATCH /api/project/:projectID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/project/{encode_path_segment(project_id)}",
-                body={"canonical": canonical, "name": name, "icon": icon, "commands": commands},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "Project",
+            self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/project/{encode_path_segment(project_id)}",
+                    body={"canonical": canonical, "name": name, "icon": icon, "commands": commands},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=Project,
             ),
-            response_type=Project,
         )
 
 
@@ -120,17 +127,20 @@ class AsyncProjectResource(AsyncAPIResource):
 
         ``GET /api/project``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/project",
-                query={"archived": archived},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[Project]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/project",
+                    query={"archived": archived},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[Project],
             ),
-            response_type=builtins.list[Project],
         )
 
     async def update(
@@ -158,15 +168,18 @@ class AsyncProjectResource(AsyncAPIResource):
 
         ``PATCH /api/project/:projectID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="PATCH",
-                path=f"/api/project/{encode_path_segment(project_id)}",
-                body={"canonical": canonical, "name": name, "icon": icon, "commands": commands},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "Project",
+            await self._client.request(
+                RequestOptions(
+                    method="PATCH",
+                    path=f"/api/project/{encode_path_segment(project_id)}",
+                    body={"canonical": canonical, "name": name, "icon": icon, "commands": commands},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=Project,
             ),
-            response_type=Project,
         )

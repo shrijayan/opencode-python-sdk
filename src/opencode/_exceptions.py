@@ -27,7 +27,7 @@ callers can catch a precise error or any error of that status.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, TypeVar
+from typing import TYPE_CHECKING, Any, ClassVar, TypeVar, cast
 
 import pydantic
 from typing_extensions import override
@@ -126,17 +126,19 @@ class APIStatusError(APIError):
         self.error_tag = _string_field(body, "_tag")
 
     def _typed_body(self, model: type[_M]) -> _M:
-        body = self.body if isinstance(self.body, dict) else {}
+        raw: object = self.body
+        body: dict[str, Any] = cast("dict[str, Any]", raw) if isinstance(raw, dict) else {}
         try:
             return model.model_validate(body)
         except pydantic.ValidationError:
             # Keep the error usable even when the body does not match this client's schema.
-            return model.model_construct(**body)  # pyright: ignore[reportUnknownArgumentType]
+            return model.model_construct(**body)
 
     @property
     def request_id(self) -> str | None:
         """The server's request identifier, when it sends one."""
-        return self.response.headers.get("x-request-id")
+        value: str | None = self.response.headers.get("x-request-id")
+        return value
 
     @override
     def __str__(self) -> str:
@@ -191,21 +193,17 @@ class ServiceUnavailableError(InternalServerError):
 
 
 _STATUS_ERRORS: dict[int, type[APIStatusError]] = {
-    cls.status: cls
-    for cls in (
-        BadRequestError,
-        AuthenticationError,
-        PermissionDeniedError,
-        NotFoundError,
-        ConflictError,
-        ContentTooLargeError,
-        UnprocessableEntityError,
-        RateLimitError,
-        InternalServerError,
-        NotImplementedServerError,
-        ServiceUnavailableError,
-    )
-    if cls.status is not None
+    400: BadRequestError,
+    401: AuthenticationError,
+    403: PermissionDeniedError,
+    404: NotFoundError,
+    409: ConflictError,
+    413: ContentTooLargeError,
+    422: UnprocessableEntityError,
+    429: RateLimitError,
+    500: InternalServerError,
+    501: NotImplementedServerError,
+    503: ServiceUnavailableError,
 }
 
 
@@ -227,7 +225,7 @@ def error_message(body: object | None, status_code: int) -> str:
     """Extracts a human-readable message from an error body."""
     message = _string_field(body, "message")
     if message is None and isinstance(body, dict):
-        message = _string_field(body.get("data"), "message")  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
+        message = _string_field(cast("dict[str, Any]", body).get("data"), "message")
     if message:
         return message
     if isinstance(body, str) and body.strip():
@@ -235,9 +233,17 @@ def error_message(body: object | None, status_code: int) -> str:
     return f"Request failed with status {status_code}"
 
 
+def validation_summary(error: pydantic.ValidationError, limit: int = 5) -> str:
+    """Describes a validation failure by location and reason only, never echoing response values."""
+    issues = error.errors(include_input=False, include_url=False)
+    parts = [f"{'.'.join(str(item) for item in issue['loc']) or '<root>'}: {issue['msg']}" for issue in issues[:limit]]
+    more = f" (+{len(issues) - limit} more)" if len(issues) > limit else ""
+    return f"Response did not match the expected schema: {'; '.join(parts)}{more}"
+
+
 def _string_field(body: object | None, key: str) -> str | None:
     if isinstance(body, dict):
-        value: Any = body.get(key)  # pyright: ignore[reportUnknownMemberType]
+        value: object = cast("dict[str, Any]", body).get(key)
         if isinstance(value, str):
             return value
     return None

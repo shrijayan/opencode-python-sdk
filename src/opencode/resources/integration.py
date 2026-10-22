@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -58,7 +59,7 @@ class IntegrationWellknownResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path="/api/experimental/integration/wellknown",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"url": url},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -101,7 +102,7 @@ class IntegrationConnectResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/key",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"key": key, "answer": answer, "label": label},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -140,7 +141,7 @@ class IntegrationConnectResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/external",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"methodID": method_id, "answer": answer, "label": label},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -178,18 +179,21 @@ class IntegrationOauthResource(SyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/oauth``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth",
-                query={"location": self._client._location(location)},
-                body={"methodID": method_id, "answer": answer, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationOauthConnectResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth",
+                    query={"location": self._location(location)},
+                    body={"methodID": method_id, "answer": answer, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationOauthConnectResponse,
             ),
-            response_type=IntegrationOauthConnectResponse,
         )
 
     def status(
@@ -216,17 +220,20 @@ class IntegrationOauthResource(SyncAPIResource):
 
         ``GET /api/integration/:integrationID/connect/oauth/:attemptID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationOauthStatusResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationOauthStatusResponse,
             ),
-            response_type=IntegrationOauthStatusResponse,
         )
 
     def complete(
@@ -258,7 +265,7 @@ class IntegrationOauthResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}/complete",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"code": code},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -294,7 +301,7 @@ class IntegrationOauthResource(SyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -332,18 +339,21 @@ class IntegrationCommandResource(SyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/command``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command",
-                query={"location": self._client._location(location)},
-                body={"methodID": method_id, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationCommandConnectResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command",
+                    query={"location": self._location(location)},
+                    body={"methodID": method_id, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationCommandConnectResponse,
             ),
-            response_type=IntegrationCommandConnectResponse,
         )
 
     def status(
@@ -370,17 +380,20 @@ class IntegrationCommandResource(SyncAPIResource):
 
         ``GET /api/integration/:integrationID/connect/command/:attemptID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationCommandStatusResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationCommandStatusResponse,
             ),
-            response_type=IntegrationCommandStatusResponse,
         )
 
     def cancel(
@@ -409,7 +422,7 @@ class IntegrationCommandResource(SyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -458,17 +471,20 @@ class IntegrationResource(SyncAPIResource):
 
         ``GET /api/integration``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/integration",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/integration",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationListResponse,
             ),
-            response_type=IntegrationListResponse,
         )
 
     def get(
@@ -493,17 +509,20 @@ class IntegrationResource(SyncAPIResource):
 
         ``GET /api/integration/:integrationID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/integration/{encode_path_segment(integration_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationGetResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationGetResponse,
             ),
-            response_type=IntegrationGetResponse,
         )
 
 
@@ -537,7 +556,7 @@ class AsyncIntegrationWellknownResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path="/api/experimental/integration/wellknown",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"url": url},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -580,7 +599,7 @@ class AsyncIntegrationConnectResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/key",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"key": key, "answer": answer, "label": label},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -619,7 +638,7 @@ class AsyncIntegrationConnectResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/external",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"methodID": method_id, "answer": answer, "label": label},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -657,18 +676,21 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/oauth``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth",
-                query={"location": self._client._location(location)},
-                body={"methodID": method_id, "answer": answer, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationOauthConnectResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth",
+                    query={"location": self._location(location)},
+                    body={"methodID": method_id, "answer": answer, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationOauthConnectResponse,
             ),
-            response_type=IntegrationOauthConnectResponse,
         )
 
     async def status(
@@ -695,17 +717,20 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
 
         ``GET /api/integration/:integrationID/connect/oauth/:attemptID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationOauthStatusResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationOauthStatusResponse,
             ),
-            response_type=IntegrationOauthStatusResponse,
         )
 
     async def complete(
@@ -737,7 +762,7 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}/complete",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"code": code},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -773,7 +798,7 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/oauth/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -811,18 +836,21 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
 
         ``POST /api/integration/:integrationID/connect/command``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command",
-                query={"location": self._client._location(location)},
-                body={"methodID": method_id, "label": label},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationCommandConnectResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command",
+                    query={"location": self._location(location)},
+                    body={"methodID": method_id, "label": label},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationCommandConnectResponse,
             ),
-            response_type=IntegrationCommandConnectResponse,
         )
 
     async def status(
@@ -849,17 +877,20 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
 
         ``GET /api/integration/:integrationID/connect/command/:attemptID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationCommandStatusResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationCommandStatusResponse,
             ),
-            response_type=IntegrationCommandStatusResponse,
         )
 
     async def cancel(
@@ -888,7 +919,7 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/integration/{encode_path_segment(integration_id)}/connect/command/{encode_path_segment(attempt_id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -937,17 +968,20 @@ class AsyncIntegrationResource(AsyncAPIResource):
 
         ``GET /api/integration``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/integration",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/integration",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationListResponse,
             ),
-            response_type=IntegrationListResponse,
         )
 
     async def get(
@@ -972,15 +1006,18 @@ class AsyncIntegrationResource(AsyncAPIResource):
 
         ``GET /api/integration/:integrationID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/integration/{encode_path_segment(integration_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "IntegrationGetResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/integration/{encode_path_segment(integration_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=IntegrationGetResponse,
             ),
-            response_type=IntegrationGetResponse,
         )

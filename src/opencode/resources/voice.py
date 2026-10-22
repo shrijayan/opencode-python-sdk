@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -47,18 +47,21 @@ class VoiceResource(SyncAPIResource):
 
         ``POST /api/experimental/voice/session``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/voice/session",
-                body={"model": model, "session": session, "transport": transport},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VoiceSessionResponseData",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/voice/session",
+                    body={"model": model, "session": session, "transport": transport},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VoiceSessionResponseData,
+                unwrap=True,
             ),
-            response_type=VoiceSessionResponseData,
-            unwrap=True,
         )
 
 
@@ -90,16 +93,19 @@ class AsyncVoiceResource(AsyncAPIResource):
 
         ``POST /api/experimental/voice/session``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/voice/session",
-                body={"model": model, "session": session, "transport": transport},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VoiceSessionResponseData",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/voice/session",
+                    body={"model": model, "session": session, "transport": transport},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VoiceSessionResponseData,
+                unwrap=True,
             ),
-            response_type=VoiceSessionResponseData,
-            unwrap=True,
         )

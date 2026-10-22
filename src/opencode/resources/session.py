@@ -8,7 +8,7 @@ from __future__ import annotations
 import builtins
 from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 from .._base_client import RequestOptions
 from .._pagination import AsyncPaginator, SyncCursorPage
@@ -90,18 +90,21 @@ class SessionRevertResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/revert/stage``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/revert/stage",
-                body={"messageID": message_id, "files": files},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionRevert",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/revert/stage",
+                    body={"messageID": message_id, "files": files},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionRevert,
+                unwrap=True,
             ),
-            response_type=SessionRevert,
-            unwrap=True,
         )
 
     def clear(
@@ -193,17 +196,20 @@ class SessionInboxResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/inbox``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/inbox",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[SessionInboxInfo]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/inbox",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[SessionInboxInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[SessionInboxInfo],
-            unwrap=True,
         )
 
     def cancel(
@@ -302,17 +308,20 @@ class SessionInstructionsEntryResource(SyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/instructions/entries``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[InstructionEntryInfo]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[InstructionEntryInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[InstructionEntryInfo],
-            unwrap=True,
         )
 
     def put(
@@ -424,17 +433,20 @@ class SessionMessageResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/message/:messageID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/message/{encode_path_segment(message_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionMessageInfo",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/message/{encode_path_segment(message_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionMessageInfo,
+                unwrap=True,
             ),
-            response_type=SessionMessageInfo,
-            unwrap=True,
         )
 
 
@@ -462,17 +474,20 @@ class SessionFormResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/form``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/form",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[FormInfo]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[FormInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[FormInfo],
-            unwrap=True,
         )
 
     def create(
@@ -501,18 +516,21 @@ class SessionFormResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/form``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/form",
-                body={"id": id, "title": title, "metadata": metadata, "fields": fields},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FormInfo",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form",
+                    body={"id": id, "title": title, "metadata": metadata, "fields": fields},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FormInfo,
+                unwrap=True,
             ),
-            response_type=FormInfo,
-            unwrap=True,
         )
 
     def get(
@@ -538,17 +556,20 @@ class SessionFormResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/form/:formID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FormDetail",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FormDetail,
+                unwrap=True,
             ),
-            response_type=FormDetail,
-            unwrap=True,
         )
 
     def reply(
@@ -734,18 +755,21 @@ class SessionResource(SyncAPIResource):
 
         ``GET /api/experimental/session/stats``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/experimental/session/stats",
-                query={"from": from_, "to": to, "project": project, "timezone": timezone, "tools": tools},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionStatsInfo",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/experimental/session/stats",
+                    query={"from": from_, "to": to, "project": project, "timezone": timezone, "tools": tools},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionStatsInfo,
+                unwrap=True,
             ),
-            response_type=SessionStatsInfo,
-            unwrap=True,
         )
 
     def create(
@@ -775,27 +799,30 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/session``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/session",
-                body={
-                    "id": id,
-                    "parentID": parent_id,
-                    "title": title,
-                    "agent": agent,
-                    "model": model,
-                    "location": location,
-                    "metadata": metadata,
-                    "permissions": permissions,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/session",
+                    body={
+                        "id": id,
+                        "parentID": parent_id,
+                        "title": title,
+                        "agent": agent,
+                        "model": model,
+                        "location": location,
+                        "metadata": metadata,
+                        "permissions": permissions,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     def import_(
@@ -823,18 +850,21 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/experimental/session/import``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/session/import",
-                body={"info": info, "messages": messages, "location": location},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/session/import",
+                    body={"info": info, "messages": messages, "location": location},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     def export(
@@ -861,18 +891,21 @@ class SessionResource(SyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/export``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/export",
-                query={"sanitize": sanitize},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionTransferData",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/export",
+                    query={"sanitize": sanitize},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionTransferData,
+                unwrap=True,
             ),
-            response_type=SessionTransferData,
-            unwrap=True,
         )
 
     def active(
@@ -893,17 +926,20 @@ class SessionResource(SyncAPIResource):
 
         ``GET /api/session/active``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/session/active",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.dict[str, Any]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/session/active",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.dict[str, Any],
+                unwrap=True,
             ),
-            response_type=builtins.dict[str, Any],
-            unwrap=True,
         )
 
     def get(
@@ -926,17 +962,20 @@ class SessionResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     def remove(
@@ -994,18 +1033,21 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/fork``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/fork",
-                body={"before": before},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/fork",
+                    body={"before": before},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     def switch_agent(
@@ -1184,27 +1226,30 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/prompt``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/prompt",
-                body={
-                    "id": id,
-                    "text": text,
-                    "files": files,
-                    "agents": agents,
-                    "skills": skills,
-                    "metadata": metadata,
-                    "delivery": delivery,
-                    "resume": resume,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInboxUser",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/prompt",
+                    body={
+                        "id": id,
+                        "text": text,
+                        "files": files,
+                        "agents": agents,
+                        "skills": skills,
+                        "metadata": metadata,
+                        "delivery": delivery,
+                        "resume": resume,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInboxUser,
+                unwrap=True,
             ),
-            response_type=SessionInboxUser,
-            unwrap=True,
         )
 
     def command(
@@ -1323,25 +1368,28 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/synthetic``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/synthetic",
-                body={
-                    "id": id,
-                    "text": text,
-                    "description": description,
-                    "metadata": metadata,
-                    "delivery": delivery,
-                    "resume": resume,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInboxSynthetic",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/synthetic",
+                    body={
+                        "id": id,
+                        "text": text,
+                        "description": description,
+                        "metadata": metadata,
+                        "delivery": delivery,
+                        "resume": resume,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInboxSynthetic,
+                unwrap=True,
             ),
-            response_type=SessionInboxSynthetic,
-            unwrap=True,
         )
 
     def shell(
@@ -1404,18 +1452,21 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/compact``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/compact",
-                body={"id": id, "delivery": delivery},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInboxCompaction",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/compact",
+                    body={"id": id, "delivery": delivery},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInboxCompaction,
+                unwrap=True,
             ),
-            response_type=SessionInboxCompaction,
-            unwrap=True,
         )
 
     def wait(
@@ -1475,17 +1526,20 @@ class SessionResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/context``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/context",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[SessionMessageInfo]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/context",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[SessionMessageInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[SessionMessageInfo],
-            unwrap=True,
         )
 
     def diff(
@@ -1519,18 +1573,21 @@ class SessionResource(SyncAPIResource):
 
         ``GET /api/session/:sessionID/diff``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/diff",
-                query={"from": from_, "to": to, "context": context},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[FileDiffInfo]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/diff",
+                    query={"from": from_, "to": to, "context": context},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[FileDiffInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[FileDiffInfo],
-            unwrap=True,
         )
 
     def generate(
@@ -1556,18 +1613,21 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/generate``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/generate",
-                body={"prompt": prompt},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionGenerateResponseData",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/generate",
+                    body={"prompt": prompt},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionGenerateResponseData,
+                unwrap=True,
             ),
-            response_type=SessionGenerateResponseData,
-            unwrap=True,
         )
 
     def log(
@@ -1629,17 +1689,20 @@ class SessionResource(SyncAPIResource):
 
         ``POST /api/session/:sessionID/interrupt``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/interrupt",
-                query={"resume": resume},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInterruptResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/interrupt",
+                    query={"resume": resume},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInterruptResponse,
             ),
-            response_type=SessionInterruptResponse,
         )
 
     def background(
@@ -1773,18 +1836,21 @@ class AsyncSessionRevertResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/revert/stage``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/revert/stage",
-                body={"messageID": message_id, "files": files},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionRevert",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/revert/stage",
+                    body={"messageID": message_id, "files": files},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionRevert,
+                unwrap=True,
             ),
-            response_type=SessionRevert,
-            unwrap=True,
         )
 
     async def clear(
@@ -1876,17 +1942,20 @@ class AsyncSessionInboxResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/inbox``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/inbox",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[SessionInboxInfo]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/inbox",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[SessionInboxInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[SessionInboxInfo],
-            unwrap=True,
         )
 
     async def cancel(
@@ -1985,17 +2054,20 @@ class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/instructions/entries``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[InstructionEntryInfo]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/instructions/entries",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[InstructionEntryInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[InstructionEntryInfo],
-            unwrap=True,
         )
 
     async def put(
@@ -2107,17 +2179,20 @@ class AsyncSessionMessageResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/message/:messageID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/message/{encode_path_segment(message_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionMessageInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/message/{encode_path_segment(message_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionMessageInfo,
+                unwrap=True,
             ),
-            response_type=SessionMessageInfo,
-            unwrap=True,
         )
 
 
@@ -2145,17 +2220,20 @@ class AsyncSessionFormResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/form``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/form",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[FormInfo]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[FormInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[FormInfo],
-            unwrap=True,
         )
 
     async def create(
@@ -2184,18 +2262,21 @@ class AsyncSessionFormResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/form``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/form",
-                body={"id": id, "title": title, "metadata": metadata, "fields": fields},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FormInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form",
+                    body={"id": id, "title": title, "metadata": metadata, "fields": fields},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FormInfo,
+                unwrap=True,
             ),
-            response_type=FormInfo,
-            unwrap=True,
         )
 
     async def get(
@@ -2221,17 +2302,20 @@ class AsyncSessionFormResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/form/:formID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "FormDetail",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/form/{encode_path_segment(form_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=FormDetail,
+                unwrap=True,
             ),
-            response_type=FormDetail,
-            unwrap=True,
         )
 
     async def reply(
@@ -2417,18 +2501,21 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``GET /api/experimental/session/stats``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/experimental/session/stats",
-                query={"from": from_, "to": to, "project": project, "timezone": timezone, "tools": tools},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionStatsInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/experimental/session/stats",
+                    query={"from": from_, "to": to, "project": project, "timezone": timezone, "tools": tools},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionStatsInfo,
+                unwrap=True,
             ),
-            response_type=SessionStatsInfo,
-            unwrap=True,
         )
 
     async def create(
@@ -2458,27 +2545,30 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/session``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/session",
-                body={
-                    "id": id,
-                    "parentID": parent_id,
-                    "title": title,
-                    "agent": agent,
-                    "model": model,
-                    "location": location,
-                    "metadata": metadata,
-                    "permissions": permissions,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/session",
+                    body={
+                        "id": id,
+                        "parentID": parent_id,
+                        "title": title,
+                        "agent": agent,
+                        "model": model,
+                        "location": location,
+                        "metadata": metadata,
+                        "permissions": permissions,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     async def import_(
@@ -2506,18 +2596,21 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/experimental/session/import``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/session/import",
-                body={"info": info, "messages": messages, "location": location},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/session/import",
+                    body={"info": info, "messages": messages, "location": location},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     async def export(
@@ -2544,18 +2637,21 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/export``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/export",
-                query={"sanitize": sanitize},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionTransferData",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/export",
+                    query={"sanitize": sanitize},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionTransferData,
+                unwrap=True,
             ),
-            response_type=SessionTransferData,
-            unwrap=True,
         )
 
     async def active(
@@ -2576,17 +2672,20 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``GET /api/session/active``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/session/active",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.dict[str, Any]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/session/active",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.dict[str, Any],
+                unwrap=True,
             ),
-            response_type=builtins.dict[str, Any],
-            unwrap=True,
         )
 
     async def get(
@@ -2609,17 +2708,20 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     async def remove(
@@ -2677,18 +2779,21 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/fork``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/fork",
-                body={"before": before},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/fork",
+                    body={"before": before},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInfo,
+                unwrap=True,
             ),
-            response_type=SessionInfo,
-            unwrap=True,
         )
 
     async def switch_agent(
@@ -2867,27 +2972,30 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/prompt``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/prompt",
-                body={
-                    "id": id,
-                    "text": text,
-                    "files": files,
-                    "agents": agents,
-                    "skills": skills,
-                    "metadata": metadata,
-                    "delivery": delivery,
-                    "resume": resume,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInboxUser",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/prompt",
+                    body={
+                        "id": id,
+                        "text": text,
+                        "files": files,
+                        "agents": agents,
+                        "skills": skills,
+                        "metadata": metadata,
+                        "delivery": delivery,
+                        "resume": resume,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInboxUser,
+                unwrap=True,
             ),
-            response_type=SessionInboxUser,
-            unwrap=True,
         )
 
     async def command(
@@ -3006,25 +3114,28 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/synthetic``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/synthetic",
-                body={
-                    "id": id,
-                    "text": text,
-                    "description": description,
-                    "metadata": metadata,
-                    "delivery": delivery,
-                    "resume": resume,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInboxSynthetic",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/synthetic",
+                    body={
+                        "id": id,
+                        "text": text,
+                        "description": description,
+                        "metadata": metadata,
+                        "delivery": delivery,
+                        "resume": resume,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInboxSynthetic,
+                unwrap=True,
             ),
-            response_type=SessionInboxSynthetic,
-            unwrap=True,
         )
 
     async def shell(
@@ -3087,18 +3198,21 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/compact``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/compact",
-                body={"id": id, "delivery": delivery},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInboxCompaction",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/compact",
+                    body={"id": id, "delivery": delivery},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInboxCompaction,
+                unwrap=True,
             ),
-            response_type=SessionInboxCompaction,
-            unwrap=True,
         )
 
     async def wait(
@@ -3158,17 +3272,20 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/context``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/context",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[SessionMessageInfo]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/context",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[SessionMessageInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[SessionMessageInfo],
-            unwrap=True,
         )
 
     async def diff(
@@ -3202,18 +3319,21 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``GET /api/session/:sessionID/diff``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/session/{encode_path_segment(session_id)}/diff",
-                query={"from": from_, "to": to, "context": context},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[FileDiffInfo]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/session/{encode_path_segment(session_id)}/diff",
+                    query={"from": from_, "to": to, "context": context},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[FileDiffInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[FileDiffInfo],
-            unwrap=True,
         )
 
     async def generate(
@@ -3239,18 +3359,21 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/generate``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/generate",
-                body={"prompt": prompt},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionGenerateResponseData",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/generate",
+                    body={"prompt": prompt},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionGenerateResponseData,
+                unwrap=True,
             ),
-            response_type=SessionGenerateResponseData,
-            unwrap=True,
         )
 
     async def log(
@@ -3312,17 +3435,20 @@ class AsyncSessionResource(AsyncAPIResource):
 
         ``POST /api/session/:sessionID/interrupt``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/session/{encode_path_segment(session_id)}/interrupt",
-                query={"resume": resume},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SessionInterruptResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/session/{encode_path_segment(session_id)}/interrupt",
+                    query={"resume": resume},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SessionInterruptResponse,
             ),
-            response_type=SessionInterruptResponse,
         )
 
     async def background(

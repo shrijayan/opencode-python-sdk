@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any
+from typing import Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -47,17 +47,20 @@ class ShellResource(SyncAPIResource):
 
         ``GET /api/shell``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/shell",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/shell",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellListResponse,
             ),
-            response_type=ShellListResponse,
         )
 
     def create(
@@ -84,18 +87,21 @@ class ShellResource(SyncAPIResource):
 
         ``POST /api/shell``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/shell",
-                query={"location": self._client._location(location)},
-                body={"command": command, "cwd": cwd, "timeout": timeout_, "metadata": metadata},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellCreateResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/shell",
+                    query={"location": self._location(location)},
+                    body={"command": command, "cwd": cwd, "timeout": timeout_, "metadata": metadata},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellCreateResponse,
             ),
-            response_type=ShellCreateResponse,
         )
 
     def get(
@@ -120,17 +126,20 @@ class ShellResource(SyncAPIResource):
 
         ``GET /api/shell/:id``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/shell/{encode_path_segment(id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellGetResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/shell/{encode_path_segment(id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellGetResponse,
             ),
-            response_type=ShellGetResponse,
         )
 
     def output(
@@ -157,17 +166,20 @@ class ShellResource(SyncAPIResource):
 
         ``GET /api/shell/:id/output``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/shell/{encode_path_segment(id)}/output",
-                query={"location": self._client._location(location), "cursor": cursor, "limit": limit},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellOutputResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/shell/{encode_path_segment(id)}/output",
+                    query={"location": self._location(location), "cursor": cursor, "limit": limit},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellOutputResponse,
             ),
-            response_type=ShellOutputResponse,
         )
 
     def remove(
@@ -195,7 +207,7 @@ class ShellResource(SyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/shell/{encode_path_segment(id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -228,17 +240,20 @@ class AsyncShellResource(AsyncAPIResource):
 
         ``GET /api/shell``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/shell",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/shell",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellListResponse,
             ),
-            response_type=ShellListResponse,
         )
 
     async def create(
@@ -265,18 +280,21 @@ class AsyncShellResource(AsyncAPIResource):
 
         ``POST /api/shell``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/shell",
-                query={"location": self._client._location(location)},
-                body={"command": command, "cwd": cwd, "timeout": timeout_, "metadata": metadata},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellCreateResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/shell",
+                    query={"location": self._location(location)},
+                    body={"command": command, "cwd": cwd, "timeout": timeout_, "metadata": metadata},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellCreateResponse,
             ),
-            response_type=ShellCreateResponse,
         )
 
     async def get(
@@ -301,17 +319,20 @@ class AsyncShellResource(AsyncAPIResource):
 
         ``GET /api/shell/:id``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/shell/{encode_path_segment(id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellGetResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/shell/{encode_path_segment(id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellGetResponse,
             ),
-            response_type=ShellGetResponse,
         )
 
     async def output(
@@ -338,17 +359,20 @@ class AsyncShellResource(AsyncAPIResource):
 
         ``GET /api/shell/:id/output``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/shell/{encode_path_segment(id)}/output",
-                query={"location": self._client._location(location), "cursor": cursor, "limit": limit},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ShellOutputResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/shell/{encode_path_segment(id)}/output",
+                    query={"location": self._location(location), "cursor": cursor, "limit": limit},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ShellOutputResponse,
             ),
-            response_type=ShellOutputResponse,
         )
 
     async def remove(
@@ -376,7 +400,7 @@ class AsyncShellResource(AsyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/shell/{encode_path_segment(id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,

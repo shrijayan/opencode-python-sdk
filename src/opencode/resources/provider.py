@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -43,17 +45,20 @@ class ProviderResource(SyncAPIResource):
 
         ``GET /api/provider``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/provider",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ProviderListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/provider",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ProviderListResponse,
             ),
-            response_type=ProviderListResponse,
         )
 
     def get(
@@ -79,17 +84,20 @@ class ProviderResource(SyncAPIResource):
 
         ``GET /api/provider/:providerID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/provider/{encode_path_segment(provider_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ProviderGetResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/provider/{encode_path_segment(provider_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ProviderGetResponse,
             ),
-            response_type=ProviderGetResponse,
         )
 
 
@@ -117,17 +125,20 @@ class AsyncProviderResource(AsyncAPIResource):
 
         ``GET /api/provider``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/provider",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ProviderListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/provider",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ProviderListResponse,
             ),
-            response_type=ProviderListResponse,
         )
 
     async def get(
@@ -153,15 +164,18 @@ class AsyncProviderResource(AsyncAPIResource):
 
         ``GET /api/provider/:providerID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/provider/{encode_path_segment(provider_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ProviderGetResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/provider/{encode_path_segment(provider_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ProviderGetResponse,
             ),
-            response_type=ProviderGetResponse,
         )

@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -42,17 +43,20 @@ class PluginResource(SyncAPIResource):
 
         ``GET /api/plugin``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/plugin",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PluginListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/plugin",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PluginListResponse,
             ),
-            response_type=PluginListResponse,
         )
 
     def check(
@@ -76,18 +80,21 @@ class PluginResource(SyncAPIResource):
 
         ``POST /api/plugin/check``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/plugin/check",
-                query={"location": self._client._location(location)},
-                body={"target": target},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PluginCheckResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/plugin/check",
+                    query={"location": self._location(location)},
+                    body={"target": target},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PluginCheckResponse,
             ),
-            response_type=PluginCheckResponse,
         )
 
     def update(
@@ -116,7 +123,7 @@ class PluginResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path="/api/plugin/update",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"targets": targets},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -150,17 +157,20 @@ class AsyncPluginResource(AsyncAPIResource):
 
         ``GET /api/plugin``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/plugin",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PluginListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/plugin",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PluginListResponse,
             ),
-            response_type=PluginListResponse,
         )
 
     async def check(
@@ -184,18 +194,21 @@ class AsyncPluginResource(AsyncAPIResource):
 
         ``POST /api/plugin/check``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/plugin/check",
-                query={"location": self._client._location(location)},
-                body={"target": target},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PluginCheckResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/plugin/check",
+                    query={"location": self._location(location)},
+                    body={"target": target},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PluginCheckResponse,
             ),
-            response_type=PluginCheckResponse,
         )
 
     async def update(
@@ -224,7 +237,7 @@ class AsyncPluginResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path="/api/plugin/update",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"targets": targets},
                 extra_headers=extra_headers,
                 extra_query=extra_query,

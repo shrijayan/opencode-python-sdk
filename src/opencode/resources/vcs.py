@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -48,17 +49,20 @@ class VcsBranchResource(SyncAPIResource):
 
         ``GET /api/vcs/branch``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/branch",
-                query={"location": self._client._location(location), "search": search, "limit": limit},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsBranchListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/branch",
+                    query={"location": self._location(location), "search": search, "limit": limit},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsBranchListResponse,
             ),
-            response_type=VcsBranchListResponse,
         )
 
 
@@ -97,7 +101,7 @@ class VcsResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path="/api/vcs/init",
-                query={"location": self._client._location(location), "provider": provider},
+                query={"location": self._location(location), "provider": provider},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -126,17 +130,20 @@ class VcsResource(SyncAPIResource):
 
         ``GET /api/vcs``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsGetResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsGetResponse,
             ),
-            response_type=VcsGetResponse,
         )
 
     def base(
@@ -160,17 +167,20 @@ class VcsResource(SyncAPIResource):
 
         ``GET /api/vcs/base``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/base",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsBaseResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/base",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsBaseResponse,
             ),
-            response_type=VcsBaseResponse,
         )
 
     def status(
@@ -193,17 +203,20 @@ class VcsResource(SyncAPIResource):
 
         ``GET /api/vcs/status``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/status",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsStatusResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/status",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsStatusResponse,
             ),
-            response_type=VcsStatusResponse,
         )
 
     def diff(
@@ -230,17 +243,20 @@ class VcsResource(SyncAPIResource):
 
         ``GET /api/vcs/diff``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/diff",
-                query={"location": self._client._location(location), "mode": mode, "base": base, "context": context},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsDiffResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/diff",
+                    query={"location": self._location(location), "mode": mode, "base": base, "context": context},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsDiffResponse,
             ),
-            response_type=VcsDiffResponse,
         )
 
 
@@ -269,17 +285,20 @@ class AsyncVcsBranchResource(AsyncAPIResource):
 
         ``GET /api/vcs/branch``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/branch",
-                query={"location": self._client._location(location), "search": search, "limit": limit},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsBranchListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/branch",
+                    query={"location": self._location(location), "search": search, "limit": limit},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsBranchListResponse,
             ),
-            response_type=VcsBranchListResponse,
         )
 
 
@@ -318,7 +337,7 @@ class AsyncVcsResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path="/api/vcs/init",
-                query={"location": self._client._location(location), "provider": provider},
+                query={"location": self._location(location), "provider": provider},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -347,17 +366,20 @@ class AsyncVcsResource(AsyncAPIResource):
 
         ``GET /api/vcs``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsGetResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsGetResponse,
             ),
-            response_type=VcsGetResponse,
         )
 
     async def base(
@@ -381,17 +403,20 @@ class AsyncVcsResource(AsyncAPIResource):
 
         ``GET /api/vcs/base``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/base",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsBaseResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/base",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsBaseResponse,
             ),
-            response_type=VcsBaseResponse,
         )
 
     async def status(
@@ -414,17 +439,20 @@ class AsyncVcsResource(AsyncAPIResource):
 
         ``GET /api/vcs/status``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/status",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsStatusResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/status",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsStatusResponse,
             ),
-            response_type=VcsStatusResponse,
         )
 
     async def diff(
@@ -451,15 +479,18 @@ class AsyncVcsResource(AsyncAPIResource):
 
         ``GET /api/vcs/diff``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/vcs/diff",
-                query={"location": self._client._location(location), "mode": mode, "base": base, "context": context},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "VcsDiffResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/vcs/diff",
+                    query={"location": self._location(location), "mode": mode, "base": base, "context": context},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=VcsDiffResponse,
             ),
-            response_type=VcsDiffResponse,
         )

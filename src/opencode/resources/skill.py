@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -39,17 +41,20 @@ class SkillResource(SyncAPIResource):
 
         ``GET /api/skill``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/skill",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SkillListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/skill",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SkillListResponse,
             ),
-            response_type=SkillListResponse,
         )
 
 
@@ -76,15 +81,18 @@ class AsyncSkillResource(AsyncAPIResource):
 
         ``GET /api/skill``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/skill",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "SkillListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/skill",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=SkillListResponse,
             ),
-            response_type=SkillListResponse,
         )

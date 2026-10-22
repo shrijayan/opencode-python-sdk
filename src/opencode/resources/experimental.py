@@ -8,6 +8,7 @@ from __future__ import annotations
 import builtins
 from collections.abc import Mapping, Sequence
 from functools import cached_property
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -55,18 +56,21 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/terminal/read``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal/read",
-                query={"lines": lines},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyReadResult | None",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal/read",
+                    query={"lines": lines},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyReadResult | None,
+                unwrap=True,
             ),
-            response_type=PersistentPtyReadResult | None,
-            unwrap=True,
         )
 
     def list(
@@ -87,17 +91,20 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/terminal``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[PersistentPtyInfo]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[PersistentPtyInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[PersistentPtyInfo],
-            unwrap=True,
         )
 
     def create(
@@ -124,18 +131,21 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``POST /api/experimental/session/:sessionID/terminal``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
-                body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env, "size": size},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyInfo",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
+                    body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env, "size": size},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyInfo,
+                unwrap=True,
             ),
-            response_type=PersistentPtyInfo,
-            unwrap=True,
         )
 
     def shutdown(
@@ -184,16 +194,19 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``POST /api/experimental/persistent-pty/handoff``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/persistent-pty/handoff",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ExperimentalPersistentPtyHandoffResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/persistent-pty/handoff",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ExperimentalPersistentPtyHandoffResponse,
             ),
-            response_type=ExperimentalPersistentPtyHandoffResponse,
         )
 
     def get(
@@ -215,17 +228,20 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``GET /api/experimental/persistent-pty/:ptyID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyInfo",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyInfo,
+                unwrap=True,
             ),
-            response_type=PersistentPtyInfo,
-            unwrap=True,
         )
 
     def update(
@@ -249,18 +265,21 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``PUT /api/experimental/persistent-pty/:ptyID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
-                body={"attachmentID": attachment_id, "size": size},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyInfo",
+            self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
+                    body={"attachmentID": attachment_id, "size": size},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyInfo,
+                unwrap=True,
             ),
-            response_type=PersistentPtyInfo,
-            unwrap=True,
         )
 
     def snapshot(
@@ -282,17 +301,20 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``GET /api/experimental/persistent-pty/:ptyID/snapshot``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/snapshot",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtySnapshot",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/snapshot",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtySnapshot,
+                unwrap=True,
             ),
-            response_type=PersistentPtySnapshot,
-            unwrap=True,
         )
 
     def remove(
@@ -347,18 +369,21 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
 
         ``POST /api/experimental/persistent-pty/:ptyID/connect-token``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/connect-token",
-                headers={"x-opencode-ticket": x_opencode_ticket},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyTicketConnectToken",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/connect-token",
+                    headers={"x-opencode-ticket": x_opencode_ticket},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyTicketConnectToken,
+                unwrap=True,
             ),
-            response_type=PtyTicketConnectToken,
-            unwrap=True,
         )
 
 
@@ -396,18 +421,21 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/terminal/read``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal/read",
-                query={"lines": lines},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyReadResult | None",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal/read",
+                    query={"lines": lines},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyReadResult | None,
+                unwrap=True,
             ),
-            response_type=PersistentPtyReadResult | None,
-            unwrap=True,
         )
 
     async def list(
@@ -428,17 +456,20 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``GET /api/experimental/session/:sessionID/terminal``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[PersistentPtyInfo]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[PersistentPtyInfo],
+                unwrap=True,
             ),
-            response_type=builtins.list[PersistentPtyInfo],
-            unwrap=True,
         )
 
     async def create(
@@ -465,18 +496,21 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``POST /api/experimental/session/:sessionID/terminal``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
-                body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env, "size": size},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/session/{encode_path_segment(session_id)}/terminal",
+                    body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env, "size": size},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyInfo,
+                unwrap=True,
             ),
-            response_type=PersistentPtyInfo,
-            unwrap=True,
         )
 
     async def shutdown(
@@ -525,16 +559,19 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``POST /api/experimental/persistent-pty/handoff``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/persistent-pty/handoff",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ExperimentalPersistentPtyHandoffResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/persistent-pty/handoff",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ExperimentalPersistentPtyHandoffResponse,
             ),
-            response_type=ExperimentalPersistentPtyHandoffResponse,
         )
 
     async def get(
@@ -556,17 +593,20 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``GET /api/experimental/persistent-pty/:ptyID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyInfo,
+                unwrap=True,
             ),
-            response_type=PersistentPtyInfo,
-            unwrap=True,
         )
 
     async def update(
@@ -590,18 +630,21 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``PUT /api/experimental/persistent-pty/:ptyID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
-                body={"attachmentID": attachment_id, "size": size},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtyInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}",
+                    body={"attachmentID": attachment_id, "size": size},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtyInfo,
+                unwrap=True,
             ),
-            response_type=PersistentPtyInfo,
-            unwrap=True,
         )
 
     async def snapshot(
@@ -623,17 +666,20 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``GET /api/experimental/persistent-pty/:ptyID/snapshot``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/snapshot",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PersistentPtySnapshot",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/snapshot",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PersistentPtySnapshot,
+                unwrap=True,
             ),
-            response_type=PersistentPtySnapshot,
-            unwrap=True,
         )
 
     async def remove(
@@ -688,18 +734,21 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
 
         ``POST /api/experimental/persistent-pty/:ptyID/connect-token``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/connect-token",
-                headers={"x-opencode-ticket": x_opencode_ticket},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyTicketConnectToken",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/experimental/persistent-pty/{encode_path_segment(pty_id)}/connect-token",
+                    headers={"x-opencode-ticket": x_opencode_ticket},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyTicketConnectToken,
+                unwrap=True,
             ),
-            response_type=PtyTicketConnectToken,
-            unwrap=True,
         )
 
 

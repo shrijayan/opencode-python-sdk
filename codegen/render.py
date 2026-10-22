@@ -319,7 +319,7 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
     if query:
         entries = []
         for param in query:
-            value = f"self._client._location({param.name})" if param.wire == "location" else param.name
+            value = f"self._location({param.name})" if param.wire == "location" else param.name
             entries.append(f"{param.wire!r}: {value}")
         options.append("            query={" + ", ".join(entries) + "},")
     if headers:
@@ -360,18 +360,18 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
         lines += [f"        {awaiting}self._client.request(", *request_options, '            kind="void",', "        )"]
     elif operation.kind == "binary":
         lines += [
-            f"        return {awaiting}self._client.request(",
+            f'        return cast("bytes", {awaiting}self._client.request(',
             *request_options,
             '            kind="binary",',
-            "        )",
+            "        ))",
         ]
     else:
         lines += [
-            f"        return {awaiting}self._client.request(",
+            f"        return cast({returns!r}, {awaiting}self._client.request(",
             *request_options,
             f"            response_type={_resource_type(operation.response_type or 'Any')},",
             *(["            unwrap=True,"] if operation.unwrap else []),
-            "        )",
+            "        ))",
         ]
     return lines
 
@@ -432,7 +432,7 @@ def render_resource_module(
         [*_resource_classes(resource, errors, is_async=False), *_resource_classes(resource, errors, is_async=True)]
     )
     uses = _names_in(source)
-    typing_names = sorted({"Any", "Literal"} & uses)
+    typing_names = sorted({"Any", "Literal", "cast"} & uses)
     abc_names = sorted({"Mapping", "Sequence"} & uses)
     runtime: list[str] = []
     if "encode_path_segment" in uses:

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import builtins
 from functools import cached_property
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -40,16 +41,19 @@ class DebugLocationResource(SyncAPIResource):
 
         ``GET /api/debug/location``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/debug/location",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[LocationPublicRef]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/debug/location",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[LocationPublicRef],
             ),
-            response_type=builtins.list[LocationPublicRef],
         )
 
     def evict(
@@ -75,7 +79,7 @@ class DebugLocationResource(SyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path="/api/debug/location",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -114,16 +118,19 @@ class AsyncDebugLocationResource(AsyncAPIResource):
 
         ``GET /api/debug/location``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/debug/location",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[LocationPublicRef]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/debug/location",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[LocationPublicRef],
             ),
-            response_type=builtins.list[LocationPublicRef],
         )
 
     async def evict(
@@ -149,7 +156,7 @@ class AsyncDebugLocationResource(AsyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path="/api/debug/location",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,

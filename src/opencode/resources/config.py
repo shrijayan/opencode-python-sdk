@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import builtins
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -42,17 +43,20 @@ class ConfigResource(SyncAPIResource):
 
         ``GET /api/config``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/config",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[ConfigEntry]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/config",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[ConfigEntry],
             ),
-            response_type=builtins.list[ConfigEntry],
         )
 
     def shells(
@@ -74,16 +78,19 @@ class ConfigResource(SyncAPIResource):
 
         ``GET /api/config/shell``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/config/shell",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[ConfigShellOption]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/config/shell",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[ConfigShellOption],
             ),
-            response_type=builtins.list[ConfigShellOption],
         )
 
     def update(
@@ -145,17 +152,20 @@ class AsyncConfigResource(AsyncAPIResource):
 
         ``GET /api/config``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/config",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[ConfigEntry]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/config",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[ConfigEntry],
             ),
-            response_type=builtins.list[ConfigEntry],
         )
 
     async def shells(
@@ -177,16 +187,19 @@ class AsyncConfigResource(AsyncAPIResource):
 
         ``GET /api/config/shell``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/config/shell",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[ConfigShellOption]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/config/shell",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[ConfigShellOption],
             ),
-            response_type=builtins.list[ConfigShellOption],
         )
 
     async def update(

@@ -33,6 +33,7 @@ from ._exceptions import (
     OpencodeError,
     error_message,
     status_error_class,
+    validation_summary,
 )
 from ._qs import encode_query, to_jsonable
 from ._streaming import AsyncStream, Stream
@@ -73,8 +74,8 @@ class RequestOptions:
 
     method: str
     path: str
-    query: Mapping[str, object] = field(default_factory=dict)
-    headers: Mapping[str, object] = field(default_factory=dict)
+    query: Mapping[str, object] = field(default_factory=dict[str, object])
+    headers: Mapping[str, object] = field(default_factory=dict[str, object])
     body: object | NotGiven = NOT_GIVEN
     content: bytes | None = None
     extra_headers: Headers | None = None
@@ -162,12 +163,6 @@ class _BaseClient:
         # Never include the password.
         return f"{type(self).__name__}(base_url={str(self.base_url)!r})"
 
-    # Generated methods call this for every endpoint that takes a `location` query parameter.
-    def _location(self, location: object) -> object:
-        if isinstance(location, NotGiven) and self.directory is not None:
-            return {"directory": self.directory}
-        return location
-
     def _build_request(self, options: RequestOptions) -> httpx.Request:
         url = self.base_url.join(options.path.lstrip("/"))
         query = {**self._default_query, **options.query, **(options.extra_query or {})}
@@ -187,11 +182,12 @@ class _BaseClient:
         if content is not None:
             headers.setdefault("Content-Type", "application/octet-stream")
         elif not isinstance(options.body, NotGiven) or options.extra_body:
-            body = to_jsonable(options.body) if not isinstance(options.body, NotGiven) else {}
+            body: Any = to_jsonable(options.body) if not isinstance(options.body, NotGiven) else {}
             if options.extra_body:
                 if not isinstance(body, dict):
                     raise TypeError("extra_body can only be used with JSON object bodies")
-                body = {**cast("dict[str, object]", body), **to_jsonable(options.extra_body)}
+                extra: dict[str, Any] = to_jsonable(options.extra_body)
+                body = {**cast("dict[str, Any]", body), **extra}
             content = _json_bytes(body)
             headers["Content-Type"] = "application/json"
 
@@ -203,14 +199,16 @@ class _BaseClient:
         return httpx.Request(
             options.method,
             url,
-            params=encode_query(query),
+            params=httpx.QueryParams(cast("list[tuple[str, str | int | float | bool | None]]", encode_query(query))),
             headers=headers,
             content=content,
             extensions={"timeout": _timeout_dict(timeout)},
         )
 
-    def _status_error(self, response: httpx.Response, body: object | None) -> APIStatusError:
-        tag = body.get("_tag") if isinstance(body, dict) else None  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+    def _status_error(self, response: httpx.Response, raw: object) -> APIStatusError:
+        body: object = raw
+        fields = cast("dict[str, Any]", raw) if isinstance(raw, dict) else {}
+        tag: object = fields.get("_tag")
         cls = status_error_class(response.status_code, tag if isinstance(tag, str) else None, TAGGED_ERRORS)
         return cls(error_message(body, response.status_code), response=response, body=body)
 
@@ -231,11 +229,11 @@ class _BaseClient:
             retry_after = _parse_retry_after(response.headers)
             if retry_after is not None and 0 <= retry_after <= constants.MAX_RETRY_AFTER:
                 return retry_after
-        delay = min(constants.INITIAL_RETRY_DELAY * (2**attempt), constants.MAX_RETRY_DELAY)
+        delay: float = min(constants.INITIAL_RETRY_DELAY * 2.0**attempt, constants.MAX_RETRY_DELAY)
         return delay * (1 - 0.25 * random.random())
 
     @staticmethod
-    def _decode_error_body(response: httpx.Response) -> object | None:
+    def _decode_error_body(response: httpx.Response) -> object:
         if not response.content:
             return None
         try:
@@ -254,12 +252,14 @@ class _BaseClient:
             raise APIResponseValidationError(response, response.text, message="Response is not valid JSON") from exc
         if unwrap:
             if not isinstance(payload, dict) or "data" not in payload:
-                raise APIResponseValidationError(response, payload, message="Response has no `data` field")
-            payload = payload["data"]
+                raise APIResponseValidationError(
+                    response, cast("object", payload), message="Response has no `data` field"
+                )
+            payload = cast("dict[str, Any]", payload)["data"]
         try:
             return type_adapter(response_type).validate_python(payload)
         except pydantic.ValidationError as exc:
-            raise APIResponseValidationError(response, payload, message=str(exc)) from exc
+            raise APIResponseValidationError(response, payload, message=validation_summary(exc)) from exc
 
 
 def _json_bytes(body: object) -> bytes:

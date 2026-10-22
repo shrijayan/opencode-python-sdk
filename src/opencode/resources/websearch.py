@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -42,17 +44,20 @@ class WebsearchResource(SyncAPIResource):
 
         ``GET /api/websearch/provider``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/websearch/provider",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WebsearchProvidersResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/websearch/provider",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WebsearchProvidersResponse,
             ),
-            response_type=WebsearchProvidersResponse,
         )
 
     def query(
@@ -78,18 +83,21 @@ class WebsearchResource(SyncAPIResource):
 
         ``POST /api/websearch``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/websearch",
-                query={"location": self._client._location(location)},
-                body={"query": query, "providerID": provider_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WebsearchQueryResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/websearch",
+                    query={"location": self._location(location)},
+                    body={"query": query, "providerID": provider_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WebsearchQueryResponse,
             ),
-            response_type=WebsearchQueryResponse,
         )
 
 
@@ -117,17 +125,20 @@ class AsyncWebsearchResource(AsyncAPIResource):
 
         ``GET /api/websearch/provider``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/websearch/provider",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WebsearchProvidersResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/websearch/provider",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WebsearchProvidersResponse,
             ),
-            response_type=WebsearchProvidersResponse,
         )
 
     async def query(
@@ -153,16 +164,19 @@ class AsyncWebsearchResource(AsyncAPIResource):
 
         ``POST /api/websearch``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/websearch",
-                query={"location": self._client._location(location)},
-                body={"query": query, "providerID": provider_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WebsearchQueryResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/websearch",
+                    query={"location": self._location(location)},
+                    body={"query": query, "providerID": provider_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WebsearchQueryResponse,
             ),
-            response_type=WebsearchQueryResponse,
         )

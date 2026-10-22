@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -42,17 +44,20 @@ class AgentResource(SyncAPIResource):
 
         ``GET /api/agent``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/agent",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "AgentListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/agent",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=AgentListResponse,
             ),
-            response_type=AgentListResponse,
         )
 
     def get(
@@ -77,17 +82,20 @@ class AgentResource(SyncAPIResource):
 
         ``GET /api/agent/:agentID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/agent/{encode_path_segment(agent_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "AgentGetResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/agent/{encode_path_segment(agent_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=AgentGetResponse,
             ),
-            response_type=AgentGetResponse,
         )
 
 
@@ -114,17 +122,20 @@ class AsyncAgentResource(AsyncAPIResource):
 
         ``GET /api/agent``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/agent",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "AgentListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/agent",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=AgentListResponse,
             ),
-            response_type=AgentListResponse,
         )
 
     async def get(
@@ -149,15 +160,18 @@ class AsyncAgentResource(AsyncAPIResource):
 
         ``GET /api/agent/:agentID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/agent/{encode_path_segment(agent_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "AgentGetResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/agent/{encode_path_segment(agent_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=AgentGetResponse,
             ),
-            response_type=AgentGetResponse,
         )

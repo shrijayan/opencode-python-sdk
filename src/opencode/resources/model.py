@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -41,17 +43,20 @@ class ModelResource(SyncAPIResource):
 
         ``GET /api/model``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/model",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ModelListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/model",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ModelListResponse,
             ),
-            response_type=ModelListResponse,
         )
 
     def default(
@@ -75,17 +80,20 @@ class ModelResource(SyncAPIResource):
 
         ``GET /api/model/default``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/model/default",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ModelDefaultResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/model/default",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ModelDefaultResponse,
             ),
-            response_type=ModelDefaultResponse,
         )
 
 
@@ -113,17 +121,20 @@ class AsyncModelResource(AsyncAPIResource):
 
         ``GET /api/model``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/model",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ModelListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/model",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ModelListResponse,
             ),
-            response_type=ModelListResponse,
         )
 
     async def default(
@@ -147,15 +158,18 @@ class AsyncModelResource(AsyncAPIResource):
 
         ``GET /api/model/default``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/model/default",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ModelDefaultResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/model/default",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ModelDefaultResponse,
             ),
-            response_type=ModelDefaultResponse,
         )

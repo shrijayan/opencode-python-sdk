@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import builtins
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -42,17 +43,20 @@ class CredentialResource(SyncAPIResource):
 
         ``GET /api/credential``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/credential",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[CredentialEntry]",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/credential",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[CredentialEntry],
+                unwrap=True,
             ),
-            response_type=builtins.list[CredentialEntry],
-            unwrap=True,
         )
 
     def create(
@@ -79,18 +83,27 @@ class CredentialResource(SyncAPIResource):
 
         ``POST /api/credential``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/credential",
-                body={"id": id, "integrationID": integration_id, "label": label, "value": value, "activate": activate},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "CredentialEntry",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/credential",
+                    body={
+                        "id": id,
+                        "integrationID": integration_id,
+                        "label": label,
+                        "value": value,
+                        "activate": activate,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=CredentialEntry,
+                unwrap=True,
             ),
-            response_type=CredentialEntry,
-            unwrap=True,
         )
 
     def update(
@@ -210,17 +223,20 @@ class AsyncCredentialResource(AsyncAPIResource):
 
         ``GET /api/credential``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/credential",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "builtins.list[CredentialEntry]",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/credential",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=builtins.list[CredentialEntry],
+                unwrap=True,
             ),
-            response_type=builtins.list[CredentialEntry],
-            unwrap=True,
         )
 
     async def create(
@@ -247,18 +263,27 @@ class AsyncCredentialResource(AsyncAPIResource):
 
         ``POST /api/credential``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/credential",
-                body={"id": id, "integrationID": integration_id, "label": label, "value": value, "activate": activate},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "CredentialEntry",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/credential",
+                    body={
+                        "id": id,
+                        "integrationID": integration_id,
+                        "label": label,
+                        "value": value,
+                        "activate": activate,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=CredentialEntry,
+                unwrap=True,
             ),
-            response_type=CredentialEntry,
-            unwrap=True,
         )
 
     async def update(

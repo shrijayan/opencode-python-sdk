@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -39,17 +41,20 @@ class CommandResource(SyncAPIResource):
 
         ``GET /api/command``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/command",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "CommandListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/command",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=CommandListResponse,
             ),
-            response_type=CommandListResponse,
         )
 
 
@@ -76,15 +81,18 @@ class AsyncCommandResource(AsyncAPIResource):
 
         ``GET /api/command``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/command",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "CommandListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/command",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=CommandListResponse,
             ),
-            response_type=CommandListResponse,
         )

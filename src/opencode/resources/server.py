@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
@@ -39,16 +41,19 @@ class ServerResource(SyncAPIResource):
 
         ``GET /api/info``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/info",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ServerInfo",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/info",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ServerInfo,
             ),
-            response_type=ServerInfo,
         )
 
     def pair(
@@ -69,16 +74,19 @@ class ServerResource(SyncAPIResource):
 
         ``POST /api/pair``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/pair",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PairingCode",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/pair",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PairingCode,
             ),
-            response_type=PairingCode,
         )
 
     def connect(
@@ -100,16 +108,19 @@ class ServerResource(SyncAPIResource):
 
         ``GET /auth/connect/:code``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/auth/connect/{encode_path_segment(code)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PairingSession",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/auth/connect/{encode_path_segment(code)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PairingSession,
             ),
-            response_type=PairingSession,
         )
 
 
@@ -134,16 +145,19 @@ class AsyncServerResource(AsyncAPIResource):
 
         ``GET /api/info``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/info",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "ServerInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/info",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=ServerInfo,
             ),
-            response_type=ServerInfo,
         )
 
     async def pair(
@@ -164,16 +178,19 @@ class AsyncServerResource(AsyncAPIResource):
 
         ``POST /api/pair``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/pair",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PairingCode",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/pair",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PairingCode,
             ),
-            response_type=PairingCode,
         )
 
     async def connect(
@@ -195,14 +212,17 @@ class AsyncServerResource(AsyncAPIResource):
 
         ``GET /auth/connect/:code``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/auth/connect/{encode_path_segment(code)}",
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PairingSession",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/auth/connect/{encode_path_segment(code)}",
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PairingSession,
             ),
-            response_type=PairingSession,
         )

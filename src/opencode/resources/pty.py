@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from functools import cached_property
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -53,18 +54,21 @@ class PtyConnectResource(SyncAPIResource):
 
         ``POST /api/pty/:ptyID/connect-token``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/pty/{encode_path_segment(pty_id)}/connect-token",
-                query={"location": self._client._location(location)},
-                headers={"x-opencode-ticket": x_opencode_ticket},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyConnectTokenResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}/connect-token",
+                    query={"location": self._location(location)},
+                    headers={"x-opencode-ticket": x_opencode_ticket},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyConnectTokenResponse,
             ),
-            response_type=PtyConnectTokenResponse,
         )
 
 
@@ -95,17 +99,20 @@ class PtyResource(SyncAPIResource):
 
         ``GET /api/pty``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/pty",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/pty",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyListResponse,
             ),
-            response_type=PtyListResponse,
         )
 
     def create(
@@ -133,18 +140,21 @@ class PtyResource(SyncAPIResource):
 
         ``POST /api/pty``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/pty",
-                query={"location": self._client._location(location)},
-                body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyCreateResponse",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/pty",
+                    query={"location": self._location(location)},
+                    body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyCreateResponse,
             ),
-            response_type=PtyCreateResponse,
         )
 
     def get(
@@ -169,17 +179,20 @@ class PtyResource(SyncAPIResource):
 
         ``GET /api/pty/:ptyID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyGetResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyGetResponse,
             ),
-            response_type=PtyGetResponse,
         )
 
     def update(
@@ -206,18 +219,21 @@ class PtyResource(SyncAPIResource):
 
         ``PUT /api/pty/:ptyID``
         """
-        return self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._client._location(location)},
-                body={"title": title, "size": size},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyUpdateResponse",
+            self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}",
+                    query={"location": self._location(location)},
+                    body={"title": title, "size": size},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyUpdateResponse,
             ),
-            response_type=PtyUpdateResponse,
         )
 
     def remove(
@@ -246,7 +262,7 @@ class PtyResource(SyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -283,18 +299,21 @@ class AsyncPtyConnectResource(AsyncAPIResource):
 
         ``POST /api/pty/:ptyID/connect-token``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path=f"/api/pty/{encode_path_segment(pty_id)}/connect-token",
-                query={"location": self._client._location(location)},
-                headers={"x-opencode-ticket": x_opencode_ticket},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyConnectTokenResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}/connect-token",
+                    query={"location": self._location(location)},
+                    headers={"x-opencode-ticket": x_opencode_ticket},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyConnectTokenResponse,
             ),
-            response_type=PtyConnectTokenResponse,
         )
 
 
@@ -325,17 +344,20 @@ class AsyncPtyResource(AsyncAPIResource):
 
         ``GET /api/pty``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/pty",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/pty",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyListResponse,
             ),
-            response_type=PtyListResponse,
         )
 
     async def create(
@@ -363,18 +385,21 @@ class AsyncPtyResource(AsyncAPIResource):
 
         ``POST /api/pty``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/pty",
-                query={"location": self._client._location(location)},
-                body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyCreateResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/pty",
+                    query={"location": self._location(location)},
+                    body={"command": command, "args": args, "cwd": cwd, "title": title, "env": env},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyCreateResponse,
             ),
-            response_type=PtyCreateResponse,
         )
 
     async def get(
@@ -399,17 +424,20 @@ class AsyncPtyResource(AsyncAPIResource):
 
         ``GET /api/pty/:ptyID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyGetResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyGetResponse,
             ),
-            response_type=PtyGetResponse,
         )
 
     async def update(
@@ -436,18 +464,21 @@ class AsyncPtyResource(AsyncAPIResource):
 
         ``PUT /api/pty/:ptyID``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="PUT",
-                path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._client._location(location)},
-                body={"title": title, "size": size},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "PtyUpdateResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="PUT",
+                    path=f"/api/pty/{encode_path_segment(pty_id)}",
+                    query={"location": self._location(location)},
+                    body={"title": title, "size": size},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=PtyUpdateResponse,
             ),
-            response_type=PtyUpdateResponse,
         )
 
     async def remove(
@@ -476,7 +507,7 @@ class AsyncPtyResource(AsyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/pty/{encode_path_segment(pty_id)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,

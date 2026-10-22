@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
 import pydantic
 from pydantic import ConfigDict
+from typing_extensions import override
 
 __all__ = ["BaseModel", "is_none"]
 
@@ -35,6 +36,14 @@ class BaseModel(pydantic.BaseModel):
         use_enum_values=True,
         coerce_numbers_to_str=False,
     )
+
+    __opencode_always_set__: ClassVar[tuple[str, ...]] = ()
+    """Fields serialized even when left at their default, such as a union member's ``type`` tag."""
+
+    @override
+    def model_post_init(self, context: Any, /) -> None:
+        if self.__opencode_always_set__:
+            self.__pydantic_fields_set__.update(self.__opencode_always_set__)
 
     def to_dict(self, *, exclude_unset: bool = True) -> dict[str, Any]:
         """Returns the model as a JSON-compatible dict using wire field names."""

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
@@ -30,7 +30,9 @@ def discriminator(
     compiled = [(re.compile(pattern), member) for pattern, member in patterns]
 
     def select(value: Any) -> str:
-        tag = value.get(key) if isinstance(value, dict) else getattr(value, attribute, None)
+        tag: object = (
+            cast("dict[str, Any]", value).get(key) if isinstance(value, dict) else getattr(value, attribute, None)
+        )
         if isinstance(tag, bool):
             tag = "true" if tag else "false"
         if isinstance(tag, str):

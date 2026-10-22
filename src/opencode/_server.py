@@ -14,7 +14,7 @@ import sys
 import threading
 import time
 from pathlib import Path
-from typing import IO, TYPE_CHECKING, Any
+from typing import IO, TYPE_CHECKING, Any, cast
 
 import anyio.to_thread
 import httpx
@@ -218,8 +218,9 @@ class OpencodeServer:
                 message = json.loads(line)
             except ValueError:
                 continue
-            if isinstance(message, dict) and isinstance(message.get("url"), str):
-                return str(httpx.URL(message["url"]))
+            url: object = cast("dict[str, Any]", message).get("url") if isinstance(message, dict) else None
+            if isinstance(url, str):
+                return str(httpx.URL(url))
         return None
 
     def stop(self, timeout: float = 10.0) -> None:

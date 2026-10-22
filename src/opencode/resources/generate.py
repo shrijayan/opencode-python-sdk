@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -43,18 +45,21 @@ class GenerateResource(SyncAPIResource):
 
         ``POST /api/experimental/generate``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/generate",
-                body={"prompt": prompt, "model": model},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "GenerateTextResponseData",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/generate",
+                    body={"prompt": prompt, "model": model},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=GenerateTextResponseData,
+                unwrap=True,
             ),
-            response_type=GenerateTextResponseData,
-            unwrap=True,
         )
 
 
@@ -85,16 +90,19 @@ class AsyncGenerateResource(AsyncAPIResource):
 
         ``POST /api/experimental/generate``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/experimental/generate",
-                body={"prompt": prompt, "model": model},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "GenerateTextResponseData",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/experimental/generate",
+                    body={"prompt": prompt, "model": model},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=GenerateTextResponseData,
+                unwrap=True,
             ),
-            response_type=GenerateTextResponseData,
-            unwrap=True,
         )

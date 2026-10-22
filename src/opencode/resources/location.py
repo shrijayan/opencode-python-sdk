@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -39,17 +41,20 @@ class LocationResource(SyncAPIResource):
 
         ``GET /api/location``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/location",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "LocationPublicInfo",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/location",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=LocationPublicInfo,
             ),
-            response_type=LocationPublicInfo,
         )
 
     def reload(
@@ -107,17 +112,20 @@ class AsyncLocationResource(AsyncAPIResource):
 
         ``GET /api/location``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/location",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "LocationPublicInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/location",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=LocationPublicInfo,
             ),
-            response_type=LocationPublicInfo,
         )
 
     async def reload(

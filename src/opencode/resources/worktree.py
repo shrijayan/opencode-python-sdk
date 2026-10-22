@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -41,17 +43,20 @@ class WorktreeResource(SyncAPIResource):
 
         ``GET /api/worktree``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/worktree",
-                query={"projectID": project_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WorktreeList",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/worktree",
+                    query={"projectID": project_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WorktreeList,
             ),
-            response_type=WorktreeList,
         )
 
     def create(
@@ -79,17 +84,26 @@ class WorktreeResource(SyncAPIResource):
 
         ``POST /api/worktree``
         """
-        return self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/worktree",
-                body={"projectID": project_id, "from": from_, "branch": branch, "directory": directory, "name": name},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WorktreeInfo",
+            self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/worktree",
+                    body={
+                        "projectID": project_id,
+                        "from": from_,
+                        "branch": branch,
+                        "directory": directory,
+                        "name": name,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WorktreeInfo,
             ),
-            response_type=WorktreeInfo,
         )
 
     def remove(
@@ -186,17 +200,20 @@ class AsyncWorktreeResource(AsyncAPIResource):
 
         ``GET /api/worktree``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/worktree",
-                query={"projectID": project_id},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WorktreeList",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/worktree",
+                    query={"projectID": project_id},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WorktreeList,
             ),
-            response_type=WorktreeList,
         )
 
     async def create(
@@ -224,17 +241,26 @@ class AsyncWorktreeResource(AsyncAPIResource):
 
         ``POST /api/worktree``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="POST",
-                path="/api/worktree",
-                body={"projectID": project_id, "from": from_, "branch": branch, "directory": directory, "name": name},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "WorktreeInfo",
+            await self._client.request(
+                RequestOptions(
+                    method="POST",
+                    path="/api/worktree",
+                    body={
+                        "projectID": project_id,
+                        "from": from_,
+                        "branch": branch,
+                        "directory": directory,
+                        "name": name,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=WorktreeInfo,
             ),
-            response_type=WorktreeInfo,
         )
 
     async def remove(

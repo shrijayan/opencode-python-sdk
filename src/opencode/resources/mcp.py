@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
@@ -44,17 +45,20 @@ class McpResourceResource(SyncAPIResource):
 
         ``GET /api/mcp/resource``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/mcp/resource",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "McpResourceCatalogResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/mcp/resource",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=McpResourceCatalogResponse,
             ),
-            response_type=McpResourceCatalogResponse,
         )
 
 
@@ -85,17 +89,20 @@ class McpResource(SyncAPIResource):
 
         ``GET /api/mcp``
         """
-        return self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/mcp",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "McpListResponse",
+            self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/mcp",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=McpListResponse,
             ),
-            response_type=McpListResponse,
         )
 
     def add(
@@ -126,7 +133,7 @@ class McpResource(SyncAPIResource):
             RequestOptions(
                 method="PUT",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"config": config},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -164,7 +171,7 @@ class McpResource(SyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -201,7 +208,7 @@ class McpResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}/connect",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -238,7 +245,7 @@ class McpResource(SyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}/disconnect",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -271,17 +278,20 @@ class AsyncMcpResourceResource(AsyncAPIResource):
 
         ``GET /api/mcp/resource``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/mcp/resource",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "McpResourceCatalogResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/mcp/resource",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=McpResourceCatalogResponse,
             ),
-            response_type=McpResourceCatalogResponse,
         )
 
 
@@ -312,17 +322,20 @@ class AsyncMcpResource(AsyncAPIResource):
 
         ``GET /api/mcp``
         """
-        return await self._client.request(
-            RequestOptions(
-                method="GET",
-                path="/api/mcp",
-                query={"location": self._client._location(location)},
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
+        return cast(
+            "McpListResponse",
+            await self._client.request(
+                RequestOptions(
+                    method="GET",
+                    path="/api/mcp",
+                    query={"location": self._location(location)},
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                ),
+                response_type=McpListResponse,
             ),
-            response_type=McpListResponse,
         )
 
     async def add(
@@ -353,7 +366,7 @@ class AsyncMcpResource(AsyncAPIResource):
             RequestOptions(
                 method="PUT",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 body={"config": config},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
@@ -391,7 +404,7 @@ class AsyncMcpResource(AsyncAPIResource):
             RequestOptions(
                 method="DELETE",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -428,7 +441,7 @@ class AsyncMcpResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}/connect",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,
@@ -465,7 +478,7 @@ class AsyncMcpResource(AsyncAPIResource):
             RequestOptions(
                 method="POST",
                 path=f"/api/experimental/mcp/{encode_path_segment(server)}/disconnect",
-                query={"location": self._client._location(location)},
+                query={"location": self._location(location)},
                 extra_headers=extra_headers,
                 extra_query=extra_query,
                 extra_body=extra_body,

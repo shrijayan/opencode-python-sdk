@@ -11,10 +11,10 @@ import httpx
 import pydantic
 from typing_extensions import Self
 
-from ._exceptions import APIConnectionError, APIResponseValidationError
+from ._exceptions import APIConnectionError, APIResponseValidationError, validation_summary
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Iterator
+    from collections.abc import AsyncGenerator, AsyncIterator, Generator, Iterator
     from types import TracebackType
 
 __all__ = ["AsyncStream", "ServerSentEvent", "Stream"]
@@ -39,7 +39,7 @@ class ServerSentEvent:
 class _Decoder:
     """Incremental SSE decoder following the WHATWG event-stream parsing rules."""
 
-    _data: list[str] = field(default_factory=list)
+    _data: list[str] = field(default_factory=list[str])
     _event: str | None = None
     _id: str | None = None
     _retry: int | None = None
@@ -120,7 +120,7 @@ class _StreamBase(Generic[_T]):
         try:
             return self._adapter.validate_python(payload)
         except pydantic.ValidationError as exc:
-            raise APIResponseValidationError(self.response, payload, message=str(exc)) from exc
+            raise APIResponseValidationError(self.response, payload, message=validation_summary(exc)) from exc
 
 
 class Stream(_StreamBase[_T]):
@@ -135,7 +135,7 @@ class Stream(_StreamBase[_T]):
 
     def __init__(self, response: httpx.Response, adapter: pydantic.TypeAdapter[_T]) -> None:
         super().__init__(response, adapter)
-        self._iterator = self._events()
+        self._iterator: Generator[_T, None, None] = self._events()
 
     def __iter__(self) -> Iterator[_T]:
         return self._iterator
@@ -143,7 +143,7 @@ class Stream(_StreamBase[_T]):
     def __next__(self) -> _T:
         return next(self._iterator)
 
-    def _events(self) -> Iterator[_T]:
+    def _events(self) -> Generator[_T, None, None]:
         decoder = _Decoder()
         try:
             splitter = _LineSplitter()
@@ -187,7 +187,7 @@ class AsyncStream(_StreamBase[_T]):
 
     def __init__(self, response: httpx.Response, adapter: pydantic.TypeAdapter[_T]) -> None:
         super().__init__(response, adapter)
-        self._iterator = self._events()
+        self._iterator: AsyncGenerator[_T, None] = self._events()
 
     def __aiter__(self) -> AsyncIterator[_T]:
         return self._iterator
@@ -195,7 +195,7 @@ class AsyncStream(_StreamBase[_T]):
     async def __anext__(self) -> _T:
         return await self._iterator.__anext__()
 
-    async def _events(self) -> AsyncIterator[_T]:
+    async def _events(self) -> AsyncGenerator[_T, None]:
         decoder = _Decoder()
         try:
             splitter = _LineSplitter()
