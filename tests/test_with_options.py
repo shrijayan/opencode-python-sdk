@@ -40,7 +40,7 @@ def test_overrides_apply_and_original_unchanged(mock_api: respx.MockRouter, meth
 def test_base_url_override(mock_api: respx.MockRouter) -> None:
     with Opencode(BASE_URL, password="") as client:
         other = client.with_options(base_url="http://other.test")
-        assert str(other.base_url).startswith("http://other.test")
+        assert other.base_url.host == "other.test"
         assert str(client.base_url).startswith(BASE_URL)
 
 
