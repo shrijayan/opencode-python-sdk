@@ -64,10 +64,28 @@ cd ../..
 uv run python -m codegen
 ```
 
-Then review the diff of `api.md`, update `API_VERSION` notes in the README version table, and add a changelog
-entry.
+Then review the diff of `api.md` and update the README version table if the OpenCode minor version changed.
 
 ## Changing generated code
 
 Change the generator in `codegen/`, run `uv run python -m codegen`, and commit both the generator change and the
 regenerated files. Never edit generated files directly; CI will reject the change.
+
+## Releases
+
+Releases are automatic. Every merge to `main` that changes `src/`, `spec/` or `pyproject.toml` runs CI, picks the
+next version from the merged commit subjects, publishes to PyPI and creates a GitHub release with generated notes.
+Docs, tests and CI changes alone do not release.
+
+Use [Conventional Commits](https://www.conventionalcommits.org/) subjects; with rebase merging, every commit lands
+on `main` as written:
+
+| Subject | Bump |
+| --- | --- |
+| `fix: handle empty cursor` | patch |
+| `feat: add session.run helper` | minor |
+| `feat!: rename Opencode.server` or a `BREAKING CHANGE:` footer | major (minor while below 1.0) |
+| anything else (`chore:`, `refactor:`, ...) | patch |
+
+The version comes from git tags (`hatch-vcs`); there is no version number to edit. To release without package
+changes, run the Release workflow manually with **force**.

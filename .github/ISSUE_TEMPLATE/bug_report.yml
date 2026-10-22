@@ -1,0 +1,44 @@
+name: Bug report
+description: Something in the SDK doesn't work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      render: python
+    validations:
+      required: true
+  - type: input
+    id: sdk
+    attributes:
+      label: opencode-python-sdk version
+      placeholder: "pip show opencode-python-sdk"
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: OpenCode server version
+      placeholder: "opencode --version"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version and OS
+      placeholder: "3.13 on macOS 15"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Traceback or logs
+      render: text

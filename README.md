@@ -262,7 +262,8 @@ retry; credentials are never logged.
 | 0.1.x | 2.1.x |
 
 `opencode.API_VERSION` is the server version the client was generated from. The package follows semantic
-versioning; until 1.0, minor versions may contain breaking changes, noted in [CHANGELOG.md](CHANGELOG.md).
+versioning and releases automatically on every merge to `main`; until 1.0, minor versions may contain breaking
+changes. See the [releases page](https://github.com/shrijayan/opencode-python-sdk/releases).
 
 ## How it is built
 
