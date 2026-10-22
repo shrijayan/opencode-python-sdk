@@ -8,7 +8,7 @@ from __future__ import annotations
 import builtins
 from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Any, Literal, cast
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 from .._base_client import RequestOptions
 from .._pagination import AsyncPaginator, SyncCursorPage
@@ -17,47 +17,48 @@ from .._resource import AsyncAPIResource, SyncAPIResource
 from .._streaming import AsyncStream, Stream
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, OpenEnum, Query, Timeout
 from ..lib._session import AsyncSessionHelpers, SessionHelpers
-from ..types import (
-    AbsolutePath,
-    AgentID,
-    EventSeq,
-    FileDiffInfo,
-    FormAnswer,
-    FormDetail,
-    FormFields,
-    FormID,
-    FormInfo,
-    FormMetadata,
-    InstructionEntryInfo,
-    InstructionEntryKey,
-    LocationPublicRef,
-    ModelRef,
-    PermissionRuleset,
-    ProjectID,
-    PromptAgentAttachment,
-    PromptInputFileAttachment,
-    PromptInputSkillAttachment,
-    RelativePath,
-    SessionGenerateResponseData,
-    SessionID,
-    SessionInboxCompaction,
-    SessionInboxDelivery,
-    SessionInboxInfo,
-    SessionInboxSynthetic,
-    SessionInboxUser,
-    SessionInfo,
-    SessionInterruptResponse,
-    SessionLogItem,
-    SessionMessageID,
-    SessionMessageInfo,
-    SessionMetadata,
-    SessionRevert,
-    SessionsCursor,
-    SessionsResponse,
-    SessionStatsInfo,
-    SessionTransferData,
-    SkillID,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        AbsolutePath,
+        AgentID,
+        EventSeq,
+        FileDiffInfo,
+        FormAnswer,
+        FormDetail,
+        FormFields,
+        FormID,
+        FormInfo,
+        FormMetadata,
+        InstructionEntryInfo,
+        InstructionEntryKey,
+        LocationPublicRef,
+        ModelRef,
+        PermissionRuleset,
+        ProjectID,
+        PromptAgentAttachment,
+        PromptInputFileAttachment,
+        PromptInputSkillAttachment,
+        RelativePath,
+        SessionGenerateResponseData,
+        SessionID,
+        SessionInboxCompaction,
+        SessionInboxDelivery,
+        SessionInboxInfo,
+        SessionInboxSynthetic,
+        SessionInboxUser,
+        SessionInfo,
+        SessionInterruptResponse,
+        SessionLogItem,
+        SessionMessageID,
+        SessionMessageInfo,
+        SessionMetadata,
+        SessionRevert,
+        SessionsCursor,
+        SessionStatsInfo,
+        SessionTransferData,
+        SkillID,
+    )
 
 __all__ = ["SessionResource", "AsyncSessionResource"]
 
@@ -103,7 +104,7 @@ class SessionRevertResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionRevert,
+                response_type="SessionRevert",
                 unwrap=True,
             ),
         )
@@ -208,7 +209,7 @@ class SessionInboxResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[SessionInboxInfo],
+                response_type="builtins.list[SessionInboxInfo]",
                 unwrap=True,
             ),
         )
@@ -320,7 +321,7 @@ class SessionInstructionsEntryResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[InstructionEntryInfo],
+                response_type="builtins.list[InstructionEntryInfo]",
                 unwrap=True,
             ),
         )
@@ -446,7 +447,7 @@ class SessionMessageResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionMessageInfo,
+                response_type="SessionMessageInfo",
                 unwrap=True,
             ),
         )
@@ -487,7 +488,7 @@ class SessionFormResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[FormInfo],
+                response_type="builtins.list[FormInfo]",
                 unwrap=True,
             ),
         )
@@ -530,7 +531,7 @@ class SessionFormResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FormInfo,
+                response_type="FormInfo",
                 unwrap=True,
             ),
         )
@@ -569,7 +570,7 @@ class SessionFormResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FormDetail,
+                response_type="FormDetail",
                 unwrap=True,
             ),
         )
@@ -734,7 +735,7 @@ class SessionResource(SessionHelpers):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            response_type=SessionsResponse,
+            response_type="SessionsResponse",
         )
 
     def stats(
@@ -774,7 +775,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionStatsInfo,
+                response_type="SessionStatsInfo",
                 unwrap=True,
             ),
         )
@@ -827,7 +828,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -869,7 +870,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -910,7 +911,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionTransferData,
+                response_type="SessionTransferData",
                 unwrap=True,
             ),
         )
@@ -944,7 +945,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.dict[str, Any],
+                response_type="builtins.dict[str, Any]",
                 unwrap=True,
             ),
         )
@@ -980,7 +981,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -1052,7 +1053,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -1254,7 +1255,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInboxUser,
+                response_type="SessionInboxUser",
                 unwrap=True,
             ),
         )
@@ -1394,7 +1395,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInboxSynthetic,
+                response_type="SessionInboxSynthetic",
                 unwrap=True,
             ),
         )
@@ -1471,7 +1472,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInboxCompaction,
+                response_type="SessionInboxCompaction",
                 unwrap=True,
             ),
         )
@@ -1544,7 +1545,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[SessionMessageInfo],
+                response_type="builtins.list[SessionMessageInfo]",
                 unwrap=True,
             ),
         )
@@ -1592,7 +1593,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[FileDiffInfo],
+                response_type="builtins.list[FileDiffInfo]",
                 unwrap=True,
             ),
         )
@@ -1632,7 +1633,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionGenerateResponseData,
+                response_type="SessionGenerateResponseData",
                 unwrap=True,
             ),
         )
@@ -1671,7 +1672,7 @@ class SessionResource(SessionHelpers):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            item_type=SessionLogItem,
+            item_type="SessionLogItem",
         )
 
     def interrupt(
@@ -1708,7 +1709,7 @@ class SessionResource(SessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInterruptResponse,
+                response_type="SessionInterruptResponse",
             ),
         )
 
@@ -1855,7 +1856,7 @@ class AsyncSessionRevertResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionRevert,
+                response_type="SessionRevert",
                 unwrap=True,
             ),
         )
@@ -1960,7 +1961,7 @@ class AsyncSessionInboxResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[SessionInboxInfo],
+                response_type="builtins.list[SessionInboxInfo]",
                 unwrap=True,
             ),
         )
@@ -2072,7 +2073,7 @@ class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[InstructionEntryInfo],
+                response_type="builtins.list[InstructionEntryInfo]",
                 unwrap=True,
             ),
         )
@@ -2198,7 +2199,7 @@ class AsyncSessionMessageResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionMessageInfo,
+                response_type="SessionMessageInfo",
                 unwrap=True,
             ),
         )
@@ -2239,7 +2240,7 @@ class AsyncSessionFormResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[FormInfo],
+                response_type="builtins.list[FormInfo]",
                 unwrap=True,
             ),
         )
@@ -2282,7 +2283,7 @@ class AsyncSessionFormResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FormInfo,
+                response_type="FormInfo",
                 unwrap=True,
             ),
         )
@@ -2321,7 +2322,7 @@ class AsyncSessionFormResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FormDetail,
+                response_type="FormDetail",
                 unwrap=True,
             ),
         )
@@ -2486,7 +2487,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            response_type=SessionsResponse,
+            response_type="SessionsResponse",
         )
 
     async def stats(
@@ -2526,7 +2527,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionStatsInfo,
+                response_type="SessionStatsInfo",
                 unwrap=True,
             ),
         )
@@ -2579,7 +2580,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -2621,7 +2622,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -2662,7 +2663,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionTransferData,
+                response_type="SessionTransferData",
                 unwrap=True,
             ),
         )
@@ -2696,7 +2697,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.dict[str, Any],
+                response_type="builtins.dict[str, Any]",
                 unwrap=True,
             ),
         )
@@ -2732,7 +2733,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -2804,7 +2805,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInfo,
+                response_type="SessionInfo",
                 unwrap=True,
             ),
         )
@@ -3006,7 +3007,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInboxUser,
+                response_type="SessionInboxUser",
                 unwrap=True,
             ),
         )
@@ -3146,7 +3147,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInboxSynthetic,
+                response_type="SessionInboxSynthetic",
                 unwrap=True,
             ),
         )
@@ -3223,7 +3224,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInboxCompaction,
+                response_type="SessionInboxCompaction",
                 unwrap=True,
             ),
         )
@@ -3296,7 +3297,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[SessionMessageInfo],
+                response_type="builtins.list[SessionMessageInfo]",
                 unwrap=True,
             ),
         )
@@ -3344,7 +3345,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[FileDiffInfo],
+                response_type="builtins.list[FileDiffInfo]",
                 unwrap=True,
             ),
         )
@@ -3384,7 +3385,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionGenerateResponseData,
+                response_type="SessionGenerateResponseData",
                 unwrap=True,
             ),
         )
@@ -3423,7 +3424,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            item_type=SessionLogItem,
+            item_type="SessionLogItem",
         )
 
     async def interrupt(
@@ -3460,7 +3461,7 @@ class AsyncSessionResource(AsyncSessionHelpers):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=SessionInterruptResponse,
+                response_type="SessionInterruptResponse",
             ),
         )
 

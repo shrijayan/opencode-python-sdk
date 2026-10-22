@@ -6,18 +6,20 @@
 from __future__ import annotations
 
 import builtins
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    CredentialEntry,
-    CredentialID,
-    CredentialValue,
-    IntegrationID,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        CredentialEntry,
+        CredentialID,
+        CredentialValue,
+        IntegrationID,
+    )
 
 __all__ = ["CredentialResource", "AsyncCredentialResource"]
 
@@ -54,7 +56,7 @@ class CredentialResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[CredentialEntry],
+                response_type="builtins.list[CredentialEntry]",
                 unwrap=True,
             ),
         )
@@ -101,7 +103,7 @@ class CredentialResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=CredentialEntry,
+                response_type="CredentialEntry",
                 unwrap=True,
             ),
         )
@@ -234,7 +236,7 @@ class AsyncCredentialResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[CredentialEntry],
+                response_type="builtins.list[CredentialEntry]",
                 unwrap=True,
             ),
         )
@@ -281,7 +283,7 @@ class AsyncCredentialResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=CredentialEntry,
+                response_type="CredentialEntry",
                 unwrap=True,
             ),
         )

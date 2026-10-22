@@ -31,7 +31,6 @@ import anyio
 from typing_extensions import Self
 
 from ._exceptions import APIConnectionError, APIStatusError, OpencodeError
-from .types import ServerConnectedEvent
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Awaitable, Callable, Iterator
@@ -39,7 +38,7 @@ if TYPE_CHECKING:
 
     from ._client import AsyncOpencode, Opencode
     from ._streaming import AsyncStream, Stream
-    from .types import Event
+    from .types import Event, ServerConnectedEvent
 
 __all__ = [
     "SUBSCRIBER_CAPACITY",
@@ -302,6 +301,8 @@ class EventHub:
 
     def _read(self, connection: _SyncConnection) -> None:
         """Reads one connection until it ends, setting ``connection.delivered`` once an event arrives."""
+        from .types import ServerConnectedEvent
+
         stream = self._client.event.subscribe()
         with self._lock:
             connection.stream = stream
@@ -605,6 +606,8 @@ class AsyncEventHub:
 
     async def _read(self, connection: _AsyncConnection) -> None:
         """Reads one connection until it ends, setting ``connection.delivered`` once an event arrives."""
+        from .types import ServerConnectedEvent
+
         stream: AsyncStream[Event] = await self._client.event.subscribe()
         try:
             stream.on_activity = connection.activity

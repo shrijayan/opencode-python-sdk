@@ -6,15 +6,17 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    VoiceSessionResponseData,
-    VoiceTransportInput,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        VoiceSessionResponseData,
+        VoiceTransportInput,
+    )
 
 __all__ = ["VoiceResource", "AsyncVoiceResource"]
 
@@ -59,7 +61,7 @@ class VoiceResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VoiceSessionResponseData,
+                response_type="VoiceSessionResponseData",
                 unwrap=True,
             ),
         )
@@ -105,7 +107,7 @@ class AsyncVoiceResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VoiceSessionResponseData,
+                response_type="VoiceSessionResponseData",
                 unwrap=True,
             ),
         )

@@ -5,15 +5,17 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    ReferenceListResponse,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        ReferenceListResponse,
+    )
 
 __all__ = ["ReferenceResource", "AsyncReferenceResource"]
 
@@ -53,7 +55,7 @@ class ReferenceResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ReferenceListResponse,
+                response_type="ReferenceListResponse",
             ),
         )
 
@@ -93,6 +95,6 @@ class AsyncReferenceResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ReferenceListResponse,
+                response_type="ReferenceListResponse",
             ),
         )

@@ -5,17 +5,19 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    PairingCode,
-    PairingSession,
-    ServerInfo,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        PairingCode,
+        PairingSession,
+        ServerInfo,
+    )
 
 __all__ = ["ServerResource", "AsyncServerResource"]
 
@@ -52,7 +54,7 @@ class ServerResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ServerInfo,
+                response_type="ServerInfo",
             ),
         )
 
@@ -85,7 +87,7 @@ class ServerResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PairingCode,
+                response_type="PairingCode",
             ),
         )
 
@@ -119,7 +121,7 @@ class ServerResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PairingSession,
+                response_type="PairingSession",
             ),
         )
 
@@ -156,7 +158,7 @@ class AsyncServerResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ServerInfo,
+                response_type="ServerInfo",
             ),
         )
 
@@ -189,7 +191,7 @@ class AsyncServerResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PairingCode,
+                response_type="PairingCode",
             ),
         )
 
@@ -223,6 +225,6 @@ class AsyncServerResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PairingSession,
+                response_type="PairingSession",
             ),
         )

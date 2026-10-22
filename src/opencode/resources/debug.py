@@ -7,15 +7,17 @@ from __future__ import annotations
 
 import builtins
 from functools import cached_property
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    LocationPublicRef,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        LocationPublicRef,
+    )
 
 __all__ = ["DebugResource", "AsyncDebugResource"]
 
@@ -52,7 +54,7 @@ class DebugLocationResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[LocationPublicRef],
+                response_type="builtins.list[LocationPublicRef]",
             ),
         )
 
@@ -130,7 +132,7 @@ class AsyncDebugLocationResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[LocationPublicRef],
+                response_type="builtins.list[LocationPublicRef]",
             ),
         )
 

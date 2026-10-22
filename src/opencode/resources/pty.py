@@ -7,23 +7,25 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._pty import AsyncPtyAttachMixin, PtyAttachMixin
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    PtyConnectTokenResponse,
-    PtyCreateResponse,
-    PtyGetResponse,
-    PtyID,
-    PtyListResponse,
-    PtyUpdateResponse,
-    PtyUpdateSize,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        PtyConnectTokenResponse,
+        PtyCreateResponse,
+        PtyGetResponse,
+        PtyID,
+        PtyListResponse,
+        PtyUpdateResponse,
+        PtyUpdateSize,
+    )
 
 __all__ = ["PtyResource", "AsyncPtyResource"]
 
@@ -68,7 +70,7 @@ class PtyConnectResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyConnectTokenResponse,
+                response_type="PtyConnectTokenResponse",
             ),
         )
 
@@ -113,7 +115,7 @@ class PtyResource(PtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyListResponse,
+                response_type="PtyListResponse",
             ),
         )
 
@@ -155,7 +157,7 @@ class PtyResource(PtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyCreateResponse,
+                response_type="PtyCreateResponse",
             ),
         )
 
@@ -193,7 +195,7 @@ class PtyResource(PtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyGetResponse,
+                response_type="PtyGetResponse",
             ),
         )
 
@@ -234,7 +236,7 @@ class PtyResource(PtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyUpdateResponse,
+                response_type="PtyUpdateResponse",
             ),
         )
 
@@ -314,7 +316,7 @@ class AsyncPtyConnectResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyConnectTokenResponse,
+                response_type="PtyConnectTokenResponse",
             ),
         )
 
@@ -359,7 +361,7 @@ class AsyncPtyResource(AsyncPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyListResponse,
+                response_type="PtyListResponse",
             ),
         )
 
@@ -401,7 +403,7 @@ class AsyncPtyResource(AsyncPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyCreateResponse,
+                response_type="PtyCreateResponse",
             ),
         )
 
@@ -439,7 +441,7 @@ class AsyncPtyResource(AsyncPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyGetResponse,
+                response_type="PtyGetResponse",
             ),
         )
 
@@ -480,7 +482,7 @@ class AsyncPtyResource(AsyncPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyUpdateResponse,
+                response_type="PtyUpdateResponse",
             ),
         )
 

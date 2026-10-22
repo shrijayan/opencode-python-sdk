@@ -14,7 +14,8 @@ Quick start::
 
 from __future__ import annotations
 
-from . import types
+from typing import TYPE_CHECKING, Any
+
 from ._client import AsyncOpencode, Opencode
 
 # <generated:error-imports>
@@ -107,6 +108,9 @@ from ._rpc import (
     rpc_event,
     rpc_method,
 )
+
+if TYPE_CHECKING:
+    from . import types
 
 # <generated:api-version>
 API_VERSION = "2.1.2"
@@ -206,3 +210,12 @@ __all__ = [
     "WorktreeError",
     # </generated:error-exports>
 ]
+
+
+def __getattr__(name: str) -> Any:
+    # `opencode.types` builds several hundred models, so it is imported on first use rather than with the package.
+    if name == "types":
+        import importlib
+
+        return importlib.import_module(".types", __name__)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

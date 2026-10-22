@@ -6,16 +6,18 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    PluginCheckResponse,
-    PluginListResponse,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        PluginCheckResponse,
+        PluginListResponse,
+    )
 
 __all__ = ["PluginResource", "AsyncPluginResource"]
 
@@ -55,7 +57,7 @@ class PluginResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PluginListResponse,
+                response_type="PluginListResponse",
             ),
         )
 
@@ -93,7 +95,7 @@ class PluginResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PluginCheckResponse,
+                response_type="PluginCheckResponse",
             ),
         )
 
@@ -169,7 +171,7 @@ class AsyncPluginResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PluginListResponse,
+                response_type="PluginListResponse",
             ),
         )
 
@@ -207,7 +209,7 @@ class AsyncPluginResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PluginCheckResponse,
+                response_type="PluginCheckResponse",
             ),
         )
 

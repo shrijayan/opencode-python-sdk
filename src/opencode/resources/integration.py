@@ -6,25 +6,27 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    FormAnswer,
-    IntegrationAttemptID,
-    IntegrationCommandConnectResponse,
-    IntegrationCommandStatusResponse,
-    IntegrationGetResponse,
-    IntegrationID,
-    IntegrationListResponse,
-    IntegrationMethodID,
-    IntegrationOauthConnectResponse,
-    IntegrationOauthStatusResponse,
-    Location,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        FormAnswer,
+        IntegrationAttemptID,
+        IntegrationCommandConnectResponse,
+        IntegrationCommandStatusResponse,
+        IntegrationGetResponse,
+        IntegrationID,
+        IntegrationListResponse,
+        IntegrationMethodID,
+        IntegrationOauthConnectResponse,
+        IntegrationOauthStatusResponse,
+        Location,
+    )
 
 __all__ = ["IntegrationResource", "AsyncIntegrationResource"]
 
@@ -192,7 +194,7 @@ class IntegrationOauthResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationOauthConnectResponse,
+                response_type="IntegrationOauthConnectResponse",
             ),
         )
 
@@ -232,7 +234,7 @@ class IntegrationOauthResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationOauthStatusResponse,
+                response_type="IntegrationOauthStatusResponse",
             ),
         )
 
@@ -352,7 +354,7 @@ class IntegrationCommandResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationCommandConnectResponse,
+                response_type="IntegrationCommandConnectResponse",
             ),
         )
 
@@ -392,7 +394,7 @@ class IntegrationCommandResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationCommandStatusResponse,
+                response_type="IntegrationCommandStatusResponse",
             ),
         )
 
@@ -487,7 +489,7 @@ class IntegrationResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationListResponse,
+                response_type="IntegrationListResponse",
             ),
         )
 
@@ -525,7 +527,7 @@ class IntegrationResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationGetResponse,
+                response_type="IntegrationGetResponse",
             ),
         )
 
@@ -693,7 +695,7 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationOauthConnectResponse,
+                response_type="IntegrationOauthConnectResponse",
             ),
         )
 
@@ -733,7 +735,7 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationOauthStatusResponse,
+                response_type="IntegrationOauthStatusResponse",
             ),
         )
 
@@ -853,7 +855,7 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationCommandConnectResponse,
+                response_type="IntegrationCommandConnectResponse",
             ),
         )
 
@@ -893,7 +895,7 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationCommandStatusResponse,
+                response_type="IntegrationCommandStatusResponse",
             ),
         )
 
@@ -988,7 +990,7 @@ class AsyncIntegrationResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationListResponse,
+                response_type="IntegrationListResponse",
             ),
         )
 
@@ -1026,6 +1028,6 @@ class AsyncIntegrationResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=IntegrationGetResponse,
+                response_type="IntegrationGetResponse",
             ),
         )

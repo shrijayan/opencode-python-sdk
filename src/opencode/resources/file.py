@@ -5,18 +5,20 @@
 
 from __future__ import annotations
 
-from typing import Literal, cast
+from typing import TYPE_CHECKING, Literal, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, OpenEnum, Query, Timeout
-from ..types import (
-    FileFindResponse,
-    FileListResponse,
-    FileWriteResponse,
-    Location,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        FileFindResponse,
+        FileListResponse,
+        FileWriteResponse,
+        Location,
+    )
 
 __all__ = ["FileResource", "AsyncFileResource"]
 
@@ -99,7 +101,7 @@ class FileResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FileListResponse,
+                response_type="FileListResponse",
             ),
         )
 
@@ -138,7 +140,7 @@ class FileResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FileFindResponse,
+                response_type="FileFindResponse",
             ),
         )
 
@@ -182,7 +184,7 @@ class FileResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FileWriteResponse,
+                response_type="FileWriteResponse",
             ),
         )
 
@@ -265,7 +267,7 @@ class AsyncFileResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FileListResponse,
+                response_type="FileListResponse",
             ),
         )
 
@@ -304,7 +306,7 @@ class AsyncFileResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FileFindResponse,
+                response_type="FileFindResponse",
             ),
         )
 
@@ -348,6 +350,6 @@ class AsyncFileResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=FileWriteResponse,
+                response_type="FileWriteResponse",
             ),
         )

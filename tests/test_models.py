@@ -66,3 +66,12 @@ def test_rpc_events_match_by_pattern() -> None:
 def test_open_enum_accepts_new_values() -> None:
     assert ConfigAgent.model_validate({"mode": "primary"}).mode == "primary"
     assert ConfigAgent.model_validate({"mode": "orchestrator"}).mode == "orchestrator"
+
+
+def test_import_does_not_build_models() -> None:
+    import subprocess
+    import sys
+
+    code = "import sys, opencode; opencode.Opencode('http://x'); print('opencode.types._generated' in sys.modules)"
+    result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True)
+    assert result.stdout.strip() == "False"

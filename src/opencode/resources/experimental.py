@@ -8,25 +8,27 @@ from __future__ import annotations
 import builtins
 from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._pty import AsyncPersistentPtyAttachMixin, PersistentPtyAttachMixin
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    ExperimentalPersistentPtyCreateSize,
-    ExperimentalPersistentPtyHandoffResponse,
-    ExperimentalPersistentPtyUpdateSize,
-    PersistentPtyInfo,
-    PersistentPtyReadLines,
-    PersistentPtyReadResult,
-    PersistentPtySnapshot,
-    PtyID,
-    PtyTicketConnectToken,
-    SessionID,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        ExperimentalPersistentPtyCreateSize,
+        ExperimentalPersistentPtyHandoffResponse,
+        ExperimentalPersistentPtyUpdateSize,
+        PersistentPtyInfo,
+        PersistentPtyReadLines,
+        PersistentPtyReadResult,
+        PersistentPtySnapshot,
+        PtyID,
+        PtyTicketConnectToken,
+        SessionID,
+    )
 
 __all__ = ["ExperimentalResource", "AsyncExperimentalResource"]
 
@@ -69,7 +71,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyReadResult | None,
+                response_type="PersistentPtyReadResult | None",
                 unwrap=True,
             ),
         )
@@ -103,7 +105,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[PersistentPtyInfo],
+                response_type="builtins.list[PersistentPtyInfo]",
                 unwrap=True,
             ),
         )
@@ -144,7 +146,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyInfo,
+                response_type="PersistentPtyInfo",
                 unwrap=True,
             ),
         )
@@ -206,7 +208,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ExperimentalPersistentPtyHandoffResponse,
+                response_type="ExperimentalPersistentPtyHandoffResponse",
             ),
         )
 
@@ -240,7 +242,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyInfo,
+                response_type="PersistentPtyInfo",
                 unwrap=True,
             ),
         )
@@ -278,7 +280,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyInfo,
+                response_type="PersistentPtyInfo",
                 unwrap=True,
             ),
         )
@@ -313,7 +315,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtySnapshot,
+                response_type="PersistentPtySnapshot",
                 unwrap=True,
             ),
         )
@@ -382,7 +384,7 @@ class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyTicketConnectToken,
+                response_type="PtyTicketConnectToken",
                 unwrap=True,
             ),
         )
@@ -435,7 +437,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyReadResult | None,
+                response_type="PersistentPtyReadResult | None",
                 unwrap=True,
             ),
         )
@@ -469,7 +471,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[PersistentPtyInfo],
+                response_type="builtins.list[PersistentPtyInfo]",
                 unwrap=True,
             ),
         )
@@ -510,7 +512,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyInfo,
+                response_type="PersistentPtyInfo",
                 unwrap=True,
             ),
         )
@@ -572,7 +574,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ExperimentalPersistentPtyHandoffResponse,
+                response_type="ExperimentalPersistentPtyHandoffResponse",
             ),
         )
 
@@ -606,7 +608,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyInfo,
+                response_type="PersistentPtyInfo",
                 unwrap=True,
             ),
         )
@@ -644,7 +646,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtyInfo,
+                response_type="PersistentPtyInfo",
                 unwrap=True,
             ),
         )
@@ -679,7 +681,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PersistentPtySnapshot,
+                response_type="PersistentPtySnapshot",
                 unwrap=True,
             ),
         )
@@ -748,7 +750,7 @@ class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PtyTicketConnectToken,
+                response_type="PtyTicketConnectToken",
                 unwrap=True,
             ),
         )

@@ -5,16 +5,18 @@
 
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    RpcOutput,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        RpcOutput,
+    )
 
 __all__ = ["RpcResource", "AsyncRpcResource"]
 
@@ -60,7 +62,7 @@ class RpcResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=RpcOutput,
+                response_type="RpcOutput",
             ),
         )
 
@@ -106,6 +108,6 @@ class AsyncRpcResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=RpcOutput,
+                response_type="RpcOutput",
             ),
         )
