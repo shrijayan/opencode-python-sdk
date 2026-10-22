@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "description": "OpenCode CLI used by the live CI job; package-lock.json pins it by integrity hash.",
+  "dependencies": {
+    "@opencode/cli": "2.1.2"
+  }
+}
