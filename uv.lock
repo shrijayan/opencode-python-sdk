@@ -576,7 +576,7 @@ wheels = [
 ]
 
 [[package]]
-name = "opencode"
+name = "opencode-python-sdk"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

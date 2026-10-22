@@ -1,5 +1,5 @@
 [project]
-name = "opencode"
+name = "opencode-python-sdk"
 version = "0.1.0"
 description = "Typed Python client for the OpenCode 2.x server API"
 readme = "README.md"

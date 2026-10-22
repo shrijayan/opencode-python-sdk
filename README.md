@@ -1,13 +1,13 @@
-# opencode
+# opencode-python-sdk
 
 [![CI](https://github.com/shrijayan/opencode-python-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/shrijayan/opencode-python-sdk/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/opencode.svg)](https://pypi.org/project/opencode/)
-[![Python](https://img.shields.io/pypi/pyversions/opencode.svg)](https://pypi.org/project/opencode/)
+[![PyPI](https://img.shields.io/pypi/v/opencode-python-sdk.svg)](https://pypi.org/project/opencode-python-sdk/)
+[![Python](https://img.shields.io/pypi/pyversions/opencode-python-sdk.svg)](https://pypi.org/project/opencode-python-sdk/)
 
 Typed Python client for the [OpenCode](https://github.com/anomalyco/opencode) 2.x server API.
 
 > **Unofficial, community-maintained.** This package is not affiliated with or endorsed by the OpenCode team.
-> If the OpenCode maintainers want to take it over, we are happy to transfer this repository and the `opencode`
+> If the OpenCode maintainers want to take it over, we are happy to transfer this repository and the `opencode-python-sdk`
 > name on PyPI. Open an issue and we will hand it over.
 
 - **Complete.** All 142 operations of the OpenCode 2.1 API, sync and async, with typed models for every request,
@@ -23,10 +23,10 @@ Typed Python client for the [OpenCode](https://github.com/anomalyco/opencode) 2.
 ## Install
 
 ```bash
-pip install opencode
+pip install opencode-python-sdk
 ```
 
-Requires Python 3.10 or newer. To start a server from Python, install the [OpenCode CLI](https://opencode.ai) too.
+The package imports as `opencode`. Requires Python 3.10 or newer. To start a server from Python, install the [OpenCode CLI](https://opencode.ai) too.
 
 ## Quick start
 
@@ -254,7 +254,7 @@ retry; credentials are never logged.
 
 ## Versioning
 
-| `opencode` (this package) | OpenCode server |
+| `opencode-python-sdk` (this package) | OpenCode server |
 | --- | --- |
 | 0.1.x | 2.1.x |
 
