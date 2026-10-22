@@ -66,3 +66,24 @@ async with await client.event.subscribe() as events:  # (3)!
 1. `await` the paginator for the first page.
 2. `async for` over it for every item across pages.
 3. `subscribe()` returns an `AsyncStream` once awaited.
+
+## aiohttp transport
+
+For high-concurrency asyncio code you can swap httpx's networking for [aiohttp](https://docs.aiohttp.org). Install
+the extra and pass `DefaultAioHttpClient` as `http_client`:
+
+```bash
+pip install 'opencode-python-sdk[aiohttp]'
+```
+
+```python
+from opencode import AsyncOpencode, DefaultAioHttpClient
+
+
+async def main() -> None:
+    async with DefaultAioHttpClient() as http, AsyncOpencode("http://127.0.0.1:4096", http_client=http) as client:
+        info = await client.server.info()
+```
+
+Retries, timeouts and event streams work the same. aiohttp runs on asyncio only, not trio. The client does not close
+an `http_client` you pass in, so close it yourself as above.

@@ -10,6 +10,11 @@
       members: [with_options, copy, close, wait_until_ready, fake]
       show_bases: false
 
+::: opencode.DefaultAioHttpClient
+    options:
+      members: false
+      show_bases: false
+
 ## Module constants
 
 ::: opencode.API_VERSION
