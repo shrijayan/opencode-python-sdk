@@ -11,6 +11,7 @@ from functools import cached_property
 from typing import cast
 
 from .._base_client import RequestOptions
+from .._pty import AsyncPersistentPtyAttachMixin, PersistentPtyAttachMixin
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -30,7 +31,7 @@ from ..types import (
 __all__ = ["ExperimentalResource", "AsyncExperimentalResource"]
 
 
-class ExperimentalPersistentPtyResource(SyncAPIResource):
+class ExperimentalPersistentPtyResource(PersistentPtyAttachMixin):
     """Operations under ``client.experimental.persistent_pty`` (OpenCode ``experimental.persistentPty``)."""
 
     def read(
@@ -396,7 +397,7 @@ class ExperimentalResource(SyncAPIResource):
         return ExperimentalPersistentPtyResource(self._client)
 
 
-class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
+class AsyncExperimentalPersistentPtyResource(AsyncPersistentPtyAttachMixin):
     """Operations under ``client.experimental.persistent_pty`` (OpenCode ``experimental.persistentPty``)."""
 
     async def read(

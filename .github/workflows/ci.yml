@@ -60,7 +60,7 @@ jobs:
         with:
           python-version: "3.10"
       - run: >-
-          uv run --isolated --resolution lowest-direct --with-editable .
+          uv run --isolated --resolution lowest-direct --with-editable '.[pty]'
           --with pytest --with respx --with trio
           pytest -m "not live" -p no:cacheprovider
 

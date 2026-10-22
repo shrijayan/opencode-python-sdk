@@ -87,3 +87,19 @@ async def test_async_server(tmp_path: Path) -> None:
         info = await client.server.info()
     assert info.version
     assert not running.running
+
+
+def test_pty_attach_echo(client: Opencode) -> None:
+    pytest.importorskip("websockets")
+    pty = client.pty.create(command="/bin/sh").data
+    try:
+        with client.pty.attach(pty.id) as term:
+            term.resize(100, 30)
+            term.send("echo hi\n")
+            output = b""
+            while b"hi\r\n" not in output.split(b"echo hi", 1)[-1]:
+                chunk = term.recv(timeout=15)
+                assert chunk is not None
+                output += chunk
+    finally:
+        client.pty.remove(pty.id)

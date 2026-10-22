@@ -169,6 +169,27 @@ Events are typed (`SessionCreatedEvent`, `SessionTextDeltaEvent`, and so on). Ev
 not know arrive as `UnknownEvent` with all their fields kept. Streams apply only the connect timeout by default, since
 they stay open between events.
 
+## Terminals
+
+`client.pty.attach()` opens an interactive connection to a PTY over a WebSocket. It needs the `pty` extra:
+`pip install "opencode-python-sdk[pty]"`.
+
+```python
+pty = client.pty.create(command="/bin/sh").data
+with client.pty.attach(pty.id) as term:
+    term.resize(120, 40)
+    term.send("echo hi\n")
+    for chunk in term:  # output bytes, until the shell exits
+        print(chunk.decode(errors="replace"), end="")
+```
+
+`recv(timeout=...)` reads one chunk and returns `None` once the terminal has ended. `term.cursor` holds the output
+position to pass as `cursor=` when reattaching; `cursor=-1` skips the replay of earlier output. Persistent terminals
+work the same way through `client.experimental.persistent_pty.attach(pty_id, role=..., takeover=...)`. The async
+client returns `AsyncPtyConnection` (asyncio only): `async with await client.pty.attach(...) as term`. A connection
+the server refuses or closes abnormally raises `PtyConnectionError`. See
+[`examples/terminal.py`](examples/terminal.py) for a full TTY bridge.
+
 ## Errors
 
 Every error derives from `opencode.OpencodeError`. Errors the server declares are raised as their own class, with a
