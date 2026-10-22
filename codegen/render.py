@@ -382,6 +382,7 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
 # The mixins subclass the resource base classes and cover endpoints the generator cannot express (WebSockets).
 MIXINS: dict[tuple[str, ...], tuple[str, str, str]] = {
     ("pty",): ("_pty", "PtyAttachMixin", "AsyncPtyAttachMixin"),
+    ("session",): ("lib._session", "SessionHelpers", "AsyncSessionHelpers"),
     ("experimental", "persistentPty"): ("_pty", "PersistentPtyAttachMixin", "AsyncPersistentPtyAttachMixin"),
 }
 

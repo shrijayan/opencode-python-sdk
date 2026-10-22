@@ -307,6 +307,7 @@ class SyncAPIClient(_BaseClient):
         default_headers: Mapping[str, str] | None,
         default_query: Mapping[str, object] | None,
         http_client: httpx.Client | None,
+        transport: httpx.BaseTransport | None = None,
     ) -> None:
         super().__init__(
             base_url=base_url,
@@ -319,7 +320,11 @@ class SyncAPIClient(_BaseClient):
             default_query=default_query,
         )
         self._owns_http = http_client is None
-        self._http = http_client or httpx.Client(limits=constants.DEFAULT_CONNECTION_LIMITS, follow_redirects=True)
+        if http_client is not None and transport is not None:
+            raise ValueError("Pass either http_client or transport, not both")
+        self._http = http_client or httpx.Client(
+            limits=constants.DEFAULT_CONNECTION_LIMITS, follow_redirects=True, transport=transport
+        )
 
     def close(self) -> None:
         """Closes the connection pool, unless it was passed in by the caller."""
@@ -421,6 +426,7 @@ class AsyncAPIClient(_BaseClient):
         default_headers: Mapping[str, str] | None,
         default_query: Mapping[str, object] | None,
         http_client: httpx.AsyncClient | None,
+        transport: httpx.AsyncBaseTransport | None = None,
     ) -> None:
         super().__init__(
             base_url=base_url,
@@ -433,7 +439,11 @@ class AsyncAPIClient(_BaseClient):
             default_query=default_query,
         )
         self._owns_http = http_client is None
-        self._http = http_client or httpx.AsyncClient(limits=constants.DEFAULT_CONNECTION_LIMITS, follow_redirects=True)
+        if http_client is not None and transport is not None:
+            raise ValueError("Pass either http_client or transport, not both")
+        self._http = http_client or httpx.AsyncClient(
+            limits=constants.DEFAULT_CONNECTION_LIMITS, follow_redirects=True, transport=transport
+        )
 
     async def close(self) -> None:
         """Closes the connection pool, unless it was passed in by the caller."""

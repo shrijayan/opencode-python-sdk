@@ -22,7 +22,7 @@ from opencode import (
     rpc_method,
     session_id_of,
 )
-from opencode.types import ServerConnectedEvent
+from opencode.types import ModelRef, ServerConnectedEvent
 
 pytestmark = [
     pytest.mark.live,
@@ -151,3 +151,24 @@ async def test_async_shared_events(tmp_path: Path) -> None:
                 assert isinstance(await second.get(), ServerConnectedEvent)
         with pytest.raises(RpcCallError):
             await client.rpc(Missing).call(Missing.ping)
+
+
+def test_wait_until_ready(client: Opencode) -> None:
+    agents = [agent.id for agent in client.agent.list().data]
+    client.wait_until_ready(agents=agents[:1], timeout=30)
+    with pytest.raises(TimeoutError, match="no-such-agent"):
+        client.wait_until_ready(agents=["no-such-agent"], timeout=0.5)
+
+
+def test_run_with_unroutable_model(client: Opencode) -> None:
+    # A model of a provider that does not exist fails before any network call, so no model is called.
+    # Never prompt without such a model: the default would use OpenCode's hosted free model.
+    model = ModelRef(id="none", provider_id="sdk-test-missing")
+    result = client.session.run("hello", model=model, timeout=30)
+    assert [message.type for message in result.messages] == ["user", "idle"]
+    assert result.outcome == "failed"
+    assert result.error is not None
+    assert result.text == ""
+    again = client.session.run("again", session_id=result.session.id, timeout=30)
+    assert again.messages[0].text == "again"  # type: ignore[union-attr]
+    client.session.remove(result.session.id)
