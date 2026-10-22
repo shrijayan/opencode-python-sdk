@@ -1,6 +1,6 @@
 [project]
 name = "opencode-python-sdk"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Typed Python client for the OpenCode 2.x server API"
 readme = "README.md"
 license = "MIT"
@@ -51,8 +51,13 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling>=1.27"]
+requires = ["hatchling>=1.27", "hatch-vcs>=0.5"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+# The version comes from the latest `vX.Y.Z` git tag, which the release workflow creates on every merge to main.
+source = "vcs"
+raw-options = { local_scheme = "no-local-version", fallback_version = "0.0.0" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/opencode"]
@@ -112,6 +117,7 @@ ignore = [
 "src/opencode/resources/**" = ["TC"]
 "src/opencode/_errors.py" = ["TC"]
 "codegen/**" = ["T20"]
+"scripts/**" = ["T20"]
 "examples/**" = ["T20"]
 "tests/**" = ["E501", "TC"]
 
