@@ -14,6 +14,8 @@ Releases are published automatically on every merge to `main`. Release notes for
 - `OPENCODE_LOG=debug|info` sends the `opencode` logger to stderr at that level.
 - `client.copy(...)`, an alias of `client.with_options(...)`; documented that copies share the connection pool
   and do not close it.
+- `DefaultAioHttpClient`: an optional aiohttp transport for `AsyncOpencode`, installed with the `aiohttp` extra
+  (`pip install 'opencode-python-sdk[aiohttp]'`) and passed as `http_client=`.
 
 ## 0.1.0
 

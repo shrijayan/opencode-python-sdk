@@ -17,6 +17,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from . import service
+from ._aiohttp import DefaultAioHttpClient
 from ._client import AsyncOpencode, Opencode
 
 # <generated:error-imports>
@@ -139,6 +140,7 @@ __all__ = [
     "BaseModel",
     "ConflictError",
     "ContentTooLargeError",
+    "DefaultAioHttpClient",
     "Endpoint",
     "InternalServerError",
     "NotFoundError",
