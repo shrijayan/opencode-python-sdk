@@ -202,7 +202,8 @@ class Opencode(SyncAPIClient, SyncResources):
     ) -> Self:
         """Returns a client with some options changed. It shares this client's connection pool.
 
-        ``default_headers`` and ``default_query`` are merged over the current values.
+        ``default_headers`` and ``default_query`` are merged over the current values. Closing the copy leaves the
+        pool open; it closes with this client. Also available as ``copy``.
         """
         client = type(self)(
             base_url=base_url or self.base_url,
@@ -216,6 +217,8 @@ class Opencode(SyncAPIClient, SyncResources):
             http_client=self._http,
         )
         return client
+
+    copy = with_options
 
 
 class AsyncOpencode(AsyncAPIClient, AsyncResources):
@@ -345,7 +348,8 @@ class AsyncOpencode(AsyncAPIClient, AsyncResources):
     ) -> Self:
         """Returns a client with some options changed. It shares this client's connection pool.
 
-        ``default_headers`` and ``default_query`` are merged over the current values.
+        ``default_headers`` and ``default_query`` are merged over the current values. Closing the copy leaves the
+        pool open; it closes with this client. Also available as ``copy``.
         """
         client = type(self)(
             base_url=base_url or self.base_url,
@@ -359,3 +363,5 @@ class AsyncOpencode(AsyncAPIClient, AsyncResources):
             http_client=self._http,
         )
         return client
+
+    copy = with_options

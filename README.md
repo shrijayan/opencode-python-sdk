@@ -313,6 +313,15 @@ client.session.get("ses_...", timeout=5.0)  # per call
 
 The default timeout is 10 minutes with a 10 second connect timeout.
 
+`with_options` (alias `copy`) returns a client with some options changed: `timeout`, `max_retries`, `base_url`,
+`password`, `directory`, `default_headers` and `default_query` (headers and query are merged over the current
+ones). The copy shares the original's connection pool, and closing it leaves the pool open.
+
+```python
+client.with_options(max_retries=0).session.create()  # no retries for this call
+scoped = client.with_options(directory="/other/repo", default_headers={"X-Trace": "1"})
+```
+
 ## Running an agent headless
 
 `client.session.run` does the usual "prompt an agent and wait" round trip in one call: it creates a session (or

@@ -12,6 +12,8 @@ Releases are published automatically on every merge to `main`. Release notes for
   `rpc_method` and `rpc_event`; RPC failures raise `RpcCallError` / `RpcCallInternalError`.
 - `Stream.on_activity` and `Stream.interrupt()`.
 - `OPENCODE_LOG=debug|info` sends the `opencode` logger to stderr at that level.
+- `client.copy(...)`, an alias of `client.with_options(...)`; documented that copies share the connection pool
+  and do not close it.
 
 ## 0.1.0
 
