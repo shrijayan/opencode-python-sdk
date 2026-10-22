@@ -68,7 +68,7 @@ jobs:
         run: |
           if [ -s sync.patch ]; then git apply sync.patch; fi
           rm sync.patch
-      - uses: peter-evans/create-pull-request@v7
+      - uses: peter-evans/create-pull-request@v8
         with:
           branch: sync/opencode-${{ needs.generate.outputs.version }}
           title: "Sync with OpenCode ${{ needs.generate.outputs.version }}"
