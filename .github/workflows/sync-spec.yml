@@ -1,0 +1,52 @@
+name: Sync OpenCode spec
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "@opencode/protocol version (defaults to latest)"
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+      - uses: oven-sh/setup-bun@v2
+      - name: Resolve version
+        id: version
+        run: |
+          version="${{ inputs.version }}"
+          if [ -z "$version" ]; then version=$(npm view @opencode/protocol version); fi
+          effect=$(npm view "@opencode/protocol@$version" dependencies.effect)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "effect=$effect" >> "$GITHUB_OUTPUT"
+      - name: Extract contract
+        working-directory: codegen/extract
+        run: |
+          bun add --exact --ignore-scripts "@opencode/protocol@${{ steps.version.outputs.version }}" "effect@${{ steps.version.outputs.effect }}"
+          bun run extract.ts
+      - name: Regenerate client
+        run: |
+          uv sync --locked
+          uv run python -m codegen
+          uv run ruff check .
+          uv run pyright
+          uv run pytest -m "not live"
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: sync/opencode-${{ steps.version.outputs.version }}
+          title: "Sync with OpenCode ${{ steps.version.outputs.version }}"
+          commit-message: "Sync with OpenCode ${{ steps.version.outputs.version }}"
+          body: |
+            Regenerated from `@opencode/protocol@${{ steps.version.outputs.version }}`.
+
+            Review `api.md` for added, removed or changed operations before merging.
+          delete-branch: true
