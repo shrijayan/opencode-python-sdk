@@ -11,6 +11,7 @@ Releases are published automatically on every merge to `main`. Release notes for
 - `client.rpc(Definition)`: typed plugin RPC calls and event subscriptions declared with `RpcDefinition`,
   `rpc_method` and `rpc_event`; RPC failures raise `RpcCallError` / `RpcCallInternalError`.
 - `Stream.on_activity` and `Stream.interrupt()`.
+- `OPENCODE_LOG=debug|info` sends the `opencode` logger to stderr at that level.
 
 ## 0.1.0
 

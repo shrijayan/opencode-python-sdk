@@ -75,6 +75,7 @@ from ._exceptions import (
     ServiceUnavailableError,
     UnprocessableEntityError,
 )
+from ._logs import setup_logging as _setup_logging
 from ._models import BaseModel
 from ._pagination import AsyncCursorPage, AsyncPaginator, SyncCursorPage
 from ._pty import AsyncPtyConnection, PtyConnection, PtyConnectionError
@@ -224,3 +225,6 @@ def __getattr__(name: str) -> Any:
 
         return importlib.import_module(".types", __name__)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+_setup_logging()
