@@ -420,7 +420,8 @@ client.session.create(title="t", extra_headers={"X-Trace": "1"}, extra_body={"fu
 ```
 
 Logs go to the `opencode` logger. `logging.getLogger("opencode").setLevel(logging.DEBUG)` shows every request and
-retry; credentials are never logged.
+retry; credentials are never logged. Set `OPENCODE_LOG=debug` (or `info`) to have the SDK attach a stderr handler at
+that level on import, without touching your own logging config.
 
 ## Versioning
 
