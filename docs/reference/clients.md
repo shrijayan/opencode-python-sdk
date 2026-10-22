@@ -2,12 +2,12 @@
 
 ::: opencode.Opencode
     options:
-      members: [with_options, close, wait_until_ready, fake]
+      members: [with_options, copy, close, wait_until_ready, fake]
       show_bases: false
 
 ::: opencode.AsyncOpencode
     options:
-      members: [with_options, close, wait_until_ready, fake]
+      members: [with_options, copy, close, wait_until_ready, fake]
       show_bases: false
 
 ## Module constants
