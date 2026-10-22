@@ -271,3 +271,19 @@ def test_probe_timeout_is_reported(file: Path) -> None:
         registration = impl._registered(file, 0.1)
     assert registration.timed_out
     assert registration.service is None
+
+
+def test_resolve_searches_path_only(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    bin_dir, cwd = tmp_path / "bin", tmp_path / "cwd"
+    bin_dir.mkdir()
+    cwd.mkdir()
+    name = "tool.exe" if sys.platform == "win32" else "tool"
+    for folder in (bin_dir, cwd):
+        (folder / name).write_text("")
+        (folder / name).chmod(0o755)
+    monkeypatch.chdir(cwd)
+    monkeypatch.setenv("PATH", str(bin_dir))
+    assert Path(impl._resolve("tool")).parent == bin_dir
+    monkeypatch.setenv("PATH", "")
+    assert impl._resolve("tool") == "tool"
+    assert impl._resolve(str(cwd / name)) == str(cwd / name)
