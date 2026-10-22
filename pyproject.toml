@@ -55,9 +55,11 @@ dev = [
   "trio>=0.31",
   "websockets>=14",
 ]
+# Pillow (via [imaging]) only ships patched releases for Python 3.11+, so docs builds need 3.11+.
 docs = [
-    "mkdocs-material[imaging]>=9.6",
-    "mkdocstrings[python]>=0.30",
+    "mkdocs-material[imaging]>=9.6; python_version >= '3.11'",
+    "mkdocstrings[python]>=0.30; python_version >= '3.11'",
+    "pillow>=13; python_version >= '3.11'",
 ]
 
 [build-system]
