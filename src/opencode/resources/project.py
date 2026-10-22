@@ -40,9 +40,9 @@ class ProjectResource(SyncAPIResource):
         List known projects. Archived projects are excluded unless archived=true.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/project``
         """
@@ -80,10 +80,10 @@ class ProjectResource(SyncAPIResource):
         Update the project canonical directory, display metadata, and workspace commands.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``PATCH /api/project/:projectID``
         """
@@ -121,9 +121,9 @@ class AsyncProjectResource(AsyncAPIResource):
         List known projects. Archived projects are excluded unless archived=true.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/project``
         """
@@ -161,10 +161,10 @@ class AsyncProjectResource(AsyncAPIResource):
         Update the project canonical directory, display metadata, and workspace commands.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``PATCH /api/project/:projectID``
         """

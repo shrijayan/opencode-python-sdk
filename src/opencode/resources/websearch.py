@@ -37,10 +37,10 @@ class WebsearchResource(SyncAPIResource):
         Return the registered web search providers.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/websearch/provider``
         """
@@ -76,10 +76,10 @@ class WebsearchResource(SyncAPIResource):
         Run one web search through the selected provider. Specify a provider to override the configured default.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/websearch``
         """
@@ -118,10 +118,10 @@ class AsyncWebsearchResource(AsyncAPIResource):
         Return the registered web search providers.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/websearch/provider``
         """
@@ -157,10 +157,10 @@ class AsyncWebsearchResource(AsyncAPIResource):
         Run one web search through the selected provider. Specify a provider to override the configured default.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/websearch``
         """

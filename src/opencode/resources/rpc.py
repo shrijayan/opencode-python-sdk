@@ -39,11 +39,11 @@ class RpcResource(SyncAPIResource):
         Dispatch a method to the currently registered RPC at the requested location.
 
         Raises:
-          RpcError
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          RpcInternalError
+          RpcError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          RpcInternalError: The server answered 500.
 
         ``POST /api/rpc/:rpcID/:method``
         """
@@ -85,11 +85,11 @@ class AsyncRpcResource(AsyncAPIResource):
         Dispatch a method to the currently registered RPC at the requested location.
 
         Raises:
-          RpcError
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          RpcInternalError
+          RpcError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          RpcInternalError: The server answered 500.
 
         ``POST /api/rpc/:rpcID/:method``
         """

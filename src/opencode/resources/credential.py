@@ -38,8 +38,8 @@ class CredentialResource(SyncAPIResource):
         List every stored integration credential, including its secret value.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/credential``
         """
@@ -77,9 +77,9 @@ class CredentialResource(SyncAPIResource):
         Store an integration credential. It becomes the integration's active credential unless activate is false and the integration already has one. Fails with a conflict when the requested ID already exists.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ConflictError: The server answered 409.
 
         ``POST /api/credential``
         """
@@ -121,8 +121,8 @@ class CredentialResource(SyncAPIResource):
         Update a stored credential label.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``PATCH /api/credential/:credentialID``
         """
@@ -153,8 +153,8 @@ class CredentialResource(SyncAPIResource):
         Activate a stored integration credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``POST /api/credential/:credentialID/activate``
         """
@@ -184,8 +184,8 @@ class CredentialResource(SyncAPIResource):
         Remove a stored integration credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``DELETE /api/credential/:credentialID``
         """
@@ -218,8 +218,8 @@ class AsyncCredentialResource(AsyncAPIResource):
         List every stored integration credential, including its secret value.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/credential``
         """
@@ -257,9 +257,9 @@ class AsyncCredentialResource(AsyncAPIResource):
         Store an integration credential. It becomes the integration's active credential unless activate is false and the integration already has one. Fails with a conflict when the requested ID already exists.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ConflictError: The server answered 409.
 
         ``POST /api/credential``
         """
@@ -301,8 +301,8 @@ class AsyncCredentialResource(AsyncAPIResource):
         Update a stored credential label.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``PATCH /api/credential/:credentialID``
         """
@@ -333,8 +333,8 @@ class AsyncCredentialResource(AsyncAPIResource):
         Activate a stored integration credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``POST /api/credential/:credentialID/activate``
         """
@@ -364,8 +364,8 @@ class AsyncCredentialResource(AsyncAPIResource):
         Remove a stored integration credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``DELETE /api/credential/:credentialID``
         """

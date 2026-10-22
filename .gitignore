@@ -14,3 +14,7 @@ htmlcov/
 codegen/extract/node_modules/
 codegen/extract/.cache/
 .DS_Store
+
+# MkDocs output
+site/
+.cache/

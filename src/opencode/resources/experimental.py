@@ -50,9 +50,9 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/session/:sessionID/terminal/read``
         """
@@ -85,9 +85,9 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/session/:sessionID/terminal``
         """
@@ -125,9 +125,9 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/session/:sessionID/terminal``
         """
@@ -159,9 +159,9 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/persistent-pty/shutdown``
         """
@@ -188,9 +188,9 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/persistent-pty/handoff``
         """
@@ -221,10 +221,10 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/persistent-pty/:ptyID``
         """
@@ -258,10 +258,10 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``PUT /api/experimental/persistent-pty/:ptyID``
         """
@@ -294,10 +294,10 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/persistent-pty/:ptyID/snapshot``
         """
@@ -329,10 +329,10 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``DELETE /api/experimental/persistent-pty/:ptyID``
         """
@@ -361,11 +361,11 @@ class ExperimentalPersistentPtyResource(SyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ForbiddenError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ForbiddenError: The server answered 403.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/persistent-pty/:ptyID/connect-token``
         """
@@ -415,9 +415,9 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/session/:sessionID/terminal/read``
         """
@@ -450,9 +450,9 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/session/:sessionID/terminal``
         """
@@ -490,9 +490,9 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/session/:sessionID/terminal``
         """
@@ -524,9 +524,9 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/persistent-pty/shutdown``
         """
@@ -553,9 +553,9 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/persistent-pty/handoff``
         """
@@ -586,10 +586,10 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/persistent-pty/:ptyID``
         """
@@ -623,10 +623,10 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``PUT /api/experimental/persistent-pty/:ptyID``
         """
@@ -659,10 +659,10 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/experimental/persistent-pty/:ptyID/snapshot``
         """
@@ -694,10 +694,10 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``DELETE /api/experimental/persistent-pty/:ptyID``
         """
@@ -726,11 +726,11 @@ class AsyncExperimentalPersistentPtyResource(AsyncAPIResource):
         """This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ForbiddenError
-          PtyNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ForbiddenError: The server answered 403.
+          PtyNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/persistent-pty/:ptyID/connect-token``
         """

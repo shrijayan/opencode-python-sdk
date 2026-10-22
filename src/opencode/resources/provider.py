@@ -38,10 +38,10 @@ class ProviderResource(SyncAPIResource):
         Retrieve active AI providers so clients can show provider availability and configuration.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/provider``
         """
@@ -76,11 +76,11 @@ class ProviderResource(SyncAPIResource):
         Retrieve a single AI provider so clients can inspect its availability and endpoint settings.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ProviderNotFoundError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProviderNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/provider/:providerID``
         """
@@ -118,10 +118,10 @@ class AsyncProviderResource(AsyncAPIResource):
         Retrieve active AI providers so clients can show provider availability and configuration.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/provider``
         """
@@ -156,11 +156,11 @@ class AsyncProviderResource(AsyncAPIResource):
         Retrieve a single AI provider so clients can inspect its availability and endpoint settings.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ProviderNotFoundError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProviderNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/provider/:providerID``
         """

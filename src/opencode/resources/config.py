@@ -37,9 +37,9 @@ class ConfigResource(SyncAPIResource):
         Return configuration documents and discovery sources for the requested location, from lowest to highest priority.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/config``
         """
@@ -72,9 +72,9 @@ class ConfigResource(SyncAPIResource):
         Return shells available to terminal and agent execution.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/config/shell``
         """
@@ -109,9 +109,9 @@ class ConfigResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``PATCH /api/experimental/config``
         """
@@ -146,9 +146,9 @@ class AsyncConfigResource(AsyncAPIResource):
         Return configuration documents and discovery sources for the requested location, from lowest to highest priority.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/config``
         """
@@ -181,9 +181,9 @@ class AsyncConfigResource(AsyncAPIResource):
         Return shells available to terminal and agent execution.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/config/shell``
         """
@@ -218,9 +218,9 @@ class AsyncConfigResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``PATCH /api/experimental/config``
         """

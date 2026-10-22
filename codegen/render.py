@@ -265,14 +265,14 @@ def _method_doc(operation: Operation, errors: dict[str, dict[str, Any]], indent:
     documented = [param for param in operation.params if param.doc]
     if documented:
         parts.append("Args:\n" + "\n".join(f"  {param.name}: {_one_line(param.doc or '')}" for param in documented))
-    raised = []
+    raised: dict[str, int] = {}
     for error in operation.errors:
         if error.tag and error.tag in errors:
-            name = errors[error.tag]["class"]
-            if name not in raised:
-                raised.append(name)
+            raised.setdefault(errors[error.tag]["class"], errors[error.tag]["status"])
     if raised:
-        parts.append("Raises:\n" + "\n".join(f"  {name}" for name in raised))
+        parts.append(
+            "Raises:\n" + "\n".join(f"  {name}: The server answered {status}." for name, status in raised.items())
+        )
     parts.append(f"``{operation.http_method} {operation.path}``")
     return docstring("\n\n".join(parts), indent) or ""
 

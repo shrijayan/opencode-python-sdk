@@ -30,6 +30,17 @@ uv run python -m codegen --check
 uv run pytest
 ```
 
+## Documentation
+
+The site in `docs/` is built with MkDocs Material and mkdocstrings. The API reference is generated from docstrings
+at build time by `docs/hooks/types_reference.py`.
+
+```bash
+uv sync --group docs
+uv run mkdocs serve
+uv run mkdocs build --strict
+```
+
 ## Layout
 
 | Path | What it is | Edit by hand? |

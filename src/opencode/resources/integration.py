@@ -49,9 +49,9 @@ class IntegrationWellknownResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/integration/wellknown``
         """
@@ -91,10 +91,10 @@ class IntegrationConnectResource(SyncAPIResource):
         Run a key authentication method and store the resulting credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/key``
         """
@@ -130,10 +130,10 @@ class IntegrationConnectResource(SyncAPIResource):
         Run an external authentication method and store a reference to its credential source.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/external``
         """
@@ -173,9 +173,9 @@ class IntegrationOauthResource(SyncAPIResource):
         Start an OAuth attempt and return the authorization details.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/oauth``
         """
@@ -212,11 +212,11 @@ class IntegrationOauthResource(SyncAPIResource):
         Poll the current status of an OAuth attempt.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationAttemptNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationAttemptNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration/:integrationID/connect/oauth/:attemptID``
         """
@@ -253,11 +253,11 @@ class IntegrationOauthResource(SyncAPIResource):
         Complete a code-based OAuth attempt and store the resulting credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationAttemptNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationAttemptNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/oauth/:attemptID/complete``
         """
@@ -291,9 +291,9 @@ class IntegrationOauthResource(SyncAPIResource):
         Cancel an OAuth attempt and release its resources.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/integration/:integrationID/connect/oauth/:attemptID``
         """
@@ -331,11 +331,11 @@ class IntegrationCommandResource(SyncAPIResource):
         Start a command authentication attempt.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationMethodNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationMethodNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/command``
         """
@@ -372,11 +372,11 @@ class IntegrationCommandResource(SyncAPIResource):
         Poll the current status and output of a command authentication attempt.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationAttemptNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationAttemptNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration/:integrationID/connect/command/:attemptID``
         """
@@ -412,9 +412,9 @@ class IntegrationCommandResource(SyncAPIResource):
         Cancel a command authentication attempt and terminate its process.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/integration/:integrationID/connect/command/:attemptID``
         """
@@ -465,9 +465,9 @@ class IntegrationResource(SyncAPIResource):
         Retrieve available integrations and their authentication methods.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration``
         """
@@ -502,10 +502,10 @@ class IntegrationResource(SyncAPIResource):
         Retrieve one integration and its authentication methods.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration/:integrationID``
         """
@@ -546,9 +546,9 @@ class AsyncIntegrationWellknownResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/integration/wellknown``
         """
@@ -588,10 +588,10 @@ class AsyncIntegrationConnectResource(AsyncAPIResource):
         Run a key authentication method and store the resulting credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/key``
         """
@@ -627,10 +627,10 @@ class AsyncIntegrationConnectResource(AsyncAPIResource):
         Run an external authentication method and store a reference to its credential source.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/external``
         """
@@ -670,9 +670,9 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
         Start an OAuth attempt and return the authorization details.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/oauth``
         """
@@ -709,11 +709,11 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
         Poll the current status of an OAuth attempt.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationAttemptNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationAttemptNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration/:integrationID/connect/oauth/:attemptID``
         """
@@ -750,11 +750,11 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
         Complete a code-based OAuth attempt and store the resulting credential.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationAttemptNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationAttemptNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/oauth/:attemptID/complete``
         """
@@ -788,9 +788,9 @@ class AsyncIntegrationOauthResource(AsyncAPIResource):
         Cancel an OAuth attempt and release its resources.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/integration/:integrationID/connect/oauth/:attemptID``
         """
@@ -828,11 +828,11 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
         Start a command authentication attempt.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationMethodNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationMethodNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/integration/:integrationID/connect/command``
         """
@@ -869,11 +869,11 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
         Poll the current status and output of a command authentication attempt.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          IntegrationAttemptNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          IntegrationAttemptNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration/:integrationID/connect/command/:attemptID``
         """
@@ -909,9 +909,9 @@ class AsyncIntegrationCommandResource(AsyncAPIResource):
         Cancel a command authentication attempt and terminate its process.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/integration/:integrationID/connect/command/:attemptID``
         """
@@ -962,9 +962,9 @@ class AsyncIntegrationResource(AsyncAPIResource):
         Retrieve available integrations and their authentication methods.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration``
         """
@@ -999,10 +999,10 @@ class AsyncIntegrationResource(AsyncAPIResource):
         Retrieve one integration and its authentication methods.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          IntegrationNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          IntegrationNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/integration/:integrationID``
         """

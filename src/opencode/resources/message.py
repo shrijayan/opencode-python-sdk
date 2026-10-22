@@ -64,11 +64,11 @@ class MessageResource(SyncAPIResource):
           type: Filter by message type before pagination. When omitted, all message types are returned. Pass the same type when following cursors.
 
         Raises:
-          InvalidCursorError
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          UnknownError
+          InvalidCursorError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/session/:sessionID/message``
         """
@@ -129,11 +129,11 @@ class AsyncMessageResource(AsyncAPIResource):
           type: Filter by message type before pagination. When omitted, all message types are returned. Pass the same type when following cursors.
 
         Raises:
-          InvalidCursorError
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          UnknownError
+          InvalidCursorError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/session/:sessionID/message``
         """

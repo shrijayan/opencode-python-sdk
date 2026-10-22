@@ -36,8 +36,8 @@ class ServerResource(SyncAPIResource):
         Return the server identity, connection URLs, paths, and readiness status.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/info``
         """
@@ -69,8 +69,8 @@ class ServerResource(SyncAPIResource):
         Create a short-lived, single-use code for a /auth/connect/:code pairing link.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``POST /api/pair``
         """
@@ -103,8 +103,8 @@ class ServerResource(SyncAPIResource):
         Redeem a pairing code. Browsers receive a session cookie and a redirect to the web app; requests that accept JSON receive a session token to use as the password.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /auth/connect/:code``
         """
@@ -140,8 +140,8 @@ class AsyncServerResource(AsyncAPIResource):
         Return the server identity, connection URLs, paths, and readiness status.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/info``
         """
@@ -173,8 +173,8 @@ class AsyncServerResource(AsyncAPIResource):
         Create a short-lived, single-use code for a /auth/connect/:code pairing link.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``POST /api/pair``
         """
@@ -207,8 +207,8 @@ class AsyncServerResource(AsyncAPIResource):
         Redeem a pairing code. Browsers receive a session cookie and a redirect to the web app; requests that accept JSON receive a session token to use as the password.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /auth/connect/:code``
         """

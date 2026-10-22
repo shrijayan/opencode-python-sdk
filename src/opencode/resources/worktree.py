@@ -37,9 +37,9 @@ class WorktreeResource(SyncAPIResource):
         Return the project's saved worktree inventory without loading configuration or running discovery.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``GET /api/worktree``
         """
@@ -77,10 +77,10 @@ class WorktreeResource(SyncAPIResource):
         Load the project's canonical configuration, create a local worktree using its selected strategy, then run the project's setup script.
 
         Raises:
-          WorktreeError
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          WorktreeError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``POST /api/worktree``
         """
@@ -122,10 +122,10 @@ class WorktreeResource(SyncAPIResource):
         Load the project's canonical configuration and remove a saved worktree using its recorded strategy.
 
         Raises:
-          WorktreeError
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          WorktreeError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``DELETE /api/worktree``
         """
@@ -156,10 +156,10 @@ class WorktreeResource(SyncAPIResource):
         Load the project's canonical configuration, discover worktrees across known checkout roots using all available strategies, and reconcile saved state.
 
         Raises:
-          WorktreeError
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          WorktreeError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``POST /api/worktree/refresh``
         """
@@ -194,9 +194,9 @@ class AsyncWorktreeResource(AsyncAPIResource):
         Return the project's saved worktree inventory without loading configuration or running discovery.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``GET /api/worktree``
         """
@@ -234,10 +234,10 @@ class AsyncWorktreeResource(AsyncAPIResource):
         Load the project's canonical configuration, create a local worktree using its selected strategy, then run the project's setup script.
 
         Raises:
-          WorktreeError
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          WorktreeError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``POST /api/worktree``
         """
@@ -279,10 +279,10 @@ class AsyncWorktreeResource(AsyncAPIResource):
         Load the project's canonical configuration and remove a saved worktree using its recorded strategy.
 
         Raises:
-          WorktreeError
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          WorktreeError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``DELETE /api/worktree``
         """
@@ -313,10 +313,10 @@ class AsyncWorktreeResource(AsyncAPIResource):
         Load the project's canonical configuration, discover worktrees across known checkout roots using all available strategies, and reconcile saved state.
 
         Raises:
-          WorktreeError
-          InvalidRequestError
-          UnauthorizedError
-          ProjectNotFoundError
+          WorktreeError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ProjectNotFoundError: The server answered 404.
 
         ``POST /api/worktree/refresh``
         """

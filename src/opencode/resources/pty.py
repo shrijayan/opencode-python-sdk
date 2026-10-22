@@ -46,11 +46,11 @@ class PtyConnectResource(SyncAPIResource):
         Create a short-lived single-use ticket for opening a PTY WebSocket connection.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ForbiddenError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ForbiddenError: The server answered 403.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/pty/:ptyID/connect-token``
         """
@@ -93,9 +93,9 @@ class PtyResource(SyncAPIResource):
         List PTY sessions for a location, including exited sessions retained until removal.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/pty``
         """
@@ -134,9 +134,9 @@ class PtyResource(SyncAPIResource):
         Create a pseudo-terminal session for a location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/pty``
         """
@@ -172,10 +172,10 @@ class PtyResource(SyncAPIResource):
         Get one PTY session, including its exit code once exited.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/pty/:ptyID``
         """
@@ -212,10 +212,10 @@ class PtyResource(SyncAPIResource):
         Update the title or viewport size of one PTY session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``PUT /api/pty/:ptyID``
         """
@@ -251,10 +251,10 @@ class PtyResource(SyncAPIResource):
         Terminate and remove one PTY session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/pty/:ptyID``
         """
@@ -291,11 +291,11 @@ class AsyncPtyConnectResource(AsyncAPIResource):
         Create a short-lived single-use ticket for opening a PTY WebSocket connection.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ForbiddenError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ForbiddenError: The server answered 403.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/pty/:ptyID/connect-token``
         """
@@ -338,9 +338,9 @@ class AsyncPtyResource(AsyncAPIResource):
         List PTY sessions for a location, including exited sessions retained until removal.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/pty``
         """
@@ -379,9 +379,9 @@ class AsyncPtyResource(AsyncAPIResource):
         Create a pseudo-terminal session for a location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/pty``
         """
@@ -417,10 +417,10 @@ class AsyncPtyResource(AsyncAPIResource):
         Get one PTY session, including its exit code once exited.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/pty/:ptyID``
         """
@@ -457,10 +457,10 @@ class AsyncPtyResource(AsyncAPIResource):
         Update the title or viewport size of one PTY session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``PUT /api/pty/:ptyID``
         """
@@ -496,10 +496,10 @@ class AsyncPtyResource(AsyncAPIResource):
         Terminate and remove one PTY session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PtyNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PtyNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/pty/:ptyID``
         """

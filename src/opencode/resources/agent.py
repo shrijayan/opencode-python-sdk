@@ -38,9 +38,9 @@ class AgentResource(SyncAPIResource):
         Retrieve currently registered agents.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/agent``
         """
@@ -75,10 +75,10 @@ class AgentResource(SyncAPIResource):
         Retrieve a single currently registered agent.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          AgentNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          AgentNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/agent/:agentID``
         """
@@ -116,9 +116,9 @@ class AsyncAgentResource(AsyncAPIResource):
         Retrieve currently registered agents.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/agent``
         """
@@ -153,10 +153,10 @@ class AsyncAgentResource(AsyncAPIResource):
         Retrieve a single currently registered agent.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          AgentNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          AgentNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/agent/:agentID``
         """

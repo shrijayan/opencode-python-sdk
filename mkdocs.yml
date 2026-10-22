@@ -1,0 +1,159 @@
+site_name: opencode-python-sdk
+site_url: https://shrijayan.github.io/opencode-python-sdk/
+site_description: Typed Python client for the OpenCode 2.x server API.
+site_author: Shrijayan Rajendran
+repo_url: https://github.com/shrijayan/opencode-python-sdk
+repo_name: shrijayan/opencode-python-sdk
+edit_uri: edit/main/docs/
+copyright: MIT licensed. Unofficial and community-maintained; not affiliated with the OpenCode team.
+
+exclude_docs: |
+  design.html
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: IBM Plex Sans
+    code: JetBrains Mono
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - content.tooltips
+
+extra_css:
+  - stylesheets/extra.css
+
+hooks:
+  - docs/hooks/types_reference.py
+
+plugins:
+  - search
+  - social:
+      enabled: !ENV [SOCIAL_CARDS, false]
+      cards_layout_options:
+        background_color: "#14110f"
+        color: "#f4efe6"
+        font_family: IBM Plex Sans
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          inventories:
+            - https://docs.python.org/3/objects.inv
+          options:
+            docstring_style: google
+            show_source: false
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            show_signature_annotations: true
+            separate_signature: true
+            signature_crossrefs: true
+            members_order: source
+            merge_init_into_class: true
+            filters: ["!^_"]
+            show_if_no_docstring: true
+            heading_level: 2
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+      toc_depth: 2
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/shrijayan/opencode-python-sdk
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/opencode-python-sdk/
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - getting-started/index.md
+      - Connect to a server: getting-started/connect.md
+      - Run a server from Python: getting-started/server.md
+  - Guides:
+      - Sessions and prompts: guides/sessions.md
+      - Async: guides/async.md
+      - Models and unions: guides/models.md
+      - Pagination: guides/pagination.md
+      - Events and streaming: guides/events.md
+      - Errors: guides/errors.md
+      - Retries and timeouts: guides/retries.md
+      - The project directory: guides/directory.md
+      - Advanced httpx config: guides/httpx.md
+      - Logging: guides/logging.md
+  - API reference:
+      - reference/index.md
+      - Clients: reference/clients.md
+      - Server launcher: reference/server.md
+      - Resources: reference/resources.md
+      - Pagination and streams: reference/pagination.md
+      - Exceptions: reference/exceptions.md
+      - Types: reference/types/index.md
+  - Project:
+      - How it's built: project/how-its-built.md
+      - Contributing: project/contributing.md
+      - Versioning and releases: project/versioning.md
+      - Security: project/security.md
+      - Changelog: project/changelog.md

@@ -80,13 +80,13 @@ class SessionRevertResource(SyncAPIResource):
         Stage or move a reversible session boundary and optionally apply its file changes.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          MessageNotFoundError
-          SessionNotFoundError
-          LocationNotFoundError
-          SessionBusyError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          MessageNotFoundError: The server answered 404.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          SessionBusyError: The server answered 409.
+          UnknownError: The server answered 500.
 
         ``POST /api/session/:sessionID/revert/stage``
         """
@@ -119,12 +119,12 @@ class SessionRevertResource(SyncAPIResource):
         """Clear staged revert.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          SessionBusyError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          SessionBusyError: The server answered 409.
+          UnknownError: The server answered 500.
 
         ``DELETE /api/session/:sessionID/revert``
         """
@@ -152,11 +152,11 @@ class SessionRevertResource(SyncAPIResource):
         """Commit staged revert.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          SessionBusyError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          SessionBusyError: The server answered 409.
 
         ``POST /api/session/:sessionID/revert/commit``
         """
@@ -190,9 +190,9 @@ class SessionInboxResource(SyncAPIResource):
         List durable enqueued session work not yet delivered, ordered by enqueue sequence. Includes user, synthetic, compaction, and move items.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/inbox``
         """
@@ -227,9 +227,9 @@ class SessionInboxResource(SyncAPIResource):
         Cancel an inbox item that has not yet been delivered. Unavailable items are a no-op.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``DELETE /api/session/:sessionID/inbox/:inboxID``
         """
@@ -261,10 +261,10 @@ class SessionInboxResource(SyncAPIResource):
         Change a pending inbox item's delivery mode. Steering wakes session execution.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``PATCH /api/session/:sessionID/inbox/:inboxID``
         """
@@ -301,10 +301,10 @@ class SessionInstructionsEntryResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/experimental/session/:sessionID/instructions/entries``
         """
@@ -342,11 +342,11 @@ class SessionInstructionsEntryResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          InstructionEntryValueTooLargeError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          InstructionEntryValueTooLargeError: The server answered 413.
 
         ``PUT /api/experimental/session/:sessionID/instructions/entries/:key``
         """
@@ -380,10 +380,10 @@ class SessionInstructionsEntryResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/experimental/session/:sessionID/instructions/entries/:key``
         """
@@ -426,10 +426,10 @@ class SessionMessageResource(SyncAPIResource):
         Retrieve one projected message owned by the Session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          MessageNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          MessageNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/message/:messageID``
         """
@@ -467,10 +467,10 @@ class SessionFormResource(SyncAPIResource):
         Retrieve pending forms for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/form``
         """
@@ -508,11 +508,11 @@ class SessionFormResource(SyncAPIResource):
         Create a form for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/form``
         """
@@ -548,11 +548,11 @@ class SessionFormResource(SyncAPIResource):
         Retrieve a form and its current state for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          FormNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          FormNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/form/:formID``
         """
@@ -588,13 +588,13 @@ class SessionFormResource(SyncAPIResource):
         Submit an answer to a pending form.
 
         Raises:
-          FormInvalidAnswerError
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          FormNotFoundError
-          LocationNotFoundError
-          FormAlreadySettledError
+          FormInvalidAnswerError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          FormNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          FormAlreadySettledError: The server answered 409.
 
         ``POST /api/session/:sessionID/form/:formID/reply``
         """
@@ -627,12 +627,12 @@ class SessionFormResource(SyncAPIResource):
         Cancel a pending form, optionally telling the asker why it was not answered.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          FormNotFoundError
-          LocationNotFoundError
-          FormAlreadySettledError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          FormNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          FormAlreadySettledError: The server answered 409.
 
         ``DELETE /api/session/:sessionID/form/:formID``
         """
@@ -701,9 +701,9 @@ class SessionResource(SyncAPIResource):
           archived: Filter by archive state. Use true to return only archived sessions or false to exclude them. Omit to include both.
 
         Raises:
-          InvalidCursorError
-          InvalidRequestError
-          UnauthorizedError
+          InvalidCursorError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/session``
         """
@@ -750,8 +750,8 @@ class SessionResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/experimental/session/stats``
         """
@@ -793,9 +793,9 @@ class SessionResource(SyncAPIResource):
         Create a session at the requested location. A parentID creates a linked child session at its parent's location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``POST /api/session``
         """
@@ -843,10 +843,10 @@ class SessionResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/experimental/session/import``
         """
@@ -884,10 +884,10 @@ class SessionResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/experimental/session/:sessionID/export``
         """
@@ -921,8 +921,8 @@ class SessionResource(SyncAPIResource):
         Retrieve foreground Session drains currently owned by this OpenCode process. Sessions absent from the result are inactive.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/session/active``
         """
@@ -956,9 +956,9 @@ class SessionResource(SyncAPIResource):
         Retrieve a session by ID.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID``
         """
@@ -992,9 +992,9 @@ class SessionResource(SyncAPIResource):
         Delete a session and its child sessions.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``DELETE /api/session/:sessionID``
         """
@@ -1025,11 +1025,11 @@ class SessionResource(SyncAPIResource):
         Create a child session by copying projected history before a message. Omit before to copy the full history.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          MessageNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          MessageNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/fork``
         """
@@ -1065,10 +1065,10 @@ class SessionResource(SyncAPIResource):
         Switch the agent used by subsequent provider turns.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/agent``
         """
@@ -1100,10 +1100,10 @@ class SessionResource(SyncAPIResource):
         Switch the model used by subsequent provider turns.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/model``
         """
@@ -1141,10 +1141,10 @@ class SessionResource(SyncAPIResource):
           archived: Archive the session with true or restore it with false. Repeating the current state is a no-op.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``PATCH /api/session/:sessionID``
         """
@@ -1177,9 +1177,9 @@ class SessionResource(SyncAPIResource):
         Move a session to another project directory at the requested delivery boundary.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/move``
         """
@@ -1218,11 +1218,11 @@ class SessionResource(SyncAPIResource):
         Durably admit one session input and schedule agent-loop execution unless resume is false.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/prompt``
         """
@@ -1272,12 +1272,12 @@ class SessionResource(SyncAPIResource):
         Execute a slash command callback immediately.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          CommandNotFoundError
-          LocationNotFoundError
-          CommandExecutionError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          CommandNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          CommandExecutionError: The server answered 500.
 
         ``POST /api/session/:sessionID/command``
         """
@@ -1319,11 +1319,11 @@ class SessionResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          SkillNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          SkillNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/session/:sessionID/skill``
         """
@@ -1360,11 +1360,11 @@ class SessionResource(SyncAPIResource):
         Durably admit synthetic session input and schedule execution unless resume is false.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/synthetic``
         """
@@ -1408,10 +1408,10 @@ class SessionResource(SyncAPIResource):
         Execute one shell command in the session's working directory. Emits a shell.started event before execution and a shell.ended event with the merged output after.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/shell``
         """
@@ -1444,11 +1444,11 @@ class SessionResource(SyncAPIResource):
         Durably admit a session compaction request. Steers by default: it runs at the next step boundary instead of waiting behind queued prompts.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/compact``
         """
@@ -1485,11 +1485,11 @@ class SessionResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/session/:sessionID/wait``
         """
@@ -1519,10 +1519,10 @@ class SessionResource(SyncAPIResource):
         Retrieve the active context messages for a session (all messages after the last compaction).
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/session/:sessionID/context``
         """
@@ -1564,12 +1564,12 @@ class SessionResource(SyncAPIResource):
           context: Unchanged lines around each hunk. Omit for full-file patches.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          MessageNotFoundError
-          SessionNotFoundError
-          LocationNotFoundError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          MessageNotFoundError: The server answered 404.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/session/:sessionID/diff``
         """
@@ -1605,11 +1605,11 @@ class SessionResource(SyncAPIResource):
         Generate transient text from the current session context without mutating session history.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/session/:sessionID/generate``
         """
@@ -1648,9 +1648,9 @@ class SessionResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``GET /api/experimental/session/:sessionID/log``
         """
@@ -1682,10 +1682,10 @@ class SessionResource(SyncAPIResource):
         Interrupt active execution owned by this OpenCode process. Returns interrupted=true when an active execution was interrupted and false for the idle no-op. When resume=true, execution resumes pending steering input and next-in-line control items (manual compaction, moves) while queued prompts remain parked.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/interrupt``
         """
@@ -1719,10 +1719,10 @@ class SessionResource(SyncAPIResource):
         Move active foreground backgroundable tools for this session into background observation. Idle requests are a no-op.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/background``
         """
@@ -1753,9 +1753,9 @@ class SessionResource(SyncAPIResource):
         Replace the process environment used by local shell commands for this session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``PUT /api/session/:sessionID/environment``
         """
@@ -1787,9 +1787,9 @@ class SessionResource(SyncAPIResource):
         Mark the idle transition observed by the viewer as viewed.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/view``
         """
@@ -1826,13 +1826,13 @@ class AsyncSessionRevertResource(AsyncAPIResource):
         Stage or move a reversible session boundary and optionally apply its file changes.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          MessageNotFoundError
-          SessionNotFoundError
-          LocationNotFoundError
-          SessionBusyError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          MessageNotFoundError: The server answered 404.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          SessionBusyError: The server answered 409.
+          UnknownError: The server answered 500.
 
         ``POST /api/session/:sessionID/revert/stage``
         """
@@ -1865,12 +1865,12 @@ class AsyncSessionRevertResource(AsyncAPIResource):
         """Clear staged revert.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          SessionBusyError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          SessionBusyError: The server answered 409.
+          UnknownError: The server answered 500.
 
         ``DELETE /api/session/:sessionID/revert``
         """
@@ -1898,11 +1898,11 @@ class AsyncSessionRevertResource(AsyncAPIResource):
         """Commit staged revert.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          SessionBusyError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          SessionBusyError: The server answered 409.
 
         ``POST /api/session/:sessionID/revert/commit``
         """
@@ -1936,9 +1936,9 @@ class AsyncSessionInboxResource(AsyncAPIResource):
         List durable enqueued session work not yet delivered, ordered by enqueue sequence. Includes user, synthetic, compaction, and move items.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/inbox``
         """
@@ -1973,9 +1973,9 @@ class AsyncSessionInboxResource(AsyncAPIResource):
         Cancel an inbox item that has not yet been delivered. Unavailable items are a no-op.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``DELETE /api/session/:sessionID/inbox/:inboxID``
         """
@@ -2007,10 +2007,10 @@ class AsyncSessionInboxResource(AsyncAPIResource):
         Change a pending inbox item's delivery mode. Steering wakes session execution.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``PATCH /api/session/:sessionID/inbox/:inboxID``
         """
@@ -2047,10 +2047,10 @@ class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/experimental/session/:sessionID/instructions/entries``
         """
@@ -2088,11 +2088,11 @@ class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          InstructionEntryValueTooLargeError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          InstructionEntryValueTooLargeError: The server answered 413.
 
         ``PUT /api/experimental/session/:sessionID/instructions/entries/:key``
         """
@@ -2126,10 +2126,10 @@ class AsyncSessionInstructionsEntryResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/experimental/session/:sessionID/instructions/entries/:key``
         """
@@ -2172,10 +2172,10 @@ class AsyncSessionMessageResource(AsyncAPIResource):
         Retrieve one projected message owned by the Session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          MessageNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          MessageNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/message/:messageID``
         """
@@ -2213,10 +2213,10 @@ class AsyncSessionFormResource(AsyncAPIResource):
         Retrieve pending forms for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/form``
         """
@@ -2254,11 +2254,11 @@ class AsyncSessionFormResource(AsyncAPIResource):
         Create a form for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/form``
         """
@@ -2294,11 +2294,11 @@ class AsyncSessionFormResource(AsyncAPIResource):
         Retrieve a form and its current state for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          FormNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          FormNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/form/:formID``
         """
@@ -2334,13 +2334,13 @@ class AsyncSessionFormResource(AsyncAPIResource):
         Submit an answer to a pending form.
 
         Raises:
-          FormInvalidAnswerError
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          FormNotFoundError
-          LocationNotFoundError
-          FormAlreadySettledError
+          FormInvalidAnswerError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          FormNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          FormAlreadySettledError: The server answered 409.
 
         ``POST /api/session/:sessionID/form/:formID/reply``
         """
@@ -2373,12 +2373,12 @@ class AsyncSessionFormResource(AsyncAPIResource):
         Cancel a pending form, optionally telling the asker why it was not answered.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          FormNotFoundError
-          LocationNotFoundError
-          FormAlreadySettledError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          FormNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          FormAlreadySettledError: The server answered 409.
 
         ``DELETE /api/session/:sessionID/form/:formID``
         """
@@ -2447,9 +2447,9 @@ class AsyncSessionResource(AsyncAPIResource):
           archived: Filter by archive state. Use true to return only archived sessions or false to exclude them. Omit to include both.
 
         Raises:
-          InvalidCursorError
-          InvalidRequestError
-          UnauthorizedError
+          InvalidCursorError: The server answered 400.
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/session``
         """
@@ -2496,8 +2496,8 @@ class AsyncSessionResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/experimental/session/stats``
         """
@@ -2539,9 +2539,9 @@ class AsyncSessionResource(AsyncAPIResource):
         Create a session at the requested location. A parentID creates a linked child session at its parent's location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``POST /api/session``
         """
@@ -2589,10 +2589,10 @@ class AsyncSessionResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/experimental/session/import``
         """
@@ -2630,10 +2630,10 @@ class AsyncSessionResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/experimental/session/:sessionID/export``
         """
@@ -2667,8 +2667,8 @@ class AsyncSessionResource(AsyncAPIResource):
         Retrieve foreground Session drains currently owned by this OpenCode process. Sessions absent from the result are inactive.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/session/active``
         """
@@ -2702,9 +2702,9 @@ class AsyncSessionResource(AsyncAPIResource):
         Retrieve a session by ID.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID``
         """
@@ -2738,9 +2738,9 @@ class AsyncSessionResource(AsyncAPIResource):
         Delete a session and its child sessions.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``DELETE /api/session/:sessionID``
         """
@@ -2771,11 +2771,11 @@ class AsyncSessionResource(AsyncAPIResource):
         Create a child session by copying projected history before a message. Omit before to copy the full history.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          MessageNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          MessageNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/fork``
         """
@@ -2811,10 +2811,10 @@ class AsyncSessionResource(AsyncAPIResource):
         Switch the agent used by subsequent provider turns.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/agent``
         """
@@ -2846,10 +2846,10 @@ class AsyncSessionResource(AsyncAPIResource):
         Switch the model used by subsequent provider turns.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/model``
         """
@@ -2887,10 +2887,10 @@ class AsyncSessionResource(AsyncAPIResource):
           archived: Archive the session with true or restore it with false. Repeating the current state is a no-op.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``PATCH /api/session/:sessionID``
         """
@@ -2923,9 +2923,9 @@ class AsyncSessionResource(AsyncAPIResource):
         Move a session to another project directory at the requested delivery boundary.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/move``
         """
@@ -2964,11 +2964,11 @@ class AsyncSessionResource(AsyncAPIResource):
         Durably admit one session input and schedule agent-loop execution unless resume is false.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/prompt``
         """
@@ -3018,12 +3018,12 @@ class AsyncSessionResource(AsyncAPIResource):
         Execute a slash command callback immediately.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          CommandNotFoundError
-          LocationNotFoundError
-          CommandExecutionError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          CommandNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          CommandExecutionError: The server answered 500.
 
         ``POST /api/session/:sessionID/command``
         """
@@ -3065,11 +3065,11 @@ class AsyncSessionResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          SkillNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          SkillNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/session/:sessionID/skill``
         """
@@ -3106,11 +3106,11 @@ class AsyncSessionResource(AsyncAPIResource):
         Durably admit synthetic session input and schedule execution unless resume is false.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/synthetic``
         """
@@ -3154,10 +3154,10 @@ class AsyncSessionResource(AsyncAPIResource):
         Execute one shell command in the session's working directory. Emits a shell.started event before execution and a shell.ended event with the merged output after.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/shell``
         """
@@ -3190,11 +3190,11 @@ class AsyncSessionResource(AsyncAPIResource):
         Durably admit a session compaction request. Steers by default: it runs at the next step boundary instead of waiting behind queued prompts.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``POST /api/session/:sessionID/compact``
         """
@@ -3231,11 +3231,11 @@ class AsyncSessionResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/experimental/session/:sessionID/wait``
         """
@@ -3265,10 +3265,10 @@ class AsyncSessionResource(AsyncAPIResource):
         Retrieve the active context messages for a session (all messages after the last compaction).
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/session/:sessionID/context``
         """
@@ -3310,12 +3310,12 @@ class AsyncSessionResource(AsyncAPIResource):
           context: Unchanged lines around each hunk. Omit for full-file patches.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          MessageNotFoundError
-          SessionNotFoundError
-          LocationNotFoundError
-          UnknownError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          MessageNotFoundError: The server answered 404.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          UnknownError: The server answered 500.
 
         ``GET /api/session/:sessionID/diff``
         """
@@ -3351,11 +3351,11 @@ class AsyncSessionResource(AsyncAPIResource):
         Generate transient text from the current session context without mutating session history.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/session/:sessionID/generate``
         """
@@ -3394,9 +3394,9 @@ class AsyncSessionResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``GET /api/experimental/session/:sessionID/log``
         """
@@ -3428,10 +3428,10 @@ class AsyncSessionResource(AsyncAPIResource):
         Interrupt active execution owned by this OpenCode process. Returns interrupted=true when an active execution was interrupted and false for the idle no-op. When resume=true, execution resumes pending steering input and next-in-line control items (manual compaction, moves) while queued prompts remain parked.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/interrupt``
         """
@@ -3465,10 +3465,10 @@ class AsyncSessionResource(AsyncAPIResource):
         Move active foreground backgroundable tools for this session into background observation. Idle requests are a no-op.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/background``
         """
@@ -3499,9 +3499,9 @@ class AsyncSessionResource(AsyncAPIResource):
         Replace the process environment used by local shell commands for this session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``PUT /api/session/:sessionID/environment``
         """
@@ -3533,9 +3533,9 @@ class AsyncSessionResource(AsyncAPIResource):
         Mark the idle transition observed by the viewer as viewed.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/view``
         """

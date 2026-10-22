@@ -2,9 +2,12 @@
 
 [![CI](https://github.com/shrijayan/opencode-python-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/shrijayan/opencode-python-sdk/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/opencode-python-sdk.svg)](https://pypi.org/project/opencode-python-sdk/)
+[![Docs](https://img.shields.io/badge/docs-shrijayan.github.io-d9730d)](https://shrijayan.github.io/opencode-python-sdk/)
 [![Python](https://img.shields.io/pypi/pyversions/opencode-python-sdk.svg)](https://pypi.org/project/opencode-python-sdk/)
 
 Typed Python client for the [OpenCode](https://github.com/anomalyco/opencode) 2.x server API.
+
+**Documentation: <https://shrijayan.github.io/opencode-python-sdk/>**
 
 > **Unofficial, community-maintained.** This package is not affiliated with or endorsed by the OpenCode team.
 > If the OpenCode maintainers want to take it over, we are happy to transfer this repository and the `opencode-python-sdk`

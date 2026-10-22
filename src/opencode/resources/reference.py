@@ -35,9 +35,9 @@ class ReferenceResource(SyncAPIResource):
         List references available in the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/reference``
         """
@@ -75,9 +75,9 @@ class AsyncReferenceResource(AsyncAPIResource):
         List references available in the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/reference``
         """

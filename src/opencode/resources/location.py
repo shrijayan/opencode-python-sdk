@@ -35,9 +35,9 @@ class LocationResource(SyncAPIResource):
         Resolve the requested location or the server default location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/location``
         """
@@ -70,9 +70,9 @@ class LocationResource(SyncAPIResource):
         Shut down and rebuild every loaded location. Pending permissions and forms are cancelled; running sessions continue with fresh services at the next step boundary. Emits location.shutdown for client recovery and responds once all replacement builds settle.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/location/reload``
         """
@@ -106,9 +106,9 @@ class AsyncLocationResource(AsyncAPIResource):
         Resolve the requested location or the server default location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/location``
         """
@@ -141,9 +141,9 @@ class AsyncLocationResource(AsyncAPIResource):
         Shut down and rebuild every loaded location. Pending permissions and forms are cancelled; running sessions continue with fresh services at the next step boundary. Emits location.shutdown for client recovery and responds once all replacement builds settle.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/location/reload``
         """
