@@ -132,6 +132,7 @@ nav:
       - getting-started/index.md
       - Connect to a server: getting-started/connect.md
       - Run a server from Python: getting-started/server.md
+      - Use the background service: getting-started/service.md
   - Guides:
       - guides/index.md
       - Sessions and prompts: guides/sessions.md
@@ -152,6 +153,7 @@ nav:
       - reference/index.md
       - Clients: reference/clients.md
       - Server launcher: reference/server.md
+      - Background service: reference/service.md
       - Resources: reference/resources.md
       - Pagination and streams: reference/pagination.md
       - Shared events and RPC: reference/events.md

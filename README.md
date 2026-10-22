@@ -382,6 +382,27 @@ with server:
 The server runs in `--stdio` mode, so it also exits when the Python process dies. `AsyncOpencodeServer` is the
 async equivalent.
 
+### The background service
+
+OpenCode can also run one shared background server per user (`opencode serve --service`), which registers itself in
+`$XDG_STATE_HOME/opencode/service.json`. `Opencode.from_service()` connects to it, starting it first if it is not
+running:
+
+```python
+from opencode import Opencode, service
+
+with Opencode.from_service(version="2.1.2") as client:  # replaces a service running another version
+    print(client.server.info().version)
+
+endpoint = service.discover()  # an Endpoint, or None; never starts anything
+service.stop(pty="handoff")  # hand persistent terminals to the next service instead of closing them
+```
+
+`service.ensure()` returns the `Endpoint` (URL and credentials) without creating a client, and `service.headers()`
+gives its `Authorization` header for other HTTP clients. Concurrent callers are safe: they race to start the service
+and all get the one that won. `await AsyncOpencode.from_service()`, `service.async_discover()`,
+`service.async_ensure()` and `service.async_stop()` are the async equivalents.
+
 ## Advanced
 
 ```python

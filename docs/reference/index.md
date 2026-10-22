@@ -6,6 +6,7 @@ Generated from the docstrings in `src/opencode`.
 | --- | --- |
 | [Clients](clients.md) | `Opencode`, `AsyncOpencode` |
 | [Server launcher](server.md) | `OpencodeServer`, `AsyncOpencodeServer` |
+| [Background service](service.md) | `opencode.service`, `Endpoint`, `ServiceError` |
 | [Resources](resources.md) | Every `client.<group>` and its methods |
 | [Pagination and streams](pagination.md) | `SyncCursorPage`, `AsyncPaginator`, `Stream`, `AsyncStream` |
 | [Shared events and RPC](events.md) | `EventHub`, `Subscription`, `RpcDefinition`, `RpcClient` |

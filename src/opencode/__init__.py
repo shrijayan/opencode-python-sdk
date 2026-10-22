@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from . import service
 from ._client import AsyncOpencode, Opencode
 
 # <generated:error-imports>
@@ -78,6 +79,7 @@ from ._models import BaseModel
 from ._pagination import AsyncCursorPage, AsyncPaginator, SyncCursorPage
 from ._pty import AsyncPtyConnection, PtyConnection, PtyConnectionError
 from ._server import AsyncOpencodeServer, OpencodeServer, ServerStartError
+from ._service import Endpoint, ServiceError
 from ._streaming import AsyncStream, Stream
 from ._types import NOT_GIVEN, NotGiven
 from ._version import __version__
@@ -136,6 +138,7 @@ __all__ = [
     "BaseModel",
     "ConflictError",
     "ContentTooLargeError",
+    "Endpoint",
     "InternalServerError",
     "NotFoundError",
     "NotGiven",
@@ -148,11 +151,13 @@ __all__ = [
     "PtyConnectionError",
     "RateLimitError",
     "ServerStartError",
+    "ServiceError",
     "ServiceUnavailableError",
     "Stream",
     "SyncCursorPage",
     "UnprocessableEntityError",
     "__version__",
+    "service",
     "types",
     # Shared event stream and typed plugin RPC
     "SUBSCRIBER_CAPACITY",
