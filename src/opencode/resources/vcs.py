@@ -71,6 +71,7 @@ class VcsResource(SyncAPIResource):
 
     @cached_property
     def branch(self) -> VcsBranchResource:
+        """Operations under ``client.vcs.branch``."""
         return VcsBranchResource(self._client)
 
     def init(
@@ -307,6 +308,7 @@ class AsyncVcsResource(AsyncAPIResource):
 
     @cached_property
     def branch(self) -> AsyncVcsBranchResource:
+        """Operations under ``client.vcs.branch``."""
         return AsyncVcsBranchResource(self._client)
 
     async def init(

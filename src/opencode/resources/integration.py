@@ -437,18 +437,22 @@ class IntegrationResource(SyncAPIResource):
 
     @cached_property
     def wellknown(self) -> IntegrationWellknownResource:
+        """Operations under ``client.integration.wellknown``."""
         return IntegrationWellknownResource(self._client)
 
     @cached_property
     def connect(self) -> IntegrationConnectResource:
+        """Operations under ``client.integration.connect``."""
         return IntegrationConnectResource(self._client)
 
     @cached_property
     def oauth(self) -> IntegrationOauthResource:
+        """Operations under ``client.integration.oauth``."""
         return IntegrationOauthResource(self._client)
 
     @cached_property
     def command(self) -> IntegrationCommandResource:
+        """Operations under ``client.integration.command``."""
         return IntegrationCommandResource(self._client)
 
     def list(
@@ -934,18 +938,22 @@ class AsyncIntegrationResource(AsyncAPIResource):
 
     @cached_property
     def wellknown(self) -> AsyncIntegrationWellknownResource:
+        """Operations under ``client.integration.wellknown``."""
         return AsyncIntegrationWellknownResource(self._client)
 
     @cached_property
     def connect(self) -> AsyncIntegrationConnectResource:
+        """Operations under ``client.integration.connect``."""
         return AsyncIntegrationConnectResource(self._client)
 
     @cached_property
     def oauth(self) -> AsyncIntegrationOauthResource:
+        """Operations under ``client.integration.oauth``."""
         return AsyncIntegrationOauthResource(self._client)
 
     @cached_property
     def command(self) -> AsyncIntegrationCommandResource:
+        """Operations under ``client.integration.command``."""
         return AsyncIntegrationCommandResource(self._client)
 
     async def list(

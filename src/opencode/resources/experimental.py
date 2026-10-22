@@ -392,6 +392,7 @@ class ExperimentalResource(SyncAPIResource):
 
     @cached_property
     def persistent_pty(self) -> ExperimentalPersistentPtyResource:
+        """Operations under ``client.experimental.persistent_pty``."""
         return ExperimentalPersistentPtyResource(self._client)
 
 
@@ -757,4 +758,5 @@ class AsyncExperimentalResource(AsyncAPIResource):
 
     @cached_property
     def persistent_pty(self) -> AsyncExperimentalPersistentPtyResource:
+        """Operations under ``client.experimental.persistent_pty``."""
         return AsyncExperimentalPersistentPtyResource(self._client)

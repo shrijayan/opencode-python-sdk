@@ -94,6 +94,7 @@ class DebugResource(SyncAPIResource):
 
     @cached_property
     def location(self) -> DebugLocationResource:
+        """Operations under ``client.debug.location``."""
         return DebugLocationResource(self._client)
 
 
@@ -171,4 +172,5 @@ class AsyncDebugResource(AsyncAPIResource):
 
     @cached_property
     def location(self) -> AsyncDebugLocationResource:
+        """Operations under ``client.debug.location``."""
         return AsyncDebugLocationResource(self._client)

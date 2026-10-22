@@ -12,9 +12,10 @@ import ast
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from mkdocs.structure.files import File, Files
+if TYPE_CHECKING:
+    from mkdocs.structure.files import Files
 
 ROOT = Path(__file__).resolve().parents[2]
 TYPES_SRC = ROOT / "src/opencode/types/_generated.py"
@@ -63,7 +64,7 @@ def _slug(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
 
 
-def _groups() -> dict[str, list[str]]:
+def type_groups() -> dict[str, list[str]]:
     raw: dict[str, list[str]] = defaultdict(list)
     for name in _public_names():
         raw[_group_of(name)].append(name)
@@ -74,7 +75,7 @@ def _groups() -> dict[str, list[str]]:
     return dict(sorted(groups.items(), key=lambda kv: (kv[0] == "Miscellaneous", kv[0].lower())))
 
 
-def _type_page(title: str, names: list[str]) -> str:
+def type_page(title: str, names: list[str]) -> str:
     lines = [f"# {title}", "", f"{len(names)} types. Import any of them from `opencode.types`.", ""]
     for name in sorted(names):
         lines += [
@@ -107,7 +108,7 @@ def _types_index(groups: dict[str, list[str]]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _resources_page() -> str:
+def resources_page() -> str:
     lines = [
         "# Resources",
         "",
@@ -131,7 +132,7 @@ _GROUPS: dict[str, list[str]] = {}
 
 def on_config(config: Any) -> Any:
     _GROUPS.clear()
-    _GROUPS.update(_groups())
+    _GROUPS.update(type_groups())
     for section in config["nav"]:
         if "API reference" not in section:
             continue
@@ -156,13 +157,15 @@ def on_page_markdown(markdown: str, page: Any, config: Any, files: Files) -> str
 
 
 def on_files(files: Files, config: Any) -> Files:
+    from mkdocs.structure.files import File
+
     def add(path: str, content: str) -> None:
         files.append(File.generated(config, path, content=content))
 
     add(f"{TYPES_DIR}/index.md", _types_index(_GROUPS))
     for title, names in _GROUPS.items():
-        add(f"{TYPES_DIR}/{_slug(title)}.md", _type_page(title, names))
-    add("reference/resources.md", _resources_page())
+        add(f"{TYPES_DIR}/{_slug(title)}.md", type_page(title, names))
+    add("reference/resources.md", resources_page())
     return files
 
 

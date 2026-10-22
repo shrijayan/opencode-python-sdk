@@ -67,6 +67,7 @@ class McpResource(SyncAPIResource):
 
     @cached_property
     def resource(self) -> McpResourceResource:
+        """Operations under ``client.mcp.resource``."""
         return McpResourceResource(self._client)
 
     def list(
@@ -300,6 +301,7 @@ class AsyncMcpResource(AsyncAPIResource):
 
     @cached_property
     def resource(self) -> AsyncMcpResourceResource:
+        """Operations under ``client.mcp.resource``."""
         return AsyncMcpResourceResource(self._client)
 
     async def list(

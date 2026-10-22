@@ -41,6 +41,24 @@ uv run mkdocs serve
 uv run mkdocs build --strict
 ```
 
+### Docs must keep up with the code
+
+A change to the public API is not done until the docs cover it. CI enforces this:
+
+| Check | Where | Fails when |
+| --- | --- | --- |
+| `tests/test_docs_coverage.py` | `pytest` job | A resource, method, `opencode.__all__` name or `opencode.types` model is not in the reference; an exported class or one of its public methods has no docstring; a resource group is missing from `docs/guides/index.md`; a guide mentions a method or type that does not exist |
+| ruff `D1` rules | Lint job | A public function in a public module has no docstring |
+| `mkdocs build --strict` | Docs workflow | A link or cross-reference is broken |
+
+Each failure names what is missing and the file to change. In practice:
+
+- **New endpoint or resource group** (from a spec sync): resource and type pages are generated from the code, so
+  they appear on their own. Add a row for a new group to `docs/guides/index.md`.
+- **New hand-written class or function exported from `opencode`**: give it a docstring and add a `::: opencode.Name`
+  directive to the right page in `docs/reference/`.
+- **Renamed or removed API**: update every guide that mentions it.
+
 ## Layout
 
 | Path | What it is | Edit by hand? |

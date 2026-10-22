@@ -66,6 +66,7 @@ class MigrationResource(SyncAPIResource):
 
     @cached_property
     def v1(self) -> MigrationV1Resource:
+        """Operations under ``client.migration.v1``."""
         return MigrationV1Resource(self._client)
 
 
@@ -115,4 +116,5 @@ class AsyncMigrationResource(AsyncAPIResource):
 
     @cached_property
     def v1(self) -> AsyncMigrationV1Resource:
+        """Operations under ``client.migration.v1``."""
         return AsyncMigrationV1Resource(self._client)

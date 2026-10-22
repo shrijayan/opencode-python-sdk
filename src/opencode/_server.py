@@ -109,10 +109,12 @@ class OpencodeServer:
 
     @property
     def process(self) -> subprocess.Popen[str] | None:
+        """The ``opencode serve`` child process, or ``None`` before it starts."""
         return self._process
 
     @property
     def running(self) -> bool:
+        """Whether the server process is alive."""
         return self._process is not None and self._process.poll() is None
 
     def client(self, *, directory: str | os.PathLike[str] | None = None, timeout: Timeout | None = None) -> Opencode:
@@ -291,18 +293,22 @@ class AsyncOpencodeServer:
 
     @property
     def url(self) -> str:
+        """The server's base URL. Available once started."""
         return self._server.url
 
     @property
     def password(self) -> str:
+        """The server password clients authenticate with."""
         return self._server.password
 
     @property
     def running(self) -> bool:
+        """Whether the server process is alive."""
         return self._server.running
 
     @property
     def output(self) -> str:
+        """The last lines the server wrote, for diagnostics."""
         return self._server.output
 
     def client(
@@ -312,10 +318,12 @@ class AsyncOpencodeServer:
         return self._server.async_client(directory=directory, timeout=timeout)
 
     async def start(self) -> Self:
+        """Starts the server and waits until it reports its address."""
         await anyio.to_thread.run_sync(self._server.start)
         return self
 
     async def stop(self, timeout: float = 10.0) -> None:
+        """Stops the server: closes its stdin, then terminates it if it has not exited within ``timeout``."""
         await anyio.to_thread.run_sync(lambda: self._server.stop(timeout))
 
     async def __aenter__(self) -> Self:
