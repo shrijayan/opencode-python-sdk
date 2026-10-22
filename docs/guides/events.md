@@ -47,3 +47,42 @@ async with await client.event.subscribe() as events:
     async for event in events:
         print(event.type)
 ```
+
+## Shared event stream
+
+`client.events` shares one connection among every subscriber, like `client.event` in the TypeScript client. The
+connection opens with the first subscriber and closes when the last one leaves. Each subscriber has its own queue of
+up to 4096 events; one that falls further behind fails with `EventOverflowError` without affecting the others. The
+latest `server.connected` event is replayed to subscribers that join later.
+
+```python
+from opencode.types import SessionIdleEvent
+
+with client.events.of_type(SessionIdleEvent).for_session(session.id) as idle:
+    client.session.prompt(session.id, text="Hello")
+    event = idle.get(timeout=300)  # typed as SessionIdleEvent
+```
+
+- Filters chain: `of_type(*classes)` narrows the yielded type, `for_session(id)` keeps one session's events, and
+  `where(predicate)` takes any test. Entering the `with` block joins the stream, so nothing published after that is
+  missed.
+- `subscribe(on_activity=callback)` calls `callback` for every chunk received, keepalive comments included, as a
+  liveness signal.
+- `close()` (or leaving the `with` block) ends the subscription, also from another thread. In async code, cancel a wait
+  with `anyio.fail_after`, `asyncio.timeout` or a trio cancel scope; the subscription stays usable.
+- Reconnection is opt-in: `EventHub(client, reconnect=True)` (or `AsyncEventHub`, or a `Reconnect(...)` policy) reopens
+  the connection with exponential backoff after connection errors, 5xx and 429. Subscribers see `server.connected`
+  once. **The stream is volatile** (see [Delivery](#delivery)): events published while disconnected are lost, so re-read state through the API
+  after a reconnect when it matters.
+
+The async hub works the same way under asyncio and trio:
+
+```python
+async with client.events.for_session(session.id) as events:
+    async for event in events:
+        print(event.type)
+```
+
+`client.event.subscribe()` still opens a dedicated connection.
+
+Typed plugin RPC events are covered in the [plugin RPC guide](plugin-rpc.md).
