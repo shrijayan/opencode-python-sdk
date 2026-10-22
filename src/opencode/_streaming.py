@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import re
+import socket
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
@@ -14,7 +16,7 @@ from typing_extensions import Self
 from ._exceptions import APIConnectionError, APIResponseValidationError, validation_summary
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator, AsyncIterator, Generator, Iterator
+    from collections.abc import AsyncGenerator, AsyncIterator, Callable, Generator, Iterator
     from types import TracebackType
 
 __all__ = ["AsyncStream", "ServerSentEvent", "Stream"]
@@ -111,6 +113,12 @@ class _StreamBase(Generic[_T]):
     def __init__(self, response: httpx.Response, adapter: pydantic.TypeAdapter[_T]) -> None:
         self.response = response
         self._adapter = adapter
+        self.on_activity: Callable[[], object] | None = None
+        """Called for every chunk the stream receives, including keepalive comments that carry no event."""
+
+    def _activity(self) -> None:
+        if self.on_activity is not None:
+            self.on_activity()
 
     def _decode(self, event: ServerSentEvent) -> _T:
         try:
@@ -148,6 +156,7 @@ class Stream(_StreamBase[_T]):
         try:
             splitter = _LineSplitter()
             for chunk in self.response.iter_text():
+                self._activity()
                 for line in splitter.feed(chunk):
                     if (event := decoder.feed_line(line)) is not None:
                         yield self._decode(event)
@@ -165,6 +174,17 @@ class Stream(_StreamBase[_T]):
         """Closes the underlying connection."""
         self._iterator.close()
         self.response.close()
+
+    def interrupt(self) -> None:
+        """Unblocks a read in progress on another thread, which then ends with :class:`APIConnectionError`.
+
+        ``close`` must run on the iterating thread. Call this from any other thread first to wake it.
+        """
+        network_stream: Any = self.response.extensions.get("network_stream")
+        sock: Any = network_stream.get_extra_info("socket") if network_stream is not None else None
+        if isinstance(sock, socket.socket):
+            with contextlib.suppress(OSError):
+                sock.shutdown(socket.SHUT_RDWR)
 
     def __enter__(self) -> Self:
         return self
@@ -200,6 +220,7 @@ class AsyncStream(_StreamBase[_T]):
         try:
             splitter = _LineSplitter()
             async for chunk in self.response.aiter_text():
+                self._activity()
                 for line in splitter.feed(chunk):
                     if (event := decoder.feed_line(line)) is not None:
                         yield self._decode(event)

@@ -81,6 +81,33 @@ from ._streaming import AsyncStream, Stream
 from ._types import NOT_GIVEN, NotGiven
 from ._version import __version__
 
+# isort: split
+# Hand-written helpers, kept apart from the generated error-import block above.
+from ._events import (
+    SUBSCRIBER_CAPACITY,
+    AsyncEventHub,
+    AsyncSubscription,
+    EventHub,
+    EventOverflowError,
+    Reconnect,
+    Subscription,
+    session_id_of,
+)
+from ._rpc import (
+    AsyncRpcClient,
+    AsyncRpcEvents,
+    RpcCallError,
+    RpcCallInternalError,
+    RpcClient,
+    RpcDefinition,
+    RpcEventDefinition,
+    RpcEventPayload,
+    RpcEvents,
+    RpcMethod,
+    rpc_event,
+    rpc_method,
+)
+
 # <generated:api-version>
 API_VERSION = "2.1.2"
 """The OpenCode server version this client was generated from."""
@@ -123,6 +150,27 @@ __all__ = [
     "UnprocessableEntityError",
     "__version__",
     "types",
+    # Shared event stream and typed plugin RPC
+    "SUBSCRIBER_CAPACITY",
+    "AsyncEventHub",
+    "AsyncRpcClient",
+    "AsyncRpcEvents",
+    "AsyncSubscription",
+    "EventHub",
+    "EventOverflowError",
+    "Reconnect",
+    "RpcCallError",
+    "RpcCallInternalError",
+    "RpcClient",
+    "RpcDefinition",
+    "RpcEventDefinition",
+    "RpcEventPayload",
+    "RpcEvents",
+    "RpcMethod",
+    "Subscription",
+    "rpc_event",
+    "rpc_method",
+    "session_id_of",
     # <generated:error-exports>
     "AgentNotFoundError",
     "CommandExecutionError",
