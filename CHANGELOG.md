@@ -11,9 +11,9 @@ Releases are published automatically on every merge to `main`. Release notes for
 - `client.rpc(Definition)`: typed plugin RPC calls and event subscriptions declared with `RpcDefinition`,
   `rpc_method` and `rpc_event`; RPC failures raise `RpcCallError` / `RpcCallInternalError`.
 - `Stream.on_activity` and `Stream.interrupt()`.
-- `OPENCODE_LOG=debug|info` sends the `opencode` logger to stderr at that level.
 - `client.copy(...)`, an alias of `client.with_options(...)`; documented that copies share the connection pool
   and do not close it.
+- `OPENCODE_LOG=debug|info` sends the `opencode` logger to stderr at that level.
 - `DefaultAioHttpClient`: an optional aiohttp transport for `AsyncOpencode`, installed with the `aiohttp` extra
   (`pip install 'opencode-python-sdk[aiohttp]'`) and passed as `http_client=`.
 - `.with_raw_response` and `.with_streaming_response` on every resource (sync and async): return an
