@@ -1,0 +1,167 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from typing_extensions import Self
+
+from ._base_client import AsyncAPIClient, SyncAPIClient
+from ._constants import DEFAULT_MAX_RETRIES, DEFAULT_TIMEOUT, DEFAULT_USERNAME
+from ._types import NOT_GIVEN, NotGiven, Timeout
+from .resources import AsyncResources, SyncResources
+
+if TYPE_CHECKING:
+    import os
+    from collections.abc import Mapping
+
+    import httpx
+
+__all__ = ["AsyncOpencode", "Opencode"]
+
+
+class Opencode(SyncAPIClient, SyncResources):
+    """Synchronous client for an OpenCode server.
+
+    Args:
+        base_url: Server URL, for example ``http://127.0.0.1:4096``. Defaults to ``OPENCODE_BASE_URL``.
+        password: Server password. Defaults to ``OPENCODE_PASSWORD``, then ``OPENCODE_SERVER_PASSWORD``. Pass ``""``
+            to send no credentials.
+        username: Basic auth user name. The OpenCode server uses ``opencode``.
+        directory: Default project directory. Sent as the ``location`` of every request that accepts one, unless
+            the call passes its own ``location``.
+        timeout: Default timeout in seconds, or an ``httpx.Timeout``. Event streams only apply the connect timeout.
+        max_retries: Retries for connection failures and transient statuses. Requests that may have changed state
+            on the server are only retried when the server refused them before acting (429 and 503).
+        default_headers: Headers sent with every request.
+        default_query: Query parameters sent with every request.
+        http_client: A preconfigured ``httpx.Client`` (proxies, custom transports, event hooks). The caller keeps
+            ownership and must close it.
+
+    Example::
+
+        from opencode import Opencode
+
+        with Opencode("http://127.0.0.1:4096", password="...") as client:
+            for agent in client.agent.list():
+                print(agent.id)
+    """
+
+    def __init__(
+        self,
+        base_url: str | httpx.URL | None = None,
+        *,
+        password: str | None = None,
+        username: str = DEFAULT_USERNAME,
+        directory: str | os.PathLike[str] | None = None,
+        timeout: Timeout = DEFAULT_TIMEOUT,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        default_headers: Mapping[str, str] | None = None,
+        default_query: Mapping[str, object] | None = None,
+        http_client: httpx.Client | None = None,
+    ) -> None:
+        super().__init__(
+            base_url=base_url,
+            password=password,
+            username=username,
+            directory=directory,
+            timeout=timeout,
+            max_retries=max_retries,
+            default_headers=default_headers,
+            default_query=default_query,
+            http_client=http_client,
+        )
+
+    def with_options(
+        self,
+        *,
+        base_url: str | httpx.URL | None = None,
+        password: str | NotGiven | None = NOT_GIVEN,
+        directory: str | os.PathLike[str] | NotGiven | None = NOT_GIVEN,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+        max_retries: int | None = None,
+        default_headers: Mapping[str, str] | None = None,
+        default_query: Mapping[str, object] | None = None,
+    ) -> Self:
+        """Returns a client with some options changed. It shares this client's connection pool.
+
+        ``default_headers`` and ``default_query`` are merged over the current values.
+        """
+        client = type(self)(
+            base_url=base_url or self.base_url,
+            password=self.password or "" if isinstance(password, NotGiven) else password,
+            username=self.username,
+            directory=self.directory if isinstance(directory, NotGiven) else directory,
+            timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
+            max_retries=self.max_retries if max_retries is None else max_retries,
+            default_headers={**self._default_headers, **(default_headers or {})},
+            default_query={**self._default_query, **(default_query or {})},
+            http_client=self._http,
+        )
+        return client
+
+
+class AsyncOpencode(AsyncAPIClient, AsyncResources):
+    """Asynchronous client for an OpenCode server. Works with asyncio and trio.
+
+    Takes the same arguments as :class:`Opencode`; ``http_client`` is an ``httpx.AsyncClient``.
+
+    Example::
+
+        from opencode import AsyncOpencode
+
+        async with AsyncOpencode("http://127.0.0.1:4096", password="...") as client:
+            for agent in await client.agent.list():
+                print(agent.id)
+    """
+
+    def __init__(
+        self,
+        base_url: str | httpx.URL | None = None,
+        *,
+        password: str | None = None,
+        username: str = DEFAULT_USERNAME,
+        directory: str | os.PathLike[str] | None = None,
+        timeout: Timeout = DEFAULT_TIMEOUT,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        default_headers: Mapping[str, str] | None = None,
+        default_query: Mapping[str, object] | None = None,
+        http_client: httpx.AsyncClient | None = None,
+    ) -> None:
+        super().__init__(
+            base_url=base_url,
+            password=password,
+            username=username,
+            directory=directory,
+            timeout=timeout,
+            max_retries=max_retries,
+            default_headers=default_headers,
+            default_query=default_query,
+            http_client=http_client,
+        )
+
+    def with_options(
+        self,
+        *,
+        base_url: str | httpx.URL | None = None,
+        password: str | NotGiven | None = NOT_GIVEN,
+        directory: str | os.PathLike[str] | NotGiven | None = NOT_GIVEN,
+        timeout: Timeout | NotGiven = NOT_GIVEN,
+        max_retries: int | None = None,
+        default_headers: Mapping[str, str] | None = None,
+        default_query: Mapping[str, object] | None = None,
+    ) -> Self:
+        """Returns a client with some options changed. It shares this client's connection pool.
+
+        ``default_headers`` and ``default_query`` are merged over the current values.
+        """
+        client = type(self)(
+            base_url=base_url or self.base_url,
+            password=self.password or "" if isinstance(password, NotGiven) else password,
+            username=self.username,
+            directory=self.directory if isinstance(directory, NotGiven) else directory,
+            timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
+            max_retries=self.max_retries if max_retries is None else max_retries,
+            default_headers={**self._default_headers, **(default_headers or {})},
+            default_query={**self._default_query, **(default_query or {})},
+            http_client=self._http,
+        )
+        return client

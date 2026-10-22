@@ -1,0 +1,284 @@
+<title>opencode-python-sdk Design</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column (~72ch) with a sticky section index on wide screens; code and tables scroll in place. */
+:root {
+  --bg: #f6f7f8;
+  --surface: #ffffff;
+  --fg: #1a1f24;
+  --muted: #5b6672;
+  --line: #dde2e7;
+  --accent: #0f7b6c;
+  --accent-soft: #e3f2ef;
+  --code-bg: #eef1f4;
+  --warn: #9a5b00;
+  --warn-soft: #fbf0dc;
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111518; --surface: #171c20; --fg: #e4e9ed; --muted: #95a1ab; --line: #2a3238;
+    --accent: #4fc9b4; --accent-soft: #15302b; --code-bg: #1c2328; --warn: #e5a94a; --warn-soft: #2e2414;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111518; --surface: #171c20; --fg: #e4e9ed; --muted: #95a1ab; --line: #2a3238;
+  --accent: #4fc9b4; --accent-soft: #15302b; --code-bg: #1c2328; --warn: #e5a94a; --warn-soft: #2e2414;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 48px 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
+nav.toc p { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+nav.toc ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+nav.toc a { color: var(--muted); text-decoration: none; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); }
+main { min-width: 0; max-width: 760px; }
+header { display: grid; gap: 12px; margin-bottom: 40px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-size: clamp(32px, 5vw, 46px); line-height: 1.08; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--display); font-size: 26px; line-height: 1.2; margin: 0 0 14px; text-wrap: balance; }
+h3 { font-size: 17px; margin: 22px 0 8px; }
+.lede { font-size: 18px; color: var(--muted); margin: 0; max-width: 62ch; }
+.meta { font-family: var(--mono); font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+section { padding-block: 32px; border-top: 1px solid var(--line); }
+p, li { max-width: 68ch; }
+a { color: var(--accent); }
+code { font-family: var(--mono); font-size: .88em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { font-family: var(--mono); font-size: 13.5px; line-height: 1.55; background: var(--code-bg); padding: 16px 18px; border-radius: 8px; overflow-x: auto; margin: 14px 0; }
+pre code { background: none; padding: 0; font-size: inherit; }
+.c { color: var(--muted); }
+.k { color: var(--accent); }
+.verdict { background: var(--accent-soft); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 8px; }
+.verdict strong { font-family: var(--display); font-size: 20px; }
+.note { background: var(--warn-soft); border-radius: 8px; padding: 12px 16px; color: var(--fg); font-size: 15px; }
+.note b { color: var(--warn); }
+.tablewrap { overflow-x: auto; margin: 14px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td:first-child { white-space: nowrap; font-weight: 600; }
+.layers { display: grid; gap: 8px; margin: 18px 0; }
+.layer { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.layer .n { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.layer .t { font-weight: 600; }
+.layer p { margin: 2px 0 0; color: var(--muted); font-size: 14.5px; }
+.tag { font-family: var(--mono); font-size: 11px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); margin-left: 6px; white-space: nowrap; }
+.tag.gen { color: var(--accent); border-color: var(--accent); }
+ol.steps { padding-left: 20px; display: grid; gap: 10px; }
+ol.steps li::marker { font-family: var(--mono); color: var(--accent); }
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; padding-block: 28px 64px; }
+  nav.toc { display: none; }
+  .layer { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sections">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#verdict">Verdict</a></li>
+    <li><a href="#landscape">Landscape</a></li>
+    <li><a href="#spec">What the v2 spec looks like</a></li>
+    <li><a href="#stack">Tech stack</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#structure">Folder structure</a></li>
+    <li><a href="#api">Public API</a></li>
+    <li><a href="#future">Staying current with v2</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#risks">Risks</a></li>
+  </ol>
+</nav>
+
+<main>
+<header>
+  <span class="eyebrow">Design doc · draft</span>
+  <h1>opencode-python-sdk</h1>
+  <p class="lede">A maintained, typed Python client for the OpenCode 2.x server API, generated from the upstream OpenAPI spec and kept in sync automatically.</p>
+  <div class="meta"><span>Target: OpenCode 2.1.x</span><span>Spec: packages/protocol/openapi.json</span><span>22 Oct 2026</span></div>
+</header>
+
+<section id="verdict">
+  <h2>Verdict</h2>
+  <div class="verdict">
+    <strong>Worth building.</strong>
+    <span>There is no Python client for 2.x today, demand is on record upstream, and the spec is complete enough to generate from. The work that makes or breaks it is the sync pipeline, not the first version of the client.</span>
+  </div>
+  <p>Build it as a generator plus a thin hand-written layer, so a new OpenCode release becomes a regenerated pull request instead of manual porting. That is exactly what killed the old SDK: it was generated once and then left behind.</p>
+</section>
+
+<section id="landscape">
+  <h2>Landscape</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Package</th><th>Status</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>@opencode/client</code> (TS)</td><td>Active, v2.1.2</td><td>Generated in-repo by the private <code>httpapi-codegen</code> package from the Effect <code>HttpApi</code> contract. Ships Promise, Effect and Solid flavours.</td></tr>
+      <tr><td><code>opencode-ai</code> (PyPI)</td><td>Stale</td><td>Stainless-generated, last release 0.1.0a36 on 27 Aug 2025. Targets the 1.x API. Repo not archived but unmaintained.</td></tr>
+      <tr><td><code>opencode-sdk</code> (PyPI)</td><td>Stale</td><td>Community client (fergusfettes/opencode-client), last release 0.2.0 in Oct 2025. Pre-2.x.</td></tr>
+      <tr><td>Upstream issue</td><td>Open</td><td><a href="https://github.com/anomalyco/opencode/issues/54300">anomalyco/opencode#54300</a> asks for a 2.x Python client. Maintainers have not chosen a direction. Earlier attempts (#2266, #4031, #2779) were closed or removed.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Publish on PyPI as <code>opencode</code> (unclaimed) and import it as <code>opencode</code>: <code>pip install opencode</code>, <code>from opencode import Opencode</code>. The repository stays <code>opencode-python-sdk</code>. The README marks the package as unofficial and states that we will transfer the repository and the PyPI name to the OpenCode maintainers if they want it.</p>
+</section>
+
+<section id="spec">
+  <h2>What the v2 spec looks like</h2>
+  <p>OpenAPI 3.1, 121 paths, 293 component schemas, all under <code>/api/*</code>. The server also serves it live at <code>/openapi.json</code>. A few properties shape the design:</p>
+  <ul>
+    <li><b>Dotted operation IDs</b> such as <code>session.permission.reply</code> and <code>experimental.session.wait</code>. These map directly onto a resource tree.</li>
+    <li><b>Success envelopes</b>: most responses are <code>{"data": A}</code>. The TS generator unwraps exact envelopes; we should do the same.</li>
+    <li><b>Typed errors</b> per status (<code>InvalidRequestError</code>, 401, 404) that map cleanly to exception classes.</li>
+    <li><b>Two SSE streams</b>: <code>GET /api/event</code> and <code>GET /api/experimental/session/{id}/log</code>, marked with a custom <code>x-effect-stream</code> extension.</li>
+    <li><b>Nullable everywhere</b> via <code>anyOf [T, null]</code>, and unions without OpenAPI discriminators.</li>
+  </ul>
+  <div class="note"><b>Gap:</b> the event payload <code>V2EventEncoded</code> is declared as an opaque JSON string. Event types are not in the spec, so typed events have to come from the TS source (<code>packages/client/src/shared-events.ts</code>) or be requested upstream.</div>
+</section>
+
+<section id="stack">
+  <h2>Tech stack</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Concern</th><th>Choice</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Python</td><td>3.10+</td><td>Modern typing (<code>X | None</code>, <code>match</code>) with wide reach.</td></tr>
+      <tr><td>HTTP</td><td>httpx</td><td>One library for sync and async, HTTP/2, pluggable transports (an in-memory transport makes testing easy).</td></tr>
+      <tr><td>Models</td><td>pydantic v2</td><td>Fast validation, discriminated unions, <code>extra="allow"</code> for forward compatibility. Users already know it.</td></tr>
+      <tr><td>Streaming</td><td>httpx-sse</td><td>Small and correct SSE parsing over httpx streams.</td></tr>
+      <tr><td>Model codegen</td><td>datamodel-code-generator</td><td>Mature 3.1 support for turning <code>components.schemas</code> into pydantic models.</td></tr>
+      <tr><td>Client codegen</td><td>Own generator (Jinja2)</td><td>Off-the-shelf generators produce one function per path. We want a domain tree, envelope unwrapping, SSE iterators and sync/async twins from one template.</td></tr>
+      <tr><td>Packaging</td><td>uv + hatchling</td><td>Fast locking, simple builds, trusted publishing to PyPI.</td></tr>
+      <tr><td>Quality</td><td>ruff, pyright (strict), pytest, respx, pytest-asyncio</td><td>Generated code must type-check cleanly, or users will not trust it.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="architecture">
+  <h2>Architecture</h2>
+  <p>Four layers. Only the bottom and top are written by hand; the middle two are regenerated from the spec.</p>
+  <div class="layers">
+    <div class="layer"><div><div class="n">L4</div><div class="t">Helpers <span class="tag">hand-written</span></div></div><p><code>OpencodeServer</code> launcher (spawns <code>opencode serve</code> with a per-boot password and isolated HOME), <code>session.run()</code> (prompt, wait for idle, return transcript), typed event dispatch.</p></div>
+    <div class="layer"><div><div class="n">L3</div><div class="t">Resources <span class="tag gen">generated</span></div></div><p><code>client.session.prompt(...)</code>, <code>client.mcp.list()</code>, <code>client.experimental.session.wait(...)</code>. Sync and async twins from one template.</p></div>
+    <div class="layer"><div><div class="n">L2</div><div class="t">Models <span class="tag gen">generated</span></div></div><p>pydantic models for all 293 schemas, plus error classes per declared error type.</p></div>
+    <div class="layer"><div><div class="n">L1</div><div class="t">Transport <span class="tag">hand-written</span></div></div><p>Base URL, Basic auth, retries with backoff, timeouts, envelope unwrapping, error mapping, SSE iteration. The only place that touches httpx.</p></div>
+  </div>
+  <p>Keeping L1 small and stable means generated code never imports httpx directly. Swapping the transport (for example an in-process test server) touches one file.</p>
+</section>
+
+<section id="structure">
+  <h2>Folder structure</h2>
+<pre><code>opencode-python-sdk/
+├── spec/
+│   ├── openapi.json            <span class="c"># pinned copy of upstream spec</span>
+│   ├── events.json             <span class="c"># event schemas extracted from TS source</span>
+│   └── VERSION                 <span class="c"># OpenCode version the spec came from, e.g. 2.1.2</span>
+├── codegen/
+│   ├── generate.py             <span class="c"># entry point: spec -&gt; src/opencode/_generated</span>
+│   ├── ir.py                   <span class="c"># parse spec into an intermediate model (ops, fields, streams)</span>
+│   ├── naming.py               <span class="c"># operationId -&gt; resource path, snake_case rules</span>
+│   └── templates/              <span class="c"># Jinja2 templates for resources and clients</span>
+├── src/opencode/
+│   ├── __init__.py             <span class="c"># Opencode, AsyncOpencode, errors, version</span>
+│   ├── _transport.py           <span class="c"># L1: httpx, auth, retries, envelopes, SSE</span>
+│   ├── _errors.py              <span class="c"># OpencodeError tree</span>
+│   ├── _generated/             <span class="c"># L2 + L3, never edited by hand</span>
+│   │   ├── models/
+│   │   ├── resources/          <span class="c"># session.py, agent.py, mcp.py, experimental/...</span>
+│   │   ├── client.py
+│   │   └── .manifest.json      <span class="c"># files owned by the generator</span>
+│   ├── events.py               <span class="c"># typed event union + UnknownEvent fallback</span>
+│   ├── server.py               <span class="c"># L4: OpencodeServer launcher</span>
+│   ├── helpers.py              <span class="c"># L4: run(), wait_until_ready()</span>
+│   └── py.typed
+├── tests/
+│   ├── unit/                   <span class="c"># respx-mocked transport and helpers</span>
+│   ├── contract/               <span class="c"># against a real `opencode serve`, no paid model calls</span>
+│   └── cassettes/
+├── examples/
+├── docs/
+├── .github/workflows/
+│   ├── ci.yml                  <span class="c"># lint, types, tests, regen-drift check</span>
+│   ├── spec-sync.yml           <span class="c"># nightly: pull spec, regenerate, open PR</span>
+│   └── release.yml             <span class="c"># tag -&gt; PyPI via trusted publishing</span>
+└── pyproject.toml</code></pre>
+</section>
+
+<section id="api">
+  <h2>Public API</h2>
+  <p>The shape follows the operation IDs, so anyone reading the TS client or the server source can guess the Python name.</p>
+<pre><code><span class="k">from</span> opencode <span class="k">import</span> Opencode, OpencodeServer
+
+<span class="k">with</span> OpencodeServer(cwd=<span class="c">"./sandbox"</span>, isolated_home=<span class="k">True</span>) <span class="k">as</span> server:
+    client = Opencode(base_url=server.url, password=server.password)
+
+    client.wait_until_ready(agent=<span class="c">"reviewer"</span>)          <span class="c"># agents load async after boot</span>
+    session = client.session.create(agent=<span class="c">"reviewer"</span>, model=<span class="c">"anthropic/claude-sonnet-5-5"</span>)
+
+    client.session.prompt(session.id, text=<span class="c">"Review the diff"</span>, files=[...])
+    client.experimental.session.wait(session.id)
+
+    <span class="k">for</span> msg <span class="k">in</span> client.session.message.list(session.id):   <span class="c"># auto-paginates</span>
+        print(msg.role, msg.text)
+
+<span class="c"># async twin, same names</span>
+<span class="k">async with</span> AsyncOpencode(base_url=...) <span class="k">as</span> client:
+    <span class="k">async for</span> event <span class="k">in</span> client.event.subscribe():
+        <span class="k">match</span> event:
+            <span class="k">case</span> SessionIdle(session_id=sid): ...
+            <span class="k">case</span> UnknownEvent(): ...                 <span class="c"># new server events never crash old clients</span></code></pre>
+  <h3>Mapping rules</h3>
+  <ul>
+    <li><code>session.permission.reply</code> becomes <code>client.session.permission.reply()</code>.</li>
+    <li>Path, query and body fields are flattened into keyword arguments; non-object bodies become one <code>payload=</code> argument. Same rule as <code>httpapi-codegen</code>.</li>
+    <li><code>{"data": A}</code> is unwrapped to <code>A</code>; no-content returns <code>None</code>.</li>
+    <li>SSE endpoints return an iterator (sync) or async iterator. No silent auto-reconnect; offer it as an opt-in helper.</li>
+    <li>Everything under <code>/api/experimental</code> lives under <code>client.experimental</code>, so users can see what may change.</li>
+  </ul>
+</section>
+
+<section id="future">
+  <h2>Staying current with v2</h2>
+  <p>The goal is that a new OpenCode release costs a review, not a rewrite.</p>
+  <ol class="steps">
+    <li><b>Spec sync job.</b> Nightly workflow fetches <code>packages/protocol/openapi.json</code> at the latest release tag, regenerates, and opens a PR with the diff and a changelog of added, removed and changed operations.</li>
+    <li><b>Drift check in CI.</b> Generated code is committed; CI regenerates and fails if the tree changes. Upstream uses the same rule for the TS client.</li>
+    <li><b>Version mapping.</b> SDK minor tracks the OpenCode minor (SDK 2.1.x targets server 2.1.x). <code>client.server_info()</code> warns once if the server is outside the supported range.</li>
+    <li><b>Forward-compatible models.</b> pydantic <code>extra="allow"</code>, unknown enum values kept as strings, <code>UnknownEvent</code> for new event types. Old clients keep working against newer servers.</li>
+    <li><b>Contract tests.</b> Start a real <code>opencode serve</code> in CI with a stub provider and exercise auth, session create, prompt, wait, paging and interrupt. This catches behaviour changes the spec cannot express.</li>
+    <li><b>Generator owns its files.</b> A manifest lists generated files, so regeneration deletes stale ones without touching hand-written code.</li>
+    <li><b>Upstream path.</b> Keep the generator spec-driven and dependency-light so it can be proposed upstream under #54300 if maintainers want an official Python client.</li>
+  </ol>
+</section>
+
+<section id="roadmap">
+  <h2>Roadmap</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Phase</th><th>Scope</th><th>Done when</th></tr></thead>
+    <tbody>
+      <tr><td>0. Skeleton</td><td>Repo, pyproject, transport, errors, CI</td><td>Lint, types and tests pass on an empty client.</td></tr>
+      <tr><td>1. Headless core</td><td>Generator for session, agent, mcp, model, provider, event; server launcher</td><td>The #54300 use case runs end to end in sync and async.</td></tr>
+      <tr><td>2. Full surface</td><td>All 121 operations, typed events, pagination helpers</td><td>Every operation generated and type-checked; contract tests green.</td></tr>
+      <tr><td>3. Automation</td><td>Spec-sync PRs, release workflow, docs site</td><td>An OpenCode release produces a ready-to-merge PR without manual edits.</td></tr>
+      <tr><td>4. Upstream</td><td>Share repo on #54300; offer generator</td><td>Maintainers decide: adopt, link, or keep it community-run.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="risks">
+  <h2>Risks</h2>
+  <ul>
+    <li><b>Upstream ships its own client.</b> Reduce the cost by commenting on #54300 early and keeping the generator easy to donate.</li>
+    <li><b>We hold the project's name on PyPI.</b> Users may read <code>opencode</code> as official. The README says it is community-maintained and that the repo and PyPI name will be transferred to OpenCode on request.</li>
+    <li><b>Event types are not in the spec.</b> Extracting them from TS source is brittle. Ask upstream to publish event schemas in <code>openapi.json</code>.</li>
+    <li><b>Experimental endpoints churn.</b> <code>wait</code> and session <code>log</code> are experimental, yet the headless flow depends on them. Isolate them under <code>client.experimental</code> and cover them with contract tests.</li>
+    <li><b>Server side effects.</b> A server started inside a project loads that project's <code>AGENTS.md</code> and skills. The launcher should default to an isolated working directory and HOME.</li>
+    <li><b>Spec title says "Experimental HttpApi surface".</b> The spec itself may reorganise. The sync job and drift check exist for this.</li>
+  </ul>
+</section>
+</main>
+</div>

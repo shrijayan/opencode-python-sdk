@@ -1,0 +1,14 @@
+{
+  "name": "opencode-python-sdk-extract",
+  "private": true,
+  "type": "module",
+  "description": "Exports the OpenCode HttpApi contract as JSON for the Python code generator.",
+  "scripts": {
+    "extract": "bun run extract.ts"
+  },
+  "dependencies": {
+    "@opencode/protocol": "2.1.2",
+    "effect": "4.0.1",
+    "prettier": "3.6.2"
+  }
+}
