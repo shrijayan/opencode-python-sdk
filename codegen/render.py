@@ -378,12 +378,29 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
     return lines
 
 
+# Hand-written methods mixed into generated resources: resource path -> (module, sync mixin, async mixin).
+# The mixins subclass the resource base classes and cover endpoints the generator cannot express (WebSockets).
+MIXINS: dict[tuple[str, ...], tuple[str, str, str]] = {
+    ("pty",): ("_pty", "PtyAttachMixin", "AsyncPtyAttachMixin"),
+    ("experimental", "persistentPty"): ("_pty", "PersistentPtyAttachMixin", "AsyncPersistentPtyAttachMixin"),
+}
+
+
+def _mixins(resource: Resource) -> list[tuple[str, str, str]]:
+    found = [MIXINS[tuple(resource.path)]] if tuple(resource.path) in MIXINS else []
+    for child in resource.children.values():
+        found += _mixins(child)
+    return found
+
+
 def _resource_classes(resource: Resource, errors: dict[str, dict[str, Any]], *, is_async: bool) -> list[str]:
     blocks: list[str] = []
     for child in resource.children.values():
         blocks += _resource_classes(child, errors, is_async=is_async)
     prefix = "Async" if is_async else ""
     base = "AsyncAPIResource" if is_async else "SyncAPIResource"
+    if tuple(resource.path) in MIXINS:
+        base = MIXINS[tuple(resource.path)][2 if is_async else 1]
     lines = [f"class {prefix}{resource.class_name}Resource({base}):"]
     title = ".".join(resource.path)
     lines.append(f'    """Operations under ``client.{_attr_path(resource)}`` (OpenCode ``{title}``)."""\n')
@@ -457,6 +474,7 @@ def render_resource_module(
             if any(op.kind == "page" for op in operations)
             else []
         ),
+        *[f"from ..{module} import {', '.join(sorted({sync, async_}))}" for module, sync, async_ in _mixins(resource)],
         *([f"from .._qs import {', '.join(runtime)}"] if runtime else []),
         "from .._resource import AsyncAPIResource, SyncAPIResource",
         *(["from .._streaming import AsyncStream, Stream"] if any(op.kind == "stream" for op in operations) else []),

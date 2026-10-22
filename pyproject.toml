@@ -39,6 +39,11 @@ Repository = "https://github.com/shrijayan/opencode-python-sdk"
 Issues = "https://github.com/shrijayan/opencode-python-sdk/issues"
 Changelog = "https://github.com/shrijayan/opencode-python-sdk/blob/main/CHANGELOG.md"
 
+[project.optional-dependencies]
+pty = [
+    "websockets>=14,<17",
+]
+
 [dependency-groups]
 dev = [
   "mypy>=1.18",
@@ -48,6 +53,7 @@ dev = [
   "respx>=0.22",
   "ruff>=0.14",
   "trio>=0.31",
+  "websockets>=14",
 ]
 docs = [
     "mkdocs-material[imaging]>=9.6",

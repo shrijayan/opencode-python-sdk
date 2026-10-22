@@ -10,6 +10,7 @@ from functools import cached_property
 from typing import cast
 
 from .._base_client import RequestOptions
+from .._pty import AsyncPtyAttachMixin, PtyAttachMixin
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
@@ -72,7 +73,7 @@ class PtyConnectResource(SyncAPIResource):
         )
 
 
-class PtyResource(SyncAPIResource):
+class PtyResource(PtyAttachMixin):
     """Operations under ``client.pty`` (OpenCode ``pty``)."""
 
     @cached_property
@@ -318,7 +319,7 @@ class AsyncPtyConnectResource(AsyncAPIResource):
         )
 
 
-class AsyncPtyResource(AsyncAPIResource):
+class AsyncPtyResource(AsyncPtyAttachMixin):
     """Operations under ``client.pty`` (OpenCode ``pty``)."""
 
     @cached_property

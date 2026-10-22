@@ -75,6 +75,7 @@ from ._exceptions import (
 )
 from ._models import BaseModel
 from ._pagination import AsyncCursorPage, AsyncPaginator, SyncCursorPage
+from ._pty import AsyncPtyConnection, PtyConnection, PtyConnectionError
 from ._server import AsyncOpencodeServer, OpencodeServer, ServerStartError
 from ._streaming import AsyncStream, Stream
 from ._types import NOT_GIVEN, NotGiven
@@ -97,6 +98,7 @@ __all__ = [
     "AsyncOpencode",
     "AsyncOpencodeServer",
     "AsyncPaginator",
+    "AsyncPtyConnection",
     "AsyncStream",
     "AuthenticationError",
     "BadRequestError",
@@ -111,6 +113,8 @@ __all__ = [
     "OpencodeError",
     "OpencodeServer",
     "PermissionDeniedError",
+    "PtyConnection",
+    "PtyConnectionError",
     "RateLimitError",
     "ServerStartError",
     "ServiceUnavailableError",
