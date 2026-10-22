@@ -139,6 +139,7 @@ nav:
       - Models and unions: guides/models.md
       - Pagination: guides/pagination.md
       - Events and streaming: guides/events.md
+      - Plugin RPC: guides/plugin-rpc.md
       - Interactive terminals: guides/terminals.md
       - Errors: guides/errors.md
       - Retries and timeouts: guides/retries.md
@@ -151,6 +152,7 @@ nav:
       - Server launcher: reference/server.md
       - Resources: reference/resources.md
       - Pagination and streams: reference/pagination.md
+      - Shared events and RPC: reference/events.md
       - Terminals: reference/terminals.md
       - Exceptions: reference/exceptions.md
       - Types: reference/types/index.md

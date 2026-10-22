@@ -28,7 +28,7 @@ entry; the common ones also have a guide. CI fails if a group on the client is m
 | `client.provider` | Model providers | - | [`ProviderResource`](../reference/resources.md#opencode.resources.provider.ProviderResource) |
 | `client.pty` | Terminals | [Interactive terminals](terminals.md) | [`PtyResource`](../reference/resources.md#opencode.resources.pty.PtyResource) |
 | `client.reference` | References | - | [`ReferenceResource`](../reference/resources.md#opencode.resources.reference.ReferenceResource) |
-| `client.rpc` | Plugin RPC | - | [`RpcResource`](../reference/resources.md#opencode.resources.rpc.RpcResource) |
+| `client.rpc` | Plugin RPC | [Plugin RPC](plugin-rpc.md) | [`RpcResource`](../reference/resources.md#opencode.resources.rpc.RpcResource) |
 | `client.server` | Server info and health | - | [`ServerResource`](../reference/resources.md#opencode.resources.server.ServerResource) |
 | `client.session` | Sessions, prompts and their sub-resources | [Guide](sessions.md) | [`SessionResource`](../reference/resources.md#opencode.resources.session.SessionResource) |
 | `client.shell` | Shells | - | [`ShellResource`](../reference/resources.md#opencode.resources.shell.ShellResource) |
