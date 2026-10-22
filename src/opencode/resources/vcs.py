@@ -6,20 +6,22 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    VcsBaseResponse,
-    VcsBranchListResponse,
-    VcsDiffResponse,
-    VcsGetResponse,
-    VcsMode,
-    VcsStatusResponse,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        VcsBaseResponse,
+        VcsBranchListResponse,
+        VcsDiffResponse,
+        VcsGetResponse,
+        VcsMode,
+        VcsStatusResponse,
+    )
 
 __all__ = ["VcsResource", "AsyncVcsResource"]
 
@@ -61,7 +63,7 @@ class VcsBranchResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsBranchListResponse,
+                response_type="VcsBranchListResponse",
             ),
         )
 
@@ -143,7 +145,7 @@ class VcsResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsGetResponse,
+                response_type="VcsGetResponse",
             ),
         )
 
@@ -180,7 +182,7 @@ class VcsResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsBaseResponse,
+                response_type="VcsBaseResponse",
             ),
         )
 
@@ -216,7 +218,7 @@ class VcsResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsStatusResponse,
+                response_type="VcsStatusResponse",
             ),
         )
 
@@ -256,7 +258,7 @@ class VcsResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsDiffResponse,
+                response_type="VcsDiffResponse",
             ),
         )
 
@@ -298,7 +300,7 @@ class AsyncVcsBranchResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsBranchListResponse,
+                response_type="VcsBranchListResponse",
             ),
         )
 
@@ -380,7 +382,7 @@ class AsyncVcsResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsGetResponse,
+                response_type="VcsGetResponse",
             ),
         )
 
@@ -417,7 +419,7 @@ class AsyncVcsResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsBaseResponse,
+                response_type="VcsBaseResponse",
             ),
         )
 
@@ -453,7 +455,7 @@ class AsyncVcsResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsStatusResponse,
+                response_type="VcsStatusResponse",
             ),
         )
 
@@ -493,6 +495,6 @@ class AsyncVcsResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=VcsDiffResponse,
+                response_type="VcsDiffResponse",
             ),
         )

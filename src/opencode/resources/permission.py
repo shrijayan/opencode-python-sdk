@@ -8,26 +8,28 @@ from __future__ import annotations
 import builtins
 from collections.abc import Mapping, Sequence
 from functools import cached_property
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    AgentID,
-    Location,
-    PermissionCreateResponse,
-    PermissionID,
-    PermissionReply,
-    PermissionRequest,
-    PermissionRequestListResponse,
-    PermissionSavedID,
-    PermissionSavedInfo,
-    PermissionSource,
-    ProjectID,
-    SessionID,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        AgentID,
+        Location,
+        PermissionCreateResponse,
+        PermissionID,
+        PermissionReply,
+        PermissionRequest,
+        PermissionRequestListResponse,
+        PermissionSavedID,
+        PermissionSavedInfo,
+        PermissionSource,
+        ProjectID,
+        SessionID,
+    )
 
 __all__ = ["PermissionResource", "AsyncPermissionResource"]
 
@@ -67,7 +69,7 @@ class PermissionRequestResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionRequestListResponse,
+                response_type="PermissionRequestListResponse",
             ),
         )
 
@@ -107,7 +109,7 @@ class PermissionSavedResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[PermissionSavedInfo],
+                response_type="builtins.list[PermissionSavedInfo]",
                 unwrap=True,
             ),
         )
@@ -148,7 +150,7 @@ class PermissionSavedResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionSavedInfo,
+                response_type="PermissionSavedInfo",
                 unwrap=True,
             ),
         )
@@ -247,7 +249,7 @@ class PermissionResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionCreateResponse,
+                response_type="PermissionCreateResponse",
                 unwrap=True,
             ),
         )
@@ -284,7 +286,7 @@ class PermissionResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[PermissionRequest],
+                response_type="builtins.list[PermissionRequest]",
                 unwrap=True,
             ),
         )
@@ -323,7 +325,7 @@ class PermissionResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionRequest,
+                response_type="PermissionRequest",
                 unwrap=True,
             ),
         )
@@ -402,7 +404,7 @@ class AsyncPermissionRequestResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionRequestListResponse,
+                response_type="PermissionRequestListResponse",
             ),
         )
 
@@ -442,7 +444,7 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[PermissionSavedInfo],
+                response_type="builtins.list[PermissionSavedInfo]",
                 unwrap=True,
             ),
         )
@@ -483,7 +485,7 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionSavedInfo,
+                response_type="PermissionSavedInfo",
                 unwrap=True,
             ),
         )
@@ -582,7 +584,7 @@ class AsyncPermissionResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionCreateResponse,
+                response_type="PermissionCreateResponse",
                 unwrap=True,
             ),
         )
@@ -619,7 +621,7 @@ class AsyncPermissionResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[PermissionRequest],
+                response_type="builtins.list[PermissionRequest]",
                 unwrap=True,
             ),
         )
@@ -658,7 +660,7 @@ class AsyncPermissionResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=PermissionRequest,
+                response_type="PermissionRequest",
                 unwrap=True,
             ),
         )

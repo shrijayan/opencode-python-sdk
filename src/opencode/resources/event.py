@@ -5,13 +5,17 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._streaming import AsyncStream, Stream
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Event,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Event,
+    )
 
 __all__ = ["EventResource", "AsyncEventResource"]
 
@@ -46,7 +50,7 @@ class EventResource(SyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            item_type=Event,
+            item_type="Event",
         )
 
 
@@ -80,5 +84,5 @@ class AsyncEventResource(AsyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            item_type=Event,
+            item_type="Event",
         )

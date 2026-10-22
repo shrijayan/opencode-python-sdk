@@ -14,26 +14,22 @@ import anyio
 
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, NotGiven, Timeout
-from ..types import (
-    AgentID,
-    ModelRef,
-    PromptInputFileAttachment,
-    SessionID,
-    SessionInfo,
-    SessionMessageAssistant,
-    SessionMessageAssistantText,
-    SessionMessageIdle,
-    SessionMessageInfo,
-    SessionMessageUser,
-    SessionStructuredError,
-    TokenUsageInfo,
-    TokenUsageInfoCache,
-)
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from ..resources.session import AsyncSessionResource, SessionResource
+    from ..types import (
+        AgentID,
+        ModelRef,
+        PromptInputFileAttachment,
+        SessionID,
+        SessionInfo,
+        SessionMessageAssistant,
+        SessionMessageInfo,
+        SessionStructuredError,
+        TokenUsageInfo,
+    )
 
 __all__ = ["AsyncSessionHelpers", "RunResult", "SessionHelpers"]
 
@@ -44,17 +40,21 @@ class RunResult:
 
     session: SessionInfo
     """The session as it was after the run. ``session.cost`` and ``session.tokens`` cover the whole session."""
-    messages: list[SessionMessageInfo] = field(default_factory=list[SessionMessageInfo])
+    messages: list[SessionMessageInfo] = field(default_factory=list)  # pyright: ignore[reportUnknownVariableType]
     """Messages this run added, oldest first, starting with the prompt."""
 
     @property
     def assistant_messages(self) -> list[SessionMessageAssistant]:
         """The assistant messages of this run, oldest first."""
+        from ..types import SessionMessageAssistant
+
         return [message for message in self.messages if isinstance(message, SessionMessageAssistant)]
 
     @property
     def text(self) -> str:
         """Text of the last assistant message, or ``""`` when the agent produced none."""
+        from ..types import SessionMessageAssistantText
+
         for message in reversed(self.assistant_messages):
             parts = [item.text for item in message.content if isinstance(item, SessionMessageAssistantText)]
             if parts:
@@ -64,6 +64,8 @@ class RunResult:
     @property
     def outcome(self) -> str | None:
         """``succeeded``, ``failed`` or ``interrupted``, from the run's idle marker or the session."""
+        from ..types import SessionMessageIdle
+
         for message in reversed(self.messages):
             if isinstance(message, SessionMessageIdle):
                 return message.outcome
@@ -72,6 +74,8 @@ class RunResult:
     @property
     def error(self) -> SessionStructuredError | None:
         """Why the run failed, from its idle marker or last assistant message, or ``None``."""
+        from ..types import SessionMessageAssistant, SessionMessageIdle
+
         for message in reversed(self.messages):
             if isinstance(message, (SessionMessageIdle, SessionMessageAssistant)) and message.error is not None:
                 return message.error
@@ -85,6 +89,8 @@ class RunResult:
     @property
     def tokens(self) -> TokenUsageInfo:
         """Token usage of this run, summed over its assistant messages."""
+        from ..types import TokenUsageInfo, TokenUsageInfoCache
+
         total = TokenUsageInfo(input=0, output=0, reasoning=0, cache=TokenUsageInfoCache(read=0, write=0))
         for message in self.assistant_messages:
             usage = message.tokens
@@ -99,6 +105,8 @@ class RunResult:
 
 
 def _new_messages(newest_first: list[SessionMessageInfo], marker: str | None) -> list[SessionMessageInfo]:
+    from ..types import SessionMessageUser
+
     collected: list[SessionMessageInfo] = []
     for message in newest_first:
         if marker is not None and message.id == marker:

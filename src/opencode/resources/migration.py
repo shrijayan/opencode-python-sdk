@@ -6,16 +6,18 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    MigrationV1StatusResponseOption1,
-    MigrationV1StatusResponseOption2,
-    MigrationV1StatusResponseOption3,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        MigrationV1StatusResponseOption1,
+        MigrationV1StatusResponseOption2,
+        MigrationV1StatusResponseOption3,
+    )
 
 __all__ = ["MigrationResource", "AsyncMigrationResource"]
 
@@ -54,9 +56,7 @@ class MigrationV1Resource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=MigrationV1StatusResponseOption1
-                | MigrationV1StatusResponseOption2
-                | MigrationV1StatusResponseOption3,
+                response_type="MigrationV1StatusResponseOption1 | MigrationV1StatusResponseOption2 | MigrationV1StatusResponseOption3",
             ),
         )
 
@@ -104,9 +104,7 @@ class AsyncMigrationV1Resource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=MigrationV1StatusResponseOption1
-                | MigrationV1StatusResponseOption2
-                | MigrationV1StatusResponseOption3,
+                response_type="MigrationV1StatusResponseOption1 | MigrationV1StatusResponseOption2 | MigrationV1StatusResponseOption3",
             ),
         )
 

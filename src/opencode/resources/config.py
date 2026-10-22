@@ -6,16 +6,18 @@
 from __future__ import annotations
 
 import builtins
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    ConfigEntry,
-    ConfigShellOption,
-    Location,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        ConfigEntry,
+        ConfigShellOption,
+        Location,
+    )
 
 __all__ = ["ConfigResource", "AsyncConfigResource"]
 
@@ -55,7 +57,7 @@ class ConfigResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[ConfigEntry],
+                response_type="builtins.list[ConfigEntry]",
             ),
         )
 
@@ -89,7 +91,7 @@ class ConfigResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[ConfigShellOption],
+                response_type="builtins.list[ConfigShellOption]",
             ),
         )
 
@@ -164,7 +166,7 @@ class AsyncConfigResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[ConfigEntry],
+                response_type="builtins.list[ConfigEntry]",
             ),
         )
 
@@ -198,7 +200,7 @@ class AsyncConfigResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[ConfigShellOption],
+                response_type="builtins.list[ConfigShellOption]",
             ),
         )
 

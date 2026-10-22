@@ -5,15 +5,17 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    CommandListResponse,
-    Location,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        CommandListResponse,
+        Location,
+    )
 
 __all__ = ["CommandResource", "AsyncCommandResource"]
 
@@ -53,7 +55,7 @@ class CommandResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=CommandListResponse,
+                response_type="CommandListResponse",
             ),
         )
 
@@ -93,6 +95,6 @@ class AsyncCommandResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=CommandListResponse,
+                response_type="CommandListResponse",
             ),
         )

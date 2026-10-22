@@ -6,18 +6,20 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    McpAddConfig,
-    McpListResponse,
-    McpResourceCatalogResponse,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        McpAddConfig,
+        McpListResponse,
+        McpResourceCatalogResponse,
+    )
 
 __all__ = ["McpResource", "AsyncMcpResource"]
 
@@ -57,7 +59,7 @@ class McpResourceResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=McpResourceCatalogResponse,
+                response_type="McpResourceCatalogResponse",
             ),
         )
 
@@ -102,7 +104,7 @@ class McpResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=McpListResponse,
+                response_type="McpListResponse",
             ),
         )
 
@@ -291,7 +293,7 @@ class AsyncMcpResourceResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=McpResourceCatalogResponse,
+                response_type="McpResourceCatalogResponse",
             ),
         )
 
@@ -336,7 +338,7 @@ class AsyncMcpResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=McpListResponse,
+                response_type="McpListResponse",
             ),
         )
 

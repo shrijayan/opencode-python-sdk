@@ -6,20 +6,22 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    ShellCreateResponse,
-    ShellGetResponse,
-    ShellID,
-    ShellListResponse,
-    ShellOutputResponse,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        ShellCreateResponse,
+        ShellGetResponse,
+        ShellID,
+        ShellListResponse,
+        ShellOutputResponse,
+    )
 
 __all__ = ["ShellResource", "AsyncShellResource"]
 
@@ -59,7 +61,7 @@ class ShellResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellListResponse,
+                response_type="ShellListResponse",
             ),
         )
 
@@ -100,7 +102,7 @@ class ShellResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellCreateResponse,
+                response_type="ShellCreateResponse",
             ),
         )
 
@@ -138,7 +140,7 @@ class ShellResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellGetResponse,
+                response_type="ShellGetResponse",
             ),
         )
 
@@ -178,7 +180,7 @@ class ShellResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellOutputResponse,
+                response_type="ShellOutputResponse",
             ),
         )
 
@@ -252,7 +254,7 @@ class AsyncShellResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellListResponse,
+                response_type="ShellListResponse",
             ),
         )
 
@@ -293,7 +295,7 @@ class AsyncShellResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellCreateResponse,
+                response_type="ShellCreateResponse",
             ),
         )
 
@@ -331,7 +333,7 @@ class AsyncShellResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellGetResponse,
+                response_type="ShellGetResponse",
             ),
         )
 
@@ -371,7 +373,7 @@ class AsyncShellResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ShellOutputResponse,
+                response_type="ShellOutputResponse",
             ),
         )
 

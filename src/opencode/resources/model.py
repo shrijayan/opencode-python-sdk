@@ -5,16 +5,18 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    Location,
-    ModelDefaultResponse,
-    ModelListResponse,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        Location,
+        ModelDefaultResponse,
+        ModelListResponse,
+    )
 
 __all__ = ["ModelResource", "AsyncModelResource"]
 
@@ -55,7 +57,7 @@ class ModelResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ModelListResponse,
+                response_type="ModelListResponse",
             ),
         )
 
@@ -92,7 +94,7 @@ class ModelResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ModelDefaultResponse,
+                response_type="ModelDefaultResponse",
             ),
         )
 
@@ -133,7 +135,7 @@ class AsyncModelResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ModelListResponse,
+                response_type="ModelListResponse",
             ),
         )
 
@@ -170,6 +172,6 @@ class AsyncModelResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=ModelDefaultResponse,
+                response_type="ModelDefaultResponse",
             ),
         )

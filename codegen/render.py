@@ -348,14 +348,14 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
         lines += [
             "        return self._client.page(",
             *request_options,
-            f"            response_type={_resource_type(operation.response_type or 'Any')},",
+            f"            response_type={_resource_type(operation.response_type or 'Any')!r},",
             "        )",
         ]
     elif operation.kind == "stream":
         lines += [
             f"        return {awaiting}self._client.stream(",
             *request_options,
-            f"            item_type={_resource_type(operation.response_type or 'Any')},",
+            f"            item_type={_resource_type(operation.response_type or 'Any')!r},",
             "        )",
         ]
     elif operation.kind == "void":
@@ -371,7 +371,7 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
         lines += [
             f"        return cast({returns!r}, {awaiting}self._client.request(",
             *request_options,
-            f"            response_type={_resource_type(operation.response_type or 'Any')},",
+            f"            response_type={_resource_type(operation.response_type or 'Any')!r},",
             *(["            unwrap=True,"] if operation.unwrap else []),
             "        ))",
         ]
@@ -453,7 +453,7 @@ def render_resource_module(
         [*_resource_classes(resource, errors, is_async=False), *_resource_classes(resource, errors, is_async=True)]
     )
     uses = _names_in(source)
-    typing_names = sorted({"Any", "Literal", "cast"} & uses)
+    typing_names = sorted(({"Any", "Literal", "cast"} & uses) | ({"TYPE_CHECKING"} if type_names else set[str]()))
     abc_names = sorted({"Mapping", "Sequence"} & uses)
     runtime: list[str] = []
     if "encode_path_segment" in uses:
@@ -481,7 +481,18 @@ def render_resource_module(
         *(["from .._streaming import AsyncStream, Stream"] if any(op.kind == "stream" for op in operations) else []),
         "from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout"
         + (", OpenEnum" if "OpenEnum" in uses else ""),
-        *(["from ..types import (", *[f"    {name}," for name in type_names], ")"] if type_names else []),
+        # Models load on first use (see ``type_adapter``), so importing the client does not build them all.
+        *(
+            [
+                "",
+                "if TYPE_CHECKING:",
+                "    from ..types import (",
+                *[f"        {name}," for name in type_names],
+                "    )",
+            ]
+            if type_names
+            else []
+        ),
         "",
         f"__all__ = [{', '.join(repr(prefix + resource.class_name + 'Resource') for prefix in ('', 'Async'))}]\n\n",
         source,

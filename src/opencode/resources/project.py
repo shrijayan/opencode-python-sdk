@@ -6,19 +6,21 @@
 from __future__ import annotations
 
 import builtins
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from .._base_client import RequestOptions
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, Query, Timeout
-from ..types import (
-    AbsolutePath,
-    Project,
-    ProjectCommands,
-    ProjectIcon,
-    ProjectID,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        AbsolutePath,
+        Project,
+        ProjectCommands,
+        ProjectIcon,
+        ProjectID,
+    )
 
 __all__ = ["ProjectResource", "AsyncProjectResource"]
 
@@ -58,7 +60,7 @@ class ProjectResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[Project],
+                response_type="builtins.list[Project]",
             ),
         )
 
@@ -99,7 +101,7 @@ class ProjectResource(SyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=Project,
+                response_type="Project",
             ),
         )
 
@@ -139,7 +141,7 @@ class AsyncProjectResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=builtins.list[Project],
+                response_type="builtins.list[Project]",
             ),
         )
 
@@ -180,6 +182,6 @@ class AsyncProjectResource(AsyncAPIResource):
                     extra_body=extra_body,
                     timeout=timeout,
                 ),
-                response_type=Project,
+                response_type="Project",
             ),
         )

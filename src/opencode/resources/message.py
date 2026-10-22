@@ -5,18 +5,19 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from .._base_client import RequestOptions
 from .._pagination import AsyncPaginator, SyncCursorPage
 from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, OpenEnum, Query, Timeout
-from ..types import (
-    SessionID,
-    SessionMessageInfo,
-    SessionMessagesResponse,
-)
+
+if TYPE_CHECKING:
+    from ..types import (
+        SessionID,
+        SessionMessageInfo,
+    )
 
 __all__ = ["MessageResource", "AsyncMessageResource"]
 
@@ -82,7 +83,7 @@ class MessageResource(SyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            response_type=SessionMessagesResponse,
+            response_type="SessionMessagesResponse",
         )
 
 
@@ -147,5 +148,5 @@ class AsyncMessageResource(AsyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
             ),
-            response_type=SessionMessagesResponse,
+            response_type="SessionMessagesResponse",
         )

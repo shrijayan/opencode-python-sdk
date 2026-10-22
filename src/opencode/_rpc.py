@@ -44,7 +44,6 @@ from ._errors import RpcError, RpcInternalError
 from ._exceptions import OpencodeError, validation_summary
 from ._types import NOT_GIVEN, NotGiven
 from .resources.rpc import AsyncRpcResource, RpcResource
-from .types import RpcEvent
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -53,7 +52,7 @@ if TYPE_CHECKING:
     from ._client import AsyncOpencode, Opencode
     from ._events import AsyncSubscription, Subscription
     from ._types import Headers, Timeout
-    from .types import Location
+    from .types import Location, RpcEvent
 
 __all__ = [
     "AsyncRpcClient",
@@ -327,11 +326,15 @@ class RpcClient(Generic[_D]):
 
     def events(self) -> Subscription[RpcEvent]:
         """Subscribes to every event of this RPC, as raw events, on the client's shared event stream."""
+        from .types import RpcEvent
+
         prefix = f"rpc.{self.definition.id}."
         return self._client.events.of_type(RpcEvent).where(lambda event: event.type.startswith(prefix))
 
     def subscribe(self, event: RpcEventDefinition[_T]) -> RpcEvents[_T]:
         """Subscribes to one event of this RPC, with validated data, on the client's shared event stream."""
+        from .types import RpcEvent
+
         _check_event(self.definition, event)
         wire = self.definition.event_type(event)
         return RpcEvents(self._client.events.of_type(RpcEvent).where(lambda raw: raw.type == wire), event)
@@ -396,11 +399,15 @@ class AsyncRpcClient(Generic[_D]):
 
     def events(self) -> AsyncSubscription[RpcEvent]:
         """Subscribes to every event of this RPC, as raw events, on the client's shared event stream."""
+        from .types import RpcEvent
+
         prefix = f"rpc.{self.definition.id}."
         return self._client.events.of_type(RpcEvent).where(lambda event: event.type.startswith(prefix))
 
     def subscribe(self, event: RpcEventDefinition[_T]) -> AsyncRpcEvents[_T]:
         """Subscribes to one event of this RPC, with validated data, on the client's shared event stream."""
+        from .types import RpcEvent
+
         _check_event(self.definition, event)
         wire = self.definition.event_type(event)
         return AsyncRpcEvents(self._client.events.of_type(RpcEvent).where(lambda raw: raw.type == wire), event)

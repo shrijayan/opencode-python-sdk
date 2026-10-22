@@ -7,6 +7,7 @@ transient failures, and turns responses into typed values or errors.
 from __future__ import annotations
 
 import base64
+import builtins
 import email.utils
 import functools
 import json
@@ -60,8 +61,18 @@ def _cached_adapter(tp: Any) -> pydantic.TypeAdapter[Any]:
     return pydantic.TypeAdapter(tp)
 
 
+@functools.cache
+def _resolve_type(expr: str) -> Any:
+    # Generated resources name their response types as strings, so `import opencode` does not build every model.
+    from . import types
+
+    return eval(expr, {**vars(types), "builtins": builtins})  # expressions come from the generator
+
+
 def type_adapter(tp: Any) -> pydantic.TypeAdapter[Any]:
-    """Returns a cached ``TypeAdapter`` for a response type."""
+    """Returns a cached ``TypeAdapter`` for a response type, or for a type expression over ``opencode.types``."""
+    if isinstance(tp, str):
+        tp = _resolve_type(tp)
     try:
         return _cached_adapter(tp)
     except TypeError:  # unhashable type expression
