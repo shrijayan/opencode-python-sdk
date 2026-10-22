@@ -3023,7 +3023,7 @@ class RpcErrorBody(BaseModel):
 
     message: str
 
-    data: Any | None = None
+    data: Any = None
 
 
 class RpcEvent(BaseModel):
@@ -3051,11 +3051,11 @@ class RpcInternalErrorBody(BaseModel):
 
     message: str
 
-    data: Any | None = None
+    data: Any = None
 
 
 class RpcOutput(BaseModel):
-    output: Any | None = Field(default=None, exclude_if=is_none)
+    output: Any = Field(default=None, exclude_if=is_none)
 
 
 class ServerConnectedEvent(BaseModel):
@@ -6395,7 +6395,9 @@ class UnknownConfigEntry(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    path: AbsolutePath | None = None
 
 
 class UnknownConfigInfoMcpServersValue(BaseModel):
@@ -6404,7 +6406,13 @@ class UnknownConfigInfoMcpServersValue(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    disabled: bool | None = None
+
+    codemode: bool | None = None
+
+    protocol: McpProtocol | None = None
 
 
 class UnknownConfigModelReasoning(BaseModel):
@@ -6413,7 +6421,7 @@ class UnknownConfigModelReasoning(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    supported: Any | None = None
+    supported: Any = None
 
 
 class UnknownConnectionInfo(BaseModel):
@@ -6422,7 +6430,9 @@ class UnknownConnectionInfo(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    status: ConnectionStatus | None = None
 
 
 class UnknownCredentialValue(BaseModel):
@@ -6431,7 +6441,9 @@ class UnknownCredentialValue(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    metadata: dict[str, Any] | None = None
 
 
 class UnknownErrorBody(BaseModel):
@@ -6450,7 +6462,11 @@ class UnknownEvent(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    id: EventID | None = None
+
+    metadata: dict[str, Any] | None = None
 
 
 class UnknownFormField(BaseModel):
@@ -6459,7 +6475,13 @@ class UnknownFormField(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    key: str | None = None
+
+    title: str | None = None
+
+    description: str | None = None
 
 
 class UnknownFormState(BaseModel):
@@ -6468,7 +6490,7 @@ class UnknownFormState(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    status: Any | None = None
+    status: Any = None
 
 
 class UnknownIntegrationAttemptStatus(BaseModel):
@@ -6477,7 +6499,7 @@ class UnknownIntegrationAttemptStatus(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    status: Any | None = None
+    status: Any = None
 
 
 class UnknownIntegrationCommandAttemptStatus(BaseModel):
@@ -6486,7 +6508,7 @@ class UnknownIntegrationCommandAttemptStatus(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    status: Any | None = None
+    status: Any = None
 
 
 class UnknownIntegrationMethod(BaseModel):
@@ -6495,7 +6517,7 @@ class UnknownIntegrationMethod(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownMcpAddConfig(BaseModel):
@@ -6504,7 +6526,13 @@ class UnknownMcpAddConfig(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    disabled: bool | None = None
+
+    codemode: bool | None = None
+
+    protocol: McpProtocol | None = None
 
 
 class UnknownMcpServerStatus(BaseModel):
@@ -6513,7 +6541,7 @@ class UnknownMcpServerStatus(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    status: Any | None = None
+    status: Any = None
 
 
 class UnknownPluginSource(BaseModel):
@@ -6522,7 +6550,7 @@ class UnknownPluginSource(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownPluginState(BaseModel):
@@ -6531,7 +6559,7 @@ class UnknownPluginState(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    status: Any | None = None
+    status: Any = None
 
 
 class UnknownPromptFileSource(BaseModel):
@@ -6540,7 +6568,7 @@ class UnknownPromptFileSource(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownProviderCompaction(BaseModel):
@@ -6549,7 +6577,7 @@ class UnknownProviderCompaction(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownReferenceSource(BaseModel):
@@ -6558,7 +6586,7 @@ class UnknownReferenceSource(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownSessionEventDurable(BaseModel):
@@ -6567,7 +6595,15 @@ class UnknownSessionEventDurable(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    id: EventID | None = None
+
+    created: float | None = None
+
+    metadata: dict[str, Any] | None = None
+
+    location: LocationRef | None = None
 
 
 class UnknownSessionForkBoundary(BaseModel):
@@ -6576,7 +6612,11 @@ class UnknownSessionForkBoundary(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    message_id: SessionMessageID | None = Field(
+        default=None, validation_alias="messageID", serialization_alias="messageID"
+    )
 
 
 class UnknownSessionInboxInfo(BaseModel):
@@ -6585,7 +6625,13 @@ class UnknownSessionInboxInfo(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    id: SessionMessageID | None = None
+
+    session_id: SessionID | None = Field(default=None, validation_alias="sessionID", serialization_alias="sessionID")
+
+    delivery: SessionInboxDelivery | None = None
 
 
 class UnknownSessionInboxItem(BaseModel):
@@ -6594,7 +6640,9 @@ class UnknownSessionInboxItem(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    delivery: SessionInboxDelivery | None = None
 
 
 class UnknownSessionMessageAssistantContent(BaseModel):
@@ -6603,7 +6651,9 @@ class UnknownSessionMessageAssistantContent(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    native: SessionMessageNative | None = None
 
 
 class UnknownSessionMessageAssistantContentItem(BaseModel):
@@ -6612,7 +6662,9 @@ class UnknownSessionMessageAssistantContentItem(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    native: SessionMessageNative | None = None
 
 
 class UnknownSessionMessageAssistantToolState(BaseModel):
@@ -6621,7 +6673,7 @@ class UnknownSessionMessageAssistantToolState(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    status: Any | None = None
+    status: Any = None
 
 
 class UnknownSessionMessageCompaction(BaseModel):
@@ -6630,7 +6682,15 @@ class UnknownSessionMessageCompaction(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    status: Any | None = None
+    status: Any = None
+
+    type: Literal["compaction"] | None = None
+
+    id: SessionMessageID | None = None
+
+    metadata: dict[str, Any] | None = None
+
+    reason: OpenEnum[Literal["auto", "manual"]] | None = None
 
 
 class UnknownSessionMessageInfo(BaseModel):
@@ -6639,7 +6699,11 @@ class UnknownSessionMessageInfo(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
+
+    id: SessionMessageID | None = None
+
+    metadata: dict[str, Any] | None = None
 
 
 class UnknownSessionStatsTools(BaseModel):
@@ -6648,7 +6712,7 @@ class UnknownSessionStatsTools(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    mode: Any | None = None
+    mode: Any = None
 
 
 class UnknownSessionStatus(BaseModel):
@@ -6657,7 +6721,7 @@ class UnknownSessionStatus(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownToolContent(BaseModel):
@@ -6666,7 +6730,7 @@ class UnknownToolContent(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownVoiceTransport(BaseModel):
@@ -6675,7 +6739,7 @@ class UnknownVoiceTransport(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class UnknownVoiceTransportInput(BaseModel):
@@ -6684,7 +6748,7 @@ class UnknownVoiceTransportInput(BaseModel):
     Newer OpenCode servers can add variants. The raw fields are kept and available as attributes and through `model_extra`.
     """
 
-    type: Any | None = None
+    type: Any = None
 
 
 class VcsBase(BaseModel):

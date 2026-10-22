@@ -98,6 +98,7 @@ class OpencodeServer:
         self._url: str | None = None
         self._output: collections.deque[str] = collections.deque(maxlen=200)
         self._lock = threading.Lock()
+        self._threads: list[threading.Thread] = []
 
     @property
     def url(self) -> str:
@@ -181,7 +182,7 @@ class OpencodeServer:
             url = self._wait_for_url(process, lines)
             if url is None:
                 output = "\n".join(self._output)
-                self._terminate(process)
+                self._shutdown(process)
                 self._process = None
                 raise ServerStartError("OpenCode server did not start", output=output)
             self._url = url
@@ -201,7 +202,9 @@ class OpencodeServer:
                 if lines is not None:
                     lines.put(None)
 
-        threading.Thread(target=run, name="opencode-server-output", daemon=True).start()
+        thread = threading.Thread(target=run, name="opencode-server-output", daemon=True)
+        thread.start()
+        self._threads.append(thread)
 
     def _wait_for_url(self, process: subprocess.Popen[str], lines: queue.Queue[str | None]) -> str | None:
         deadline = time.monotonic() + self.startup_timeout
@@ -230,7 +233,18 @@ class OpencodeServer:
             self._process = None
             self._url = None
             if process is not None:
-                self._terminate(process, timeout)
+                self._shutdown(process, timeout)
+
+    def _shutdown(self, process: subprocess.Popen[str], timeout: float = 10.0) -> None:
+        self._terminate(process, timeout)
+        # The output threads finish at end of file; then the pipes can be closed.
+        for thread in self._threads:
+            thread.join(timeout=2)
+        self._threads.clear()
+        for stream in (process.stdout, process.stderr):
+            if stream is not None:
+                with contextlib.suppress(OSError):
+                    stream.close()
 
     @staticmethod
     def _terminate(process: subprocess.Popen[str], timeout: float = 10.0) -> None:

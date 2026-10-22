@@ -341,6 +341,7 @@ class TypeRegistry:
         key = "type" if "type" in candidates else sorted(candidates)[0]
 
         members: list[str] = []
+        member_types: list[str] = []
         tags: list[str] = []
         patterns: list[tuple[str, str]] = []
         deps: set[str] = set()
@@ -350,6 +351,7 @@ class TypeRegistry:
                 f"{name}{pascal(_tag_string(tag_value))}" if tag_value is not None else f"{name}Variant{index + 1}"
             )
             ref = self.type_of(option, context=member_context)
+            member_types.append(ref.expr)
             deps |= ref.aliases
             value = (tag_map or {}).get(key)
             if value is None:
@@ -374,7 +376,10 @@ class TypeRegistry:
                 "Newer OpenCode servers can add variants. The raw fields are kept and available as attributes "
                 "and through `model_extra`."
             ),
-            fields=[FieldDecl(name=attribute, wire=key, type="Any", required=False, nullable=True, doc=None)],
+            fields=[
+                FieldDecl(name=attribute, wire=key, type="Any", required=False, nullable=True, doc=None),
+                *self._shared_fields(member_types, exclude=key),
+            ],
             source=f"unknown:{name}",
             unknown_for=name,
         )
@@ -386,6 +391,53 @@ class TypeRegistry:
             + f",\n    Discriminator(discriminator({key!r}, {attribute!r}, {tags!r}{pattern_arg})),\n]"
         )
         return AliasDecl(name=name, expr=expr, doc=schema.get("description"), source=source, deps=deps)
+
+    def _member_classes(self, name: str) -> list[ClassDecl] | None:
+        if name in self.classes:
+            return [self.classes[name]]
+        alias = self.aliases.get(name)
+        if alias is None or "Discriminator(" not in alias.expr:
+            return None
+        result: list[ClassDecl] = []
+        for member in re.findall(r"Annotated\[(\w+), Tag\(", alias.expr):
+            if member.startswith("Unknown"):
+                continue
+            classes = self._member_classes(member)
+            if classes is None:
+                return None
+            result += classes
+        return result
+
+    def _shared_fields(self, member_types: list[str], *, exclude: str) -> list[FieldDecl]:
+        """Fields every known member declares with the same type, made optional for the fallback class.
+
+        This keeps ``message.id`` type-checking on the whole union, including the unknown variant.
+        """
+        classes: list[ClassDecl] = []
+        for expr in member_types:
+            found = self._member_classes(expr)
+            if found is None:
+                return []
+            classes += found
+        if not classes:
+            return []
+        shared: list[FieldDecl] = []
+        for candidate in classes[0].fields:
+            if candidate.wire == exclude:
+                continue
+            same = [next((f for f in cls.fields if f.wire == candidate.wire), None) for cls in classes[1:]]
+            if all(item is not None and item.type == candidate.type for item in same):
+                shared.append(
+                    FieldDecl(
+                        name=candidate.name,
+                        wire=candidate.wire,
+                        type=candidate.type,
+                        required=False,
+                        nullable=True,
+                        doc=candidate.doc,
+                    )
+                )
+        return shared
 
     # -- type expressions -----------------------------------------------------------------------------------
 

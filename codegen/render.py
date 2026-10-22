@@ -40,7 +40,7 @@ def _names_in(expr: str) -> set[str]:
 
 def _field_line(field_decl: Any) -> str:
     annotation = field_decl.type
-    if field_decl.nullable or not field_decl.required:
+    if (field_decl.nullable or not field_decl.required) and annotation != "Any":
         annotation = f"{annotation} | None"
     args: list[str] = []
     if field_decl.wire != field_decl.name:
