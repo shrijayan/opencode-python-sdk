@@ -38,8 +38,8 @@ class MigrationV1Resource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/experimental/migration/v1``
         """
@@ -87,8 +87,8 @@ class AsyncMigrationV1Resource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/experimental/migration/v1``
         """

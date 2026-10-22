@@ -36,8 +36,8 @@ class DebugLocationResource(SyncAPIResource):
         List locations currently loaded by the server.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/debug/location``
         """
@@ -70,8 +70,8 @@ class DebugLocationResource(SyncAPIResource):
         Dispose the requested location's cached services so its next use boots them fresh.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``DELETE /api/debug/location``
         """
@@ -113,8 +113,8 @@ class AsyncDebugLocationResource(AsyncAPIResource):
         List locations currently loaded by the server.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/debug/location``
         """
@@ -147,8 +147,8 @@ class AsyncDebugLocationResource(AsyncAPIResource):
         Dispose the requested location's cached services so its next use boots them fresh.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``DELETE /api/debug/location``
         """

@@ -35,9 +35,9 @@ class SkillResource(SyncAPIResource):
         Retrieve currently registered skills.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/skill``
         """
@@ -75,9 +75,9 @@ class AsyncSkillResource(AsyncAPIResource):
         Retrieve currently registered skills.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/skill``
         """

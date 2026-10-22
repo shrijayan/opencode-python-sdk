@@ -37,9 +37,9 @@ class PluginResource(SyncAPIResource):
         Retrieve enabled server plugins and their current status.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/plugin``
         """
@@ -74,9 +74,9 @@ class PluginResource(SyncAPIResource):
         Check one or all package plugins for available updates.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/plugin/check``
         """
@@ -112,10 +112,10 @@ class PluginResource(SyncAPIResource):
         Update package plugins concurrently and notify active locations to reload them. Responds once every update has finished; fails when any update fails.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/plugin/update``
         """
@@ -151,9 +151,9 @@ class AsyncPluginResource(AsyncAPIResource):
         Retrieve enabled server plugins and their current status.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/plugin``
         """
@@ -188,9 +188,9 @@ class AsyncPluginResource(AsyncAPIResource):
         Check one or all package plugins for available updates.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/plugin/check``
         """
@@ -226,10 +226,10 @@ class AsyncPluginResource(AsyncAPIResource):
         Update package plugins concurrently and notify active locations to reload them. Responds once every update has finished; fails when any update fails.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/plugin/update``
         """

@@ -32,8 +32,8 @@ class EventResource(SyncAPIResource):
         Subscribe to native events and plugin RPC events across all server locations. Volatile by contract: a slow consumer overflows and fails the stream, and events during disconnection are missed.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/event``
         """
@@ -66,8 +66,8 @@ class AsyncEventResource(AsyncAPIResource):
         Subscribe to native events and plugin RPC events across all server locations. Volatile by contract: a slow consumer overflows and fails the stream, and events during disconnection are missed.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
 
         ``GET /api/event``
         """

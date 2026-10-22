@@ -35,9 +35,9 @@ class FormResource(SyncAPIResource):
         Retrieve pending forms for a location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/form``
         """
@@ -75,9 +75,9 @@ class AsyncFormResource(AsyncAPIResource):
         Retrieve pending forms for a location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/form``
         """

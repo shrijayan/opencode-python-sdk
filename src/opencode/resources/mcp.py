@@ -39,9 +39,9 @@ class McpResourceResource(SyncAPIResource):
         Retrieve resources and resource templates from connected MCP servers.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/mcp/resource``
         """
@@ -83,9 +83,9 @@ class McpResource(SyncAPIResource):
         Retrieve configured MCP servers and their connection status.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/mcp``
         """
@@ -123,9 +123,9 @@ class McpResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``PUT /api/experimental/mcp/:server``
         """
@@ -160,10 +160,10 @@ class McpResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          McpServerNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          McpServerNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/experimental/mcp/:server``
         """
@@ -197,10 +197,10 @@ class McpResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          McpServerNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          McpServerNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/mcp/:server/connect``
         """
@@ -234,10 +234,10 @@ class McpResource(SyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          McpServerNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          McpServerNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/mcp/:server/disconnect``
         """
@@ -272,9 +272,9 @@ class AsyncMcpResourceResource(AsyncAPIResource):
         Retrieve resources and resource templates from connected MCP servers.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/mcp/resource``
         """
@@ -316,9 +316,9 @@ class AsyncMcpResource(AsyncAPIResource):
         Retrieve configured MCP servers and their connection status.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/mcp``
         """
@@ -356,9 +356,9 @@ class AsyncMcpResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``PUT /api/experimental/mcp/:server``
         """
@@ -393,10 +393,10 @@ class AsyncMcpResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          McpServerNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          McpServerNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/experimental/mcp/:server``
         """
@@ -430,10 +430,10 @@ class AsyncMcpResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          McpServerNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          McpServerNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/mcp/:server/connect``
         """
@@ -467,10 +467,10 @@ class AsyncMcpResource(AsyncAPIResource):
         This endpoint is experimental in OpenCode and may change without notice.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          McpServerNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          McpServerNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/mcp/:server/disconnect``
         """

@@ -41,9 +41,9 @@ class ShellResource(SyncAPIResource):
         List currently running shell commands for a location. Exited commands are not included.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/shell``
         """
@@ -81,9 +81,9 @@ class ShellResource(SyncAPIResource):
         Spawn one non-interactive shell command for a location. Combined stdout/stderr is captured to a file pageable via output.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/shell``
         """
@@ -119,10 +119,10 @@ class ShellResource(SyncAPIResource):
         Get one shell command, including its status and exit code once exited.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ShellNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ShellNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/shell/:id``
         """
@@ -159,10 +159,10 @@ class ShellResource(SyncAPIResource):
         Page through captured combined output by absolute byte cursor.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ShellNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ShellNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/shell/:id/output``
         """
@@ -197,9 +197,9 @@ class ShellResource(SyncAPIResource):
         Terminate and remove one shell command and its retained output.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/shell/:id``
         """
@@ -234,9 +234,9 @@ class AsyncShellResource(AsyncAPIResource):
         List currently running shell commands for a location. Exited commands are not included.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/shell``
         """
@@ -274,9 +274,9 @@ class AsyncShellResource(AsyncAPIResource):
         Spawn one non-interactive shell command for a location. Combined stdout/stderr is captured to a file pageable via output.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/shell``
         """
@@ -312,10 +312,10 @@ class AsyncShellResource(AsyncAPIResource):
         Get one shell command, including its status and exit code once exited.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ShellNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ShellNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/shell/:id``
         """
@@ -352,10 +352,10 @@ class AsyncShellResource(AsyncAPIResource):
         Page through captured combined output by absolute byte cursor.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          ShellNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          ShellNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/shell/:id/output``
         """
@@ -390,9 +390,9 @@ class AsyncShellResource(AsyncAPIResource):
         Terminate and remove one shell command and its retained output.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/shell/:id``
         """

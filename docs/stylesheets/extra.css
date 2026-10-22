@@ -1,0 +1,235 @@
+/* Palette: warm paper and ink, with a signal-amber accent and a deep teal for links.
+   Headings use Fraunces; body IBM Plex Sans; code JetBrains Mono (set in mkdocs.yml). */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap");
+
+:root {
+  --oc-amber: #d9730d;
+  --oc-amber-soft: #f6e3cc;
+  --oc-teal: #0f6e6a;
+  --oc-ink: #1b1714;
+  --oc-paper: #fbf8f3;
+  --oc-rule: #e7dfd3;
+  --oc-card: #ffffff;
+  --oc-heading-font: "Fraunces", Georgia, serif;
+}
+
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: var(--oc-ink);
+  --md-primary-fg-color--light: #3a332d;
+  --md-primary-fg-color--dark: #000;
+  --md-primary-bg-color: var(--oc-paper);
+  --md-accent-fg-color: var(--oc-amber);
+  --md-accent-fg-color--transparent: rgba(217, 115, 13, 0.1);
+  --md-default-bg-color: var(--oc-paper);
+  --md-default-fg-color: var(--oc-ink);
+  --md-typeset-a-color: var(--oc-teal);
+  --md-code-bg-color: #f3ede4;
+  --md-code-fg-color: #2a241f;
+  --md-footer-bg-color: var(--oc-ink);
+  --md-footer-bg-color--dark: #0f0c0a;
+}
+
+[data-md-color-scheme="slate"] {
+  --oc-rule: #2e2924;
+  --oc-card: #1c1917;
+  --oc-amber-soft: rgba(242, 153, 74, 0.14);
+  --md-hue: 30;
+  --md-primary-fg-color: #14110f;
+  --md-primary-fg-color--light: #2a2521;
+  --md-primary-fg-color--dark: #0b0908;
+  --md-primary-bg-color: #f4efe6;
+  --md-accent-fg-color: #f2994a;
+  --md-accent-fg-color--transparent: rgba(242, 153, 74, 0.12);
+  --md-default-bg-color: #14110f;
+  --md-default-fg-color: rgba(244, 239, 230, 0.92);
+  --md-default-fg-color--light: rgba(244, 239, 230, 0.66);
+  --md-default-fg-color--lighter: rgba(244, 239, 230, 0.4);
+  --md-typeset-a-color: #5fc2b9;
+  --md-code-bg-color: #1e1a17;
+  --md-code-fg-color: #ece4d8;
+  --md-footer-bg-color: #0b0908;
+  --md-footer-bg-color--dark: #070605;
+}
+
+.md-header,
+.md-tabs {
+  border-bottom: 1px solid var(--oc-rule);
+}
+[data-md-color-scheme="default"] .md-header,
+[data-md-color-scheme="default"] .md-tabs {
+  background-color: var(--oc-paper);
+  color: var(--oc-ink);
+}
+.md-header__title {
+  font-family: var(--md-code-font-family);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-family: var(--oc-heading-font);
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--md-default-fg-color);
+}
+.md-typeset h1 {
+  font-size: 2.1rem;
+}
+/* mkdocstrings headings stay monospace: they are code. */
+.md-typeset .doc-heading,
+.md-typeset h2.doc-heading,
+.md-typeset h3.doc-heading {
+  font-family: var(--md-code-font-family);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.md-typeset code {
+  border-radius: 4px;
+}
+.md-typeset pre > code {
+  border: 1px solid var(--oc-rule);
+  border-radius: 8px;
+}
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 8px;
+  box-shadow: none;
+}
+.md-typeset table:not([class]) {
+  border-radius: 8px;
+  border: 1px solid var(--oc-rule);
+  font-size: 0.72rem;
+}
+.md-typeset table:not([class]) th {
+  background: var(--md-code-bg-color);
+}
+
+/* ---------- Landing page ---------- */
+.oc-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 2.4rem;
+  align-items: center;
+  padding: 2.4rem 0 1.6rem;
+}
+.oc-hero h1 {
+  font-size: 2.6rem;
+  line-height: 1.08;
+  margin: 0.4rem 0 1rem;
+}
+.oc-hero h1 em {
+  font-style: italic;
+  color: var(--md-accent-fg-color);
+}
+.oc-eyebrow {
+  font-family: var(--md-code-font-family);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--md-default-fg-color--light);
+}
+.oc-chip {
+  display: inline-block;
+  font-family: var(--md-code-font-family);
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 0.1rem 0.5rem;
+  margin-right: 0.4rem;
+  border-radius: 999px;
+  background: var(--oc-amber-soft);
+  color: var(--md-accent-fg-color);
+}
+.oc-lede {
+  font-size: 0.95rem;
+  color: var(--md-default-fg-color--light);
+  max-width: 34rem;
+}
+.oc-install {
+  margin: 1.2rem 0 0.8rem;
+}
+.oc-install pre {
+  margin: 0;
+}
+.oc-badges img {
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+.md-typeset .oc-actions .md-button {
+  margin: 0.4rem 0.5rem 0 0;
+  border-radius: 6px;
+}
+.md-typeset .oc-actions .md-button--primary {
+  background: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
+  color: #fff;
+}
+
+.oc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--oc-rule);
+  border-left: 1px solid var(--oc-rule);
+  margin: 2rem 0;
+}
+.oc-grid > div {
+  padding: 1.1rem 1.2rem 1.2rem;
+  border-right: 1px solid var(--oc-rule);
+  border-bottom: 1px solid var(--oc-rule);
+  background: var(--oc-card);
+}
+.oc-grid h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+}
+.oc-grid p {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--md-default-fg-color--light);
+}
+.oc-grid .oc-num {
+  font-family: var(--md-code-font-family);
+  font-size: 0.65rem;
+  color: var(--md-accent-fg-color);
+}
+
+.oc-section-title {
+  margin-top: 2.4rem !important;
+}
+
+@media screen and (max-width: 60em) {
+  .oc-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+  .oc-hero h1 {
+    font-size: 1.7rem;
+    overflow-wrap: anywhere;
+  }
+  .oc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media screen and (min-width: 60em) and (max-width: 76em) {
+  .oc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.md-typeset .oc-actions .md-button:not(.md-button--primary) {
+  color: var(--md-default-fg-color);
+  border-color: var(--md-default-fg-color--lighter);
+}
+.md-typeset .oc-actions .md-button:not(.md-button--primary):hover {
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-fg-color);
+  background: transparent;
+}
+/* The landing page is hand-built; an edit link there points at markup, not prose. */
+.md-content:has(.oc-hero) .md-content__button {
+  display: none;
+}

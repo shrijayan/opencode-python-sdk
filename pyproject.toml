@@ -34,7 +34,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/shrijayan/opencode-python-sdk"
-Documentation = "https://github.com/shrijayan/opencode-python-sdk#readme"
+Documentation = "https://shrijayan.github.io/opencode-python-sdk/"
 Repository = "https://github.com/shrijayan/opencode-python-sdk"
 Issues = "https://github.com/shrijayan/opencode-python-sdk/issues"
 Changelog = "https://github.com/shrijayan/opencode-python-sdk/blob/main/CHANGELOG.md"
@@ -48,6 +48,10 @@ dev = [
   "respx>=0.22",
   "ruff>=0.14",
   "trio>=0.31",
+]
+docs = [
+    "mkdocs-material[imaging]>=9.6",
+    "mkdocstrings[python]>=0.30",
 ]
 
 [build-system]

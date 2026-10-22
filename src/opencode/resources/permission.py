@@ -49,9 +49,9 @@ class PermissionRequestResource(SyncAPIResource):
         Retrieve pending permission requests for a location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/permission/request``
         """
@@ -89,9 +89,9 @@ class PermissionSavedResource(SyncAPIResource):
         Retrieve saved permissions, optionally filtered by project.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/permission/saved``
         """
@@ -128,11 +128,11 @@ class PermissionSavedResource(SyncAPIResource):
         Change the action or resource of a saved permission. Fails with a conflict when the project already has a saved permission with the same action and resource.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PermissionSavedNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PermissionSavedNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``PATCH /api/permission/saved/:id``
         """
@@ -167,9 +167,9 @@ class PermissionSavedResource(SyncAPIResource):
         Remove a saved permission by ID.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/permission/saved/:id``
         """
@@ -218,10 +218,10 @@ class PermissionResource(SyncAPIResource):
         Evaluate and, when approval is required, create a permission request for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/permission``
         """
@@ -264,10 +264,10 @@ class PermissionResource(SyncAPIResource):
         Retrieve pending permission requests owned by a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/permission``
         """
@@ -302,11 +302,11 @@ class PermissionResource(SyncAPIResource):
         Retrieve a pending permission request owned by a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          PermissionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          PermissionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/permission/:requestID``
         """
@@ -343,11 +343,11 @@ class PermissionResource(SyncAPIResource):
         Respond to a pending permission request owned by a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          PermissionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          PermissionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/permission/:requestID/reply``
         """
@@ -382,9 +382,9 @@ class AsyncPermissionRequestResource(AsyncAPIResource):
         Retrieve pending permission requests for a location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/permission/request``
         """
@@ -422,9 +422,9 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
         Retrieve saved permissions, optionally filtered by project.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/permission/saved``
         """
@@ -461,11 +461,11 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
         Change the action or resource of a saved permission. Fails with a conflict when the project already has a saved permission with the same action and resource.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          PermissionSavedNotFoundError
-          LocationNotFoundError
-          ConflictError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          PermissionSavedNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
 
         ``PATCH /api/permission/saved/:id``
         """
@@ -500,9 +500,9 @@ class AsyncPermissionSavedResource(AsyncAPIResource):
         Remove a saved permission by ID.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``DELETE /api/permission/saved/:id``
         """
@@ -551,10 +551,10 @@ class AsyncPermissionResource(AsyncAPIResource):
         Evaluate and, when approval is required, create a permission request for a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/permission``
         """
@@ -597,10 +597,10 @@ class AsyncPermissionResource(AsyncAPIResource):
         Retrieve pending permission requests owned by a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/permission``
         """
@@ -635,11 +635,11 @@ class AsyncPermissionResource(AsyncAPIResource):
         Retrieve a pending permission request owned by a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          PermissionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          PermissionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/session/:sessionID/permission/:requestID``
         """
@@ -676,11 +676,11 @@ class AsyncPermissionResource(AsyncAPIResource):
         Respond to a pending permission request owned by a session.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          SessionNotFoundError
-          PermissionNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          SessionNotFoundError: The server answered 404.
+          PermissionNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/session/:sessionID/permission/:requestID/reply``
         """

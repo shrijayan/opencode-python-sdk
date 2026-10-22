@@ -39,10 +39,10 @@ class FileResource(SyncAPIResource):
         Stream one file relative to the requested location with ETag, Last-Modified, and single-range HTTP Range support (206 Partial Content, 416 Range Not Satisfiable, and 304 Not Modified; multi-range and malformed Range headers fall back to 200).
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          RemoteFileNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          RemoteFileNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/fs/read/*``
         """
@@ -80,10 +80,10 @@ class FileResource(SyncAPIResource):
           path: An absolute path or a path relative to the requested location. Defaults to the location directory.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          RemoteFileNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          RemoteFileNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/fs/list``
         """
@@ -120,9 +120,9 @@ class FileResource(SyncAPIResource):
         Find recursively ranked filesystem entries relative to the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/fs/find``
         """
@@ -163,9 +163,9 @@ class FileResource(SyncAPIResource):
           path: An absolute path or a path relative to the requested location. Missing parent directories are created.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/fs/write``
         """
@@ -205,10 +205,10 @@ class AsyncFileResource(AsyncAPIResource):
         Stream one file relative to the requested location with ETag, Last-Modified, and single-range HTTP Range support (206 Partial Content, 416 Range Not Satisfiable, and 304 Not Modified; multi-range and malformed Range headers fall back to 200).
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          RemoteFileNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          RemoteFileNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/fs/read/*``
         """
@@ -246,10 +246,10 @@ class AsyncFileResource(AsyncAPIResource):
           path: An absolute path or a path relative to the requested location. Defaults to the location directory.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          RemoteFileNotFoundError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          RemoteFileNotFoundError: The server answered 404.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/fs/list``
         """
@@ -286,9 +286,9 @@ class AsyncFileResource(AsyncAPIResource):
         Find recursively ranked filesystem entries relative to the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/fs/find``
         """
@@ -329,9 +329,9 @@ class AsyncFileResource(AsyncAPIResource):
           path: An absolute path or a path relative to the requested location. Missing parent directories are created.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``POST /api/experimental/fs/write``
         """

@@ -35,9 +35,9 @@ class CommandResource(SyncAPIResource):
         Retrieve currently registered commands.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/command``
         """
@@ -75,9 +75,9 @@ class AsyncCommandResource(AsyncAPIResource):
         Retrieve currently registered commands.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/command``
         """

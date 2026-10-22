@@ -36,10 +36,10 @@ class ModelResource(SyncAPIResource):
         Retrieve the current snapshot of available models ordered by release date. The snapshot may precede initial plugin settlement.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/model``
         """
@@ -73,10 +73,10 @@ class ModelResource(SyncAPIResource):
         Retrieve the model used when a session has no explicit model selection.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/model/default``
         """
@@ -114,10 +114,10 @@ class AsyncModelResource(AsyncAPIResource):
         Retrieve the current snapshot of available models ordered by release date. The snapshot may precede initial plugin settlement.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/model``
         """
@@ -151,10 +151,10 @@ class AsyncModelResource(AsyncAPIResource):
         Retrieve the model used when a session has no explicit model selection.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/model/default``
         """

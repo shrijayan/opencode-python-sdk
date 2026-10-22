@@ -43,9 +43,9 @@ class VcsBranchResource(SyncAPIResource):
         List local and remote branches available at the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/vcs/branch``
         """
@@ -88,12 +88,12 @@ class VcsResource(SyncAPIResource):
         Initialize a repository using the selected VCS provider in a markerless project's directory and refresh its location services. Omitting provider defaults to git; built-in git and hg providers support initialization. An unknown provider returns 400; a registered provider without init returns 501.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ConflictError
-          VcsInitNotSupportedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
+          VcsInitNotSupportedError: The server answered 501.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/vcs/init``
         """
@@ -124,9 +124,9 @@ class VcsResource(SyncAPIResource):
         Get current and default branch information for the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/vcs``
         """
@@ -160,10 +160,10 @@ class VcsResource(SyncAPIResource):
         Infer a local review base from named branch creation history, or the repository default only when currently on that branch. Returns null before the first commit or when the provider lacks base metadata; ambiguous Git history requires an explicit base on diff requests.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/vcs/base``
         """
@@ -197,9 +197,9 @@ class VcsResource(SyncAPIResource):
         List uncommitted working-copy changes relative to the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/vcs/status``
         """
@@ -236,10 +236,10 @@ class VcsResource(SyncAPIResource):
         Diff HEAD to the working copy (working), the base merge-base to the working copy (branch), or the base merge-base to HEAD (committed). Omitting base preserves repository-default comparison; supplying it overrides the comparison without saving it.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/vcs/diff``
         """
@@ -279,9 +279,9 @@ class AsyncVcsBranchResource(AsyncAPIResource):
         List local and remote branches available at the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/vcs/branch``
         """
@@ -324,12 +324,12 @@ class AsyncVcsResource(AsyncAPIResource):
         Initialize a repository using the selected VCS provider in a markerless project's directory and refresh its location services. Omitting provider defaults to git; built-in git and hg providers support initialization. An unknown provider returns 400; a registered provider without init returns 501.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ConflictError
-          VcsInitNotSupportedError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ConflictError: The server answered 409.
+          VcsInitNotSupportedError: The server answered 501.
+          ServiceUnavailableError: The server answered 503.
 
         ``POST /api/vcs/init``
         """
@@ -360,9 +360,9 @@ class AsyncVcsResource(AsyncAPIResource):
         Get current and default branch information for the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/vcs``
         """
@@ -396,10 +396,10 @@ class AsyncVcsResource(AsyncAPIResource):
         Infer a local review base from named branch creation history, or the repository default only when currently on that branch. Returns null before the first commit or when the provider lacks base metadata; ambiguous Git history requires an explicit base on diff requests.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/vcs/base``
         """
@@ -433,9 +433,9 @@ class AsyncVcsResource(AsyncAPIResource):
         List uncommitted working-copy changes relative to the requested location.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
 
         ``GET /api/vcs/status``
         """
@@ -472,10 +472,10 @@ class AsyncVcsResource(AsyncAPIResource):
         Diff HEAD to the working copy (working), the base merge-base to the working copy (branch), or the base merge-base to HEAD (committed). Omitting base preserves repository-default comparison; supplying it overrides the comparison without saving it.
 
         Raises:
-          InvalidRequestError
-          UnauthorizedError
-          LocationNotFoundError
-          ServiceUnavailableError
+          InvalidRequestError: The server answered 400.
+          UnauthorizedError: The server answered 401.
+          LocationNotFoundError: The server answered 404.
+          ServiceUnavailableError: The server answered 503.
 
         ``GET /api/vcs/diff``
         """
