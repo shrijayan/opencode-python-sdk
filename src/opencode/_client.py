@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from typing_extensions import Self
 
@@ -14,11 +14,16 @@ from .resources import AsyncResources, SyncResources
 
 if TYPE_CHECKING:
     import os
-    from collections.abc import Mapping
+    from collections.abc import Iterable, Mapping
 
     import httpx
 
+    from .testing import FakeServer
+
 __all__ = ["AsyncOpencode", "Opencode"]
+
+FAKE_BASE_URL = "http://opencode.fake"
+"""Base URL of clients made by ``Opencode.fake()``."""
 
 
 class Opencode(SyncAPIClient, SyncResources):
@@ -38,6 +43,8 @@ class Opencode(SyncAPIClient, SyncResources):
         default_query: Query parameters sent with every request.
         http_client: A preconfigured ``httpx.Client`` (proxies, custom transports, event hooks). The caller keeps
             ownership and must close it.
+        transport: An ``httpx`` transport for the client's own connection pool, such as
+            :class:`opencode.testing.FakeServer`. Cannot be combined with ``http_client``.
 
     Example::
 
@@ -60,6 +67,7 @@ class Opencode(SyncAPIClient, SyncResources):
         default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,
         http_client: httpx.Client | None = None,
+        transport: httpx.BaseTransport | None = None,
     ) -> None:
         super().__init__(
             base_url=base_url,
@@ -71,6 +79,7 @@ class Opencode(SyncAPIClient, SyncResources):
             default_headers=default_headers,
             default_query=default_query,
             http_client=http_client,
+            transport=transport,
         )
 
     @cached_property
@@ -82,6 +91,33 @@ class Opencode(SyncAPIClient, SyncResources):
     def rpc(self) -> TypedRpcResource:
         """Plugin RPC calls: ``client.rpc.call(...)``, or ``client.rpc(Definition)`` for typed access."""
         return TypedRpcResource(self)
+
+    @classmethod
+    def fake(cls, server: FakeServer | None = None, **kwargs: Any) -> Self:
+        """Returns a client wired to an in-process :class:`opencode.testing.FakeServer`, for tests.
+
+        Pass your own ``server`` to configure replies and inspect requests; other arguments go to the constructor.
+        """
+        from .testing import FakeServer
+
+        kwargs.setdefault("password", "")
+        return cls(FAKE_BASE_URL, transport=server if server is not None else FakeServer(), **kwargs)
+
+    def wait_until_ready(
+        self, *, agents: Iterable[str] = (), mcp_servers: Iterable[str] = (), timeout: float = 60
+    ) -> None:
+        """Blocks until the server answers, the named ``agents`` are listed and the named ``mcp_servers`` are
+        connected.
+
+        Agents load asynchronously after the server starts, so call this before creating sessions on a freshly
+        booted server. Connection errors and 503s while the server boots count as not ready yet.
+
+        Raises:
+          TimeoutError: Something was still missing after ``timeout`` seconds. The message names it.
+        """
+        from .lib._ready import wait_until_ready
+
+        wait_until_ready(self, agents=agents, mcp_servers=mcp_servers, timeout=timeout)
 
     def with_options(
         self,
@@ -138,6 +174,7 @@ class AsyncOpencode(AsyncAPIClient, AsyncResources):
         default_headers: Mapping[str, str] | None = None,
         default_query: Mapping[str, object] | None = None,
         http_client: httpx.AsyncClient | None = None,
+        transport: httpx.AsyncBaseTransport | None = None,
     ) -> None:
         super().__init__(
             base_url=base_url,
@@ -149,6 +186,7 @@ class AsyncOpencode(AsyncAPIClient, AsyncResources):
             default_headers=default_headers,
             default_query=default_query,
             http_client=http_client,
+            transport=transport,
         )
 
     @cached_property
@@ -160,6 +198,33 @@ class AsyncOpencode(AsyncAPIClient, AsyncResources):
     def rpc(self) -> AsyncTypedRpcResource:
         """Plugin RPC calls: ``client.rpc.call(...)``, or ``client.rpc(Definition)`` for typed access."""
         return AsyncTypedRpcResource(self)
+
+    @classmethod
+    def fake(cls, server: FakeServer | None = None, **kwargs: Any) -> Self:
+        """Returns a client wired to an in-process :class:`opencode.testing.FakeServer`, for tests.
+
+        Pass your own ``server`` to configure replies and inspect requests; other arguments go to the constructor.
+        """
+        from .testing import FakeServer
+
+        kwargs.setdefault("password", "")
+        return cls(FAKE_BASE_URL, transport=server if server is not None else FakeServer(), **kwargs)
+
+    async def wait_until_ready(
+        self, *, agents: Iterable[str] = (), mcp_servers: Iterable[str] = (), timeout: float = 60
+    ) -> None:
+        """Blocks until the server answers, the named ``agents`` are listed and the named ``mcp_servers`` are
+        connected.
+
+        Agents load asynchronously after the server starts, so call this before creating sessions on a freshly
+        booted server. Connection errors and 503s while the server boots count as not ready yet.
+
+        Raises:
+          TimeoutError: Something was still missing after ``timeout`` seconds. The message names it.
+        """
+        from .lib._ready import async_wait_until_ready
+
+        await async_wait_until_ready(self, agents=agents, mcp_servers=mcp_servers, timeout=timeout)
 
     def with_options(
         self,

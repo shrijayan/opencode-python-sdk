@@ -313,6 +313,55 @@ client.session.get("ses_...", timeout=5.0)  # per call
 
 The default timeout is 10 minutes with a 10 second connect timeout.
 
+## Running an agent headless
+
+`client.session.run` does the usual "prompt an agent and wait" round trip in one call: it creates a session (or
+reuses `session_id`), sends the prompt, blocks until the session is idle, and returns the new messages with the
+final text and usage. `client.wait_until_ready` waits until agents and MCP servers have loaded, which happens
+asynchronously after the server boots. Both have async versions on `AsyncOpencode`.
+
+```python
+from opencode import Opencode
+from opencode.types import ModelRef, PromptInputFileAttachment
+
+with Opencode("http://127.0.0.1:4096", password="...") as client:
+    client.wait_until_ready(agents=["reviewer"], mcp_servers=["github"], timeout=60)
+    result = client.session.run(
+        "Review the attached diff",
+        agent="reviewer",
+        model=ModelRef(provider_id="anthropic", id="claude-sonnet-5-5"),  # set it with the agent
+        files=[PromptInputFileAttachment(uri="data:text/plain;base64,...", name="diff.patch")],
+        timeout=600,
+    )
+    print(result.outcome, result.text)
+    print(result.cost, result.tokens.input, result.tokens.output)  # this run; result.session has the totals
+```
+
+If the wait ends early (Ctrl-C, task cancellation, `timeout`, a connection error), `run` interrupts the session
+on the server before re-raising, so the agent does not keep running unattended.
+
+## Testing your code
+
+`opencode.testing.FakeServer` is an in-process fake of the server: an `httpx` transport that keeps sessions,
+messages and events in memory and answers with the same payloads as the real server. No process, no model.
+
+```python
+from opencode import Opencode
+from opencode.testing import FakeServer
+
+
+def test_summarize() -> None:
+    fake = FakeServer(reply=lambda prompt: f"summary of {prompt!r}")
+    client = Opencode.fake(fake)  # same as Opencode(transport=fake)
+
+    assert client.session.run("README").text == "summary of 'README'"
+    assert fake.prompts == ["README"]
+```
+
+`fake.fail(method, path_regex, status=..., exception=...)` injects errors, `fake.add_agent(..., after_polls=n)`
+and `fake.set_mcp_status(...)` simulate slow boots, and `fake.requests` records every request. Routes the fake
+does not implement answer `404`.
+
 ## Running a server
 
 `OpencodeServer` runs `opencode serve` as a child process on a free local port with a random password:

@@ -16,6 +16,7 @@ from .._qs import encode_path_segment
 from .._resource import AsyncAPIResource, SyncAPIResource
 from .._streaming import AsyncStream, Stream
 from .._types import NOT_GIVEN, Body, Headers, NotGiven, OpenEnum, Query, Timeout
+from ..lib._session import AsyncSessionHelpers, SessionHelpers
 from ..types import (
     AbsolutePath,
     AgentID,
@@ -651,7 +652,7 @@ class SessionFormResource(SyncAPIResource):
         )
 
 
-class SessionResource(SyncAPIResource):
+class SessionResource(SessionHelpers):
     """Operations under ``client.session`` (OpenCode ``session``)."""
 
     @cached_property
@@ -2403,7 +2404,7 @@ class AsyncSessionFormResource(AsyncAPIResource):
         )
 
 
-class AsyncSessionResource(AsyncAPIResource):
+class AsyncSessionResource(AsyncSessionHelpers):
     """Operations under ``client.session`` (OpenCode ``session``)."""
 
     @cached_property
