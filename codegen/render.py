@@ -330,9 +330,11 @@ def _render_method(operation: Operation, errors: dict[str, dict[str, Any]], *, i
         elif operation.payload_mode == "opaque":
             options.append(f"            body={payload[0].name},")
         else:
-            options.append(
-                "            body={" + ", ".join(f"{param.wire!r}: {param.name}" for param in payload) + "},"
-            )
+            entries = [
+                f"{param.wire!r}: " + (f"self._location({param.name})" if param.wire == "location" else param.name)
+                for param in payload
+            ]
+            options.append("            body={" + ", ".join(entries) + "},")
     options += [
         "            extra_headers=extra_headers,",
         "            extra_query=extra_query,",
