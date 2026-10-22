@@ -33,3 +33,4 @@ as well, so that `opencode` is on `PATH`.
 
 - [Connect to a server](connect.md) that is already running.
 - [Run a server from Python](server.md) for scripts, tests and embedded use.
+- [Use the background service](service.md) to share one `opencode serve --service` between programs.

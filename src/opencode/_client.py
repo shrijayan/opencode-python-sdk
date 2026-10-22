@@ -9,12 +9,21 @@ from ._base_client import AsyncAPIClient, SyncAPIClient
 from ._constants import DEFAULT_MAX_RETRIES, DEFAULT_TIMEOUT, DEFAULT_USERNAME
 from ._events import AsyncEventHub, EventHub
 from ._rpc import AsyncTypedRpcResource, TypedRpcResource
+from ._service import (
+    EnsureReason,
+    ServiceError,
+    Version,
+    async_discover,
+    async_ensure,
+    discover as discover_service,
+    ensure as ensure_service,
+)
 from ._types import NOT_GIVEN, NotGiven, Timeout
 from .resources import AsyncResources, SyncResources
 
 if TYPE_CHECKING:
     import os
-    from collections.abc import Iterable, Mapping
+    from collections.abc import Callable, Iterable, Mapping, Sequence
 
     import httpx
 
@@ -80,6 +89,67 @@ class Opencode(SyncAPIClient, SyncResources):
             default_query=default_query,
             http_client=http_client,
             transport=transport,
+        )
+
+    @classmethod
+    def from_service(
+        cls,
+        *,
+        start: bool = True,
+        file: str | os.PathLike[str] | None = None,
+        version: Version | None = None,
+        command: Sequence[str] | None = None,
+        env: Mapping[str, str] | None = None,
+        on_start: Callable[[EnsureReason, str | None], None] | None = None,
+        directory: str | os.PathLike[str] | None = None,
+        timeout: Timeout = DEFAULT_TIMEOUT,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        default_headers: Mapping[str, str] | None = None,
+        default_query: Mapping[str, object] | None = None,
+    ) -> Self:
+        """Connect to the local background service, starting ``opencode serve --service`` if needed.
+
+        Uses :func:`opencode.service.ensure`, or :func:`opencode.service.discover` when ``start`` is false, and
+        sends the service's password with every request.
+
+        Args:
+            start: Start or replace the service when no matching one is running. When false, raise instead.
+            file: Registration file. Defaults to ``$XDG_STATE_HOME/opencode/service.json``.
+            version: Required exact version, or a predicate on the service version.
+            command: Service command and arguments, used when starting it.
+            env: Variables added to the environment of a started service.
+            on_start: Called once before a service process is started.
+            directory: Default project directory, as in the constructor.
+            timeout: Default request timeout, as in the constructor.
+            max_retries: Retries for failed requests, as in the constructor.
+            default_headers: Headers sent with every request.
+            default_query: Query parameters sent with every request.
+
+        Raises:
+            ServiceError: No matching service is running and ``start`` is false, or it could not be started.
+
+        Example::
+
+            with Opencode.from_service() as client:
+                print(client.server.info().version)
+        """
+        if start:
+            endpoint = ensure_service(file, version, command=command, env=env, on_start=on_start)
+        else:
+            found = discover_service(file, version)
+            if found is None:
+                raise ServiceError("No matching OpenCode background service is running")
+            endpoint = found
+        return cls(
+            endpoint.url,
+            # An empty password sends no credentials instead of falling back to OPENCODE_PASSWORD.
+            password="" if endpoint.auth is None else endpoint.auth.password,
+            username=DEFAULT_USERNAME if endpoint.auth is None else endpoint.auth.username,
+            directory=directory,
+            timeout=timeout,
+            max_retries=max_retries,
+            default_headers=default_headers,
+            default_query=default_query,
         )
 
     @cached_property
@@ -187,6 +257,42 @@ class AsyncOpencode(AsyncAPIClient, AsyncResources):
             default_query=default_query,
             http_client=http_client,
             transport=transport,
+        )
+
+    @classmethod
+    async def from_service(
+        cls,
+        *,
+        start: bool = True,
+        file: str | os.PathLike[str] | None = None,
+        version: Version | None = None,
+        command: Sequence[str] | None = None,
+        env: Mapping[str, str] | None = None,
+        on_start: Callable[[EnsureReason, str | None], None] | None = None,
+        directory: str | os.PathLike[str] | None = None,
+        timeout: Timeout = DEFAULT_TIMEOUT,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        default_headers: Mapping[str, str] | None = None,
+        default_query: Mapping[str, object] | None = None,
+    ) -> Self:
+        """Async version of :meth:`Opencode.from_service`. Await it: ``client = await AsyncOpencode.from_service()``."""
+        if start:
+            endpoint = await async_ensure(file, version, command=command, env=env, on_start=on_start)
+        else:
+            found = await async_discover(file, version)
+            if found is None:
+                raise ServiceError("No matching OpenCode background service is running")
+            endpoint = found
+        return cls(
+            endpoint.url,
+            # An empty password sends no credentials instead of falling back to OPENCODE_PASSWORD.
+            password="" if endpoint.auth is None else endpoint.auth.password,
+            username=DEFAULT_USERNAME if endpoint.auth is None else endpoint.auth.username,
+            directory=directory,
+            timeout=timeout,
+            max_retries=max_retries,
+            default_headers=default_headers,
+            default_query=default_query,
         )
 
     @cached_property
