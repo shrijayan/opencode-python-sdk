@@ -118,7 +118,7 @@ if TYPE_CHECKING:
     from . import types
 
 # <generated:api-version>
-API_VERSION = "2.1.2"
+API_VERSION = "2.1.4"
 """The OpenCode server version this client was generated from."""
 # </generated:api-version>
 

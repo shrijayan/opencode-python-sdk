@@ -7,7 +7,7 @@
     "extract": "bun run extract.ts"
   },
   "dependencies": {
-    "@opencode/protocol": "2.1.2",
+    "@opencode/protocol": "2.1.4",
     "effect": "4.0.1",
     "prettier": "3.6.2"
   }

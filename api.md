@@ -1,6 +1,6 @@
 # API reference
 
-Generated from the OpenCode 2.1.2 contract. Every method exists on both `Opencode` and `AsyncOpencode`;
+Generated from the OpenCode 2.1.4 contract. Every method exists on both `Opencode` and `AsyncOpencode`;
 async methods return awaitables, async list methods return `AsyncPaginator`, and async streams return
 `AsyncStream`. Types live in `opencode.types`.
 
@@ -34,6 +34,12 @@ async methods return awaitables, async list methods return `AsyncPaginator`, and
 | `update(credential_id)` | `PATCH /api/credential/:credentialID` | `None` | Update credential |
 | `activate(credential_id)` | `POST /api/credential/:credentialID/activate` | `None` | Activate credential |
 | `remove(credential_id)` | `DELETE /api/credential/:credentialID` | `None` | Remove credential |
+
+## `client.debug`
+
+| Method | HTTP | Returns | Summary |
+| --- | --- | --- | --- |
+| `heap_dump()` | `POST /api/debug/heap-dump` | `DebugHeapDumpResponse` | Write a heap snapshot |
 
 ## `client.debug.location`
 
@@ -143,6 +149,12 @@ async methods return awaitables, async list methods return `AsyncPaginator`, and
 | Method | HTTP | Returns | Summary |
 | --- | --- | --- | --- |
 | `catalog()` | `GET /api/mcp/resource` | `McpResourceCatalogResponse` | List MCP resources |
+
+## `client.mcp.client`
+
+| Method | HTTP | Returns | Summary |
+| --- | --- | --- | --- |
+| `token()` | `POST /api/experimental/client-mcp/token` | `McpClientTokenResponse` | Create client MCP WebSocket token *(experimental)* |
 
 ## `client.message`
 
@@ -353,7 +365,9 @@ async methods return awaitables, async list methods return `AsyncPaginator`, and
 
 | Method | HTTP | Returns | Summary |
 | --- | --- | --- | --- |
+| `models()` | `GET /api/experimental/voice/models` | `VoiceModelsResponseData` | List voice models *(experimental)* |
 | `session()` | `POST /api/experimental/voice/session` | `VoiceSessionResponseData` | Create voice session *(experimental)* |
+| `instructions(session_id)` | `POST /api/experimental/voice/session/:sessionID/instructions` | `None` | Replace voice session instructions *(experimental)* |
 
 ## `client.websearch`
 

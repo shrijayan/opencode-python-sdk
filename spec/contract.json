@@ -1,6 +1,6 @@
 {
   "generator": "opencode-python-sdk codegen/extract",
-  "opencodeVersion": "2.1.2",
+  "opencodeVersion": "2.1.4",
   "effectVersion": "4.0.1",
   "groups": [
     {
@@ -5060,13 +5060,63 @@
       "endpoints": [
         {
           "clientPath": [
+            "models"
+          ],
+          "operationId": "experimental.voice.models",
+          "method": "GET",
+          "path": "/api/experimental/voice/models",
+          "summary": "List voice models",
+          "description": "List supported voice models, their transports, whether the server has a usable API key for each provider or the connected OpenCode Console hosts the model, and the Console workspace a hosted model bills to.",
+          "deprecated": false,
+          "input": [],
+          "success": {
+            "kind": "value",
+            "status": 200,
+            "unwrapData": true,
+            "schema": {
+              "$ref": "#/$defs/VoiceModelsResponse"
+            }
+          },
+          "errors": [
+            {
+              "status": 400,
+              "tag": "InvalidRequestError",
+              "schema": {
+                "$ref": "#/$defs/InvalidRequestErrorEncoded"
+              }
+            },
+            {
+              "status": 401,
+              "tag": "UnauthorizedError",
+              "schema": {
+                "$ref": "#/$defs/UnauthorizedErrorEncoded"
+              }
+            },
+            {
+              "status": 404,
+              "tag": "LocationNotFoundError",
+              "schema": {
+                "$ref": "#/$defs/LocationNotFoundErrorEncoded"
+              }
+            },
+            {
+              "status": 503,
+              "tag": "ServiceUnavailableError",
+              "schema": {
+                "$ref": "#/$defs/ServiceUnavailableErrorEncoded"
+              }
+            }
+          ]
+        },
+        {
+          "clientPath": [
             "session"
           ],
           "operationId": "experimental.voice.session",
           "method": "POST",
           "path": "/api/experimental/voice/session",
           "summary": "Create voice session",
-          "description": "Create a server-brokered voice session using the server's configured provider credentials and return the WebRTC SDP answer or WebSocket ephemeral token.",
+          "description": "Create a server-brokered voice session using the server's configured provider credentials, or the connected OpenCode Console when it hosts the model, and return the WebRTC SDP answer or WebSocket ephemeral token.",
           "deprecated": false,
           "input": [
             {
@@ -5111,6 +5161,72 @@
             "schema": {
               "$ref": "#/$defs/VoiceSessionResponse"
             }
+          },
+          "errors": [
+            {
+              "status": 400,
+              "tag": "InvalidRequestError",
+              "schema": {
+                "$ref": "#/$defs/InvalidRequestErrorEncoded"
+              }
+            },
+            {
+              "status": 401,
+              "tag": "UnauthorizedError",
+              "schema": {
+                "$ref": "#/$defs/UnauthorizedErrorEncoded"
+              }
+            },
+            {
+              "status": 404,
+              "tag": "LocationNotFoundError",
+              "schema": {
+                "$ref": "#/$defs/LocationNotFoundErrorEncoded"
+              }
+            },
+            {
+              "status": 503,
+              "tag": "ServiceUnavailableError",
+              "schema": {
+                "$ref": "#/$defs/ServiceUnavailableErrorEncoded"
+              }
+            }
+          ]
+        },
+        {
+          "clientPath": [
+            "instructions"
+          ],
+          "operationId": "experimental.voice.instructions",
+          "method": "POST",
+          "path": "/api/experimental/voice/session/:sessionID/instructions",
+          "summary": "Replace voice session instructions",
+          "description": "Replace the backend instructions of a running session the connected OpenCode Console hosts, whose data channel can't change them.",
+          "deprecated": false,
+          "input": [
+            {
+              "name": "sessionID",
+              "source": "params",
+              "optional": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "instructions",
+              "source": "payload",
+              "optional": false,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "payload": {
+            "mode": "struct"
+          },
+          "success": {
+            "kind": "void",
+            "status": 204
           },
           "errors": [
             {
@@ -7172,6 +7288,122 @@
               "tag": "UnauthorizedError",
               "schema": {
                 "$ref": "#/$defs/UnauthorizedErrorEncoded"
+              }
+            },
+            {
+              "status": 404,
+              "tag": "LocationNotFoundError",
+              "schema": {
+                "$ref": "#/$defs/LocationNotFoundErrorEncoded"
+              }
+            }
+          ]
+        },
+        {
+          "clientPath": [
+            "client",
+            "token"
+          ],
+          "operationId": "experimental.mcp.client.token",
+          "method": "POST",
+          "path": "/api/experimental/client-mcp/token",
+          "summary": "Create client MCP WebSocket token",
+          "description": "Create a short-lived single-use ticket for opening a client MCP WebSocket connection from a browser.",
+          "deprecated": false,
+          "input": [
+            {
+              "name": "location",
+              "source": "query",
+              "optional": true,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "directory": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "name",
+              "source": "query",
+              "optional": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "x-opencode-ticket",
+              "source": "headers",
+              "optional": true,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          ],
+          "success": {
+            "kind": "value",
+            "status": 200,
+            "unwrapData": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "$ref": "#/$defs/Location.PublicRef"
+                },
+                "data": {
+                  "$ref": "#/$defs/PtyTicket.ConnectToken"
+                }
+              },
+              "required": [
+                "location",
+                "data"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "errors": [
+            {
+              "status": 400,
+              "tag": "InvalidRequestError",
+              "schema": {
+                "$ref": "#/$defs/InvalidRequestErrorEncoded"
+              }
+            },
+            {
+              "status": 401,
+              "tag": "UnauthorizedError",
+              "schema": {
+                "$ref": "#/$defs/UnauthorizedErrorEncoded"
+              }
+            },
+            {
+              "status": 403,
+              "tag": "ForbiddenError",
+              "schema": {
+                "$ref": "#/$defs/ForbiddenErrorEncoded"
               }
             },
             {
@@ -12218,6 +12450,169 @@
       "endpoints": [
         {
           "clientPath": [
+            "heapDump"
+          ],
+          "operationId": "debug.heapDump",
+          "method": "POST",
+          "path": "/api/debug/heap-dump",
+          "summary": "Write a heap snapshot",
+          "description": "Write a JavaScript heap snapshot of the server process into its log directory, or the requested directory, and return the server-local path once the file is complete. Pauses the server while the heap serializes and can temporarily increase its memory use. The snapshot can contain credentials, prompts, and file contents.",
+          "deprecated": false,
+          "input": [
+            {
+              "name": "directory",
+              "source": "query",
+              "optional": true,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Absolute server-local directory to write the snapshot into, created when missing. Defaults to the server's log directory."
+              }
+            }
+          ],
+          "success": {
+            "kind": "value",
+            "status": 200,
+            "unwrapData": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "pid": {
+                  "type": "integer"
+                },
+                "memory": {
+                  "type": "object",
+                  "properties": {
+                    "rss": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "Infinity",
+                            "-Infinity",
+                            "NaN"
+                          ]
+                        }
+                      ]
+                    },
+                    "heapTotal": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "Infinity",
+                            "-Infinity",
+                            "NaN"
+                          ]
+                        }
+                      ]
+                    },
+                    "heapUsed": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "Infinity",
+                            "-Infinity",
+                            "NaN"
+                          ]
+                        }
+                      ]
+                    },
+                    "external": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "Infinity",
+                            "-Infinity",
+                            "NaN"
+                          ]
+                        }
+                      ]
+                    },
+                    "arrayBuffers": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "Infinity",
+                            "-Infinity",
+                            "NaN"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "rss",
+                    "heapTotal",
+                    "heapUsed",
+                    "external",
+                    "arrayBuffers"
+                  ],
+                  "additionalProperties": true,
+                  "description": "The server process's memory in bytes, read just before the snapshot (Node's process.memoryUsage()). rss covers native memory the snapshot cannot show."
+                }
+              },
+              "required": [
+                "path",
+                "pid",
+                "memory"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "errors": [
+            {
+              "status": 400,
+              "tag": "InvalidRequestError",
+              "schema": {
+                "$ref": "#/$defs/InvalidRequestErrorEncoded"
+              }
+            },
+            {
+              "status": 401,
+              "tag": "UnauthorizedError",
+              "schema": {
+                "$ref": "#/$defs/UnauthorizedErrorEncoded"
+              }
+            },
+            {
+              "status": 500,
+              "tag": "UnknownError",
+              "schema": {
+                "$ref": "#/$defs/UnknownErrorEncoded"
+              }
+            }
+          ]
+        },
+        {
+          "clientPath": [
             "location",
             "list"
           ],
@@ -13634,6 +14029,9 @@
               "type": "boolean"
             },
             "todo": {
+              "type": "boolean"
+            },
+            "background_compaction": {
               "type": "boolean"
             },
             "subagent_depth": {
@@ -27748,6 +28146,87 @@
       ],
       "additionalProperties": true
     },
+    "VoiceModel": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "transports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VoiceTransportType"
+          }
+        },
+        "available": {
+          "type": "boolean"
+        },
+        "integration": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "workspace": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "model",
+        "provider",
+        "transports",
+        "available"
+      ],
+      "additionalProperties": true
+    },
+    "VoiceModelsResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "models": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/VoiceModel"
+              }
+            },
+            "default": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "models"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "data"
+      ],
+      "additionalProperties": true
+    },
     "VoiceSessionResponse": {
       "type": "object",
       "properties": {
@@ -27756,6 +28235,25 @@
           "properties": {
             "transport": {
               "$ref": "#/$defs/VoiceTransport"
+            },
+            "session": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": true
+                },
+                {
+                  "type": "null"
+                }
+              ]
             }
           },
           "required": [
@@ -27787,6 +28285,13 @@
         {
           "$ref": "#/$defs/VoiceWebSocketTransportInput"
         }
+      ]
+    },
+    "VoiceTransportType": {
+      "type": "string",
+      "enum": [
+        "webrtc",
+        "websocket"
       ]
     },
     "VoiceWebRTCTransport": {
