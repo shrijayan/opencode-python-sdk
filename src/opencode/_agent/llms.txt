@@ -1,0 +1,9 @@
+# opencode
+
+> Python SDK for the Opencode API, version 0.0.1. Install with `pip install opencode` and import `opencode`.
+
+## Docs
+
+- [README](https://github.com//blob/main/README.md): installation, usage, async client, retries, timeouts
+- [api.md](https://github.com//blob/main/api.md): every resource, method and type
+- [SKILL.md](https://github.com//blob/main/src/opencode/_agent/SKILL.md): agent skill with tested examples
