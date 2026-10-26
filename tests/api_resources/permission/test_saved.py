@@ -9,7 +9,8 @@ import pytest
 
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
-from opencode.types.permission import SavedListResponse, SavedUpdateResponse
+from opencode.types.shared import PermissionSavedInfo
+from opencode.types.permission import SavedListResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -22,7 +23,7 @@ class TestSaved:
         saved = client.permission.saved.update(
             id={},
         )
-        assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+        assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
     @parametrize
     def test_method_update_with_all_params(self, client: Opencode) -> None:
@@ -31,7 +32,7 @@ class TestSaved:
             action="action",
             resource="resource",
         )
-        assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+        assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
     @parametrize
     def test_raw_response_update(self, client: Opencode) -> None:
@@ -42,7 +43,7 @@ class TestSaved:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         saved = response.parse()
-        assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+        assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
     @parametrize
     def test_streaming_response_update(self, client: Opencode) -> None:
@@ -53,7 +54,7 @@ class TestSaved:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             saved = response.parse()
-            assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+            assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -145,7 +146,7 @@ class TestAsyncSaved:
         saved = await async_client.permission.saved.update(
             id={},
         )
-        assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+        assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -154,7 +155,7 @@ class TestAsyncSaved:
             action="action",
             resource="resource",
         )
-        assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+        assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncOpencode) -> None:
@@ -165,7 +166,7 @@ class TestAsyncSaved:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         saved = await response.parse()
-        assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+        assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncOpencode) -> None:
@@ -176,7 +177,7 @@ class TestAsyncSaved:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             saved = await response.parse()
-            assert_matches_type(SavedUpdateResponse, saved, path=["response"])
+            assert_matches_type(PermissionSavedInfo, saved, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

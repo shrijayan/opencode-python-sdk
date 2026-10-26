@@ -9,7 +9,7 @@ import pytest
 
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
-from opencode.types.session import MessageGetResponse
+from opencode.types.shared import SessionMessageInfo
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -23,7 +23,7 @@ class TestMessage:
             message_id={},
             session_id={},
         )
-        assert_matches_type(MessageGetResponse, message, path=["response"])
+        assert_matches_type(SessionMessageInfo, message, path=["response"])
 
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
@@ -35,7 +35,7 @@ class TestMessage:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         message = response.parse()
-        assert_matches_type(MessageGetResponse, message, path=["response"])
+        assert_matches_type(SessionMessageInfo, message, path=["response"])
 
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
@@ -47,7 +47,7 @@ class TestMessage:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             message = response.parse()
-            assert_matches_type(MessageGetResponse, message, path=["response"])
+            assert_matches_type(SessionMessageInfo, message, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -77,7 +77,7 @@ class TestAsyncMessage:
             message_id={},
             session_id={},
         )
-        assert_matches_type(MessageGetResponse, message, path=["response"])
+        assert_matches_type(SessionMessageInfo, message, path=["response"])
 
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
@@ -89,7 +89,7 @@ class TestAsyncMessage:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         message = await response.parse()
-        assert_matches_type(MessageGetResponse, message, path=["response"])
+        assert_matches_type(SessionMessageInfo, message, path=["response"])
 
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
@@ -101,7 +101,7 @@ class TestAsyncMessage:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             message = await response.parse()
-            assert_matches_type(MessageGetResponse, message, path=["response"])
+            assert_matches_type(SessionMessageInfo, message, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

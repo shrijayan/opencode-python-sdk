@@ -9,7 +9,7 @@ import pytest
 
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
-from opencode.types.session import RevertStageResponse
+from opencode.types.shared import SessionRevert
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -99,7 +99,7 @@ class TestRevert:
             session_id={},
             message_id={},
         )
-        assert_matches_type(RevertStageResponse, revert, path=["response"])
+        assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     def test_method_stage_with_all_params(self, client: Opencode) -> None:
@@ -108,7 +108,7 @@ class TestRevert:
             message_id={},
             files=True,
         )
-        assert_matches_type(RevertStageResponse, revert, path=["response"])
+        assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     def test_raw_response_stage(self, client: Opencode) -> None:
@@ -120,7 +120,7 @@ class TestRevert:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         revert = response.parse()
-        assert_matches_type(RevertStageResponse, revert, path=["response"])
+        assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     def test_streaming_response_stage(self, client: Opencode) -> None:
@@ -132,7 +132,7 @@ class TestRevert:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             revert = response.parse()
-            assert_matches_type(RevertStageResponse, revert, path=["response"])
+            assert_matches_type(SessionRevert, revert, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -232,7 +232,7 @@ class TestAsyncRevert:
             session_id={},
             message_id={},
         )
-        assert_matches_type(RevertStageResponse, revert, path=["response"])
+        assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     async def test_method_stage_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -241,7 +241,7 @@ class TestAsyncRevert:
             message_id={},
             files=True,
         )
-        assert_matches_type(RevertStageResponse, revert, path=["response"])
+        assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     async def test_raw_response_stage(self, async_client: AsyncOpencode) -> None:
@@ -253,7 +253,7 @@ class TestAsyncRevert:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         revert = await response.parse()
-        assert_matches_type(RevertStageResponse, revert, path=["response"])
+        assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     async def test_streaming_response_stage(self, async_client: AsyncOpencode) -> None:
@@ -265,7 +265,7 @@ class TestAsyncRevert:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             revert = await response.parse()
-            assert_matches_type(RevertStageResponse, revert, path=["response"])
+            assert_matches_type(SessionRevert, revert, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Type, Optional, cast
 
 import httpx
 
@@ -16,11 +16,12 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.session import revert_stage_params
 from ...types.shared.session_id import SessionID
+from ...types.shared.session_revert import SessionRevert
 from ...types.shared.session_message_id import SessionMessageID
-from ...types.session.revert_stage_response import RevertStageResponse
 
 __all__ = ["RevertResource", "AsyncRevertResource"]
 
@@ -125,7 +126,7 @@ class RevertResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> RevertStageResponse:
+    ) -> SessionRevert:
         """
         Stage or move a reversible session boundary and optionally apply its file
         changes.
@@ -151,9 +152,13 @@ class RevertResource(SyncAPIResource):
                 revert_stage_params.RevertStageParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionRevert]._unwrapper,
             ),
-            cast_to=RevertStageResponse,
+            cast_to=cast(Type[SessionRevert], DataWrapper[SessionRevert]),
         )
 
 
@@ -257,7 +262,7 @@ class AsyncRevertResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> RevertStageResponse:
+    ) -> SessionRevert:
         """
         Stage or move a reversible session boundary and optionally apply its file
         changes.
@@ -283,9 +288,13 @@ class AsyncRevertResource(AsyncAPIResource):
                 revert_stage_params.RevertStageParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionRevert]._unwrapper,
             ),
-            cast_to=RevertStageResponse,
+            cast_to=cast(Type[SessionRevert], DataWrapper[SessionRevert]),
         )
 
 

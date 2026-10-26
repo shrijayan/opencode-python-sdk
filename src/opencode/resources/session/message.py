@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Type, cast
+
 import httpx
 
 from ..._types import Body, Query, Headers, NotGiven, not_given
@@ -14,10 +16,11 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.shared.session_id import SessionID
 from ...types.shared.session_message_id import SessionMessageID
-from ...types.session.message_get_response import MessageGetResponse
+from ...types.shared.session_message_info import SessionMessageInfo
 
 __all__ = ["MessageResource", "AsyncMessageResource"]
 
@@ -53,7 +56,7 @@ class MessageResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MessageGetResponse:
+    ) -> SessionMessageInfo:
         """
         Retrieve one projected message owned by the Session.
 
@@ -75,9 +78,13 @@ class MessageResource(SyncAPIResource):
                 "/api/session/{session_id}/message/{message_id}", session_id=session_id, message_id=message_id
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionMessageInfo]._unwrapper,
             ),
-            cast_to=MessageGetResponse,
+            cast_to=cast(Type[SessionMessageInfo], DataWrapper[SessionMessageInfo]),
         )
 
 
@@ -112,7 +119,7 @@ class AsyncMessageResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> MessageGetResponse:
+    ) -> SessionMessageInfo:
         """
         Retrieve one projected message owned by the Session.
 
@@ -134,9 +141,13 @@ class AsyncMessageResource(AsyncAPIResource):
                 "/api/session/{session_id}/message/{message_id}", session_id=session_id, message_id=message_id
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionMessageInfo]._unwrapper,
             ),
-            cast_to=MessageGetResponse,
+            cast_to=cast(Type[SessionMessageInfo], DataWrapper[SessionMessageInfo]),
         )
 
 

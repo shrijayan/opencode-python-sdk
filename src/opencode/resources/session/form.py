@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Type, Optional, cast
 
 import httpx
 
@@ -16,15 +16,16 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.session import form_reply_params, form_cancel_params, form_create_params
 from ...types.shared.form_id import FormID
+from ...types.shared.form_info import FormInfo
 from ...types.shared.form_answer import FormAnswer
+from ...types.shared.form_detail import FormDetail
 from ...types.shared.form_fields import FormFields
 from ...types.shared.form_metadata import FormMetadata
-from ...types.session.form_get_response import FormGetResponse
 from ...types.session.form_list_response import FormListResponse
-from ...types.session.form_create_response import FormCreateResponse
 
 __all__ = ["FormResource", "AsyncFormResource"]
 
@@ -63,7 +64,7 @@ class FormResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FormCreateResponse:
+    ) -> FormInfo:
         """
         Create a form for a session.
 
@@ -90,9 +91,13 @@ class FormResource(SyncAPIResource):
                 form_create_params.FormCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[FormInfo]._unwrapper,
             ),
-            cast_to=FormCreateResponse,
+            cast_to=cast(Type[FormInfo], DataWrapper[FormInfo]),
         )
 
     def list(
@@ -123,9 +128,13 @@ class FormResource(SyncAPIResource):
         return self._get(
             path_template("/api/session/{session_id}/form", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[FormListResponse]._unwrapper,
             ),
-            cast_to=FormListResponse,
+            cast_to=cast(Type[FormListResponse], DataWrapper[FormListResponse]),
         )
 
     def cancel(
@@ -181,7 +190,7 @@ class FormResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FormGetResponse:
+    ) -> FormDetail:
         """
         Retrieve a form and its current state for a session.
 
@@ -201,9 +210,13 @@ class FormResource(SyncAPIResource):
         return self._get(
             path_template("/api/session/{session_id}/form/{form_id}", session_id=session_id, form_id=form_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[FormDetail]._unwrapper,
             ),
-            cast_to=FormGetResponse,
+            cast_to=cast(Type[FormDetail], DataWrapper[FormDetail]),
         )
 
     def reply(
@@ -280,7 +293,7 @@ class AsyncFormResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FormCreateResponse:
+    ) -> FormInfo:
         """
         Create a form for a session.
 
@@ -307,9 +320,13 @@ class AsyncFormResource(AsyncAPIResource):
                 form_create_params.FormCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[FormInfo]._unwrapper,
             ),
-            cast_to=FormCreateResponse,
+            cast_to=cast(Type[FormInfo], DataWrapper[FormInfo]),
         )
 
     async def list(
@@ -340,9 +357,13 @@ class AsyncFormResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/session/{session_id}/form", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[FormListResponse]._unwrapper,
             ),
-            cast_to=FormListResponse,
+            cast_to=cast(Type[FormListResponse], DataWrapper[FormListResponse]),
         )
 
     async def cancel(
@@ -398,7 +419,7 @@ class AsyncFormResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> FormGetResponse:
+    ) -> FormDetail:
         """
         Retrieve a form and its current state for a session.
 
@@ -418,9 +439,13 @@ class AsyncFormResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/session/{session_id}/form/{form_id}", session_id=session_id, form_id=form_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[FormDetail]._unwrapper,
             ),
-            cast_to=FormGetResponse,
+            cast_to=cast(Type[FormDetail], DataWrapper[FormDetail]),
         )
 
     async def reply(

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Dict, Type, Optional, cast
 
 import httpx
 
@@ -17,9 +17,10 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from .._wrappers import DataWrapper
 from .._base_client import make_request_options
+from ..types.voice_session_response import VoiceSessionResponse
 from ..types.shared.voice_transport_input import VoiceTransportInput
-from ..types.shared.voice_session_response import VoiceSessionResponse
 
 __all__ = ["VoiceResource", "AsyncVoiceResource"]
 
@@ -81,9 +82,13 @@ class VoiceResource(SyncAPIResource):
                 voice_session_params.VoiceSessionParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[VoiceSessionResponse]._unwrapper,
             ),
-            cast_to=VoiceSessionResponse,
+            cast_to=cast(Type[VoiceSessionResponse], DataWrapper[VoiceSessionResponse]),
         )
 
 
@@ -144,9 +149,13 @@ class AsyncVoiceResource(AsyncAPIResource):
                 voice_session_params.VoiceSessionParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[VoiceSessionResponse]._unwrapper,
             ),
-            cast_to=VoiceSessionResponse,
+            cast_to=cast(Type[VoiceSessionResponse], DataWrapper[VoiceSessionResponse]),
         )
 
 

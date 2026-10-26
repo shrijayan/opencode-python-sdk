@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Type, cast
+
 import httpx
 
 from ..types import credential_create_params, credential_update_params
@@ -15,12 +17,13 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from .._wrappers import DataWrapper
 from .._base_client import make_request_options
 from ..types.shared.credential_id import CredentialID
 from ..types.shared.integration_id import IntegrationID
+from ..types.shared.credential_entry import CredentialEntry
 from ..types.shared.credential_value import CredentialValue
 from ..types.credential_list_response import CredentialListResponse
-from ..types.credential_create_response import CredentialCreateResponse
 
 __all__ = ["CredentialResource", "AsyncCredentialResource"]
 
@@ -59,7 +62,7 @@ class CredentialResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> CredentialCreateResponse:
+    ) -> CredentialEntry:
         """
         Store an integration credential. It becomes the integration's active credential
         unless activate is false and the integration already has one. Fails with a
@@ -87,9 +90,13 @@ class CredentialResource(SyncAPIResource):
                 credential_create_params.CredentialCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[CredentialEntry]._unwrapper,
             ),
-            cast_to=CredentialCreateResponse,
+            cast_to=cast(Type[CredentialEntry], DataWrapper[CredentialEntry]),
         )
 
     def update(
@@ -142,9 +149,13 @@ class CredentialResource(SyncAPIResource):
         return self._get(
             "/api/credential",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[CredentialListResponse]._unwrapper,
             ),
-            cast_to=CredentialListResponse,
+            cast_to=cast(Type[CredentialListResponse], DataWrapper[CredentialListResponse]),
         )
 
     def activate(
@@ -250,7 +261,7 @@ class AsyncCredentialResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> CredentialCreateResponse:
+    ) -> CredentialEntry:
         """
         Store an integration credential. It becomes the integration's active credential
         unless activate is false and the integration already has one. Fails with a
@@ -278,9 +289,13 @@ class AsyncCredentialResource(AsyncAPIResource):
                 credential_create_params.CredentialCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[CredentialEntry]._unwrapper,
             ),
-            cast_to=CredentialCreateResponse,
+            cast_to=cast(Type[CredentialEntry], DataWrapper[CredentialEntry]),
         )
 
     async def update(
@@ -333,9 +348,13 @@ class AsyncCredentialResource(AsyncAPIResource):
         return await self._get(
             "/api/credential",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[CredentialListResponse]._unwrapper,
             ),
-            cast_to=CredentialListResponse,
+            cast_to=cast(Type[CredentialListResponse], DataWrapper[CredentialListResponse]),
         )
 
     async def activate(

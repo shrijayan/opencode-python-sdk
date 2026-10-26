@@ -409,12 +409,12 @@ Methods:
 Types:
 
 ```python
-from opencode.types import CredentialCreateResponse, CredentialListResponse
+from opencode.types import CredentialListResponse
 ```
 
 Methods:
 
-- <code title="post /api/credential">client.credential.<a href="./src/opencode/resources/credential.py">create</a>(\*\*<a href="src/opencode/types/credential_create_params.py">params</a>) -> <a href="./src/opencode/types/credential_create_response.py">CredentialCreateResponse</a></code>
+- <code title="post /api/credential">client.credential.<a href="./src/opencode/resources/credential.py">create</a>(\*\*<a href="src/opencode/types/credential_create_params.py">params</a>) -> <a href="./src/opencode/types/shared/credential_entry.py">CredentialEntry</a></code>
 - <code title="patch /api/credential/{credentialID}">client.credential.<a href="./src/opencode/resources/credential.py">update</a>(credential_id, \*\*<a href="src/opencode/types/credential_update_params.py">params</a>) -> None</code>
 - <code title="get /api/credential">client.credential.<a href="./src/opencode/resources/credential.py">list</a>() -> <a href="./src/opencode/types/credential_list_response.py">CredentialListResponse</a></code>
 - <code title="post /api/credential/{credentialID}/activate">client.credential.<a href="./src/opencode/resources/credential.py">activate</a>(credential_id) -> None</code>
@@ -449,29 +449,24 @@ Types:
 
 ```python
 from opencode.types.experimental import (
-    PersistentPtyCreateResponse,
-    PersistentPtyUpdateResponse,
     PersistentPtyListResponse,
-    PersistentPtyConnectTokenResponse,
-    PersistentPtyGetResponse,
     PersistentPtyHandoffResponse,
     PersistentPtyReadResponse,
-    PersistentPtySnapshotResponse,
 )
 ```
 
 Methods:
 
-- <code title="post /api/experimental/session/{sessionID}/terminal">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">create</a>(session_id, \*\*<a href="src/opencode/types/experimental/persistent_pty_create_params.py">params</a>) -> <a href="./src/opencode/types/experimental/persistent_pty_create_response.py">PersistentPtyCreateResponse</a></code>
-- <code title="put /api/experimental/persistent-pty/{ptyID}">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">update</a>(pty_id, \*\*<a href="src/opencode/types/experimental/persistent_pty_update_params.py">params</a>) -> <a href="./src/opencode/types/experimental/persistent_pty_update_response.py">PersistentPtyUpdateResponse</a></code>
+- <code title="post /api/experimental/session/{sessionID}/terminal">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">create</a>(session_id, \*\*<a href="src/opencode/types/experimental/persistent_pty_create_params.py">params</a>) -> <a href="./src/opencode/types/shared/persistent_pty_info.py">PersistentPtyInfo</a></code>
+- <code title="put /api/experimental/persistent-pty/{ptyID}">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">update</a>(pty_id, \*\*<a href="src/opencode/types/experimental/persistent_pty_update_params.py">params</a>) -> <a href="./src/opencode/types/shared/persistent_pty_info.py">PersistentPtyInfo</a></code>
 - <code title="get /api/experimental/session/{sessionID}/terminal">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">list</a>(session_id) -> <a href="./src/opencode/types/experimental/persistent_pty_list_response.py">PersistentPtyListResponse</a></code>
-- <code title="post /api/experimental/persistent-pty/{ptyID}/connect-token">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">connect_token</a>(pty_id) -> <a href="./src/opencode/types/experimental/persistent_pty_connect_token_response.py">PersistentPtyConnectTokenResponse</a></code>
-- <code title="get /api/experimental/persistent-pty/{ptyID}">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">get</a>(pty_id) -> <a href="./src/opencode/types/experimental/persistent_pty_get_response.py">PersistentPtyGetResponse</a></code>
+- <code title="post /api/experimental/persistent-pty/{ptyID}/connect-token">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">connect_token</a>(pty_id) -> <a href="./src/opencode/types/shared/pty_ticket_connect_token.py">PtyTicketConnectToken</a></code>
+- <code title="get /api/experimental/persistent-pty/{ptyID}">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">get</a>(pty_id) -> <a href="./src/opencode/types/shared/persistent_pty_info.py">PersistentPtyInfo</a></code>
 - <code title="post /api/experimental/persistent-pty/handoff">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">handoff</a>() -> <a href="./src/opencode/types/experimental/persistent_pty_handoff_response.py">PersistentPtyHandoffResponse</a></code>
 - <code title="get /api/experimental/session/{sessionID}/terminal/read">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">read</a>(session_id, \*\*<a href="src/opencode/types/experimental/persistent_pty_read_params.py">params</a>) -> <a href="./src/opencode/types/experimental/persistent_pty_read_response.py">PersistentPtyReadResponse</a></code>
 - <code title="delete /api/experimental/persistent-pty/{ptyID}">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">remove</a>(pty_id) -> None</code>
 - <code title="post /api/experimental/persistent-pty/shutdown">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">shutdown</a>() -> None</code>
-- <code title="get /api/experimental/persistent-pty/{ptyID}/snapshot">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">snapshot</a>(pty_id) -> <a href="./src/opencode/types/experimental/persistent_pty_snapshot_response.py">PersistentPtySnapshotResponse</a></code>
+- <code title="get /api/experimental/persistent-pty/{ptyID}/snapshot">client.experimental.persistent_pty.<a href="./src/opencode/resources/experimental/persistent_pty.py">snapshot</a>(pty_id) -> <a href="./src/opencode/types/shared/persistent_pty_snapshot.py">PersistentPtySnapshot</a></code>
 
 # File
 
@@ -502,9 +497,15 @@ Methods:
 
 # Generate
 
+Types:
+
+```python
+from opencode.types import GenerateTextResponse
+```
+
 Methods:
 
-- <code title="post /api/experimental/generate">client.generate.<a href="./src/opencode/resources/generate.py">text</a>(\*\*<a href="src/opencode/types/generate_text_params.py">params</a>) -> <a href="./src/opencode/types/shared/generate_text_response.py">GenerateTextResponse</a></code>
+- <code title="post /api/experimental/generate">client.generate.<a href="./src/opencode/resources/generate.py">text</a>(\*\*<a href="src/opencode/types/generate_text_params.py">params</a>) -> <a href="./src/opencode/types/generate_text_response.py">GenerateTextResponse</a></code>
 
 # Integration
 
@@ -634,14 +635,14 @@ Methods:
 Types:
 
 ```python
-from opencode.types import PermissionCreateResponse, PermissionListResponse, PermissionGetResponse
+from opencode.types import PermissionCreateResponse, PermissionListResponse
 ```
 
 Methods:
 
 - <code title="post /api/session/{sessionID}/permission">client.permission.<a href="./src/opencode/resources/permission/permission.py">create</a>(session_id, \*\*<a href="src/opencode/types/permission_create_params.py">params</a>) -> <a href="./src/opencode/types/permission_create_response.py">PermissionCreateResponse</a></code>
 - <code title="get /api/session/{sessionID}/permission">client.permission.<a href="./src/opencode/resources/permission/permission.py">list</a>(session_id) -> <a href="./src/opencode/types/permission_list_response.py">PermissionListResponse</a></code>
-- <code title="get /api/session/{sessionID}/permission/{requestID}">client.permission.<a href="./src/opencode/resources/permission/permission.py">get</a>(request_id, \*, session_id) -> <a href="./src/opencode/types/permission_get_response.py">PermissionGetResponse</a></code>
+- <code title="get /api/session/{sessionID}/permission/{requestID}">client.permission.<a href="./src/opencode/resources/permission/permission.py">get</a>(request_id, \*, session_id) -> <a href="./src/opencode/types/shared/permission_request.py">PermissionRequest</a></code>
 - <code title="post /api/session/{sessionID}/permission/{requestID}/reply">client.permission.<a href="./src/opencode/resources/permission/permission.py">reply</a>(request_id, \*, session_id, \*\*<a href="src/opencode/types/permission_reply_params.py">params</a>) -> None</code>
 
 ## Request
@@ -661,12 +662,12 @@ Methods:
 Types:
 
 ```python
-from opencode.types.permission import SavedUpdateResponse, SavedListResponse
+from opencode.types.permission import SavedListResponse
 ```
 
 Methods:
 
-- <code title="patch /api/permission/saved/{id}">client.permission.saved.<a href="./src/opencode/resources/permission/saved.py">update</a>(id, \*\*<a href="src/opencode/types/permission/saved_update_params.py">params</a>) -> <a href="./src/opencode/types/permission/saved_update_response.py">SavedUpdateResponse</a></code>
+- <code title="patch /api/permission/saved/{id}">client.permission.saved.<a href="./src/opencode/resources/permission/saved.py">update</a>(id, \*\*<a href="src/opencode/types/permission/saved_update_params.py">params</a>) -> <a href="./src/opencode/types/shared/permission_saved_info.py">PermissionSavedInfo</a></code>
 - <code title="get /api/permission/saved">client.permission.saved.<a href="./src/opencode/resources/permission/saved.py">list</a>(\*\*<a href="src/opencode/types/permission/saved_list_params.py">params</a>) -> <a href="./src/opencode/types/permission/saved_list_response.py">SavedListResponse</a></code>
 - <code title="delete /api/permission/saved/{id}">client.permission.saved.<a href="./src/opencode/resources/permission/saved.py">remove</a>(id) -> None</code>
 
@@ -769,66 +770,47 @@ Methods:
 Types:
 
 ```python
-from opencode.types import (
-    SessionCreateResponse,
-    SessionActiveResponse,
-    SessionCompactResponse,
-    SessionContextResponse,
-    SessionDiffResponse,
-    SessionExportResponse,
-    SessionForkResponse,
-    SessionGetResponse,
-    SessionImportResponse,
-    SessionPromptResponse,
-    SessionStatsResponse,
-    SessionSyntheticResponse,
-)
+from opencode.types import SessionActiveResponse, SessionContextResponse, SessionDiffResponse, SessionGenerateResponse
 ```
 
 Methods:
 
-- <code title="post /api/session">client.session.<a href="./src/opencode/resources/session/session.py">create</a>(\*\*<a href="src/opencode/types/session_create_params.py">params</a>) -> <a href="./src/opencode/types/session_create_response.py">SessionCreateResponse</a></code>
+- <code title="post /api/session">client.session.<a href="./src/opencode/resources/session/session.py">create</a>(\*\*<a href="src/opencode/types/session_create_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_info.py">SessionInfo</a></code>
 - <code title="patch /api/session/{sessionID}">client.session.<a href="./src/opencode/resources/session/session.py">update</a>(session_id, \*\*<a href="src/opencode/types/session_update_params.py">params</a>) -> None</code>
 - <code title="get /api/session">client.session.<a href="./src/opencode/resources/session/session.py">list</a>(\*\*<a href="src/opencode/types/session_list_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_info.py">SessionInfo</a></code>
 - <code title="get /api/session/active">client.session.<a href="./src/opencode/resources/session/session.py">active</a>() -> <a href="./src/opencode/types/session_active_response.py">SessionActiveResponse</a></code>
 - <code title="post /api/session/{sessionID}/background">client.session.<a href="./src/opencode/resources/session/session.py">background</a>(session_id) -> None</code>
 - <code title="post /api/session/{sessionID}/command">client.session.<a href="./src/opencode/resources/session/session.py">command</a>(session_id, \*\*<a href="src/opencode/types/session_command_params.py">params</a>) -> None</code>
-- <code title="post /api/session/{sessionID}/compact">client.session.<a href="./src/opencode/resources/session/session.py">compact</a>(session_id, \*\*<a href="src/opencode/types/session_compact_params.py">params</a>) -> <a href="./src/opencode/types/session_compact_response.py">SessionCompactResponse</a></code>
+- <code title="post /api/session/{sessionID}/compact">client.session.<a href="./src/opencode/resources/session/session.py">compact</a>(session_id, \*\*<a href="src/opencode/types/session_compact_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_inbox_compaction.py">SessionInboxCompaction</a></code>
 - <code title="get /api/session/{sessionID}/context">client.session.<a href="./src/opencode/resources/session/session.py">context</a>(session_id) -> <a href="./src/opencode/types/session_context_response.py">SessionContextResponse</a></code>
 - <code title="get /api/session/{sessionID}/diff">client.session.<a href="./src/opencode/resources/session/session.py">diff</a>(session_id, \*\*<a href="src/opencode/types/session_diff_params.py">params</a>) -> <a href="./src/opencode/types/session_diff_response.py">SessionDiffResponse</a></code>
 - <code title="put /api/session/{sessionID}/environment">client.session.<a href="./src/opencode/resources/session/session.py">environment</a>(session_id, \*\*<a href="src/opencode/types/session_environment_params.py">params</a>) -> None</code>
-- <code title="get /api/experimental/session/{sessionID}/export">client.session.<a href="./src/opencode/resources/session/session.py">export</a>(session_id, \*\*<a href="src/opencode/types/session_export_params.py">params</a>) -> <a href="./src/opencode/types/session_export_response.py">SessionExportResponse</a></code>
-- <code title="post /api/session/{sessionID}/fork">client.session.<a href="./src/opencode/resources/session/session.py">fork</a>(session_id, \*\*<a href="src/opencode/types/session_fork_params.py">params</a>) -> <a href="./src/opencode/types/session_fork_response.py">SessionForkResponse</a></code>
-- <code title="post /api/session/{sessionID}/generate">client.session.<a href="./src/opencode/resources/session/session.py">generate</a>(session_id, \*\*<a href="src/opencode/types/session_generate_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_generate_response.py">SessionGenerateResponse</a></code>
-- <code title="get /api/session/{sessionID}">client.session.<a href="./src/opencode/resources/session/session.py">get</a>(session_id) -> <a href="./src/opencode/types/session_get_response.py">SessionGetResponse</a></code>
-- <code title="post /api/experimental/session/import">client.session.<a href="./src/opencode/resources/session/session.py">import_</a>(\*\*<a href="src/opencode/types/session_import__params.py">params</a>) -> <a href="./src/opencode/types/session_import__response.py">SessionImportResponse</a></code>
+- <code title="get /api/experimental/session/{sessionID}/export">client.session.<a href="./src/opencode/resources/session/session.py">export</a>(session_id, \*\*<a href="src/opencode/types/session_export_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_transfer_data.py">SessionTransferData</a></code>
+- <code title="post /api/session/{sessionID}/fork">client.session.<a href="./src/opencode/resources/session/session.py">fork</a>(session_id, \*\*<a href="src/opencode/types/session_fork_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_info.py">SessionInfo</a></code>
+- <code title="post /api/session/{sessionID}/generate">client.session.<a href="./src/opencode/resources/session/session.py">generate</a>(session_id, \*\*<a href="src/opencode/types/session_generate_params.py">params</a>) -> <a href="./src/opencode/types/session_generate_response.py">SessionGenerateResponse</a></code>
+- <code title="get /api/session/{sessionID}">client.session.<a href="./src/opencode/resources/session/session.py">get</a>(session_id) -> <a href="./src/opencode/types/shared/session_info.py">SessionInfo</a></code>
+- <code title="post /api/experimental/session/import">client.session.<a href="./src/opencode/resources/session/session.py">import_</a>(\*\*<a href="src/opencode/types/session_import__params.py">params</a>) -> <a href="./src/opencode/types/shared/session_info.py">SessionInfo</a></code>
 - <code title="post /api/session/{sessionID}/interrupt">client.session.<a href="./src/opencode/resources/session/session.py">interrupt</a>(session_id, \*\*<a href="src/opencode/types/session_interrupt_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_interrupt_response.py">SessionInterruptResponse</a></code>
 - <code title="get /api/experimental/session/{sessionID}/log">client.session.<a href="./src/opencode/resources/session/session.py">log</a>(session_id, \*\*<a href="src/opencode/types/session_log_params.py">params</a>) -> None</code>
 - <code title="post /api/session/{sessionID}/move">client.session.<a href="./src/opencode/resources/session/session.py">move</a>(session_id, \*\*<a href="src/opencode/types/session_move_params.py">params</a>) -> None</code>
-- <code title="post /api/session/{sessionID}/prompt">client.session.<a href="./src/opencode/resources/session/session.py">prompt</a>(session_id, \*\*<a href="src/opencode/types/session_prompt_params.py">params</a>) -> <a href="./src/opencode/types/session_prompt_response.py">SessionPromptResponse</a></code>
+- <code title="post /api/session/{sessionID}/prompt">client.session.<a href="./src/opencode/resources/session/session.py">prompt</a>(session_id, \*\*<a href="src/opencode/types/session_prompt_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_inbox_user.py">SessionInboxUser</a></code>
 - <code title="delete /api/session/{sessionID}">client.session.<a href="./src/opencode/resources/session/session.py">remove</a>(session_id) -> None</code>
 - <code title="post /api/session/{sessionID}/shell">client.session.<a href="./src/opencode/resources/session/session.py">shell</a>(session_id, \*\*<a href="src/opencode/types/session_shell_params.py">params</a>) -> None</code>
 - <code title="post /api/experimental/session/{sessionID}/skill">client.session.<a href="./src/opencode/resources/session/session.py">skill</a>(session_id, \*\*<a href="src/opencode/types/session_skill_params.py">params</a>) -> None</code>
-- <code title="get /api/experimental/session/stats">client.session.<a href="./src/opencode/resources/session/session.py">stats</a>(\*\*<a href="src/opencode/types/session_stats_params.py">params</a>) -> <a href="./src/opencode/types/session_stats_response.py">SessionStatsResponse</a></code>
+- <code title="get /api/experimental/session/stats">client.session.<a href="./src/opencode/resources/session/session.py">stats</a>(\*\*<a href="src/opencode/types/session_stats_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_stats_info.py">SessionStatsInfo</a></code>
 - <code title="post /api/session/{sessionID}/agent">client.session.<a href="./src/opencode/resources/session/session.py">switch_agent</a>(session_id, \*\*<a href="src/opencode/types/session_switch_agent_params.py">params</a>) -> None</code>
 - <code title="post /api/session/{sessionID}/model">client.session.<a href="./src/opencode/resources/session/session.py">switch_model</a>(session_id, \*\*<a href="src/opencode/types/session_switch_model_params.py">params</a>) -> None</code>
-- <code title="post /api/session/{sessionID}/synthetic">client.session.<a href="./src/opencode/resources/session/session.py">synthetic</a>(session_id, \*\*<a href="src/opencode/types/session_synthetic_params.py">params</a>) -> <a href="./src/opencode/types/session_synthetic_response.py">SessionSyntheticResponse</a></code>
+- <code title="post /api/session/{sessionID}/synthetic">client.session.<a href="./src/opencode/resources/session/session.py">synthetic</a>(session_id, \*\*<a href="src/opencode/types/session_synthetic_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_inbox_synthetic.py">SessionInboxSynthetic</a></code>
 - <code title="post /api/session/{sessionID}/view">client.session.<a href="./src/opencode/resources/session/session.py">view</a>(session_id, \*\*<a href="src/opencode/types/session_view_params.py">params</a>) -> None</code>
 - <code title="post /api/experimental/session/{sessionID}/wait">client.session.<a href="./src/opencode/resources/session/session.py">wait</a>(session_id) -> None</code>
 
 ## Revert
 
-Types:
-
-```python
-from opencode.types.session import RevertStageResponse
-```
-
 Methods:
 
 - <code title="delete /api/session/{sessionID}/revert">client.session.revert.<a href="./src/opencode/resources/session/revert.py">clear</a>(session_id) -> None</code>
 - <code title="post /api/session/{sessionID}/revert/commit">client.session.revert.<a href="./src/opencode/resources/session/revert.py">commit</a>(session_id) -> None</code>
-- <code title="post /api/session/{sessionID}/revert/stage">client.session.revert.<a href="./src/opencode/resources/session/revert.py">stage</a>(session_id, \*\*<a href="src/opencode/types/session/revert_stage_params.py">params</a>) -> <a href="./src/opencode/types/session/revert_stage_response.py">RevertStageResponse</a></code>
+- <code title="post /api/session/{sessionID}/revert/stage">client.session.revert.<a href="./src/opencode/resources/session/revert.py">stage</a>(session_id, \*\*<a href="src/opencode/types/session/revert_stage_params.py">params</a>) -> <a href="./src/opencode/types/shared/session_revert.py">SessionRevert</a></code>
 
 ## Inbox
 
@@ -862,30 +844,24 @@ Methods:
 
 ## Message
 
-Types:
-
-```python
-from opencode.types.session import MessageGetResponse
-```
-
 Methods:
 
-- <code title="get /api/session/{sessionID}/message/{messageID}">client.session.message.<a href="./src/opencode/resources/session/message.py">get</a>(message_id, \*, session_id) -> <a href="./src/opencode/types/session/message_get_response.py">MessageGetResponse</a></code>
+- <code title="get /api/session/{sessionID}/message/{messageID}">client.session.message.<a href="./src/opencode/resources/session/message.py">get</a>(message_id, \*, session_id) -> <a href="./src/opencode/types/shared/session_message_info.py">SessionMessageInfo</a></code>
 
 ## Form
 
 Types:
 
 ```python
-from opencode.types.session import FormCreateResponse, FormListResponse, FormGetResponse
+from opencode.types.session import FormListResponse
 ```
 
 Methods:
 
-- <code title="post /api/session/{sessionID}/form">client.session.form.<a href="./src/opencode/resources/session/form.py">create</a>(session_id, \*\*<a href="src/opencode/types/session/form_create_params.py">params</a>) -> <a href="./src/opencode/types/session/form_create_response.py">FormCreateResponse</a></code>
+- <code title="post /api/session/{sessionID}/form">client.session.form.<a href="./src/opencode/resources/session/form.py">create</a>(session_id, \*\*<a href="src/opencode/types/session/form_create_params.py">params</a>) -> <a href="./src/opencode/types/shared/form_info.py">FormInfo</a></code>
 - <code title="get /api/session/{sessionID}/form">client.session.form.<a href="./src/opencode/resources/session/form.py">list</a>(session_id) -> <a href="./src/opencode/types/session/form_list_response.py">FormListResponse</a></code>
 - <code title="delete /api/session/{sessionID}/form/{formID}">client.session.form.<a href="./src/opencode/resources/session/form.py">cancel</a>(form_id, \*, session_id, \*\*<a href="src/opencode/types/session/form_cancel_params.py">params</a>) -> None</code>
-- <code title="get /api/session/{sessionID}/form/{formID}">client.session.form.<a href="./src/opencode/resources/session/form.py">get</a>(form_id, \*, session_id) -> <a href="./src/opencode/types/session/form_get_response.py">FormGetResponse</a></code>
+- <code title="get /api/session/{sessionID}/form/{formID}">client.session.form.<a href="./src/opencode/resources/session/form.py">get</a>(form_id, \*, session_id) -> <a href="./src/opencode/types/shared/form_detail.py">FormDetail</a></code>
 - <code title="post /api/session/{sessionID}/form/{formID}/reply">client.session.form.<a href="./src/opencode/resources/session/form.py">reply</a>(form_id, \*, session_id, \*\*<a href="src/opencode/types/session/form_reply_params.py">params</a>) -> None</code>
 
 # Shell
@@ -946,9 +922,15 @@ Methods:
 
 # Voice
 
+Types:
+
+```python
+from opencode.types import VoiceSessionResponse
+```
+
 Methods:
 
-- <code title="post /api/experimental/voice/session">client.voice.<a href="./src/opencode/resources/voice.py">session</a>(\*\*<a href="src/opencode/types/voice_session_params.py">params</a>) -> <a href="./src/opencode/types/shared/voice_session_response.py">VoiceSessionResponse</a></code>
+- <code title="post /api/experimental/voice/session">client.voice.<a href="./src/opencode/resources/voice.py">session</a>(\*\*<a href="src/opencode/types/voice_session_params.py">params</a>) -> <a href="./src/opencode/types/voice_session_response.py">VoiceSessionResponse</a></code>
 
 # Websearch
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Dict, Type, Optional, cast
 
 import httpx
 
@@ -33,14 +33,15 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.shared.agent_id import AgentID
 from ...types.shared.session_id import SessionID
 from ...types.shared.permission_id import PermissionID
-from ...types.permission_get_response import PermissionGetResponse
 from ...types.shared.permission_reply import PermissionReply
 from ...types.permission_list_response import PermissionListResponse
 from ...types.shared.permission_source import PermissionSource
+from ...types.shared.permission_request import PermissionRequest
 from ...types.permission_create_response import PermissionCreateResponse
 
 __all__ = ["PermissionResource", "AsyncPermissionResource"]
@@ -122,9 +123,13 @@ class PermissionResource(SyncAPIResource):
                 permission_create_params.PermissionCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionCreateResponse]._unwrapper,
             ),
-            cast_to=PermissionCreateResponse,
+            cast_to=cast(Type[PermissionCreateResponse], DataWrapper[PermissionCreateResponse]),
         )
 
     def list(
@@ -155,9 +160,13 @@ class PermissionResource(SyncAPIResource):
         return self._get(
             path_template("/api/session/{session_id}/permission", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionListResponse]._unwrapper,
             ),
-            cast_to=PermissionListResponse,
+            cast_to=cast(Type[PermissionListResponse], DataWrapper[PermissionListResponse]),
         )
 
     def get(
@@ -171,7 +180,7 @@ class PermissionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PermissionGetResponse:
+    ) -> PermissionRequest:
         """
         Retrieve a pending permission request owned by a session.
 
@@ -193,9 +202,13 @@ class PermissionResource(SyncAPIResource):
                 "/api/session/{session_id}/permission/{request_id}", session_id=session_id, request_id=request_id
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionRequest]._unwrapper,
             ),
-            cast_to=PermissionGetResponse,
+            cast_to=cast(Type[PermissionRequest], DataWrapper[PermissionRequest]),
         )
 
     def reply(
@@ -323,9 +336,13 @@ class AsyncPermissionResource(AsyncAPIResource):
                 permission_create_params.PermissionCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionCreateResponse]._unwrapper,
             ),
-            cast_to=PermissionCreateResponse,
+            cast_to=cast(Type[PermissionCreateResponse], DataWrapper[PermissionCreateResponse]),
         )
 
     async def list(
@@ -356,9 +373,13 @@ class AsyncPermissionResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/session/{session_id}/permission", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionListResponse]._unwrapper,
             ),
-            cast_to=PermissionListResponse,
+            cast_to=cast(Type[PermissionListResponse], DataWrapper[PermissionListResponse]),
         )
 
     async def get(
@@ -372,7 +393,7 @@ class AsyncPermissionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PermissionGetResponse:
+    ) -> PermissionRequest:
         """
         Retrieve a pending permission request owned by a session.
 
@@ -394,9 +415,13 @@ class AsyncPermissionResource(AsyncAPIResource):
                 "/api/session/{session_id}/permission/{request_id}", session_id=session_id, request_id=request_id
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionRequest]._unwrapper,
             ),
-            cast_to=PermissionGetResponse,
+            cast_to=cast(Type[PermissionRequest], DataWrapper[PermissionRequest]),
         )
 
     async def reply(

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Union, Iterable, Optional
+from typing import Dict, Type, Union, Iterable, Optional, cast
 from typing_extensions import Literal
 
 import httpx
@@ -73,6 +73,7 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ...pagination import SyncCursorPage, AsyncCursorPage
 from ..._base_client import AsyncPaginator, make_request_options
 from ...types.shared.agent_id import AgentID
@@ -90,28 +91,24 @@ from .instructions.instructions import (
     AsyncInstructionsResourceWithStreamingResponse,
 )
 from ...types.shared.session_info import SessionInfo
-from ...types.session_get_response import SessionGetResponse
 from ...types.shared.absolute_path import AbsolutePath
 from ...types.shared.relative_path import RelativePath
 from ...types.session_diff_response import SessionDiffResponse
-from ...types.session_fork_response import SessionForkResponse
-from ...types.session_stats_response import SessionStatsResponse
 from ...types.shared.sessions_cursor import SessionsCursor
 from ...types.session_active_response import SessionActiveResponse
-from ...types.session_create_response import SessionCreateResponse
-from ...types.session_export_response import SessionExportResponse
-from ...types.session_prompt_response import SessionPromptResponse
 from ...types.shared.session_metadata import SessionMetadata
-from ...types.session_compact_response import SessionCompactResponse
 from ...types.session_context_response import SessionContextResponse
-from ...types.session_import__response import SessionImportResponse
+from ...types.session_generate_response import SessionGenerateResponse
 from ...types.shared.permission_ruleset import PermissionRuleset
+from ...types.shared.session_inbox_user import SessionInboxUser
 from ...types.shared.session_message_id import SessionMessageID
-from ...types.session_synthetic_response import SessionSyntheticResponse
+from ...types.shared.session_stats_info import SessionStatsInfo
 from ...types.shared.location_public_ref import LocationPublicRef
+from ...types.shared.session_transfer_data import SessionTransferData
 from ...types.shared.session_inbox_delivery import SessionInboxDelivery
 from ...types.shared.prompt_agent_attachment import PromptAgentAttachment
-from ...types.shared.session_generate_response import SessionGenerateResponse
+from ...types.shared.session_inbox_synthetic import SessionInboxSynthetic
+from ...types.shared.session_inbox_compaction import SessionInboxCompaction
 from ...types.shared.session_interrupt_response import SessionInterruptResponse
 from ...types.shared.prompt_input_file_attachment import PromptInputFileAttachment
 from ...types.shared.prompt_input_skill_attachment import PromptInputSkillAttachment
@@ -176,7 +173,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionCreateResponse:
+    ) -> SessionInfo:
         """
         Create a session at the requested location. A parentID creates a linked child
         session at its parent's location.
@@ -206,9 +203,13 @@ class SessionResource(SyncAPIResource):
                 session_create_params.SessionCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionCreateResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     def update(
@@ -341,9 +342,13 @@ class SessionResource(SyncAPIResource):
         return self._get(
             "/api/session/active",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionActiveResponse]._unwrapper,
             ),
-            cast_to=SessionActiveResponse,
+            cast_to=cast(Type[SessionActiveResponse], DataWrapper[SessionActiveResponse]),
         )
 
     def background(
@@ -444,7 +449,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionCompactResponse:
+    ) -> SessionInboxCompaction:
         """
         Durably admit a session compaction request. Steers by default: it runs at the
         next step boundary instead of waiting behind queued prompts.
@@ -470,9 +475,13 @@ class SessionResource(SyncAPIResource):
                 session_compact_params.SessionCompactParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInboxCompaction]._unwrapper,
             ),
-            cast_to=SessionCompactResponse,
+            cast_to=cast(Type[SessionInboxCompaction], DataWrapper[SessionInboxCompaction]),
         )
 
     def context(
@@ -504,9 +513,13 @@ class SessionResource(SyncAPIResource):
         return self._get(
             path_template("/api/session/{session_id}/context", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionContextResponse]._unwrapper,
             ),
-            cast_to=SessionContextResponse,
+            cast_to=cast(Type[SessionContextResponse], DataWrapper[SessionContextResponse]),
         )
 
     def diff(
@@ -566,8 +579,9 @@ class SessionResource(SyncAPIResource):
                     },
                     session_diff_params.SessionDiffParams,
                 ),
+                post_parser=DataWrapper[SessionDiffResponse]._unwrapper,
             ),
-            cast_to=SessionDiffResponse,
+            cast_to=cast(Type[SessionDiffResponse], DataWrapper[SessionDiffResponse]),
         )
 
     def environment(
@@ -617,7 +631,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionExportResponse:
+    ) -> SessionTransferData:
         """
         Export a complete projected session transcript.
 
@@ -640,8 +654,9 @@ class SessionResource(SyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=maybe_transform({"sanitize": sanitize}, session_export_params.SessionExportParams),
+                post_parser=DataWrapper[SessionTransferData]._unwrapper,
             ),
-            cast_to=SessionExportResponse,
+            cast_to=cast(Type[SessionTransferData], DataWrapper[SessionTransferData]),
         )
 
     def fork(
@@ -655,7 +670,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionForkResponse:
+    ) -> SessionInfo:
         """
         Create a child session by copying projected history before a message. Omit
         before to copy the full history.
@@ -675,9 +690,13 @@ class SessionResource(SyncAPIResource):
             path_template("/api/session/{session_id}/fork", session_id=session_id),
             body=maybe_transform({"before": before}, session_fork_params.SessionForkParams),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionForkResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     def generate(
@@ -711,9 +730,13 @@ class SessionResource(SyncAPIResource):
             path_template("/api/session/{session_id}/generate", session_id=session_id),
             body=maybe_transform({"prompt": prompt}, session_generate_params.SessionGenerateParams),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionGenerateResponse]._unwrapper,
             ),
-            cast_to=SessionGenerateResponse,
+            cast_to=cast(Type[SessionGenerateResponse], DataWrapper[SessionGenerateResponse]),
         )
 
     def get(
@@ -726,7 +749,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionGetResponse:
+    ) -> SessionInfo:
         """
         Retrieve a session by ID.
 
@@ -744,9 +767,13 @@ class SessionResource(SyncAPIResource):
         return self._get(
             path_template("/api/session/{session_id}", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionGetResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     def import_(
@@ -761,7 +788,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionImportResponse:
+    ) -> SessionInfo:
         """
         Import a projected session transcript at the requested location. Accepts
         transcripts exported by earlier releases. If parentID is supplied, the parent
@@ -787,9 +814,13 @@ class SessionResource(SyncAPIResource):
                 session_import__params.SessionImportParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionImportResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     def interrupt(
@@ -942,7 +973,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionPromptResponse:
+    ) -> SessionInboxUser:
         """
         Durably admit one session input and schedule agent-loop execution unless resume
         is false.
@@ -974,9 +1005,13 @@ class SessionResource(SyncAPIResource):
                 session_prompt_params.SessionPromptParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInboxUser]._unwrapper,
             ),
-            cast_to=SessionPromptResponse,
+            cast_to=cast(Type[SessionInboxUser], DataWrapper[SessionInboxUser]),
         )
 
     def remove(
@@ -1116,7 +1151,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionStatsResponse:
+    ) -> SessionStatsInfo:
         """
         Aggregate local session activity, usage, and tool reliability for a time range.
 
@@ -1146,8 +1181,9 @@ class SessionResource(SyncAPIResource):
                     },
                     session_stats_params.SessionStatsParams,
                 ),
+                post_parser=DataWrapper[SessionStatsInfo]._unwrapper,
             ),
-            cast_to=SessionStatsResponse,
+            cast_to=cast(Type[SessionStatsInfo], DataWrapper[SessionStatsInfo]),
         )
 
     def switch_agent(
@@ -1238,7 +1274,7 @@ class SessionResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionSyntheticResponse:
+    ) -> SessionInboxSynthetic:
         """
         Durably admit synthetic session input and schedule execution unless resume is
         false.
@@ -1268,9 +1304,13 @@ class SessionResource(SyncAPIResource):
                 session_synthetic_params.SessionSyntheticParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInboxSynthetic]._unwrapper,
             ),
-            cast_to=SessionSyntheticResponse,
+            cast_to=cast(Type[SessionInboxSynthetic], DataWrapper[SessionInboxSynthetic]),
         )
 
     def view(
@@ -1401,7 +1441,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionCreateResponse:
+    ) -> SessionInfo:
         """
         Create a session at the requested location. A parentID creates a linked child
         session at its parent's location.
@@ -1431,9 +1471,13 @@ class AsyncSessionResource(AsyncAPIResource):
                 session_create_params.SessionCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionCreateResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     async def update(
@@ -1566,9 +1610,13 @@ class AsyncSessionResource(AsyncAPIResource):
         return await self._get(
             "/api/session/active",
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionActiveResponse]._unwrapper,
             ),
-            cast_to=SessionActiveResponse,
+            cast_to=cast(Type[SessionActiveResponse], DataWrapper[SessionActiveResponse]),
         )
 
     async def background(
@@ -1669,7 +1717,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionCompactResponse:
+    ) -> SessionInboxCompaction:
         """
         Durably admit a session compaction request. Steers by default: it runs at the
         next step boundary instead of waiting behind queued prompts.
@@ -1695,9 +1743,13 @@ class AsyncSessionResource(AsyncAPIResource):
                 session_compact_params.SessionCompactParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInboxCompaction]._unwrapper,
             ),
-            cast_to=SessionCompactResponse,
+            cast_to=cast(Type[SessionInboxCompaction], DataWrapper[SessionInboxCompaction]),
         )
 
     async def context(
@@ -1729,9 +1781,13 @@ class AsyncSessionResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/session/{session_id}/context", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionContextResponse]._unwrapper,
             ),
-            cast_to=SessionContextResponse,
+            cast_to=cast(Type[SessionContextResponse], DataWrapper[SessionContextResponse]),
         )
 
     async def diff(
@@ -1791,8 +1847,9 @@ class AsyncSessionResource(AsyncAPIResource):
                     },
                     session_diff_params.SessionDiffParams,
                 ),
+                post_parser=DataWrapper[SessionDiffResponse]._unwrapper,
             ),
-            cast_to=SessionDiffResponse,
+            cast_to=cast(Type[SessionDiffResponse], DataWrapper[SessionDiffResponse]),
         )
 
     async def environment(
@@ -1844,7 +1901,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionExportResponse:
+    ) -> SessionTransferData:
         """
         Export a complete projected session transcript.
 
@@ -1867,8 +1924,9 @@ class AsyncSessionResource(AsyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=await async_maybe_transform({"sanitize": sanitize}, session_export_params.SessionExportParams),
+                post_parser=DataWrapper[SessionTransferData]._unwrapper,
             ),
-            cast_to=SessionExportResponse,
+            cast_to=cast(Type[SessionTransferData], DataWrapper[SessionTransferData]),
         )
 
     async def fork(
@@ -1882,7 +1940,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionForkResponse:
+    ) -> SessionInfo:
         """
         Create a child session by copying projected history before a message. Omit
         before to copy the full history.
@@ -1902,9 +1960,13 @@ class AsyncSessionResource(AsyncAPIResource):
             path_template("/api/session/{session_id}/fork", session_id=session_id),
             body=await async_maybe_transform({"before": before}, session_fork_params.SessionForkParams),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionForkResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     async def generate(
@@ -1938,9 +2000,13 @@ class AsyncSessionResource(AsyncAPIResource):
             path_template("/api/session/{session_id}/generate", session_id=session_id),
             body=await async_maybe_transform({"prompt": prompt}, session_generate_params.SessionGenerateParams),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionGenerateResponse]._unwrapper,
             ),
-            cast_to=SessionGenerateResponse,
+            cast_to=cast(Type[SessionGenerateResponse], DataWrapper[SessionGenerateResponse]),
         )
 
     async def get(
@@ -1953,7 +2019,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionGetResponse:
+    ) -> SessionInfo:
         """
         Retrieve a session by ID.
 
@@ -1971,9 +2037,13 @@ class AsyncSessionResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/session/{session_id}", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionGetResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     async def import_(
@@ -1988,7 +2058,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionImportResponse:
+    ) -> SessionInfo:
         """
         Import a projected session transcript at the requested location. Accepts
         transcripts exported by earlier releases. If parentID is supplied, the parent
@@ -2014,9 +2084,13 @@ class AsyncSessionResource(AsyncAPIResource):
                 session_import__params.SessionImportParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInfo]._unwrapper,
             ),
-            cast_to=SessionImportResponse,
+            cast_to=cast(Type[SessionInfo], DataWrapper[SessionInfo]),
         )
 
     async def interrupt(
@@ -2169,7 +2243,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionPromptResponse:
+    ) -> SessionInboxUser:
         """
         Durably admit one session input and schedule agent-loop execution unless resume
         is false.
@@ -2201,9 +2275,13 @@ class AsyncSessionResource(AsyncAPIResource):
                 session_prompt_params.SessionPromptParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInboxUser]._unwrapper,
             ),
-            cast_to=SessionPromptResponse,
+            cast_to=cast(Type[SessionInboxUser], DataWrapper[SessionInboxUser]),
         )
 
     async def remove(
@@ -2343,7 +2421,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionStatsResponse:
+    ) -> SessionStatsInfo:
         """
         Aggregate local session activity, usage, and tool reliability for a time range.
 
@@ -2373,8 +2451,9 @@ class AsyncSessionResource(AsyncAPIResource):
                     },
                     session_stats_params.SessionStatsParams,
                 ),
+                post_parser=DataWrapper[SessionStatsInfo]._unwrapper,
             ),
-            cast_to=SessionStatsResponse,
+            cast_to=cast(Type[SessionStatsInfo], DataWrapper[SessionStatsInfo]),
         )
 
     async def switch_agent(
@@ -2465,7 +2544,7 @@ class AsyncSessionResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SessionSyntheticResponse:
+    ) -> SessionInboxSynthetic:
         """
         Durably admit synthetic session input and schedule execution unless resume is
         false.
@@ -2495,9 +2574,13 @@ class AsyncSessionResource(AsyncAPIResource):
                 session_synthetic_params.SessionSyntheticParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[SessionInboxSynthetic]._unwrapper,
             ),
-            cast_to=SessionSyntheticResponse,
+            cast_to=cast(Type[SessionInboxSynthetic], DataWrapper[SessionInboxSynthetic]),
         )
 
     async def view(

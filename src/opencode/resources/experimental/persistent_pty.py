@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Dict, Type, Optional, cast
 
 import httpx
 
@@ -16,19 +16,18 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.experimental import persistent_pty_read_params, persistent_pty_create_params, persistent_pty_update_params
 from ...types.shared.pty_id import PtyID
 from ...types.shared.session_id import SessionID
+from ...types.shared.persistent_pty_info import PersistentPtyInfo
+from ...types.shared.persistent_pty_snapshot import PersistentPtySnapshot
+from ...types.shared.pty_ticket_connect_token import PtyTicketConnectToken
 from ...types.shared.persistent_pty_read_lines import PersistentPtyReadLines
-from ...types.experimental.persistent_pty_get_response import PersistentPtyGetResponse
 from ...types.experimental.persistent_pty_list_response import PersistentPtyListResponse
 from ...types.experimental.persistent_pty_read_response import PersistentPtyReadResponse
-from ...types.experimental.persistent_pty_create_response import PersistentPtyCreateResponse
-from ...types.experimental.persistent_pty_update_response import PersistentPtyUpdateResponse
 from ...types.experimental.persistent_pty_handoff_response import PersistentPtyHandoffResponse
-from ...types.experimental.persistent_pty_snapshot_response import PersistentPtySnapshotResponse
-from ...types.experimental.persistent_pty_connect_token_response import PersistentPtyConnectTokenResponse
 
 __all__ = ["PersistentPtyResource", "AsyncPersistentPtyResource"]
 
@@ -69,7 +68,7 @@ class PersistentPtyResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyCreateResponse:
+    ) -> PersistentPtyInfo:
         """
         Args:
           extra_headers: Send extra headers
@@ -96,9 +95,13 @@ class PersistentPtyResource(SyncAPIResource):
                 persistent_pty_create_params.PersistentPtyCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyInfo]._unwrapper,
             ),
-            cast_to=PersistentPtyCreateResponse,
+            cast_to=cast(Type[PersistentPtyInfo], DataWrapper[PersistentPtyInfo]),
         )
 
     def update(
@@ -113,7 +116,7 @@ class PersistentPtyResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyUpdateResponse:
+    ) -> PersistentPtyInfo:
         """
         Args:
           extra_headers: Send extra headers
@@ -136,9 +139,13 @@ class PersistentPtyResource(SyncAPIResource):
                 persistent_pty_update_params.PersistentPtyUpdateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyInfo]._unwrapper,
             ),
-            cast_to=PersistentPtyUpdateResponse,
+            cast_to=cast(Type[PersistentPtyInfo], DataWrapper[PersistentPtyInfo]),
         )
 
     def list(
@@ -167,9 +174,13 @@ class PersistentPtyResource(SyncAPIResource):
         return self._get(
             path_template("/api/experimental/session/{session_id}/terminal", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyListResponse]._unwrapper,
             ),
-            cast_to=PersistentPtyListResponse,
+            cast_to=cast(Type[PersistentPtyListResponse], DataWrapper[PersistentPtyListResponse]),
         )
 
     def connect_token(
@@ -183,7 +194,7 @@ class PersistentPtyResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyConnectTokenResponse:
+    ) -> PtyTicketConnectToken:
         """
         Args:
           extra_headers: Send extra headers
@@ -205,9 +216,13 @@ class PersistentPtyResource(SyncAPIResource):
         return self._post(
             path_template("/api/experimental/persistent-pty/{pty_id}/connect-token", pty_id=pty_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PtyTicketConnectToken]._unwrapper,
             ),
-            cast_to=PersistentPtyConnectTokenResponse,
+            cast_to=cast(Type[PtyTicketConnectToken], DataWrapper[PtyTicketConnectToken]),
         )
 
     def get(
@@ -220,7 +235,7 @@ class PersistentPtyResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyGetResponse:
+    ) -> PersistentPtyInfo:
         """
         Args:
           extra_headers: Send extra headers
@@ -236,9 +251,13 @@ class PersistentPtyResource(SyncAPIResource):
         return self._get(
             path_template("/api/experimental/persistent-pty/{pty_id}", pty_id=pty_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyInfo]._unwrapper,
             ),
-            cast_to=PersistentPtyGetResponse,
+            cast_to=cast(Type[PersistentPtyInfo], DataWrapper[PersistentPtyInfo]),
         )
 
     def handoff(
@@ -298,8 +317,9 @@ class PersistentPtyResource(SyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=maybe_transform({"lines": lines}, persistent_pty_read_params.PersistentPtyReadParams),
+                post_parser=DataWrapper[PersistentPtyReadResponse]._unwrapper,
             ),
-            cast_to=PersistentPtyReadResponse,
+            cast_to=cast(Type[PersistentPtyReadResponse], DataWrapper[PersistentPtyReadResponse]),
         )
 
     def remove(
@@ -363,7 +383,7 @@ class PersistentPtyResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtySnapshotResponse:
+    ) -> PersistentPtySnapshot:
         """
         Args:
           extra_headers: Send extra headers
@@ -379,9 +399,13 @@ class PersistentPtyResource(SyncAPIResource):
         return self._get(
             path_template("/api/experimental/persistent-pty/{pty_id}/snapshot", pty_id=pty_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtySnapshot]._unwrapper,
             ),
-            cast_to=PersistentPtySnapshotResponse,
+            cast_to=cast(Type[PersistentPtySnapshot], DataWrapper[PersistentPtySnapshot]),
         )
 
 
@@ -421,7 +445,7 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyCreateResponse:
+    ) -> PersistentPtyInfo:
         """
         Args:
           extra_headers: Send extra headers
@@ -448,9 +472,13 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
                 persistent_pty_create_params.PersistentPtyCreateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyInfo]._unwrapper,
             ),
-            cast_to=PersistentPtyCreateResponse,
+            cast_to=cast(Type[PersistentPtyInfo], DataWrapper[PersistentPtyInfo]),
         )
 
     async def update(
@@ -465,7 +493,7 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyUpdateResponse:
+    ) -> PersistentPtyInfo:
         """
         Args:
           extra_headers: Send extra headers
@@ -488,9 +516,13 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
                 persistent_pty_update_params.PersistentPtyUpdateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyInfo]._unwrapper,
             ),
-            cast_to=PersistentPtyUpdateResponse,
+            cast_to=cast(Type[PersistentPtyInfo], DataWrapper[PersistentPtyInfo]),
         )
 
     async def list(
@@ -519,9 +551,13 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/experimental/session/{session_id}/terminal", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyListResponse]._unwrapper,
             ),
-            cast_to=PersistentPtyListResponse,
+            cast_to=cast(Type[PersistentPtyListResponse], DataWrapper[PersistentPtyListResponse]),
         )
 
     async def connect_token(
@@ -535,7 +571,7 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyConnectTokenResponse:
+    ) -> PtyTicketConnectToken:
         """
         Args:
           extra_headers: Send extra headers
@@ -557,9 +593,13 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         return await self._post(
             path_template("/api/experimental/persistent-pty/{pty_id}/connect-token", pty_id=pty_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PtyTicketConnectToken]._unwrapper,
             ),
-            cast_to=PersistentPtyConnectTokenResponse,
+            cast_to=cast(Type[PtyTicketConnectToken], DataWrapper[PtyTicketConnectToken]),
         )
 
     async def get(
@@ -572,7 +612,7 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtyGetResponse:
+    ) -> PersistentPtyInfo:
         """
         Args:
           extra_headers: Send extra headers
@@ -588,9 +628,13 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/experimental/persistent-pty/{pty_id}", pty_id=pty_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtyInfo]._unwrapper,
             ),
-            cast_to=PersistentPtyGetResponse,
+            cast_to=cast(Type[PersistentPtyInfo], DataWrapper[PersistentPtyInfo]),
         )
 
     async def handoff(
@@ -650,8 +694,9 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=await async_maybe_transform({"lines": lines}, persistent_pty_read_params.PersistentPtyReadParams),
+                post_parser=DataWrapper[PersistentPtyReadResponse]._unwrapper,
             ),
-            cast_to=PersistentPtyReadResponse,
+            cast_to=cast(Type[PersistentPtyReadResponse], DataWrapper[PersistentPtyReadResponse]),
         )
 
     async def remove(
@@ -715,7 +760,7 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> PersistentPtySnapshotResponse:
+    ) -> PersistentPtySnapshot:
         """
         Args:
           extra_headers: Send extra headers
@@ -731,9 +776,13 @@ class AsyncPersistentPtyResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/experimental/persistent-pty/{pty_id}/snapshot", pty_id=pty_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PersistentPtySnapshot]._unwrapper,
             ),
-            cast_to=PersistentPtySnapshotResponse,
+            cast_to=cast(Type[PersistentPtySnapshot], DataWrapper[PersistentPtySnapshot]),
         )
 
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Type, cast
+
 import httpx
 
 from ..._types import Body, Query, Headers, NoneType, NotGiven, not_given
@@ -14,6 +16,7 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.session import inbox_update_params
 from ...types.shared.session_id import SessionID
@@ -112,9 +115,13 @@ class InboxResource(SyncAPIResource):
         return self._get(
             path_template("/api/session/{session_id}/inbox", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[InboxListResponse]._unwrapper,
             ),
-            cast_to=InboxListResponse,
+            cast_to=cast(Type[InboxListResponse], DataWrapper[InboxListResponse]),
         )
 
     def cancel(
@@ -244,9 +251,13 @@ class AsyncInboxResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/session/{session_id}/inbox", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[InboxListResponse]._unwrapper,
             ),
-            cast_to=InboxListResponse,
+            cast_to=cast(Type[InboxListResponse], DataWrapper[InboxListResponse]),
         )
 
     async def cancel(

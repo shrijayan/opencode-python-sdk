@@ -4,14 +4,13 @@ from typing import TYPE_CHECKING, Dict
 
 from pydantic import Field as FieldInfo
 
-from ..._models import BaseModel
-from ..shared.persistent_pty_snapshot import PersistentPtySnapshot
+from .._models import BaseModel
 
-__all__ = ["PersistentPtySnapshotResponse"]
+__all__ = ["GenerateTextResponse"]
 
 
-class PersistentPtySnapshotResponse(BaseModel):
-    data: PersistentPtySnapshot
+class GenerateTextResponse(BaseModel):
+    text: str
 
     if TYPE_CHECKING:
         # Some versions of Pydantic <2.8.0 have a bug and don’t allow assigning a

@@ -9,15 +9,15 @@ import pytest
 
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
+from opencode.types.shared import (
+    PersistentPtyInfo,
+    PersistentPtySnapshot,
+    PtyTicketConnectToken,
+)
 from opencode.types.experimental import (
-    PersistentPtyGetResponse,
     PersistentPtyListResponse,
     PersistentPtyReadResponse,
-    PersistentPtyCreateResponse,
-    PersistentPtyUpdateResponse,
     PersistentPtyHandoffResponse,
-    PersistentPtySnapshotResponse,
-    PersistentPtyConnectTokenResponse,
 )
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
@@ -34,7 +34,7 @@ class TestPersistentPty:
             env={"foo": "string"},
             title="title",
         )
-        assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
@@ -50,7 +50,7 @@ class TestPersistentPty:
                 "rows": 0,
             },
         )
-        assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_create(self, client: Opencode) -> None:
@@ -64,7 +64,7 @@ class TestPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = response.parse()
-        assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_streaming_response_create(self, client: Opencode) -> None:
@@ -78,7 +78,7 @@ class TestPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = response.parse()
-            assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -101,7 +101,7 @@ class TestPersistentPty:
                 "rows": 0,
             },
         )
-        assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_method_update_with_all_params(self, client: Opencode) -> None:
@@ -113,7 +113,7 @@ class TestPersistentPty:
             },
             attachment_id="attachmentID",
         )
-        assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_update(self, client: Opencode) -> None:
@@ -128,7 +128,7 @@ class TestPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = response.parse()
-        assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_streaming_response_update(self, client: Opencode) -> None:
@@ -143,7 +143,7 @@ class TestPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = response.parse()
-            assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -201,7 +201,7 @@ class TestPersistentPty:
         persistent_pty = client.experimental.persistent_pty.connect_token(
             pty_id={},
         )
-        assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+        assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     def test_method_connect_token_with_all_params(self, client: Opencode) -> None:
@@ -209,7 +209,7 @@ class TestPersistentPty:
             pty_id={},
             x_opencode_ticket="x-opencode-ticket",
         )
-        assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+        assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_connect_token(self, client: Opencode) -> None:
@@ -220,7 +220,7 @@ class TestPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = response.parse()
-        assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+        assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     def test_streaming_response_connect_token(self, client: Opencode) -> None:
@@ -231,7 +231,7 @@ class TestPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = response.parse()
-            assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+            assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -247,7 +247,7 @@ class TestPersistentPty:
         persistent_pty = client.experimental.persistent_pty.get(
             {},
         )
-        assert_matches_type(PersistentPtyGetResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
@@ -258,7 +258,7 @@ class TestPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = response.parse()
-        assert_matches_type(PersistentPtyGetResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
@@ -269,7 +269,7 @@ class TestPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = response.parse()
-            assert_matches_type(PersistentPtyGetResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -419,7 +419,7 @@ class TestPersistentPty:
         persistent_pty = client.experimental.persistent_pty.snapshot(
             {},
         )
-        assert_matches_type(PersistentPtySnapshotResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_snapshot(self, client: Opencode) -> None:
@@ -430,7 +430,7 @@ class TestPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = response.parse()
-        assert_matches_type(PersistentPtySnapshotResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
     @parametrize
     def test_streaming_response_snapshot(self, client: Opencode) -> None:
@@ -441,7 +441,7 @@ class TestPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = response.parse()
-            assert_matches_type(PersistentPtySnapshotResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -466,7 +466,7 @@ class TestAsyncPersistentPty:
             env={"foo": "string"},
             title="title",
         )
-        assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -482,7 +482,7 @@ class TestAsyncPersistentPty:
                 "rows": 0,
             },
         )
-        assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
@@ -496,7 +496,7 @@ class TestAsyncPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = await response.parse()
-        assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
@@ -510,7 +510,7 @@ class TestAsyncPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = await response.parse()
-            assert_matches_type(PersistentPtyCreateResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -533,7 +533,7 @@ class TestAsyncPersistentPty:
                 "rows": 0,
             },
         )
-        assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -545,7 +545,7 @@ class TestAsyncPersistentPty:
             },
             attachment_id="attachmentID",
         )
-        assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncOpencode) -> None:
@@ -560,7 +560,7 @@ class TestAsyncPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = await response.parse()
-        assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncOpencode) -> None:
@@ -575,7 +575,7 @@ class TestAsyncPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = await response.parse()
-            assert_matches_type(PersistentPtyUpdateResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -633,7 +633,7 @@ class TestAsyncPersistentPty:
         persistent_pty = await async_client.experimental.persistent_pty.connect_token(
             pty_id={},
         )
-        assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+        assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     async def test_method_connect_token_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -641,7 +641,7 @@ class TestAsyncPersistentPty:
             pty_id={},
             x_opencode_ticket="x-opencode-ticket",
         )
-        assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+        assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_connect_token(self, async_client: AsyncOpencode) -> None:
@@ -652,7 +652,7 @@ class TestAsyncPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = await response.parse()
-        assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+        assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     async def test_streaming_response_connect_token(self, async_client: AsyncOpencode) -> None:
@@ -663,7 +663,7 @@ class TestAsyncPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = await response.parse()
-            assert_matches_type(PersistentPtyConnectTokenResponse, persistent_pty, path=["response"])
+            assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -679,7 +679,7 @@ class TestAsyncPersistentPty:
         persistent_pty = await async_client.experimental.persistent_pty.get(
             {},
         )
-        assert_matches_type(PersistentPtyGetResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
@@ -690,7 +690,7 @@ class TestAsyncPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = await response.parse()
-        assert_matches_type(PersistentPtyGetResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
@@ -701,7 +701,7 @@ class TestAsyncPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = await response.parse()
-            assert_matches_type(PersistentPtyGetResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -851,7 +851,7 @@ class TestAsyncPersistentPty:
         persistent_pty = await async_client.experimental.persistent_pty.snapshot(
             {},
         )
-        assert_matches_type(PersistentPtySnapshotResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_snapshot(self, async_client: AsyncOpencode) -> None:
@@ -862,7 +862,7 @@ class TestAsyncPersistentPty:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         persistent_pty = await response.parse()
-        assert_matches_type(PersistentPtySnapshotResponse, persistent_pty, path=["response"])
+        assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
     @parametrize
     async def test_streaming_response_snapshot(self, async_client: AsyncOpencode) -> None:
@@ -873,7 +873,7 @@ class TestAsyncPersistentPty:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             persistent_pty = await response.parse()
-            assert_matches_type(PersistentPtySnapshotResponse, persistent_pty, path=["response"])
+            assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

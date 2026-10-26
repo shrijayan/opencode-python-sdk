@@ -5,13 +5,12 @@ from typing import TYPE_CHECKING, Dict
 from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
-from .shared.session_inbox_user import SessionInboxUser
 
-__all__ = ["SessionPromptResponse"]
+__all__ = ["SessionGenerateResponse"]
 
 
-class SessionPromptResponse(BaseModel):
-    data: SessionInboxUser
+class SessionGenerateResponse(BaseModel):
+    text: str
 
     if TYPE_CHECKING:
         # Some versions of Pydantic <2.8.0 have a bug and don’t allow assigning a
