@@ -53,7 +53,9 @@ aiohttp = [
 [dependency-groups]
 dev = [
   "dirty-equals>=0.6",
-  "mypy>=1.18",
+  "mypy==1.17.0",  # the version the generated code is checked with
+  # pydantic 2.13 adds a model_dump parameter the runtime's override does not take yet.
+  "pydantic<2.13",
   "pyright==1.1.399",  # the version the generated code is checked with
   "pytest>=8.4",
   "pytest-asyncio>=1",
