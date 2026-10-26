@@ -54,14 +54,14 @@ class TestIntegration:
     @parametrize
     def test_method_get(self, client: Opencode) -> None:
         integration = client.integration.get(
-            integration_id={},
+            integration_id="integrationID",
         )
         assert_matches_type(IntegrationGetResponse, integration, path=["response"])
 
     @parametrize
     def test_method_get_with_all_params(self, client: Opencode) -> None:
         integration = client.integration.get(
-            integration_id={},
+            integration_id="integrationID",
             location={
                 "directory": "string",
             },
@@ -71,7 +71,7 @@ class TestIntegration:
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
         response = client.integration.with_raw_response.get(
-            integration_id={},
+            integration_id="integrationID",
         )
 
         assert response.is_closed is True
@@ -82,7 +82,7 @@ class TestIntegration:
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
         with client.integration.with_streaming_response.get(
-            integration_id={},
+            integration_id="integrationID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -142,14 +142,14 @@ class TestAsyncIntegration:
     @parametrize
     async def test_method_get(self, async_client: AsyncOpencode) -> None:
         integration = await async_client.integration.get(
-            integration_id={},
+            integration_id="integrationID",
         )
         assert_matches_type(IntegrationGetResponse, integration, path=["response"])
 
     @parametrize
     async def test_method_get_with_all_params(self, async_client: AsyncOpencode) -> None:
         integration = await async_client.integration.get(
-            integration_id={},
+            integration_id="integrationID",
             location={
                 "directory": "string",
             },
@@ -159,7 +159,7 @@ class TestAsyncIntegration:
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
         response = await async_client.integration.with_raw_response.get(
-            integration_id={},
+            integration_id="integrationID",
         )
 
         assert response.is_closed is True
@@ -170,7 +170,7 @@ class TestAsyncIntegration:
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
         async with async_client.integration.with_streaming_response.get(
-            integration_id={},
+            integration_id="integrationID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

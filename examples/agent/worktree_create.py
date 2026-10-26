@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-worktree = client.worktree.create(project_id={})
+worktree = client.worktree.create(project_id="projectID")
 print(worktree)

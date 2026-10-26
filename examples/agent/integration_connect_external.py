@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-connect = client.integration.connect.external(integration_id={}, method_id={})
+connect = client.integration.connect.external(integration_id="integrationID", method_id="methodID")
 print(connect)

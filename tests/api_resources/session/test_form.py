@@ -22,7 +22,7 @@ class TestForm:
     def test_method_create(self, client: Opencode) -> None:
         form = client.session.form.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
         )
         assert_matches_type(FormInfo, form, path=["response"])
@@ -31,10 +31,10 @@ class TestForm:
     def test_method_create_with_all_params(self, client: Opencode) -> None:
         form = client.session.form.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
             id={},
-            metadata={},
+            metadata={"foo": {}},
         )
         assert_matches_type(FormInfo, form, path=["response"])
 
@@ -42,7 +42,7 @@ class TestForm:
     def test_raw_response_create(self, client: Opencode) -> None:
         response = client.session.form.with_raw_response.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
         )
 
@@ -55,7 +55,7 @@ class TestForm:
     def test_streaming_response_create(self, client: Opencode) -> None:
         with client.session.form.with_streaming_response.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
         ) as response:
             assert not response.is_closed
@@ -71,7 +71,7 @@ class TestForm:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             client.session.form.with_raw_response.create(
                 session_id="",
-                fields={},
+                fields=[{}],
                 title="title",
             )
 
@@ -116,7 +116,7 @@ class TestForm:
     @parametrize
     def test_method_cancel(self, client: Opencode) -> None:
         form = client.session.form.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
         assert form is None
@@ -124,7 +124,7 @@ class TestForm:
     @parametrize
     def test_method_cancel_with_all_params(self, client: Opencode) -> None:
         form = client.session.form.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
             message="message",
         )
@@ -133,7 +133,7 @@ class TestForm:
     @parametrize
     def test_raw_response_cancel(self, client: Opencode) -> None:
         response = client.session.form.with_raw_response.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
 
@@ -145,7 +145,7 @@ class TestForm:
     @parametrize
     def test_streaming_response_cancel(self, client: Opencode) -> None:
         with client.session.form.with_streaming_response.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         ) as response:
             assert not response.is_closed
@@ -160,7 +160,7 @@ class TestForm:
     def test_path_params_cancel(self, client: Opencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             client.session.form.with_raw_response.cancel(
-                form_id={},
+                form_id="formID",
                 session_id="",
             )
 
@@ -173,7 +173,7 @@ class TestForm:
     @parametrize
     def test_method_get(self, client: Opencode) -> None:
         form = client.session.form.get(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
         assert_matches_type(FormDetail, form, path=["response"])
@@ -181,7 +181,7 @@ class TestForm:
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
         response = client.session.form.with_raw_response.get(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
 
@@ -193,7 +193,7 @@ class TestForm:
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
         with client.session.form.with_streaming_response.get(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         ) as response:
             assert not response.is_closed
@@ -208,7 +208,7 @@ class TestForm:
     def test_path_params_get(self, client: Opencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             client.session.form.with_raw_response.get(
-                form_id={},
+                form_id="formID",
                 session_id="",
             )
 
@@ -221,18 +221,18 @@ class TestForm:
     @parametrize
     def test_method_reply(self, client: Opencode) -> None:
         form = client.session.form.reply(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
-            answer={},
+            answer={"foo": {}},
         )
         assert form is None
 
     @parametrize
     def test_raw_response_reply(self, client: Opencode) -> None:
         response = client.session.form.with_raw_response.reply(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
-            answer={},
+            answer={"foo": {}},
         )
 
         assert response.is_closed is True
@@ -243,9 +243,9 @@ class TestForm:
     @parametrize
     def test_streaming_response_reply(self, client: Opencode) -> None:
         with client.session.form.with_streaming_response.reply(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
-            answer={},
+            answer={"foo": {}},
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -259,16 +259,16 @@ class TestForm:
     def test_path_params_reply(self, client: Opencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             client.session.form.with_raw_response.reply(
-                form_id={},
+                form_id="formID",
                 session_id="",
-                answer={},
+                answer={"foo": {}},
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `form_id` but received ''"):
             client.session.form.with_raw_response.reply(
                 form_id="",
                 session_id="sessionID",
-                answer={},
+                answer={"foo": {}},
             )
 
 
@@ -281,7 +281,7 @@ class TestAsyncForm:
     async def test_method_create(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
         )
         assert_matches_type(FormInfo, form, path=["response"])
@@ -290,10 +290,10 @@ class TestAsyncForm:
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
             id={},
-            metadata={},
+            metadata={"foo": {}},
         )
         assert_matches_type(FormInfo, form, path=["response"])
 
@@ -301,7 +301,7 @@ class TestAsyncForm:
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.form.with_raw_response.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
         )
 
@@ -314,7 +314,7 @@ class TestAsyncForm:
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.form.with_streaming_response.create(
             session_id="sessionID",
-            fields={},
+            fields=[{}],
             title="title",
         ) as response:
             assert not response.is_closed
@@ -330,7 +330,7 @@ class TestAsyncForm:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             await async_client.session.form.with_raw_response.create(
                 session_id="",
-                fields={},
+                fields=[{}],
                 title="title",
             )
 
@@ -375,7 +375,7 @@ class TestAsyncForm:
     @parametrize
     async def test_method_cancel(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
         assert form is None
@@ -383,7 +383,7 @@ class TestAsyncForm:
     @parametrize
     async def test_method_cancel_with_all_params(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
             message="message",
         )
@@ -392,7 +392,7 @@ class TestAsyncForm:
     @parametrize
     async def test_raw_response_cancel(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.form.with_raw_response.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
 
@@ -404,7 +404,7 @@ class TestAsyncForm:
     @parametrize
     async def test_streaming_response_cancel(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.form.with_streaming_response.cancel(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         ) as response:
             assert not response.is_closed
@@ -419,7 +419,7 @@ class TestAsyncForm:
     async def test_path_params_cancel(self, async_client: AsyncOpencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             await async_client.session.form.with_raw_response.cancel(
-                form_id={},
+                form_id="formID",
                 session_id="",
             )
 
@@ -432,7 +432,7 @@ class TestAsyncForm:
     @parametrize
     async def test_method_get(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.get(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
         assert_matches_type(FormDetail, form, path=["response"])
@@ -440,7 +440,7 @@ class TestAsyncForm:
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.form.with_raw_response.get(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         )
 
@@ -452,7 +452,7 @@ class TestAsyncForm:
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.form.with_streaming_response.get(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
         ) as response:
             assert not response.is_closed
@@ -467,7 +467,7 @@ class TestAsyncForm:
     async def test_path_params_get(self, async_client: AsyncOpencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             await async_client.session.form.with_raw_response.get(
-                form_id={},
+                form_id="formID",
                 session_id="",
             )
 
@@ -480,18 +480,18 @@ class TestAsyncForm:
     @parametrize
     async def test_method_reply(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.reply(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
-            answer={},
+            answer={"foo": {}},
         )
         assert form is None
 
     @parametrize
     async def test_raw_response_reply(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.form.with_raw_response.reply(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
-            answer={},
+            answer={"foo": {}},
         )
 
         assert response.is_closed is True
@@ -502,9 +502,9 @@ class TestAsyncForm:
     @parametrize
     async def test_streaming_response_reply(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.form.with_streaming_response.reply(
-            form_id={},
+            form_id="formID",
             session_id="sessionID",
-            answer={},
+            answer={"foo": {}},
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -518,14 +518,14 @@ class TestAsyncForm:
     async def test_path_params_reply(self, async_client: AsyncOpencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             await async_client.session.form.with_raw_response.reply(
-                form_id={},
+                form_id="formID",
                 session_id="",
-                answer={},
+                answer={"foo": {}},
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `form_id` but received ''"):
             await async_client.session.form.with_raw_response.reply(
                 form_id="",
                 session_id="sessionID",
-                answer={},
+                answer={"foo": {}},
             )

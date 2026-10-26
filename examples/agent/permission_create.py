@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-permission = client.permission.create(session_id={}, action="action", resources=["string"])
+permission = client.permission.create(session_id="sessionID", action="action", resources=["string"])
 print(permission)

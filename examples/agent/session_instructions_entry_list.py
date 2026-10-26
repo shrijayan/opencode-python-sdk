@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-entry = client.session.instructions.entry.list(session_id={})
+entry = client.session.instructions.entry.list(session_id="sessionID")
 print(entry)

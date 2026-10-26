@@ -103,14 +103,14 @@ class TestShell:
     @parametrize
     def test_method_get(self, client: Opencode) -> None:
         shell = client.shell.get(
-            id={},
+            id="id",
         )
         assert_matches_type(ShellGetResponse, shell, path=["response"])
 
     @parametrize
     def test_method_get_with_all_params(self, client: Opencode) -> None:
         shell = client.shell.get(
-            id={},
+            id="id",
             location={
                 "directory": "string",
             },
@@ -120,7 +120,7 @@ class TestShell:
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
         response = client.shell.with_raw_response.get(
-            id={},
+            id="id",
         )
 
         assert response.is_closed is True
@@ -131,7 +131,7 @@ class TestShell:
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
         with client.shell.with_streaming_response.get(
-            id={},
+            id="id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -151,14 +151,14 @@ class TestShell:
     @parametrize
     def test_method_output(self, client: Opencode) -> None:
         shell = client.shell.output(
-            id={},
+            id="id",
         )
         assert_matches_type(ShellOutputResponse, shell, path=["response"])
 
     @parametrize
     def test_method_output_with_all_params(self, client: Opencode) -> None:
         shell = client.shell.output(
-            id={},
+            id="id",
             cursor=0,
             limit=0,
             location={
@@ -170,7 +170,7 @@ class TestShell:
     @parametrize
     def test_raw_response_output(self, client: Opencode) -> None:
         response = client.shell.with_raw_response.output(
-            id={},
+            id="id",
         )
 
         assert response.is_closed is True
@@ -181,7 +181,7 @@ class TestShell:
     @parametrize
     def test_streaming_response_output(self, client: Opencode) -> None:
         with client.shell.with_streaming_response.output(
-            id={},
+            id="id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -201,14 +201,14 @@ class TestShell:
     @parametrize
     def test_method_remove(self, client: Opencode) -> None:
         shell = client.shell.remove(
-            id={},
+            id="id",
         )
         assert shell is None
 
     @parametrize
     def test_method_remove_with_all_params(self, client: Opencode) -> None:
         shell = client.shell.remove(
-            id={},
+            id="id",
             location={
                 "directory": "string",
             },
@@ -218,7 +218,7 @@ class TestShell:
     @parametrize
     def test_raw_response_remove(self, client: Opencode) -> None:
         response = client.shell.with_raw_response.remove(
-            id={},
+            id="id",
         )
 
         assert response.is_closed is True
@@ -229,7 +229,7 @@ class TestShell:
     @parametrize
     def test_streaming_response_remove(self, client: Opencode) -> None:
         with client.shell.with_streaming_response.remove(
-            id={},
+            id="id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -333,14 +333,14 @@ class TestAsyncShell:
     @parametrize
     async def test_method_get(self, async_client: AsyncOpencode) -> None:
         shell = await async_client.shell.get(
-            id={},
+            id="id",
         )
         assert_matches_type(ShellGetResponse, shell, path=["response"])
 
     @parametrize
     async def test_method_get_with_all_params(self, async_client: AsyncOpencode) -> None:
         shell = await async_client.shell.get(
-            id={},
+            id="id",
             location={
                 "directory": "string",
             },
@@ -350,7 +350,7 @@ class TestAsyncShell:
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
         response = await async_client.shell.with_raw_response.get(
-            id={},
+            id="id",
         )
 
         assert response.is_closed is True
@@ -361,7 +361,7 @@ class TestAsyncShell:
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
         async with async_client.shell.with_streaming_response.get(
-            id={},
+            id="id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -381,14 +381,14 @@ class TestAsyncShell:
     @parametrize
     async def test_method_output(self, async_client: AsyncOpencode) -> None:
         shell = await async_client.shell.output(
-            id={},
+            id="id",
         )
         assert_matches_type(ShellOutputResponse, shell, path=["response"])
 
     @parametrize
     async def test_method_output_with_all_params(self, async_client: AsyncOpencode) -> None:
         shell = await async_client.shell.output(
-            id={},
+            id="id",
             cursor=0,
             limit=0,
             location={
@@ -400,7 +400,7 @@ class TestAsyncShell:
     @parametrize
     async def test_raw_response_output(self, async_client: AsyncOpencode) -> None:
         response = await async_client.shell.with_raw_response.output(
-            id={},
+            id="id",
         )
 
         assert response.is_closed is True
@@ -411,7 +411,7 @@ class TestAsyncShell:
     @parametrize
     async def test_streaming_response_output(self, async_client: AsyncOpencode) -> None:
         async with async_client.shell.with_streaming_response.output(
-            id={},
+            id="id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -431,14 +431,14 @@ class TestAsyncShell:
     @parametrize
     async def test_method_remove(self, async_client: AsyncOpencode) -> None:
         shell = await async_client.shell.remove(
-            id={},
+            id="id",
         )
         assert shell is None
 
     @parametrize
     async def test_method_remove_with_all_params(self, async_client: AsyncOpencode) -> None:
         shell = await async_client.shell.remove(
-            id={},
+            id="id",
             location={
                 "directory": "string",
             },
@@ -448,7 +448,7 @@ class TestAsyncShell:
     @parametrize
     async def test_raw_response_remove(self, async_client: AsyncOpencode) -> None:
         response = await async_client.shell.with_raw_response.remove(
-            id={},
+            id="id",
         )
 
         assert response.is_closed is True
@@ -459,7 +459,7 @@ class TestAsyncShell:
     @parametrize
     async def test_streaming_response_remove(self, async_client: AsyncOpencode) -> None:
         async with async_client.shell.with_streaming_response.remove(
-            id={},
+            id="id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

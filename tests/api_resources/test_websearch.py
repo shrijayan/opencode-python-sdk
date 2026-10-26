@@ -65,7 +65,7 @@ class TestWebsearch:
             location={
                 "directory": "string",
             },
-            provider_id={},
+            provider_id="providerID",
         )
         assert_matches_type(WebsearchQueryResponse, websearch, path=["response"])
 
@@ -147,7 +147,7 @@ class TestAsyncWebsearch:
             location={
                 "directory": "string",
             },
-            provider_id={},
+            provider_id="providerID",
         )
         assert_matches_type(WebsearchQueryResponse, websearch, path=["response"])
 

@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-command = client.integration.command.cancel(integration_id={}, attempt_id={})
+command = client.integration.command.cancel(integration_id="integrationID", attempt_id="attemptID")
 print(command)

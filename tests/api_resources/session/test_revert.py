@@ -20,14 +20,14 @@ class TestRevert:
     @parametrize
     def test_method_clear(self, client: Opencode) -> None:
         revert = client.session.revert.clear(
-            {},
+            "sessionID",
         )
         assert revert is None
 
     @parametrize
     def test_raw_response_clear(self, client: Opencode) -> None:
         response = client.session.revert.with_raw_response.clear(
-            {},
+            "sessionID",
         )
 
         assert response.is_closed is True
@@ -38,7 +38,7 @@ class TestRevert:
     @parametrize
     def test_streaming_response_clear(self, client: Opencode) -> None:
         with client.session.revert.with_streaming_response.clear(
-            {},
+            "sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -58,14 +58,14 @@ class TestRevert:
     @parametrize
     def test_method_commit(self, client: Opencode) -> None:
         revert = client.session.revert.commit(
-            {},
+            "sessionID",
         )
         assert revert is None
 
     @parametrize
     def test_raw_response_commit(self, client: Opencode) -> None:
         response = client.session.revert.with_raw_response.commit(
-            {},
+            "sessionID",
         )
 
         assert response.is_closed is True
@@ -76,7 +76,7 @@ class TestRevert:
     @parametrize
     def test_streaming_response_commit(self, client: Opencode) -> None:
         with client.session.revert.with_streaming_response.commit(
-            {},
+            "sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -96,16 +96,16 @@ class TestRevert:
     @parametrize
     def test_method_stage(self, client: Opencode) -> None:
         revert = client.session.revert.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
         )
         assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     def test_method_stage_with_all_params(self, client: Opencode) -> None:
         revert = client.session.revert.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
             files=True,
         )
         assert_matches_type(SessionRevert, revert, path=["response"])
@@ -113,8 +113,8 @@ class TestRevert:
     @parametrize
     def test_raw_response_stage(self, client: Opencode) -> None:
         response = client.session.revert.with_raw_response.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
         )
 
         assert response.is_closed is True
@@ -125,8 +125,8 @@ class TestRevert:
     @parametrize
     def test_streaming_response_stage(self, client: Opencode) -> None:
         with client.session.revert.with_streaming_response.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -141,7 +141,7 @@ class TestRevert:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             client.session.revert.with_raw_response.stage(
                 session_id="",
-                message_id={},
+                message_id="messageID",
             )
 
 
@@ -153,14 +153,14 @@ class TestAsyncRevert:
     @parametrize
     async def test_method_clear(self, async_client: AsyncOpencode) -> None:
         revert = await async_client.session.revert.clear(
-            {},
+            "sessionID",
         )
         assert revert is None
 
     @parametrize
     async def test_raw_response_clear(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.revert.with_raw_response.clear(
-            {},
+            "sessionID",
         )
 
         assert response.is_closed is True
@@ -171,7 +171,7 @@ class TestAsyncRevert:
     @parametrize
     async def test_streaming_response_clear(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.revert.with_streaming_response.clear(
-            {},
+            "sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -191,14 +191,14 @@ class TestAsyncRevert:
     @parametrize
     async def test_method_commit(self, async_client: AsyncOpencode) -> None:
         revert = await async_client.session.revert.commit(
-            {},
+            "sessionID",
         )
         assert revert is None
 
     @parametrize
     async def test_raw_response_commit(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.revert.with_raw_response.commit(
-            {},
+            "sessionID",
         )
 
         assert response.is_closed is True
@@ -209,7 +209,7 @@ class TestAsyncRevert:
     @parametrize
     async def test_streaming_response_commit(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.revert.with_streaming_response.commit(
-            {},
+            "sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -229,16 +229,16 @@ class TestAsyncRevert:
     @parametrize
     async def test_method_stage(self, async_client: AsyncOpencode) -> None:
         revert = await async_client.session.revert.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
         )
         assert_matches_type(SessionRevert, revert, path=["response"])
 
     @parametrize
     async def test_method_stage_with_all_params(self, async_client: AsyncOpencode) -> None:
         revert = await async_client.session.revert.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
             files=True,
         )
         assert_matches_type(SessionRevert, revert, path=["response"])
@@ -246,8 +246,8 @@ class TestAsyncRevert:
     @parametrize
     async def test_raw_response_stage(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.revert.with_raw_response.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
         )
 
         assert response.is_closed is True
@@ -258,8 +258,8 @@ class TestAsyncRevert:
     @parametrize
     async def test_streaming_response_stage(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.revert.with_streaming_response.stage(
-            session_id={},
-            message_id={},
+            session_id="sessionID",
+            message_id="messageID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -274,5 +274,5 @@ class TestAsyncRevert:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             await async_client.session.revert.with_raw_response.stage(
                 session_id="",
-                message_id={},
+                message_id="messageID",
             )

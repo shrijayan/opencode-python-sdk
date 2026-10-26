@@ -21,15 +21,15 @@ class TestProject:
     @parametrize
     def test_method_update(self, client: Opencode) -> None:
         project = client.project.update(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(Project, project, path=["response"])
 
     @parametrize
     def test_method_update_with_all_params(self, client: Opencode) -> None:
         project = client.project.update(
-            project_id={},
-            canonical={},
+            project_id="projectID",
+            canonical="canonical",
             commands={},
             icon={},
             name="name",
@@ -39,7 +39,7 @@ class TestProject:
     @parametrize
     def test_raw_response_update(self, client: Opencode) -> None:
         response = client.project.with_raw_response.update(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -50,7 +50,7 @@ class TestProject:
     @parametrize
     def test_streaming_response_update(self, client: Opencode) -> None:
         with client.project.with_streaming_response.update(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -108,15 +108,15 @@ class TestAsyncProject:
     @parametrize
     async def test_method_update(self, async_client: AsyncOpencode) -> None:
         project = await async_client.project.update(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(Project, project, path=["response"])
 
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncOpencode) -> None:
         project = await async_client.project.update(
-            project_id={},
-            canonical={},
+            project_id="projectID",
+            canonical="canonical",
             commands={},
             icon={},
             name="name",
@@ -126,7 +126,7 @@ class TestAsyncProject:
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncOpencode) -> None:
         response = await async_client.project.with_raw_response.update(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -137,7 +137,7 @@ class TestAsyncProject:
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncOpencode) -> None:
         async with async_client.project.with_streaming_response.update(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

@@ -29,7 +29,7 @@ class TestPersistentPty:
     @parametrize
     def test_method_create(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -39,7 +39,7 @@ class TestPersistentPty:
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -55,7 +55,7 @@ class TestPersistentPty:
     @parametrize
     def test_raw_response_create(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -69,7 +69,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_create(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -95,7 +95,7 @@ class TestPersistentPty:
     @parametrize
     def test_method_update(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -106,7 +106,7 @@ class TestPersistentPty:
     @parametrize
     def test_method_update_with_all_params(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -118,7 +118,7 @@ class TestPersistentPty:
     @parametrize
     def test_raw_response_update(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -133,7 +133,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_update(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -161,14 +161,14 @@ class TestPersistentPty:
     @parametrize
     def test_method_list(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.list(
-            {},
+            "sessionID",
         )
         assert_matches_type(PersistentPtyListResponse, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_list(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.list(
-            {},
+            "sessionID",
         )
 
         assert response.is_closed is True
@@ -179,7 +179,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_list(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.list(
-            {},
+            "sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -199,14 +199,14 @@ class TestPersistentPty:
     @parametrize
     def test_method_connect_token(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.connect_token(
-            pty_id={},
+            pty_id="ptyID",
         )
         assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     def test_method_connect_token_with_all_params(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.connect_token(
-            pty_id={},
+            pty_id="ptyID",
             x_opencode_ticket="x-opencode-ticket",
         )
         assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
@@ -214,7 +214,7 @@ class TestPersistentPty:
     @parametrize
     def test_raw_response_connect_token(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.connect_token(
-            pty_id={},
+            pty_id="ptyID",
         )
 
         assert response.is_closed is True
@@ -225,7 +225,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_connect_token(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.connect_token(
-            pty_id={},
+            pty_id="ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -245,14 +245,14 @@ class TestPersistentPty:
     @parametrize
     def test_method_get(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.get(
-            {},
+            "ptyID",
         )
         assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.get(
-            {},
+            "ptyID",
         )
 
         assert response.is_closed is True
@@ -263,7 +263,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.get(
-            {},
+            "ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -308,14 +308,14 @@ class TestPersistentPty:
     @parametrize
     def test_method_read(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.read(
-            session_id={},
+            session_id="sessionID",
         )
         assert_matches_type(PersistentPtyReadResponse, persistent_pty, path=["response"])
 
     @parametrize
     def test_method_read_with_all_params(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.read(
-            session_id={},
+            session_id="sessionID",
             lines={},
         )
         assert_matches_type(PersistentPtyReadResponse, persistent_pty, path=["response"])
@@ -323,7 +323,7 @@ class TestPersistentPty:
     @parametrize
     def test_raw_response_read(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.read(
-            session_id={},
+            session_id="sessionID",
         )
 
         assert response.is_closed is True
@@ -334,7 +334,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_read(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.read(
-            session_id={},
+            session_id="sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -354,14 +354,14 @@ class TestPersistentPty:
     @parametrize
     def test_method_remove(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.remove(
-            {},
+            "ptyID",
         )
         assert persistent_pty is None
 
     @parametrize
     def test_raw_response_remove(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.remove(
-            {},
+            "ptyID",
         )
 
         assert response.is_closed is True
@@ -372,7 +372,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_remove(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.remove(
-            {},
+            "ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -417,14 +417,14 @@ class TestPersistentPty:
     @parametrize
     def test_method_snapshot(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.snapshot(
-            {},
+            "ptyID",
         )
         assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
     @parametrize
     def test_raw_response_snapshot(self, client: Opencode) -> None:
         response = client.experimental.persistent_pty.with_raw_response.snapshot(
-            {},
+            "ptyID",
         )
 
         assert response.is_closed is True
@@ -435,7 +435,7 @@ class TestPersistentPty:
     @parametrize
     def test_streaming_response_snapshot(self, client: Opencode) -> None:
         with client.experimental.persistent_pty.with_streaming_response.snapshot(
-            {},
+            "ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -461,7 +461,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_create(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -471,7 +471,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -487,7 +487,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -501,7 +501,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.create(
-            session_id={},
+            session_id="sessionID",
             args=["string"],
             env={"foo": "string"},
             title="title",
@@ -527,7 +527,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_update(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -538,7 +538,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_update_with_all_params(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -550,7 +550,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -565,7 +565,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.update(
-            pty_id={},
+            pty_id="ptyID",
             size={
                 "cols": 0,
                 "rows": 0,
@@ -593,14 +593,14 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_list(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.list(
-            {},
+            "sessionID",
         )
         assert_matches_type(PersistentPtyListResponse, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.list(
-            {},
+            "sessionID",
         )
 
         assert response.is_closed is True
@@ -611,7 +611,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.list(
-            {},
+            "sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -631,14 +631,14 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_connect_token(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.connect_token(
-            pty_id={},
+            pty_id="ptyID",
         )
         assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
 
     @parametrize
     async def test_method_connect_token_with_all_params(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.connect_token(
-            pty_id={},
+            pty_id="ptyID",
             x_opencode_ticket="x-opencode-ticket",
         )
         assert_matches_type(PtyTicketConnectToken, persistent_pty, path=["response"])
@@ -646,7 +646,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_raw_response_connect_token(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.connect_token(
-            pty_id={},
+            pty_id="ptyID",
         )
 
         assert response.is_closed is True
@@ -657,7 +657,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_connect_token(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.connect_token(
-            pty_id={},
+            pty_id="ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -677,14 +677,14 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_get(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.get(
-            {},
+            "ptyID",
         )
         assert_matches_type(PersistentPtyInfo, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.get(
-            {},
+            "ptyID",
         )
 
         assert response.is_closed is True
@@ -695,7 +695,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.get(
-            {},
+            "ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -740,14 +740,14 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_read(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.read(
-            session_id={},
+            session_id="sessionID",
         )
         assert_matches_type(PersistentPtyReadResponse, persistent_pty, path=["response"])
 
     @parametrize
     async def test_method_read_with_all_params(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.read(
-            session_id={},
+            session_id="sessionID",
             lines={},
         )
         assert_matches_type(PersistentPtyReadResponse, persistent_pty, path=["response"])
@@ -755,7 +755,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_raw_response_read(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.read(
-            session_id={},
+            session_id="sessionID",
         )
 
         assert response.is_closed is True
@@ -766,7 +766,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_read(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.read(
-            session_id={},
+            session_id="sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -786,14 +786,14 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_remove(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.remove(
-            {},
+            "ptyID",
         )
         assert persistent_pty is None
 
     @parametrize
     async def test_raw_response_remove(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.remove(
-            {},
+            "ptyID",
         )
 
         assert response.is_closed is True
@@ -804,7 +804,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_remove(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.remove(
-            {},
+            "ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -849,14 +849,14 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_method_snapshot(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.snapshot(
-            {},
+            "ptyID",
         )
         assert_matches_type(PersistentPtySnapshot, persistent_pty, path=["response"])
 
     @parametrize
     async def test_raw_response_snapshot(self, async_client: AsyncOpencode) -> None:
         response = await async_client.experimental.persistent_pty.with_raw_response.snapshot(
-            {},
+            "ptyID",
         )
 
         assert response.is_closed is True
@@ -867,7 +867,7 @@ class TestAsyncPersistentPty:
     @parametrize
     async def test_streaming_response_snapshot(self, async_client: AsyncOpencode) -> None:
         async with async_client.experimental.persistent_pty.with_streaming_response.snapshot(
-            {},
+            "ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
