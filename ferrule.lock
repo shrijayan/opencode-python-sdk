@@ -1,5 +1,5 @@
 {
-  "config_sha256": "4e800af8877cf4c5cb8c662b42cadbf61a9a696ff26f88c525a499ac3547344f",
+  "config_sha256": "13d15125c26cc8e7c7ccc11f57dcfc79a8455f50d969516b379b9b813222077c",
   "ferrule_version": "0.1.0",
   "files": {
     ".github/workflows/ci.yml": "5ac1be1c103477e7dcdb28d276ff14fb4ebf92650e92d6912e605a64df2dd27b",
@@ -507,7 +507,7 @@
     "src/opencode/types/shared/session_idle_event.py": "d0315d5011638cbf5d47c0b7d4bb69ed7e5591491c07dcf2f8f788100f6824ce",
     "src/opencode/types/shared/session_inbox_cancelled_event.py": "617d88fd62f6cd02114844d4247ca01279f71397dd60c7a7f05d8e2b4069574d",
     "src/opencode/types/shared/session_inbox_compaction.py": "4a761a4e85a6af46ec1a0476889114d4c1ae74fc741dd76aadf2f31d00396037",
-    "src/opencode/types/shared/session_inbox_compaction_payload.py": "084fdbfecc8ebae043e8c3c814ac035e1f609833105aa875f445fe14ffff2a71",
+    "src/opencode/types/shared/session_inbox_compaction_payload.py": "68383075b39b302ab1c6df5579566c5af77b6a466665c4e770ffc08fd3435ae0",
     "src/opencode/types/shared/session_inbox_delivered_event.py": "2cc752332fd10653bb37a93c6ccd079795782103ee06d80370149f77efdbf90a",
     "src/opencode/types/shared/session_inbox_delivery.py": "4dae712d09bd0dc3f42769f66153d9d9a8625c9a054ed88fd33259aa3cb5b024",
     "src/opencode/types/shared/session_inbox_delivery_changed_event.py": "c37b6970ffb7c576ffab20c2da176d8d3aa174a1d57a04686c8622ea4d6d4386",
@@ -760,7 +760,7 @@
     "tests/api_resources/debug/__init__.py": "9e36a6e4132a941a78fd9e044311e0bf22e3dad2d760c839db2757c1730c20c2",
     "tests/api_resources/debug/test_location.py": "8dc2ed87566aac5a4c6412b90be8ab49ad2049c5f18cfd966efb8158750fe73d",
     "tests/api_resources/experimental/__init__.py": "9e36a6e4132a941a78fd9e044311e0bf22e3dad2d760c839db2757c1730c20c2",
-    "tests/api_resources/experimental/test_persistent_pty.py": "effd322779465701098e582876b1d2025b4020f7b338c31812d6f6d72672c47b",
+    "tests/api_resources/experimental/test_persistent_pty.py": "49fc5e73f7d1e6c5d57da9a71673c2105bb93135e3b438aa635354485684cbd1",
     "tests/api_resources/integration/__init__.py": "9e36a6e4132a941a78fd9e044311e0bf22e3dad2d760c839db2757c1730c20c2",
     "tests/api_resources/integration/test_command.py": "7f54f3b02479958b7e94085b1bf560f6297849289ba03582945f7a69b82e5c3b",
     "tests/api_resources/integration/test_connect.py": "286b94346bc5d6b56dda4e6ab5fd20e02be8b9549506f5e1b524f58b40a25ad6",
@@ -803,7 +803,7 @@
     "tests/api_resources/test_reference.py": "82661f6cecc6f0fe44d63fd1180817b27869845578f5d71d039916ee1679b8ec",
     "tests/api_resources/test_rpc.py": "1dabbd8dbdab2902c05721ea5c344bd57f4c4e5c85af15c9ff60dd650baf4907",
     "tests/api_resources/test_server.py": "bf49f7693308b7ede9fd1cf2e4e555dce88ec560c6e908393020e3ebc7fac9db",
-    "tests/api_resources/test_session.py": "b23fbb1eecf734b6e5bfdfed33b8a570e45ef1f3a4ee84dfd73357658442d407",
+    "tests/api_resources/test_session.py": "86d5ae01518ac3fc53750d397c0d113c6c8f28b39271491684241a6c5ca40d03",
     "tests/api_resources/test_shell.py": "544c8e14854989a874fc1e6e5ca9067ccae4bfd44f81ea8a845fa101176181d4",
     "tests/api_resources/test_skill.py": "cf22c66273943ec809067cfac8d6b9d14f71e93f862b1be615ae2c51933c34cf",
     "tests/api_resources/test_vcs.py": "502249bc039765b74d0860cc151f48f1cc5f2ad4456d123b2c950253411e6bb1",

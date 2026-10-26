@@ -1015,6 +1015,7 @@ class TestSession:
                 session_id="",
             )
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     def test_method_log(self, client: Opencode) -> None:
         session = client.session.log(
@@ -1022,6 +1023,7 @@ class TestSession:
         )
         assert session is None
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     def test_method_log_with_all_params(self, client: Opencode) -> None:
         session = client.session.log(
@@ -1031,6 +1033,7 @@ class TestSession:
         )
         assert session is None
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     def test_raw_response_log(self, client: Opencode) -> None:
         response = client.session.with_raw_response.log(
@@ -1042,6 +1045,7 @@ class TestSession:
         session = response.parse()
         assert session is None
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     def test_streaming_response_log(self, client: Opencode) -> None:
         with client.session.with_streaming_response.log(
@@ -1055,6 +1059,7 @@ class TestSession:
 
         assert cast(Any, response.is_closed) is True
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     def test_path_params_log(self, client: Opencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
@@ -2599,6 +2604,7 @@ class TestAsyncSession:
                 session_id="",
             )
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     async def test_method_log(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.log(
@@ -2606,6 +2612,7 @@ class TestAsyncSession:
         )
         assert session is None
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     async def test_method_log_with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.log(
@@ -2615,6 +2622,7 @@ class TestAsyncSession:
         )
         assert session is None
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     async def test_raw_response_log(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.with_raw_response.log(
@@ -2626,6 +2634,7 @@ class TestAsyncSession:
         session = await response.parse()
         assert session is None
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     async def test_streaming_response_log(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.with_streaming_response.log(
@@ -2639,6 +2648,7 @@ class TestAsyncSession:
 
         assert cast(Any, response.is_closed) is True
 
+    @pytest.mark.skip(reason="The mock server rejects integer query parameters typed through a $ref in anyOf.")
     @parametrize
     async def test_path_params_log(self, async_client: AsyncOpencode) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
