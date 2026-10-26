@@ -46,7 +46,7 @@ pty = [
     "websockets>=14,<17",
 ]
 aiohttp = [
-    "aiohttp",
+    "aiohttp>=3.10,<4",
     "httpx-aiohttp>=0.1.9,<0.3",
 ]
 

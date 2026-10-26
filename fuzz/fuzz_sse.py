@@ -14,8 +14,11 @@ with atheris.instrument_imports():
 def test_one_input(data: bytes) -> None:
     """Feed arbitrary bytes through the SSE decoder, as the response stream would."""
     chunks = [data[i : i + 7] for i in range(0, len(data), 7)]
-    for _ in SSEDecoder().iter_bytes(iter(chunks)):
-        pass
+    try:
+        for _ in SSEDecoder().iter_bytes(iter(chunks)):
+            pass
+    except UnicodeDecodeError:
+        pass  # the decoder rejects bytes that are not UTF-8, as the event stream must be
 
 
 if __name__ == "__main__":

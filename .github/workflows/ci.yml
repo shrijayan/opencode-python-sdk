@@ -55,12 +55,15 @@ jobs:
         with:
           node-version: 22
       - run: uv sync --locked
+      # The generated tests run against the mock (pytest-asyncio), on Linux as the generated
+      # SDKs' own CI does; the hand-written ones in tests/custom use anyio and trio, so they run
+      # apart, on every OS.
       - name: Start the mock server
+        if: runner.os == 'Linux'
         shell: bash
         run: ./scripts/mock --daemon
-      # The generated tests run against the mock (pytest-asyncio); the hand-written ones in
-      # tests/custom use anyio and trio, so they run apart.
-      - run: uv run pytest --cov --cov-report=term-missing
+      - if: runner.os == 'Linux'
+        run: uv run pytest --cov --cov-report=term-missing
       - run: >-
           uv run pytest --confcutdir=tests/custom -o asyncio_mode=strict -o addopts="-ra --strict-markers"
           -m "not live" --cov --cov-append --cov-report=term-missing tests/custom

@@ -38,10 +38,7 @@ def _public_names() -> list[str]:
     """The models and aliases ``opencode.types`` re-exports (``from .x import X as X``)."""
     tree = ast.parse(TYPES_SRC.read_text())
     names = {
-        alias.asname or alias.name
-        for node in tree.body
-        if isinstance(node, ast.ImportFrom)
-        for alias in node.names
+        alias.asname or alias.name for node in tree.body if isinstance(node, ast.ImportFrom) for alias in node.names
     }
     return sorted(n for n in names if not n.startswith("_") and n[0].isupper())
 
