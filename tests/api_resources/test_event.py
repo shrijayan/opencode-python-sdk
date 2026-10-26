@@ -8,8 +8,6 @@ from typing import Any, cast
 import pytest
 
 from opencode import Opencode, AsyncOpencode
-from tests.utils import assert_matches_type
-from opencode.types.shared import Event
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -19,17 +17,16 @@ class TestEvent:
 
     @parametrize
     def test_method_subscribe(self, client: Opencode) -> None:
-        event = client.event.subscribe()
-        assert_matches_type(Event, event, path=["response"])
+        event_stream = client.event.subscribe()
+        event_stream.response.close()
 
     @parametrize
     def test_raw_response_subscribe(self, client: Opencode) -> None:
         response = client.event.with_raw_response.subscribe()
 
-        assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        event = response.parse()
-        assert_matches_type(Event, event, path=["response"])
+        stream = response.parse()
+        stream.close()
 
     @parametrize
     def test_streaming_response_subscribe(self, client: Opencode) -> None:
@@ -37,8 +34,8 @@ class TestEvent:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
-            event = response.parse()
-            assert_matches_type(Event, event, path=["response"])
+            stream = response.parse()
+            stream.close()
 
         assert cast(Any, response.is_closed) is True
 
@@ -50,17 +47,16 @@ class TestAsyncEvent:
 
     @parametrize
     async def test_method_subscribe(self, async_client: AsyncOpencode) -> None:
-        event = await async_client.event.subscribe()
-        assert_matches_type(Event, event, path=["response"])
+        event_stream = await async_client.event.subscribe()
+        await event_stream.response.aclose()
 
     @parametrize
     async def test_raw_response_subscribe(self, async_client: AsyncOpencode) -> None:
         response = await async_client.event.with_raw_response.subscribe()
 
-        assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        event = await response.parse()
-        assert_matches_type(Event, event, path=["response"])
+        stream = await response.parse()
+        await stream.close()
 
     @parametrize
     async def test_streaming_response_subscribe(self, async_client: AsyncOpencode) -> None:
@@ -68,7 +64,7 @@ class TestAsyncEvent:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
-            event = await response.parse()
-            assert_matches_type(Event, event, path=["response"])
+            stream = await response.parse()
+            await stream.close()
 
         assert cast(Any, response.is_closed) is True
