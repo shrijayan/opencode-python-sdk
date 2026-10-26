@@ -5,13 +5,13 @@ from typing import TYPE_CHECKING, Dict
 from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
-from .shared.session_info import SessionInfo
+from .shared.voice_transport import VoiceTransport
 
-__all__ = ["SessionGetResponse"]
+__all__ = ["VoiceSessionResponse"]
 
 
-class SessionGetResponse(BaseModel):
-    data: SessionInfo
+class VoiceSessionResponse(BaseModel):
+    transport: VoiceTransport
 
     if TYPE_CHECKING:
         # Some versions of Pydantic <2.8.0 have a bug and don’t allow assigning a

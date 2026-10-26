@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Type, Optional, cast
 
 import httpx
 
@@ -17,9 +17,10 @@ from .._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from .._wrappers import DataWrapper
 from .._base_client import make_request_options
 from ..types.shared.model_ref import ModelRef
-from ..types.shared.generate_text_response import GenerateTextResponse
+from ..types.generate_text_response import GenerateTextResponse
 
 __all__ = ["GenerateResource", "AsyncGenerateResource"]
 
@@ -80,9 +81,13 @@ class GenerateResource(SyncAPIResource):
                 generate_text_params.GenerateTextParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[GenerateTextResponse]._unwrapper,
             ),
-            cast_to=GenerateTextResponse,
+            cast_to=cast(Type[GenerateTextResponse], DataWrapper[GenerateTextResponse]),
         )
 
 
@@ -142,9 +147,13 @@ class AsyncGenerateResource(AsyncAPIResource):
                 generate_text_params.GenerateTextParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[GenerateTextResponse]._unwrapper,
             ),
-            cast_to=GenerateTextResponse,
+            cast_to=cast(Type[GenerateTextResponse], DataWrapper[GenerateTextResponse]),
         )
 
 

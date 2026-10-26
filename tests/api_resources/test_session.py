@@ -10,22 +10,18 @@ import pytest
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
 from opencode.types import (
-    SessionGetResponse,
     SessionDiffResponse,
-    SessionForkResponse,
-    SessionStatsResponse,
     SessionActiveResponse,
-    SessionCreateResponse,
-    SessionExportResponse,
-    SessionImportResponse,
-    SessionPromptResponse,
-    SessionCompactResponse,
     SessionContextResponse,
-    SessionSyntheticResponse,
+    SessionGenerateResponse,
 )
 from opencode.types.shared import (
     SessionInfo,
-    SessionGenerateResponse,
+    SessionInboxUser,
+    SessionStatsInfo,
+    SessionTransferData,
+    SessionInboxSynthetic,
+    SessionInboxCompaction,
     SessionInterruptResponse,
 )
 
@@ -38,7 +34,7 @@ class TestSession:
     @parametrize
     def test_method_create(self, client: Opencode) -> None:
         session = client.session.create()
-        assert_matches_type(SessionCreateResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
@@ -52,7 +48,7 @@ class TestSession:
             permissions={},
             title="title",
         )
-        assert_matches_type(SessionCreateResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_raw_response_create(self, client: Opencode) -> None:
@@ -61,7 +57,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionCreateResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_streaming_response_create(self, client: Opencode) -> None:
@@ -70,7 +66,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionCreateResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -290,7 +286,7 @@ class TestSession:
         session = client.session.compact(
             session_id={},
         )
-        assert_matches_type(SessionCompactResponse, session, path=["response"])
+        assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
     @parametrize
     def test_method_compact_with_all_params(self, client: Opencode) -> None:
@@ -299,7 +295,7 @@ class TestSession:
             delivery={},
             id={},
         )
-        assert_matches_type(SessionCompactResponse, session, path=["response"])
+        assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
     @parametrize
     def test_raw_response_compact(self, client: Opencode) -> None:
@@ -310,7 +306,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionCompactResponse, session, path=["response"])
+        assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
     @parametrize
     def test_streaming_response_compact(self, client: Opencode) -> None:
@@ -321,7 +317,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionCompactResponse, session, path=["response"])
+            assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -465,7 +461,7 @@ class TestSession:
         session = client.session.export(
             session_id={},
         )
-        assert_matches_type(SessionExportResponse, session, path=["response"])
+        assert_matches_type(SessionTransferData, session, path=["response"])
 
     @parametrize
     def test_method_export_with_all_params(self, client: Opencode) -> None:
@@ -473,7 +469,7 @@ class TestSession:
             session_id={},
             sanitize=True,
         )
-        assert_matches_type(SessionExportResponse, session, path=["response"])
+        assert_matches_type(SessionTransferData, session, path=["response"])
 
     @parametrize
     def test_raw_response_export(self, client: Opencode) -> None:
@@ -484,7 +480,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionExportResponse, session, path=["response"])
+        assert_matches_type(SessionTransferData, session, path=["response"])
 
     @parametrize
     def test_streaming_response_export(self, client: Opencode) -> None:
@@ -495,7 +491,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionExportResponse, session, path=["response"])
+            assert_matches_type(SessionTransferData, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -511,7 +507,7 @@ class TestSession:
         session = client.session.fork(
             session_id={},
         )
-        assert_matches_type(SessionForkResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_method_fork_with_all_params(self, client: Opencode) -> None:
@@ -519,7 +515,7 @@ class TestSession:
             session_id={},
             before={},
         )
-        assert_matches_type(SessionForkResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_raw_response_fork(self, client: Opencode) -> None:
@@ -530,7 +526,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionForkResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_streaming_response_fork(self, client: Opencode) -> None:
@@ -541,7 +537,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionForkResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -599,7 +595,7 @@ class TestSession:
         session = client.session.get(
             {},
         )
-        assert_matches_type(SessionGetResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
@@ -610,7 +606,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionGetResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
@@ -621,7 +617,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionGetResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -638,7 +634,7 @@ class TestSession:
             info={},
             messages=[{}],
         )
-        assert_matches_type(SessionImportResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_method_import__with_all_params(self, client: Opencode) -> None:
@@ -647,7 +643,7 @@ class TestSession:
             messages=[{}],
             location={},
         )
-        assert_matches_type(SessionImportResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_raw_response_import_(self, client: Opencode) -> None:
@@ -659,7 +655,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionImportResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_streaming_response_import_(self, client: Opencode) -> None:
@@ -671,7 +667,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionImportResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -825,7 +821,7 @@ class TestSession:
             session_id={},
             text="text",
         )
-        assert_matches_type(SessionPromptResponse, session, path=["response"])
+        assert_matches_type(SessionInboxUser, session, path=["response"])
 
     @parametrize
     def test_method_prompt_with_all_params(self, client: Opencode) -> None:
@@ -840,7 +836,7 @@ class TestSession:
             resume=True,
             skills=[{}],
         )
-        assert_matches_type(SessionPromptResponse, session, path=["response"])
+        assert_matches_type(SessionInboxUser, session, path=["response"])
 
     @parametrize
     def test_raw_response_prompt(self, client: Opencode) -> None:
@@ -852,7 +848,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionPromptResponse, session, path=["response"])
+        assert_matches_type(SessionInboxUser, session, path=["response"])
 
     @parametrize
     def test_streaming_response_prompt(self, client: Opencode) -> None:
@@ -864,7 +860,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionPromptResponse, session, path=["response"])
+            assert_matches_type(SessionInboxUser, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1019,7 +1015,7 @@ class TestSession:
     @parametrize
     def test_method_stats(self, client: Opencode) -> None:
         session = client.session.stats()
-        assert_matches_type(SessionStatsResponse, session, path=["response"])
+        assert_matches_type(SessionStatsInfo, session, path=["response"])
 
     @parametrize
     def test_method_stats_with_all_params(self, client: Opencode) -> None:
@@ -1030,7 +1026,7 @@ class TestSession:
             to=0,
             tools="none",
         )
-        assert_matches_type(SessionStatsResponse, session, path=["response"])
+        assert_matches_type(SessionStatsInfo, session, path=["response"])
 
     @parametrize
     def test_raw_response_stats(self, client: Opencode) -> None:
@@ -1039,7 +1035,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionStatsResponse, session, path=["response"])
+        assert_matches_type(SessionStatsInfo, session, path=["response"])
 
     @parametrize
     def test_streaming_response_stats(self, client: Opencode) -> None:
@@ -1048,7 +1044,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionStatsResponse, session, path=["response"])
+            assert_matches_type(SessionStatsInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1142,7 +1138,7 @@ class TestSession:
             session_id={},
             text="text",
         )
-        assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+        assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
     @parametrize
     def test_method_synthetic_with_all_params(self, client: Opencode) -> None:
@@ -1155,7 +1151,7 @@ class TestSession:
             metadata={"foo": {}},
             resume=True,
         )
-        assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+        assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
     @parametrize
     def test_raw_response_synthetic(self, client: Opencode) -> None:
@@ -1167,7 +1163,7 @@ class TestSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = response.parse()
-        assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+        assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
     @parametrize
     def test_streaming_response_synthetic(self, client: Opencode) -> None:
@@ -1179,7 +1175,7 @@ class TestSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = response.parse()
-            assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+            assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1280,7 +1276,7 @@ class TestAsyncSession:
     @parametrize
     async def test_method_create(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.create()
-        assert_matches_type(SessionCreateResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -1294,7 +1290,7 @@ class TestAsyncSession:
             permissions={},
             title="title",
         )
-        assert_matches_type(SessionCreateResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
@@ -1303,7 +1299,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionCreateResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
@@ -1312,7 +1308,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionCreateResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1532,7 +1528,7 @@ class TestAsyncSession:
         session = await async_client.session.compact(
             session_id={},
         )
-        assert_matches_type(SessionCompactResponse, session, path=["response"])
+        assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
     @parametrize
     async def test_method_compact_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -1541,7 +1537,7 @@ class TestAsyncSession:
             delivery={},
             id={},
         )
-        assert_matches_type(SessionCompactResponse, session, path=["response"])
+        assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
     @parametrize
     async def test_raw_response_compact(self, async_client: AsyncOpencode) -> None:
@@ -1552,7 +1548,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionCompactResponse, session, path=["response"])
+        assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_compact(self, async_client: AsyncOpencode) -> None:
@@ -1563,7 +1559,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionCompactResponse, session, path=["response"])
+            assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1707,7 +1703,7 @@ class TestAsyncSession:
         session = await async_client.session.export(
             session_id={},
         )
-        assert_matches_type(SessionExportResponse, session, path=["response"])
+        assert_matches_type(SessionTransferData, session, path=["response"])
 
     @parametrize
     async def test_method_export_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -1715,7 +1711,7 @@ class TestAsyncSession:
             session_id={},
             sanitize=True,
         )
-        assert_matches_type(SessionExportResponse, session, path=["response"])
+        assert_matches_type(SessionTransferData, session, path=["response"])
 
     @parametrize
     async def test_raw_response_export(self, async_client: AsyncOpencode) -> None:
@@ -1726,7 +1722,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionExportResponse, session, path=["response"])
+        assert_matches_type(SessionTransferData, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_export(self, async_client: AsyncOpencode) -> None:
@@ -1737,7 +1733,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionExportResponse, session, path=["response"])
+            assert_matches_type(SessionTransferData, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1753,7 +1749,7 @@ class TestAsyncSession:
         session = await async_client.session.fork(
             session_id={},
         )
-        assert_matches_type(SessionForkResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_method_fork_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -1761,7 +1757,7 @@ class TestAsyncSession:
             session_id={},
             before={},
         )
-        assert_matches_type(SessionForkResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_raw_response_fork(self, async_client: AsyncOpencode) -> None:
@@ -1772,7 +1768,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionForkResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_fork(self, async_client: AsyncOpencode) -> None:
@@ -1783,7 +1779,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionForkResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1841,7 +1837,7 @@ class TestAsyncSession:
         session = await async_client.session.get(
             {},
         )
-        assert_matches_type(SessionGetResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
@@ -1852,7 +1848,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionGetResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
@@ -1863,7 +1859,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionGetResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -1880,7 +1876,7 @@ class TestAsyncSession:
             info={},
             messages=[{}],
         )
-        assert_matches_type(SessionImportResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_method_import__with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -1889,7 +1885,7 @@ class TestAsyncSession:
             messages=[{}],
             location={},
         )
-        assert_matches_type(SessionImportResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_raw_response_import_(self, async_client: AsyncOpencode) -> None:
@@ -1901,7 +1897,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionImportResponse, session, path=["response"])
+        assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_import_(self, async_client: AsyncOpencode) -> None:
@@ -1913,7 +1909,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionImportResponse, session, path=["response"])
+            assert_matches_type(SessionInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -2067,7 +2063,7 @@ class TestAsyncSession:
             session_id={},
             text="text",
         )
-        assert_matches_type(SessionPromptResponse, session, path=["response"])
+        assert_matches_type(SessionInboxUser, session, path=["response"])
 
     @parametrize
     async def test_method_prompt_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -2082,7 +2078,7 @@ class TestAsyncSession:
             resume=True,
             skills=[{}],
         )
-        assert_matches_type(SessionPromptResponse, session, path=["response"])
+        assert_matches_type(SessionInboxUser, session, path=["response"])
 
     @parametrize
     async def test_raw_response_prompt(self, async_client: AsyncOpencode) -> None:
@@ -2094,7 +2090,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionPromptResponse, session, path=["response"])
+        assert_matches_type(SessionInboxUser, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_prompt(self, async_client: AsyncOpencode) -> None:
@@ -2106,7 +2102,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionPromptResponse, session, path=["response"])
+            assert_matches_type(SessionInboxUser, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -2261,7 +2257,7 @@ class TestAsyncSession:
     @parametrize
     async def test_method_stats(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.stats()
-        assert_matches_type(SessionStatsResponse, session, path=["response"])
+        assert_matches_type(SessionStatsInfo, session, path=["response"])
 
     @parametrize
     async def test_method_stats_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -2272,7 +2268,7 @@ class TestAsyncSession:
             to=0,
             tools="none",
         )
-        assert_matches_type(SessionStatsResponse, session, path=["response"])
+        assert_matches_type(SessionStatsInfo, session, path=["response"])
 
     @parametrize
     async def test_raw_response_stats(self, async_client: AsyncOpencode) -> None:
@@ -2281,7 +2277,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionStatsResponse, session, path=["response"])
+        assert_matches_type(SessionStatsInfo, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_stats(self, async_client: AsyncOpencode) -> None:
@@ -2290,7 +2286,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionStatsResponse, session, path=["response"])
+            assert_matches_type(SessionStatsInfo, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -2384,7 +2380,7 @@ class TestAsyncSession:
             session_id={},
             text="text",
         )
-        assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+        assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
     @parametrize
     async def test_method_synthetic_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -2397,7 +2393,7 @@ class TestAsyncSession:
             metadata={"foo": {}},
             resume=True,
         )
-        assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+        assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
     @parametrize
     async def test_raw_response_synthetic(self, async_client: AsyncOpencode) -> None:
@@ -2409,7 +2405,7 @@ class TestAsyncSession:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         session = await response.parse()
-        assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+        assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
     @parametrize
     async def test_streaming_response_synthetic(self, async_client: AsyncOpencode) -> None:
@@ -2421,7 +2417,7 @@ class TestAsyncSession:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             session = await response.parse()
-            assert_matches_type(SessionSyntheticResponse, session, path=["response"])
+            assert_matches_type(SessionInboxSynthetic, session, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

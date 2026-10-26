@@ -9,7 +9,8 @@ import pytest
 
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
-from opencode.types.session import FormGetResponse, FormListResponse, FormCreateResponse
+from opencode.types.shared import FormInfo, FormDetail
+from opencode.types.session import FormListResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -24,7 +25,7 @@ class TestForm:
             fields={},
             title="title",
         )
-        assert_matches_type(FormCreateResponse, form, path=["response"])
+        assert_matches_type(FormInfo, form, path=["response"])
 
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
@@ -35,7 +36,7 @@ class TestForm:
             id={},
             metadata={},
         )
-        assert_matches_type(FormCreateResponse, form, path=["response"])
+        assert_matches_type(FormInfo, form, path=["response"])
 
     @parametrize
     def test_raw_response_create(self, client: Opencode) -> None:
@@ -48,7 +49,7 @@ class TestForm:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         form = response.parse()
-        assert_matches_type(FormCreateResponse, form, path=["response"])
+        assert_matches_type(FormInfo, form, path=["response"])
 
     @parametrize
     def test_streaming_response_create(self, client: Opencode) -> None:
@@ -61,7 +62,7 @@ class TestForm:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             form = response.parse()
-            assert_matches_type(FormCreateResponse, form, path=["response"])
+            assert_matches_type(FormInfo, form, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -175,7 +176,7 @@ class TestForm:
             form_id={},
             session_id="sessionID",
         )
-        assert_matches_type(FormGetResponse, form, path=["response"])
+        assert_matches_type(FormDetail, form, path=["response"])
 
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
@@ -187,7 +188,7 @@ class TestForm:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         form = response.parse()
-        assert_matches_type(FormGetResponse, form, path=["response"])
+        assert_matches_type(FormDetail, form, path=["response"])
 
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
@@ -199,7 +200,7 @@ class TestForm:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             form = response.parse()
-            assert_matches_type(FormGetResponse, form, path=["response"])
+            assert_matches_type(FormDetail, form, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -283,7 +284,7 @@ class TestAsyncForm:
             fields={},
             title="title",
         )
-        assert_matches_type(FormCreateResponse, form, path=["response"])
+        assert_matches_type(FormInfo, form, path=["response"])
 
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -294,7 +295,7 @@ class TestAsyncForm:
             id={},
             metadata={},
         )
-        assert_matches_type(FormCreateResponse, form, path=["response"])
+        assert_matches_type(FormInfo, form, path=["response"])
 
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
@@ -307,7 +308,7 @@ class TestAsyncForm:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         form = await response.parse()
-        assert_matches_type(FormCreateResponse, form, path=["response"])
+        assert_matches_type(FormInfo, form, path=["response"])
 
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
@@ -320,7 +321,7 @@ class TestAsyncForm:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             form = await response.parse()
-            assert_matches_type(FormCreateResponse, form, path=["response"])
+            assert_matches_type(FormInfo, form, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -434,7 +435,7 @@ class TestAsyncForm:
             form_id={},
             session_id="sessionID",
         )
-        assert_matches_type(FormGetResponse, form, path=["response"])
+        assert_matches_type(FormDetail, form, path=["response"])
 
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
@@ -446,7 +447,7 @@ class TestAsyncForm:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         form = await response.parse()
-        assert_matches_type(FormGetResponse, form, path=["response"])
+        assert_matches_type(FormDetail, form, path=["response"])
 
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
@@ -458,7 +459,7 @@ class TestAsyncForm:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             form = await response.parse()
-            assert_matches_type(FormGetResponse, form, path=["response"])
+            assert_matches_type(FormDetail, form, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

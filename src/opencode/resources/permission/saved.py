@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Type, Optional, cast
 
 import httpx
 
@@ -16,12 +16,13 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.permission import saved_list_params, saved_update_params
 from ...types.shared.project_id import ProjectID
 from ...types.shared.permission_saved_id import PermissionSavedID
+from ...types.shared.permission_saved_info import PermissionSavedInfo
 from ...types.permission.saved_list_response import SavedListResponse
-from ...types.permission.saved_update_response import SavedUpdateResponse
 
 __all__ = ["SavedResource", "AsyncSavedResource"]
 
@@ -58,7 +59,7 @@ class SavedResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SavedUpdateResponse:
+    ) -> PermissionSavedInfo:
         """
         Change the action or resource of a saved permission. Fails with a conflict when
         the project already has a saved permission with the same action and resource.
@@ -84,9 +85,13 @@ class SavedResource(SyncAPIResource):
                 saved_update_params.SavedUpdateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionSavedInfo]._unwrapper,
             ),
-            cast_to=SavedUpdateResponse,
+            cast_to=cast(Type[PermissionSavedInfo], DataWrapper[PermissionSavedInfo]),
         )
 
     def list(
@@ -120,8 +125,9 @@ class SavedResource(SyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=maybe_transform({"project_id": project_id}, saved_list_params.SavedListParams),
+                post_parser=DataWrapper[SavedListResponse]._unwrapper,
             ),
-            cast_to=SavedListResponse,
+            cast_to=cast(Type[SavedListResponse], DataWrapper[SavedListResponse]),
         )
 
     def remove(
@@ -191,7 +197,7 @@ class AsyncSavedResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
-    ) -> SavedUpdateResponse:
+    ) -> PermissionSavedInfo:
         """
         Change the action or resource of a saved permission. Fails with a conflict when
         the project already has a saved permission with the same action and resource.
@@ -217,9 +223,13 @@ class AsyncSavedResource(AsyncAPIResource):
                 saved_update_params.SavedUpdateParams,
             ),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[PermissionSavedInfo]._unwrapper,
             ),
-            cast_to=SavedUpdateResponse,
+            cast_to=cast(Type[PermissionSavedInfo], DataWrapper[PermissionSavedInfo]),
         )
 
     async def list(
@@ -253,8 +263,9 @@ class AsyncSavedResource(AsyncAPIResource):
                 extra_body=extra_body,
                 timeout=timeout,
                 query=await async_maybe_transform({"project_id": project_id}, saved_list_params.SavedListParams),
+                post_parser=DataWrapper[SavedListResponse]._unwrapper,
             ),
-            cast_to=SavedListResponse,
+            cast_to=cast(Type[SavedListResponse], DataWrapper[SavedListResponse]),
         )
 
     async def remove(

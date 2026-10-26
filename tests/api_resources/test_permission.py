@@ -9,11 +9,8 @@ import pytest
 
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
-from opencode.types import (
-    PermissionGetResponse,
-    PermissionListResponse,
-    PermissionCreateResponse,
-)
+from opencode.types import PermissionListResponse, PermissionCreateResponse
+from opencode.types.shared import PermissionRequest
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -125,7 +122,7 @@ class TestPermission:
             request_id={},
             session_id={},
         )
-        assert_matches_type(PermissionGetResponse, permission, path=["response"])
+        assert_matches_type(PermissionRequest, permission, path=["response"])
 
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
@@ -137,7 +134,7 @@ class TestPermission:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         permission = response.parse()
-        assert_matches_type(PermissionGetResponse, permission, path=["response"])
+        assert_matches_type(PermissionRequest, permission, path=["response"])
 
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
@@ -149,7 +146,7 @@ class TestPermission:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             permission = response.parse()
-            assert_matches_type(PermissionGetResponse, permission, path=["response"])
+            assert_matches_type(PermissionRequest, permission, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -340,7 +337,7 @@ class TestAsyncPermission:
             request_id={},
             session_id={},
         )
-        assert_matches_type(PermissionGetResponse, permission, path=["response"])
+        assert_matches_type(PermissionRequest, permission, path=["response"])
 
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
@@ -352,7 +349,7 @@ class TestAsyncPermission:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         permission = await response.parse()
-        assert_matches_type(PermissionGetResponse, permission, path=["response"])
+        assert_matches_type(PermissionRequest, permission, path=["response"])
 
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
@@ -364,7 +361,7 @@ class TestAsyncPermission:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             permission = await response.parse()
-            assert_matches_type(PermissionGetResponse, permission, path=["response"])
+            assert_matches_type(PermissionRequest, permission, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

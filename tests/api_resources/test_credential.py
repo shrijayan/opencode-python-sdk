@@ -9,7 +9,8 @@ import pytest
 
 from opencode import Opencode, AsyncOpencode
 from tests.utils import assert_matches_type
-from opencode.types import CredentialListResponse, CredentialCreateResponse
+from opencode.types import CredentialListResponse
+from opencode.types.shared import CredentialEntry
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
@@ -23,7 +24,7 @@ class TestCredential:
             integration_id={},
             value={},
         )
-        assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+        assert_matches_type(CredentialEntry, credential, path=["response"])
 
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
@@ -34,7 +35,7 @@ class TestCredential:
             id={},
             label="label",
         )
-        assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+        assert_matches_type(CredentialEntry, credential, path=["response"])
 
     @parametrize
     def test_raw_response_create(self, client: Opencode) -> None:
@@ -46,7 +47,7 @@ class TestCredential:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         credential = response.parse()
-        assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+        assert_matches_type(CredentialEntry, credential, path=["response"])
 
     @parametrize
     def test_streaming_response_create(self, client: Opencode) -> None:
@@ -58,7 +59,7 @@ class TestCredential:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             credential = response.parse()
-            assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+            assert_matches_type(CredentialEntry, credential, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -217,7 +218,7 @@ class TestAsyncCredential:
             integration_id={},
             value={},
         )
-        assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+        assert_matches_type(CredentialEntry, credential, path=["response"])
 
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
@@ -228,7 +229,7 @@ class TestAsyncCredential:
             id={},
             label="label",
         )
-        assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+        assert_matches_type(CredentialEntry, credential, path=["response"])
 
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
@@ -240,7 +241,7 @@ class TestAsyncCredential:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         credential = await response.parse()
-        assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+        assert_matches_type(CredentialEntry, credential, path=["response"])
 
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
@@ -252,7 +253,7 @@ class TestAsyncCredential:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             credential = await response.parse()
-            assert_matches_type(CredentialCreateResponse, credential, path=["response"])
+            assert_matches_type(CredentialEntry, credential, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 

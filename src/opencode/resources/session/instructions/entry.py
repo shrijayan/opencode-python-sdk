@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Type, cast
+
 import httpx
 
 from ...._types import Body, Query, Headers, NoneType, NotGiven, not_given
@@ -14,6 +16,7 @@ from ...._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+from ...._wrappers import DataWrapper
 from ...._base_client import make_request_options
 from ....types.shared.session_id import SessionID
 from ....types.session.instructions import entry_put_params
@@ -71,9 +74,13 @@ class EntryResource(SyncAPIResource):
         return self._get(
             path_template("/api/experimental/session/{session_id}/instructions/entries", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[EntryListResponse]._unwrapper,
             ),
-            cast_to=EntryListResponse,
+            cast_to=cast(Type[EntryListResponse], DataWrapper[EntryListResponse]),
         )
 
     def put(
@@ -207,9 +214,13 @@ class AsyncEntryResource(AsyncAPIResource):
         return await self._get(
             path_template("/api/experimental/session/{session_id}/instructions/entries", session_id=session_id),
             options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                post_parser=DataWrapper[EntryListResponse]._unwrapper,
             ),
-            cast_to=EntryListResponse,
+            cast_to=cast(Type[EntryListResponse], DataWrapper[EntryListResponse]),
         )
 
     async def put(
