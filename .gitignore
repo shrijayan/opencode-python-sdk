@@ -18,3 +18,4 @@ codegen/extract/.cache/
 # MkDocs output
 site/
 .cache/
+.stdy.log
