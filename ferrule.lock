@@ -1,5 +1,5 @@
 {
-  "config_sha256": "0365cf56a3497df641b31863dbec8dca95d197446d834125a05757c0f9559b0d",
+  "config_sha256": "a128ae7306666a21300861abeb5eba52316760cfcd8a2ea8118c0e72ad4ad1a2",
   "ferrule_version": "0.1.0",
   "files": {
     ".github/workflows/ci.yml": "5ac1be1c103477e7dcdb28d276ff14fb4ebf92650e92d6912e605a64df2dd27b",
@@ -58,9 +58,9 @@
     "src/opencode/_agent/SKILL.md": "5f52188520785747cc486ae9f2f094bbe00af72cdc06378c74632439ce3682f2",
     "src/opencode/_agent/llms.txt": "c9d8fa2e8580039de36b140ca06f2cb5558ff3d2b42e16effbd3a46ed682eef4",
     "src/opencode/_base_client.py": "32888441549574c13267ece8bfbc34394bfb41e6bef39633207fa8381805aae7",
-    "src/opencode/_client.py": "2b9828dc575d168465420bb6180ee9fa0c3d68eb2d62c87b3db0abe5d5c0fe22",
+    "src/opencode/_client.py": "d14617ca1aea9d2266756cceba3e5c16c6b9b2b35fcf489a26128549cbec7684",
     "src/opencode/_compat.py": "ffd82e41fcd89cbdc336db9d5f95bb4f671d4ac931f3d0790057e13d00f13149",
-    "src/opencode/_constants.py": "4b5e0f173c8df7e237d70895ed298894be466b430b1f176f7a022719d5c7eed3",
+    "src/opencode/_constants.py": "16dda1660f42a327c1c1c9da2681dc9d8fcad4bdbbec0930e0a037f20d7b1179",
     "src/opencode/_exceptions.py": "2d4b22b9988e3d5cda53564d3be707c509c76385414534b33f638c414a889b7d",
     "src/opencode/_files.py": "49562a344d4bfb0626d46722c85f790422460b582c580aaf5ef4b2a2cfbfacda",
     "src/opencode/_models.py": "25069c6a3ba112b956602a620daeecfe22b8ac756e6b7e8cf8491a189fcf9ab5",

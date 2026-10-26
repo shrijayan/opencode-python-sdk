@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import base64
 from typing import TYPE_CHECKING, Any, Mapping
 from typing_extensions import Self, override
 
@@ -380,7 +381,11 @@ class Opencode(SyncAPIClient):
     @property
     @override
     def auth_headers(self) -> dict[str, str]:
-        return {}
+        if self.username is None or self.password is None:
+            return {}
+        credentials = f"{self.username}:{self.password}".encode("ascii")
+        header = f"Basic {base64.b64encode(credentials).decode('ascii')}"
+        return {"Authorization": header}
 
     @property
     @override
@@ -746,7 +751,11 @@ class AsyncOpencode(AsyncAPIClient):
     @property
     @override
     def auth_headers(self) -> dict[str, str]:
-        return {}
+        if self.username is None or self.password is None:
+            return {}
+        credentials = f"{self.username}:{self.password}".encode("ascii")
+        header = f"Basic {base64.b64encode(credentials).decode('ascii')}"
+        return {"Authorization": header}
 
     @property
     @override
