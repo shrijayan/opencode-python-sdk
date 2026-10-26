@@ -130,7 +130,7 @@ def test_pty_attach_round_trip(ws_server: str, api: respx.MockRouter, fake: Fake
         }
     )
     with (
-        Opencode(ws_server, password=PASSWORD, directory="/repo") as client,
+        Opencode(base_url=ws_server, password=PASSWORD, directory="/repo") as client,
         client.pty.attach("pty_1", cursor=3) as term,
     ):
         assert term.recv(timeout=5) == b"replay"
@@ -151,14 +151,14 @@ def test_pty_attach_round_trip(ws_server: str, api: respx.MockRouter, fake: Fake
 
 def test_persistent_closed_before_attached(ws_server: str, api: respx.MockRouter, fake: Fake) -> None:
     fake.close_code = 4404
-    with Opencode(ws_server, password=PASSWORD) as client, pytest.raises(PtyConnectionError) as caught:
+    with Opencode(base_url=ws_server, password=PASSWORD) as client, pytest.raises(PtyConnectionError) as caught:
         client.experimental.persistent_pty.attach("pty_1")
     assert caught.value.code == 4404
 
 
 def test_persistent_pty_attach_frames(ws_server: str, api: respx.MockRouter, fake: Fake) -> None:
     events: list[dict[str, Any]] = []
-    with Opencode(ws_server, password=PASSWORD) as client:
+    with Opencode(base_url=ws_server, password=PASSWORD) as client:
         term = client.experimental.persistent_pty.attach("pty_1", attachment_id="a1", on_event=events.append)
         with term:
             assert term.recv(timeout=5) == b"replay"
@@ -189,7 +189,7 @@ def test_persistent_pty_attach_frames(ws_server: str, api: respx.MockRouter, fak
 def test_not_found_close_raises(ws_server: str, api: respx.MockRouter, fake: Fake) -> None:
     fake.close_code = 4404
     with (
-        Opencode(ws_server, password=PASSWORD) as client,
+        Opencode(base_url=ws_server, password=PASSWORD) as client,
         client.pty.attach("pty_1") as term,
         pytest.raises(PtyConnectionError) as caught,
     ):
@@ -200,7 +200,7 @@ def test_not_found_close_raises(ws_server: str, api: respx.MockRouter, fake: Fak
 
 def test_refused_handshake_raises(ws_server: str, api: respx.MockRouter, fake: Fake) -> None:
     fake.refuse = True
-    with Opencode(ws_server, password=PASSWORD) as client, pytest.raises(PtyConnectionError) as caught:
+    with Opencode(base_url=ws_server, password=PASSWORD) as client, pytest.raises(PtyConnectionError) as caught:
         client.pty.attach("pty_1")
     assert caught.value.status == 403
 
@@ -214,7 +214,7 @@ def test_missing_websockets(monkeypatch: pytest.MonkeyPatch, mock_api: respx.Moc
 
 @pytest.mark.anyio
 async def test_async_pty_attach(ws_server: str, api: respx.MockRouter, fake: Fake) -> None:
-    async with AsyncOpencode(ws_server, password=PASSWORD) as client:
+    async with AsyncOpencode(base_url=ws_server, password=PASSWORD) as client:
         async with await client.pty.attach("pty_1") as term:
             assert await term.recv() == b"replay"
             await term.send("echo hi\n")

@@ -315,8 +315,8 @@ class RpcClient(Generic[_D]):
         rpc_id = self.definition.id
         try:
             result = self._client.rpc.call(
-                rpc_id,
                 method.name,
+                rpc_id=rpc_id,
                 input=method.encode(input),
                 location=location,
                 extra_headers=extra_headers,
@@ -388,8 +388,8 @@ class AsyncRpcClient(Generic[_D]):
         rpc_id = self.definition.id
         try:
             result = await self._client.rpc.call(
-                rpc_id,
                 method.name,
+                rpc_id=rpc_id,
                 input=method.encode(input),
                 location=location,
                 extra_headers=extra_headers,

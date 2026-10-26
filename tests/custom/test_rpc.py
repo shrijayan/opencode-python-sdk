@@ -133,7 +133,7 @@ def test_subscribe_filters_and_validates_events(client: Opencode, mock_api: resp
 
 @pytest.fixture
 async def aclient(mock_api: respx.MockRouter) -> AsyncIterator[AsyncOpencode]:
-    async with AsyncOpencode(BASE_URL, password=PASSWORD, max_retries=0) as instance:
+    async with AsyncOpencode(base_url=BASE_URL, password=PASSWORD, max_retries=0) as instance:
         yield instance
 
 

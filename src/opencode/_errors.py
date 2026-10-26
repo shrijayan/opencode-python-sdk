@@ -8,6 +8,7 @@ is a ``NotFoundError``). ``error`` gives the body as an :class:`ErrorBody`.
 
 from __future__ import annotations
 
+import re
 from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
 
 import pydantic
@@ -69,12 +70,30 @@ __all__ = [
 ]
 
 
+def _snake(name: str) -> str:
+    """``sessionID`` -> ``session_id``, as the SDK names fields."""
+    value = re.sub(r"[^0-9A-Za-z]+", "_", name)
+    value = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", value)
+    value = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", value)
+    return re.sub(r"_+", "_", value).strip("_").lower()
+
+
 class ErrorBody(BaseModel):
-    """The JSON body of an OpenCode error. Fields other than ``_tag`` vary by error and stay as sent."""
+    """The JSON body of an OpenCode error. Fields other than ``_tag`` vary by error; read them by
+    their snake-case name (``error.session_id`` for ``sessionID``), ``None`` when not sent."""
 
     tag: Optional[str] = pydantic.Field(default=None, alias="_tag")
 
     message: Optional[str] = None
+
+    def __getattr__(self, name: str) -> Any:
+        extra: dict[str, Any] = self.__pydantic_extra__ or {}
+        if name.startswith("_"):
+            return super().__getattr__(name)  # type: ignore[misc]
+        for key, value in extra.items():
+            if _snake(key) == name:
+                return value
+        return None  # an optional field the server left out, as the typed bodies had it
 
 
 class ContentTooLargeError(APIStatusError):

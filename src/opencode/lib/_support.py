@@ -23,6 +23,7 @@ from .._types import NotGiven, Omit
 __all__ = [
     "DEFAULT_USERNAME",
     "Location",
+    "default_location",
     "Timeout",
     "encode_path",
     "encode_path_segment",
@@ -40,6 +41,13 @@ Location = Dict[str, object]
 
 Timeout = Union[float, httpx.Timeout, None]
 """A timeout in seconds, an ``httpx.Timeout``, or ``None`` for none."""
+
+
+def default_location(location: object, directory: str | None) -> object:
+    """``location`` as given, else the client's ``directory`` as the location."""
+    if isinstance(location, (NotGiven, Omit)) and directory is not None:
+        return {"directory": directory}
+    return location
 
 
 @functools.cache

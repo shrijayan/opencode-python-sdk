@@ -53,12 +53,18 @@ FAKE_BASE_URL = "http://opencode.fake"
 
 
 def _with_location(options: FinalRequestOptions, directory: str | None) -> FinalRequestOptions:
-    """Send ``directory`` as the request's ``location`` unless the call passed one."""
-    if directory is None:
-        return options
+    """Send ``directory`` as the request's ``location`` unless the call passed one, and leave out
+    ``order`` when a page is fetched by ``cursor``: the server rejects both together (the cursor
+    already encodes the direction), and the next page keeps the first request's parameters."""
     params = options.params
-    if isinstance(params, dict) and "location" not in params:
-        options.params = {**cast("dict[str, object]", params), "location": {"directory": directory}}
+    if not isinstance(params, dict):
+        return options
+    query = cast("dict[str, object]", params)
+    if "cursor" in query and "order" in query:
+        query = {key: value for key, value in query.items() if key != "order"}
+    if directory is not None and "location" not in query:
+        query = {**query, "location": {"directory": directory}}
+    options.params = query
     return options
 
 

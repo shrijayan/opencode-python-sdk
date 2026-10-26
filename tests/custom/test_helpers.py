@@ -35,7 +35,7 @@ def _paths(fake: FakeServer) -> list[str]:
 def test_run_creates_session_and_returns_result() -> None:
     fake = FakeServer(reply=lambda text: f"echo: {text}", cost=0.5, tokens=(100, 20))
     client = Opencode.fake(fake)
-    model = ModelRef(id="claude", provider_id="anthropic")
+    model = ModelRef.model_validate({"id": "claude", "providerID": "anthropic"})
 
     result = client.session.run("hello", agent="build", model=model)
 
@@ -249,4 +249,4 @@ def test_fake_errors() -> None:
 
 def test_fake_and_http_client_are_exclusive() -> None:
     with pytest.raises(ValueError, match="either"):
-        Opencode("http://x", transport=FakeServer(), http_client=httpx.Client())
+        Opencode(base_url="http://x", transport=FakeServer(), http_client=httpx.Client())

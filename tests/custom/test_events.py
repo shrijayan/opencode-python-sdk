@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import collections
 import json
+from types import SimpleNamespace
 import queue
 import threading
 from collections.abc import AsyncIterator, Iterator
@@ -278,8 +279,9 @@ def test_without_reconnect_errors_end_every_subscription(client: Opencode, mock_
 
 
 def test_session_id_of() -> None:
-    assert session_id_of(ServerConnectedEvent(id="e", data={})) is None
-    assert session_id_of(UnknownEvent.model_validate({"type": "x", "data": {"sessionID": "ses_9"}})) == "ses_9"
+    assert session_id_of(ServerConnectedEvent.construct(id="e", type="server.connected", data={})) is None
+    # An event type this client has no class for: its data stays as sent.
+    assert session_id_of(SimpleNamespace(type="x", data={"sessionID": "ses_9"})) == "ses_9"
 
 
 def test_generated_subscribe_still_works(client: Opencode, mock_api: respx.MockRouter) -> None:
@@ -307,7 +309,7 @@ async def _wait_feed(server: Server, count: int) -> AsyncFeed:
 
 @pytest.fixture
 async def aclient(mock_api: respx.MockRouter) -> AsyncIterator[AsyncOpencode]:
-    async with AsyncOpencode(BASE_URL, password=PASSWORD, max_retries=0) as instance:
+    async with AsyncOpencode(base_url=BASE_URL, password=PASSWORD, max_retries=0) as instance:
         yield instance
 
 

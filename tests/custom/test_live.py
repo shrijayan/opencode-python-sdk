@@ -86,7 +86,7 @@ def test_event_stream_connects(client: Opencode) -> None:
 def test_wrong_password_is_rejected(server: OpencodeServer) -> None:
     from opencode import UnauthorizedError
 
-    with Opencode(server.url, password="wrong", max_retries=0) as client, pytest.raises(UnauthorizedError):
+    with Opencode(base_url=server.url, password="wrong", max_retries=0) as client, pytest.raises(UnauthorizedError):
         client.server.info()
 
 
@@ -163,7 +163,7 @@ def test_wait_until_ready(client: Opencode) -> None:
 def test_run_with_unroutable_model(client: Opencode) -> None:
     # A model of a provider that does not exist fails before any network call, so no model is called.
     # Never prompt without such a model: the default would use OpenCode's hosted free model.
-    model = ModelRef(id="none", provider_id="sdk-test-missing")
+    model = ModelRef.model_validate({"id": "none", "providerID": "sdk-test-missing"})
     result = client.session.run("hello", model=model, timeout=30)
     assert [message.type for message in result.messages] == ["user", "idle"]
     assert result.outcome == "failed"

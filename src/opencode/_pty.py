@@ -36,7 +36,7 @@ from typing_extensions import Self
 from ._exceptions import OpencodeError
 from ._resource import AsyncAPIResource, SyncAPIResource
 from ._types import NOT_GIVEN, NotGiven
-from .lib._support import encode_path_segment, encode_query
+from .lib._support import default_location, encode_path_segment, encode_query
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Awaitable, Callable, Iterator, Mapping
@@ -455,14 +455,12 @@ class PtyAttachMixin(SyncAPIResource):
         url = _ws_url(
             client.base_url,
             f"/api/pty/{encode_path_segment(pty_id)}/connect",
-            _pty_query(self._location(location), cursor, token.data.ticket),
+            _pty_query(default_location(location, client.directory), cursor, token.data.ticket),
         )
         ws = _open_sync(url, _headers(client.username, client.password, extra_headers), open_timeout)
 
         def resize(cols: int, rows: int) -> object:
-            from .types import PtyUpdateSize
-
-            return client.pty.update(pty_id, location=location, size=PtyUpdateSize(cols=cols, rows=rows))
+            return client.pty.update(pty_id, location=location, size={"cols": cols, "rows": rows})
 
         return PtyConnection(ws, _Protocol(persistent=False, cols=0, rows=0), resize)
 
@@ -489,14 +487,12 @@ class AsyncPtyAttachMixin(AsyncAPIResource):
         url = _ws_url(
             client.base_url,
             f"/api/pty/{encode_path_segment(pty_id)}/connect",
-            _pty_query(self._location(location), cursor, token.data.ticket),
+            _pty_query(default_location(location, client.directory), cursor, token.data.ticket),
         )
         ws = await _open_async(url, _headers(client.username, client.password, extra_headers), open_timeout)
 
         async def resize(cols: int, rows: int) -> object:
-            from .types import PtyUpdateSize
-
-            return await client.pty.update(pty_id, location=location, size=PtyUpdateSize(cols=cols, rows=rows))
+            return await client.pty.update(pty_id, location=location, size={"cols": cols, "rows": rows})
 
         return AsyncPtyConnection(ws, _Protocol(persistent=False, cols=0, rows=0), resize)
 
