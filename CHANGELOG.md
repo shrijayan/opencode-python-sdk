@@ -17,7 +17,7 @@ features (events, RPC, PTY, the server launcher, `session.run`, typed errors) ar
 - Requests take `TypedDict` params (`opencode.types.shared_params.ModelRef`, by Python field name:
   `{"id": ..., "provider_id": ...}`) and return pydantic models.
 - Optional arguments default to `omit` (`opencode.omit`) instead of `NOT_GIVEN`.
-- `file.write(path, body)` takes the bytes (or a path) as `body` instead of `payload`; `shell.create(timeout=)` is
+- `file.write(path=..., body=...)` takes the bytes (or a local file path) as `body` instead of `payload`; `shell.create(timeout=)` is
   `api_timeout=`; `rpc.call(method, rpc_id=...)` takes `rpc_id` by keyword.
 - Methods that returned an envelope's `data` still do; the envelope and wrapper types (`GenerateTextResponseData`,
   `Vcs*Response`, ...) are gone, and union types have no `Unknown*` fallback classes.
