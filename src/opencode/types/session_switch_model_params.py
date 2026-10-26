@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing_extensions import Required, TypedDict
 
-from .shared.model_ref import ModelRef
+from .shared_params.model_ref import ModelRef
 
 __all__ = ["SessionSwitchModelParams"]
 

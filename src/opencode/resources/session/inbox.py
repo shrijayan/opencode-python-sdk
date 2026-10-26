@@ -19,10 +19,10 @@ from ..._response import (
 from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.session import inbox_update_params
-from ...types.shared.session_id import SessionID
-from ...types.shared.session_message_id import SessionMessageID
+from ...types.shared_params.session_id import SessionID
 from ...types.session.inbox_list_response import InboxListResponse
-from ...types.shared.session_inbox_delivery import SessionInboxDelivery
+from ...types.shared_params.session_message_id import SessionMessageID
+from ...types.shared_params.session_inbox_delivery import SessionInboxDelivery
 
 __all__ = ["InboxResource", "AsyncInboxResource"]
 

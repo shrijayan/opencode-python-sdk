@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing_extensions import Required, TypedDict
 
-from .shared.agent_id import AgentID
+from .shared_params.agent_id import AgentID
 
 __all__ = ["SessionSwitchAgentParams"]
 

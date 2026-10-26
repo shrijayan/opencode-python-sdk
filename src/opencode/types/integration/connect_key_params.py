@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, Union, Optional
 from typing_extensions import Required, TypeAlias, TypedDict
 
-from ..shared.form_answer import FormAnswer
+from ..shared_params.form_answer import FormAnswer
 
 __all__ = ["ConnectKeyParams", "Location"]
 

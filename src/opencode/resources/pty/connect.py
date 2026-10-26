@@ -18,7 +18,7 @@ from ..._response import (
 )
 from ...types.pty import connect_token_params
 from ..._base_client import make_request_options
-from ...types.shared.pty_id import PtyID
+from ...types.shared_params.pty_id import PtyID
 from ...types.pty.connect_token_response import ConnectTokenResponse
 
 __all__ = ["ConnectResource", "AsyncConnectResource"]

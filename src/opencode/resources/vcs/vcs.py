@@ -26,11 +26,11 @@ from ..._response import (
     async_to_streamed_response_wrapper,
 )
 from ..._base_client import make_request_options
-from ...types.shared.vcs_mode import VcsMode
 from ...types.vc_get_response import VcGetResponse
 from ...types.vc_base_response import VcBaseResponse
 from ...types.vc_diff_response import VcDiffResponse
 from ...types.vc_status_response import VcStatusResponse
+from ...types.shared_params.vcs_mode import VcsMode
 
 __all__ = ["VcsResource", "AsyncVcsResource"]
 

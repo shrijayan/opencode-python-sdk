@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing_extensions import Required, Annotated, TypedDict
 
 from ..._utils import PropertyInfo
-from ..shared.form_answer import FormAnswer
+from ..shared_params.form_answer import FormAnswer
 
 __all__ = ["FormReplyParams"]
 

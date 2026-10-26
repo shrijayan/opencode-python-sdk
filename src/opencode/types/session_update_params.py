@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Optional
 from typing_extensions import TypedDict
 
-from .shared.session_metadata import SessionMetadata
-from .shared.permission_ruleset import PermissionRuleset
+from .shared_params.session_metadata import SessionMetadata
+from .shared_params.permission_ruleset import PermissionRuleset
 
 __all__ = ["SessionUpdateParams"]
 

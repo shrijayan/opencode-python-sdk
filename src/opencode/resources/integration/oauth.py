@@ -18,12 +18,12 @@ from ..._response import (
 )
 from ..._base_client import make_request_options
 from ...types.integration import oauth_cancel_params, oauth_status_params, oauth_connect_params, oauth_complete_params
-from ...types.shared.form_answer import FormAnswer
-from ...types.shared.integration_id import IntegrationID
-from ...types.shared.integration_method_id import IntegrationMethodID
-from ...types.shared.integration_attempt_id import IntegrationAttemptID
+from ...types.shared_params.form_answer import FormAnswer
+from ...types.shared_params.integration_id import IntegrationID
 from ...types.integration.oauth_status_response import OauthStatusResponse
 from ...types.integration.oauth_connect_response import OauthConnectResponse
+from ...types.shared_params.integration_method_id import IntegrationMethodID
+from ...types.shared_params.integration_attempt_id import IntegrationAttemptID
 
 __all__ = ["OauthResource", "AsyncOauthResource"]
 

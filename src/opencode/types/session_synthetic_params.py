@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Dict, Optional
 from typing_extensions import Required, TypedDict
 
-from .shared.session_message_id import SessionMessageID
-from .shared.session_inbox_delivery import SessionInboxDelivery
+from .shared_params.session_message_id import SessionMessageID
+from .shared_params.session_inbox_delivery import SessionInboxDelivery
 
 __all__ = ["SessionSyntheticParams"]
 

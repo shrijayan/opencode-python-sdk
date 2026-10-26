@@ -6,7 +6,7 @@ from typing import Dict, Union, Optional
 from typing_extensions import Required, Annotated, TypeAlias, TypedDict
 
 from .._utils import PropertyInfo
-from .shared.web_search_id import WebSearchID
+from .shared_params.web_search_id import WebSearchID
 
 __all__ = ["WebsearchQueryParams", "Location"]
 

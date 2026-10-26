@@ -19,13 +19,13 @@ from ..._response import (
 from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.session import form_reply_params, form_cancel_params, form_create_params
-from ...types.shared.form_id import FormID
 from ...types.shared.form_info import FormInfo
-from ...types.shared.form_answer import FormAnswer
 from ...types.shared.form_detail import FormDetail
-from ...types.shared.form_fields import FormFields
-from ...types.shared.form_metadata import FormMetadata
+from ...types.shared_params.form_id import FormID
+from ...types.shared_params.form_answer import FormAnswer
+from ...types.shared_params.form_fields import FormFields
 from ...types.session.form_list_response import FormListResponse
+from ...types.shared_params.form_metadata import FormMetadata
 
 __all__ = ["FormResource", "AsyncFormResource"]
 

@@ -18,9 +18,9 @@ from ...._response import (
 )
 from ...._wrappers import DataWrapper
 from ...._base_client import make_request_options
-from ....types.shared.session_id import SessionID
 from ....types.session.instructions import entry_put_params
-from ....types.shared.instruction_entry_key import InstructionEntryKey
+from ....types.shared_params.session_id import SessionID
+from ....types.shared_params.instruction_entry_key import InstructionEntryKey
 from ....types.session.instructions.entry_list_response import EntryListResponse
 
 __all__ = ["EntryResource", "AsyncEntryResource"]

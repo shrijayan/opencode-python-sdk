@@ -76,12 +76,6 @@ from ..._response import (
 from ..._wrappers import DataWrapper
 from ...pagination import SyncCursorPage, AsyncCursorPage
 from ..._base_client import AsyncPaginator, make_request_options
-from ...types.shared.agent_id import AgentID
-from ...types.shared.skill_id import SkillID
-from ...types.shared.event_seq import EventSeq
-from ...types.shared.model_ref import ModelRef
-from ...types.shared.project_id import ProjectID
-from ...types.shared.session_id import SessionID
 from .instructions.instructions import (
     InstructionsResource,
     AsyncInstructionsResource,
@@ -91,27 +85,34 @@ from .instructions.instructions import (
     AsyncInstructionsResourceWithStreamingResponse,
 )
 from ...types.shared.session_info import SessionInfo
-from ...types.shared.absolute_path import AbsolutePath
-from ...types.shared.relative_path import RelativePath
 from ...types.session_diff_response import SessionDiffResponse
-from ...types.shared.sessions_cursor import SessionsCursor
+from ...types.shared_params.agent_id import AgentID
+from ...types.shared_params.skill_id import SkillID
 from ...types.session_active_response import SessionActiveResponse
-from ...types.shared.session_metadata import SessionMetadata
+from ...types.shared_params.event_seq import EventSeq
+from ...types.shared_params.model_ref import ModelRef
 from ...types.session_context_response import SessionContextResponse
+from ...types.shared_params.project_id import ProjectID
+from ...types.shared_params.session_id import SessionID
 from ...types.session_generate_response import SessionGenerateResponse
-from ...types.shared.permission_ruleset import PermissionRuleset
 from ...types.shared.session_inbox_user import SessionInboxUser
-from ...types.shared.session_message_id import SessionMessageID
 from ...types.shared.session_stats_info import SessionStatsInfo
-from ...types.shared.location_public_ref import LocationPublicRef
+from ...types.shared_params.session_info import SessionInfo as SharedParamsSessionInfo
+from ...types.shared_params.absolute_path import AbsolutePath
+from ...types.shared_params.relative_path import RelativePath
 from ...types.shared.session_transfer_data import SessionTransferData
-from ...types.shared.session_inbox_delivery import SessionInboxDelivery
-from ...types.shared.prompt_agent_attachment import PromptAgentAttachment
+from ...types.shared_params.sessions_cursor import SessionsCursor
 from ...types.shared.session_inbox_synthetic import SessionInboxSynthetic
+from ...types.shared_params.session_metadata import SessionMetadata
 from ...types.shared.session_inbox_compaction import SessionInboxCompaction
+from ...types.shared_params.permission_ruleset import PermissionRuleset
+from ...types.shared_params.session_message_id import SessionMessageID
 from ...types.shared.session_interrupt_response import SessionInterruptResponse
-from ...types.shared.prompt_input_file_attachment import PromptInputFileAttachment
-from ...types.shared.prompt_input_skill_attachment import PromptInputSkillAttachment
+from ...types.shared_params.location_public_ref import LocationPublicRef
+from ...types.shared_params.session_inbox_delivery import SessionInboxDelivery
+from ...types.shared_params.prompt_agent_attachment import PromptAgentAttachment
+from ...types.shared_params.prompt_input_file_attachment import PromptInputFileAttachment
+from ...types.shared_params.prompt_input_skill_attachment import PromptInputSkillAttachment
 
 __all__ = ["SessionResource", "AsyncSessionResource"]
 
@@ -779,7 +780,7 @@ class SessionResource(SyncAPIResource):
     def import_(
         self,
         *,
-        info: SessionInfo,
+        info: SharedParamsSessionInfo,
         messages: Iterable[object],
         location: Optional[LocationPublicRef] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -2049,7 +2050,7 @@ class AsyncSessionResource(AsyncAPIResource):
     async def import_(
         self,
         *,
-        info: SessionInfo,
+        info: SharedParamsSessionInfo,
         messages: Iterable[object],
         location: Optional[LocationPublicRef] | Omit = omit,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.

@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, Optional
 from typing_extensions import Required, TypedDict
 
-from .shared.voice_transport_input import VoiceTransportInput
+from .shared_params.voice_transport_input import VoiceTransportInput
 
 __all__ = ["VoiceSessionParams"]
 

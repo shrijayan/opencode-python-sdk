@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Optional
 from typing_extensions import TypedDict
 
-from .shared.event_seq import EventSeq
+from .shared_params.event_seq import EventSeq
 
 __all__ = ["SessionLogParams"]
 

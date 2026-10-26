@@ -16,10 +16,10 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.shared.project_id import ProjectID
-from ..types.shared.absolute_path import AbsolutePath
 from ..types.shared.worktree_info import WorktreeInfo
 from ..types.shared.worktree_list import WorktreeList
+from ..types.shared_params.project_id import ProjectID
+from ..types.shared_params.absolute_path import AbsolutePath
 
 __all__ = ["WorktreeResource", "AsyncWorktreeResource"]
 

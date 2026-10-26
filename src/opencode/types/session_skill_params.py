@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Optional
 from typing_extensions import Required, TypedDict
 
-from .shared.skill_id import SkillID
+from .shared_params.skill_id import SkillID
 
 __all__ = ["SessionSkillParams"]
 

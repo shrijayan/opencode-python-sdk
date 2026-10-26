@@ -35,14 +35,14 @@ from ..._response import (
 )
 from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
-from ...types.shared.agent_id import AgentID
-from ...types.shared.session_id import SessionID
-from ...types.shared.permission_id import PermissionID
-from ...types.shared.permission_reply import PermissionReply
+from ...types.shared_params.agent_id import AgentID
 from ...types.permission_list_response import PermissionListResponse
-from ...types.shared.permission_source import PermissionSource
+from ...types.shared_params.session_id import SessionID
 from ...types.shared.permission_request import PermissionRequest
 from ...types.permission_create_response import PermissionCreateResponse
+from ...types.shared_params.permission_id import PermissionID
+from ...types.shared_params.permission_reply import PermissionReply
+from ...types.shared_params.permission_source import PermissionSource
 
 __all__ = ["PermissionResource", "AsyncPermissionResource"]
 

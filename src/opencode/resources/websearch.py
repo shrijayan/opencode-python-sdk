@@ -18,8 +18,8 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.shared.web_search_id import WebSearchID
 from ..types.websearch_query_response import WebsearchQueryResponse
+from ..types.shared_params.web_search_id import WebSearchID
 from ..types.websearch_providers_response import WebsearchProvidersResponse
 
 __all__ = ["WebsearchResource", "AsyncWebsearchResource"]

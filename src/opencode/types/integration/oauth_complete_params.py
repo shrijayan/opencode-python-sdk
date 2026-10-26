@@ -6,7 +6,7 @@ from typing import Dict, Union, Optional
 from typing_extensions import Required, Annotated, TypeAlias, TypedDict
 
 from ..._utils import PropertyInfo
-from ..shared.integration_id import IntegrationID
+from ..shared_params.integration_id import IntegrationID
 
 __all__ = ["OauthCompleteParams", "Location"]
 

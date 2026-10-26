@@ -18,9 +18,9 @@ from ..._response import (
 )
 from ..._base_client import make_request_options
 from ...types.integration import connect_key_params, connect_external_params
-from ...types.shared.form_answer import FormAnswer
-from ...types.shared.integration_id import IntegrationID
-from ...types.shared.integration_method_id import IntegrationMethodID
+from ...types.shared_params.form_answer import FormAnswer
+from ...types.shared_params.integration_id import IntegrationID
+from ...types.shared_params.integration_method_id import IntegrationMethodID
 
 __all__ = ["ConnectResource", "AsyncConnectResource"]
 

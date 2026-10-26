@@ -6,7 +6,7 @@ from typing import Union, Optional
 from typing_extensions import Literal, Annotated, TypedDict
 
 from .._utils import PropertyInfo
-from .shared.project_id import ProjectID
+from .shared_params.project_id import ProjectID
 
 __all__ = ["SessionStatsParams"]
 

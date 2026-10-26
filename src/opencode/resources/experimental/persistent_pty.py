@@ -19,12 +19,12 @@ from ..._response import (
 from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.experimental import persistent_pty_read_params, persistent_pty_create_params, persistent_pty_update_params
-from ...types.shared.pty_id import PtyID
-from ...types.shared.session_id import SessionID
+from ...types.shared_params.pty_id import PtyID
+from ...types.shared_params.session_id import SessionID
 from ...types.shared.persistent_pty_info import PersistentPtyInfo
 from ...types.shared.persistent_pty_snapshot import PersistentPtySnapshot
 from ...types.shared.pty_ticket_connect_token import PtyTicketConnectToken
-from ...types.shared.persistent_pty_read_lines import PersistentPtyReadLines
+from ...types.shared_params.persistent_pty_read_lines import PersistentPtyReadLines
 from ...types.experimental.persistent_pty_list_response import PersistentPtyListResponse
 from ...types.experimental.persistent_pty_read_response import PersistentPtyReadResponse
 from ...types.experimental.persistent_pty_handoff_response import PersistentPtyHandoffResponse
