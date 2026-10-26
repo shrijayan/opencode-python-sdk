@@ -22,10 +22,13 @@ jobs:
         with:
           fetch-depth: 0 # the previous release and the generated branch
           persist-credentials: false
-      - uses: shrijayan/ferrule/action@0000000000000000000000000000000000000000
+      # Pinned to a Ferrule commit; bump it to take generator fixes. Ferrule is not on PyPI yet, so
+      # the action installs it from its own checkout.
+      - uses: shrijayan/ferrule/action@05d458d6594545d0f0647273b2df68fcc41143f9
         with:
           spec: openapi.json
           config: stainless.yml
           verify: true # fails on an unlabeled breaking change
           open-pr: true # labels major / minor / patch
+          ferrule-version: source
           github-token: ${{ secrets.GITHUB_TOKEN }}
