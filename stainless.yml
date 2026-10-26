@@ -584,6 +584,7 @@ resources:
           read:
             endpoint: get /api/experimental/session/{sessionID}/terminal/read
             unwrap_response: data
+            skip_test_reason: "The mock server rejects integer query parameters typed through a $ref in anyOf."
           list:
             endpoint: get /api/experimental/session/{sessionID}/terminal
             unwrap_response: data
@@ -780,7 +781,9 @@ resources:
       generate:
         endpoint: post /api/session/{sessionID}/generate
         unwrap_response: data
-      log: get /api/experimental/session/{sessionID}/log
+      log:
+        endpoint: get /api/experimental/session/{sessionID}/log
+        skip_test_reason: "The mock server rejects integer query parameters typed through a $ref in anyOf."
       interrupt: post /api/session/{sessionID}/interrupt
       background: post /api/session/{sessionID}/background
       environment: put /api/session/{sessionID}/environment
