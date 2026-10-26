@@ -1,6 +1,6 @@
 # Copyright 2026 Ferrule contributors
 # SPDX-License-Identifier: Apache-2.0
-# Copied from https://github.com/shrijayan/ferrule/blob/eed5b835840d75ca4e953662731e1acdc6bf90b0/scripts/opencode/config_models.py
+# Copied from https://github.com/shrijayan/ferrule/blob/ea62784146f05b4f15ccdf269f30f6fcf7b98c60/scripts/opencode/config_models.py
 # Modified by The Ferrule Authors: Json is a TypeAlias, for Python 3.10.
 """Name every schema of the opencode spec as a model in its stainless.yml.
 
@@ -176,7 +176,7 @@ def casings_block(spec: Json) -> str:
     lines = [CASINGS_BEGIN, "custom_casings:"]
     for word, casing in casings(spec).items():
         (field, value), *_ = casing.items()
-        lines.append(f"  {word}: {{{field}: {json.dumps(value)}}}")
+        lines.append(f"  {word}: {{ {field}: {json.dumps(value)} }}")
     return "\n".join([*lines, CASINGS_END])
 
 

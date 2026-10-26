@@ -111,10 +111,10 @@ targets:
 
 # <ferrule:casings> written by scripts/opencode/config_models.py
 custom_casings:
-  id1: {initialism: true}
-  lsp: {initialism: true}
-  rtc: {initialism: true}
-  usd: {initialism: true}
+  id1: { initialism: true }
+  lsp: { initialism: true }
+  rtc: { initialism: true }
+  usd: { initialism: true }
 # </ferrule:casings>
 readme:
   example_requests:
