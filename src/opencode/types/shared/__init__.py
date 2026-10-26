@@ -209,7 +209,6 @@ from .config_model_reasoning import ConfigModelReasoning as ConfigModelReasoning
 from .config_reference_local import ConfigReferenceLocal as ConfigReferenceLocal
 from .config_web_search_info import ConfigWebSearchInfo as ConfigWebSearchInfo
 from .form_multiselect_field import FormMultiselectField as FormMultiselectField
-from .generate_text_response import GenerateTextResponse as GenerateTextResponse
 from .instruction_entry_info import InstructionEntryInfo as InstructionEntryInfo
 from .integration_attempt_id import IntegrationAttemptID as IntegrationAttemptID
 from .integration_env_method import IntegrationEnvMethod as IntegrationEnvMethod
@@ -228,7 +227,6 @@ from .session_message_native import SessionMessageNative as SessionMessageNative
 from .session_message_system import SessionMessageSystem as SessionMessageSystem
 from .session_stats_activity import SessionStatsActivity as SessionStatsActivity
 from .session_status_updated import SessionStatusUpdated as SessionStatusUpdated
-from .voice_session_response import VoiceSessionResponse as VoiceSessionResponse
 from .worktree_updated_event import WorktreeUpdatedEvent as WorktreeUpdatedEvent
 from .location_shutdown_event import LocationShutdownEvent as LocationShutdownEvent
 from .persistent_pty_snapshot import PersistentPtySnapshot as PersistentPtySnapshot
@@ -273,7 +271,6 @@ from .credential_switched_event import CredentialSwitchedEvent as CredentialSwit
 from .integration_o_auth_method import IntegrationOAuthMethod as IntegrationOAuthMethod
 from .integration_updated_event import IntegrationUpdatedEvent as IntegrationUpdatedEvent
 from .persistent_pty_read_lines import PersistentPtyReadLines as PersistentPtyReadLines
-from .session_generate_response import SessionGenerateResponse as SessionGenerateResponse
 from .session_message_assistant import SessionMessageAssistant as SessionMessageAssistant
 from .session_message_synthetic import SessionMessageSynthetic as SessionMessageSynthetic
 from .session_messages_response import SessionMessagesResponse as SessionMessagesResponse
