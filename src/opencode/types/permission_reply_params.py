@@ -6,8 +6,8 @@ from typing import Optional
 from typing_extensions import Required, Annotated, TypedDict
 
 from .._utils import PropertyInfo
-from .shared.session_id import SessionID
-from .shared.permission_reply import PermissionReply
+from .shared_params.session_id import SessionID
+from .shared_params.permission_reply import PermissionReply
 
 __all__ = ["PermissionReplyParams"]
 

@@ -6,9 +6,9 @@ from typing import Dict, Optional
 from typing_extensions import Required, TypedDict
 
 from .._types import SequenceNotStr
-from .shared.agent_id import AgentID
-from .shared.permission_id import PermissionID
-from .shared.permission_source import PermissionSource
+from .shared_params.agent_id import AgentID
+from .shared_params.permission_id import PermissionID
+from .shared_params.permission_source import PermissionSource
 
 __all__ = ["PermissionCreateParams"]
 

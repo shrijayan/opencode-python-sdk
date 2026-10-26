@@ -18,11 +18,11 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.shared.shell_id import ShellID
 from ..types.shell_get_response import ShellGetResponse
 from ..types.shell_list_response import ShellListResponse
 from ..types.shell_create_response import ShellCreateResponse
 from ..types.shell_output_response import ShellOutputResponse
+from ..types.shared_params.shell_id import ShellID
 
 __all__ = ["ShellResource", "AsyncShellResource"]
 

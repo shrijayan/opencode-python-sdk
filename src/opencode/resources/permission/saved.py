@@ -19,10 +19,10 @@ from ..._response import (
 from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.permission import saved_list_params, saved_update_params
-from ...types.shared.project_id import ProjectID
-from ...types.shared.permission_saved_id import PermissionSavedID
+from ...types.shared_params.project_id import ProjectID
 from ...types.shared.permission_saved_info import PermissionSavedInfo
 from ...types.permission.saved_list_response import SavedListResponse
+from ...types.shared_params.permission_saved_id import PermissionSavedID
 
 __all__ = ["SavedResource", "AsyncSavedResource"]
 

@@ -19,8 +19,8 @@ from .._response import (
 )
 from .._wrappers import DataWrapper
 from .._base_client import make_request_options
-from ..types.shared.model_ref import ModelRef
 from ..types.generate_text_response import GenerateTextResponse
+from ..types.shared_params.model_ref import ModelRef
 
 __all__ = ["GenerateResource", "AsyncGenerateResource"]
 

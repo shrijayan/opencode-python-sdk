@@ -6,12 +6,12 @@ from typing import Optional
 from typing_extensions import Annotated, TypedDict
 
 from .._utils import PropertyInfo
-from .shared.agent_id import AgentID
-from .shared.model_ref import ModelRef
-from .shared.session_id import SessionID
-from .shared.session_metadata import SessionMetadata
-from .shared.permission_ruleset import PermissionRuleset
-from .shared.location_public_ref import LocationPublicRef
+from .shared_params.agent_id import AgentID
+from .shared_params.model_ref import ModelRef
+from .shared_params.session_id import SessionID
+from .shared_params.session_metadata import SessionMetadata
+from .shared_params.permission_ruleset import PermissionRuleset
+from .shared_params.location_public_ref import LocationPublicRef
 
 __all__ = ["SessionCreateParams"]
 

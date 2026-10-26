@@ -5,10 +5,10 @@ from __future__ import annotations
 from typing import Iterable, Optional
 from typing_extensions import Required, TypedDict
 
-from .shared.session_inbox_delivery import SessionInboxDelivery
-from .shared.prompt_agent_attachment import PromptAgentAttachment
-from .shared.prompt_input_file_attachment import PromptInputFileAttachment
-from .shared.prompt_input_skill_attachment import PromptInputSkillAttachment
+from .shared_params.session_inbox_delivery import SessionInboxDelivery
+from .shared_params.prompt_agent_attachment import PromptAgentAttachment
+from .shared_params.prompt_input_file_attachment import PromptInputFileAttachment
+from .shared_params.prompt_input_skill_attachment import PromptInputSkillAttachment
 
 __all__ = ["SessionCommandParams"]
 

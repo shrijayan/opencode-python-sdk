@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing_extensions import Required, Annotated, TypedDict
 
 from ..._utils import PropertyInfo
-from ..shared.session_id import SessionID
-from ..shared.session_inbox_delivery import SessionInboxDelivery
+from ..shared_params.session_id import SessionID
+from ..shared_params.session_inbox_delivery import SessionInboxDelivery
 
 __all__ = ["InboxUpdateParams"]
 

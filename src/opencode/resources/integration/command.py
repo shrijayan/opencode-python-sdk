@@ -18,11 +18,11 @@ from ..._response import (
 )
 from ..._base_client import make_request_options
 from ...types.integration import command_cancel_params, command_status_params, command_connect_params
-from ...types.shared.integration_id import IntegrationID
-from ...types.shared.integration_method_id import IntegrationMethodID
-from ...types.shared.integration_attempt_id import IntegrationAttemptID
+from ...types.shared_params.integration_id import IntegrationID
 from ...types.integration.command_status_response import CommandStatusResponse
+from ...types.shared_params.integration_method_id import IntegrationMethodID
 from ...types.integration.command_connect_response import CommandConnectResponse
+from ...types.shared_params.integration_attempt_id import IntegrationAttemptID
 
 __all__ = ["CommandResource", "AsyncCommandResource"]
 

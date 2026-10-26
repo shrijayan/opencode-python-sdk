@@ -18,9 +18,9 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.shared.provider_id import ProviderID
 from ..types.provider_get_response import ProviderGetResponse
 from ..types.provider_list_response import ProviderListResponse
+from ..types.shared_params.provider_id import ProviderID
 
 __all__ = ["ProviderResource", "AsyncProviderResource"]
 

@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Dict, Union, Optional
 from typing_extensions import Required, TypeAlias, TypedDict
 
-from .shared.mcp_local_config import McpLocalConfig
-from .shared.mcp_remote_config import McpRemoteConfig
+from .shared_params.mcp_local_config import McpLocalConfig
+from .shared_params.mcp_remote_config import McpRemoteConfig
 
 __all__ = ["McpAddParams", "Config", "Location"]
 

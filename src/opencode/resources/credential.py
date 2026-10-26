@@ -19,11 +19,11 @@ from .._response import (
 )
 from .._wrappers import DataWrapper
 from .._base_client import make_request_options
-from ..types.shared.credential_id import CredentialID
-from ..types.shared.integration_id import IntegrationID
 from ..types.shared.credential_entry import CredentialEntry
-from ..types.shared.credential_value import CredentialValue
 from ..types.credential_list_response import CredentialListResponse
+from ..types.shared_params.credential_id import CredentialID
+from ..types.shared_params.integration_id import IntegrationID
+from ..types.shared_params.credential_value import CredentialValue
 
 __all__ = ["CredentialResource", "AsyncCredentialResource"]
 

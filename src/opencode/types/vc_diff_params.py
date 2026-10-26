@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, Union, Optional
 from typing_extensions import Required, TypeAlias, TypedDict
 
-from .shared.vcs_mode import VcsMode
+from .shared_params.vcs_mode import VcsMode
 
 __all__ = ["VcDiffParams", "Location"]
 

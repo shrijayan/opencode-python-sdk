@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Optional
 from typing_extensions import TypedDict
 
-from .shared.session_message_id import SessionMessageID
+from .shared_params.session_message_id import SessionMessageID
 
 __all__ = ["SessionForkParams"]
 

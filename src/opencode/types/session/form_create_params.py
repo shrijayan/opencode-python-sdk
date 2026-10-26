@@ -5,9 +5,9 @@ from __future__ import annotations
 from typing import Optional
 from typing_extensions import Required, TypedDict
 
-from ..shared.form_id import FormID
-from ..shared.form_fields import FormFields
-from ..shared.form_metadata import FormMetadata
+from ..shared_params.form_id import FormID
+from ..shared_params.form_fields import FormFields
+from ..shared_params.form_metadata import FormMetadata
 
 __all__ = ["FormCreateParams"]
 

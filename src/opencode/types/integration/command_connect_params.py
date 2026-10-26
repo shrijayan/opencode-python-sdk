@@ -6,7 +6,7 @@ from typing import Dict, Union, Optional
 from typing_extensions import Required, Annotated, TypeAlias, TypedDict
 
 from ..._utils import PropertyInfo
-from ..shared.integration_method_id import IntegrationMethodID
+from ..shared_params.integration_method_id import IntegrationMethodID
 
 __all__ = ["CommandConnectParams", "Location"]
 

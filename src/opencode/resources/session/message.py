@@ -18,9 +18,9 @@ from ..._response import (
 )
 from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
-from ...types.shared.session_id import SessionID
-from ...types.shared.session_message_id import SessionMessageID
+from ...types.shared_params.session_id import SessionID
 from ...types.shared.session_message_info import SessionMessageInfo
+from ...types.shared_params.session_message_id import SessionMessageID
 
 __all__ = ["MessageResource", "AsyncMessageResource"]
 

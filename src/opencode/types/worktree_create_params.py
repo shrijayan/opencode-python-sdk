@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing_extensions import Required, Annotated, TypedDict
 
 from .._utils import PropertyInfo
-from .shared.project_id import ProjectID
-from .shared.absolute_path import AbsolutePath
+from .shared_params.project_id import ProjectID
+from .shared_params.absolute_path import AbsolutePath
 
 __all__ = ["WorktreeCreateParams"]
 

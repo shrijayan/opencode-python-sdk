@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Iterable, Optional
 from typing_extensions import Required, TypedDict
 
-from .shared.session_info import SessionInfo
-from .shared.location_public_ref import LocationPublicRef
+from .shared_params.session_info import SessionInfo
+from .shared_params.location_public_ref import LocationPublicRef
 
 __all__ = ["SessionImportParams"]
 

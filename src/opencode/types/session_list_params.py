@@ -6,11 +6,11 @@ from typing import Optional
 from typing_extensions import Literal, Annotated, TypedDict
 
 from .._utils import PropertyInfo
-from .shared.project_id import ProjectID
-from .shared.session_id import SessionID
-from .shared.absolute_path import AbsolutePath
-from .shared.relative_path import RelativePath
-from .shared.sessions_cursor import SessionsCursor
+from .shared_params.project_id import ProjectID
+from .shared_params.session_id import SessionID
+from .shared_params.absolute_path import AbsolutePath
+from .shared_params.relative_path import RelativePath
+from .shared_params.sessions_cursor import SessionsCursor
 
 __all__ = ["SessionListParams"]
 

@@ -26,11 +26,11 @@ from ..._response import (
     async_to_streamed_response_wrapper,
 )
 from ..._base_client import make_request_options
-from ...types.shared.pty_id import PtyID
 from ...types.pty_get_response import PtyGetResponse
 from ...types.pty_list_response import PtyListResponse
 from ...types.pty_create_response import PtyCreateResponse
 from ...types.pty_update_response import PtyUpdateResponse
+from ...types.shared_params.pty_id import PtyID
 
 __all__ = ["PtyResource", "AsyncPtyResource"]
 

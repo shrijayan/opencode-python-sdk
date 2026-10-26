@@ -6,8 +6,8 @@ from typing import Dict, Union, Optional
 from typing_extensions import Required, Annotated, TypeAlias, TypedDict
 
 from ..._utils import PropertyInfo
-from ..shared.form_answer import FormAnswer
-from ..shared.integration_method_id import IntegrationMethodID
+from ..shared_params.form_answer import FormAnswer
+from ..shared_params.integration_method_id import IntegrationMethodID
 
 __all__ = ["ConnectExternalParams", "Location"]
 

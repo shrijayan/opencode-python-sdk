@@ -20,7 +20,7 @@ from .._response import (
 from .._wrappers import DataWrapper
 from .._base_client import make_request_options
 from ..types.voice_session_response import VoiceSessionResponse
-from ..types.shared.voice_transport_input import VoiceTransportInput
+from ..types.shared_params.voice_transport_input import VoiceTransportInput
 
 __all__ = ["VoiceResource", "AsyncVoiceResource"]
 

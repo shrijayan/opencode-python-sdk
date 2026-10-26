@@ -19,9 +19,9 @@ from ..._response import (
 from ..._wrappers import DataWrapper
 from ..._base_client import make_request_options
 from ...types.session import revert_stage_params
-from ...types.shared.session_id import SessionID
 from ...types.shared.session_revert import SessionRevert
-from ...types.shared.session_message_id import SessionMessageID
+from ...types.shared_params.session_id import SessionID
+from ...types.shared_params.session_message_id import SessionMessageID
 
 __all__ = ["RevertResource", "AsyncRevertResource"]
 

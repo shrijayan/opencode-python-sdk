@@ -19,11 +19,11 @@ from .._response import (
 )
 from .._base_client import make_request_options
 from ..types.shared.project import Project
-from ..types.shared.project_id import ProjectID
-from ..types.shared.project_icon import ProjectIcon
-from ..types.shared.absolute_path import AbsolutePath
 from ..types.project_list_response import ProjectListResponse
-from ..types.shared.project_commands import ProjectCommands
+from ..types.shared_params.project_id import ProjectID
+from ..types.shared_params.project_icon import ProjectIcon
+from ..types.shared_params.absolute_path import AbsolutePath
+from ..types.shared_params.project_commands import ProjectCommands
 
 __all__ = ["ProjectResource", "AsyncProjectResource"]
 

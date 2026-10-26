@@ -6,7 +6,7 @@ from typing import Optional
 from typing_extensions import Annotated, TypedDict
 
 from .._utils import PropertyInfo
-from .shared.session_message_id import SessionMessageID
+from .shared_params.session_message_id import SessionMessageID
 
 __all__ = ["SessionDiffParams"]
 

@@ -18,9 +18,9 @@ from .._response import (
     async_to_streamed_response_wrapper,
 )
 from .._base_client import make_request_options
-from ..types.shared.agent_id import AgentID
 from ..types.agent_get_response import AgentGetResponse
 from ..types.agent_list_response import AgentListResponse
+from ..types.shared_params.agent_id import AgentID
 
 __all__ = ["AgentResource", "AsyncAgentResource"]
 

@@ -20,7 +20,7 @@ from .._response import (
 )
 from ..pagination import SyncCursorPage, AsyncCursorPage
 from .._base_client import AsyncPaginator, make_request_options
-from ..types.shared.session_id import SessionID
+from ..types.shared_params.session_id import SessionID
 from ..types.shared.session_message_info import SessionMessageInfo
 
 __all__ = ["MessageResource", "AsyncMessageResource"]
