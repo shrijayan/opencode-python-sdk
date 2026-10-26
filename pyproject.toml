@@ -3,8 +3,8 @@ name = "opencode-python-sdk"
 dynamic = ["version"]
 description = "Typed Python client for the OpenCode 2.x server API"
 readme = "README.md"
-license = "MIT"
-license-files = ["LICENSE"]
+license = "MIT AND Apache-2.0"
+license-files = ["LICENSE", "LICENSE-APACHE", "NOTICE"]
 requires-python = ">=3.10"
 authors = [{ name = "Shrijayan Rajendran" }]
 keywords = ["opencode", "ai", "agents", "coding-agent", "sdk", "client"]
@@ -87,7 +87,7 @@ raw-options = { local_scheme = "no-local-version", fallback_version = "0.0.0" }
 packages = ["src/opencode"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/opencode", "tests", "README.md", "LICENSE", "CHANGELOG.md", "api.md"]
+include = ["src/opencode", "tests", "README.md", "LICENSE", "LICENSE-APACHE", "NOTICE", "CHANGELOG.md", "api.md"]
 
 [tool.uv]
 required-version = ">=0.8"
