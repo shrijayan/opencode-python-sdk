@@ -1,6 +1,6 @@
 """MkDocs hook that generates the resource and type reference pages and fills version placeholders.
 
-`opencode.types` holds ~640 generated models. One page per model would bloat the nav and one page for all of them
+`opencode.types` holds several hundred generated models. One page per model would bloat the nav and one page for all of them
 would be unusable, so this groups them by domain (the leading word of the class name, with events and session
 messages split out) and writes one page per group. Pages are generated at build time from the source, so they
 never drift from the code.
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from mkdocs.structure.files import Files
 
 ROOT = Path(__file__).resolve().parents[2]
-TYPES_SRC = ROOT / "src/opencode/types/_generated.py"
+TYPES_SRC = ROOT / "src/opencode/types/__init__.py"
 RESOURCES_DIR = ROOT / "src/opencode/resources"
 TYPES_DIR = "reference/types"
 MIN_GROUP = 4
@@ -35,16 +35,15 @@ GROUP_TITLES = {
 
 
 def _public_names() -> list[str]:
+    """The models and aliases ``opencode.types`` re-exports (``from .x import X as X``)."""
     tree = ast.parse(TYPES_SRC.read_text())
-    names: list[str] = []
-    for node in tree.body:
-        if isinstance(node, ast.ClassDef):
-            names.append(node.name)
-        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
-            names.append(node.target.id)
-        elif isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
-            names.append(node.targets[0].id)
-    return [n for n in names if not n.startswith("_") and n[0].isupper() and n != "__all__"]
+    names = {
+        alias.asname or alias.name
+        for node in tree.body
+        if isinstance(node, ast.ImportFrom)
+        for alias in node.names
+    }
+    return sorted(n for n in names if not n.startswith("_") and n[0].isupper())
 
 
 def _group_of(name: str) -> str:
