@@ -8,7 +8,7 @@ from __future__ import annotations
 import asyncio
 
 from opencode import AsyncOpencode
-from opencode.types import UnknownEvent, SessionTextDeltaEvent
+from opencode.types import SessionTextDeltaEvent
 
 
 async def main() -> None:
@@ -16,8 +16,6 @@ async def main() -> None:
         async for event in events:
             if isinstance(event, SessionTextDeltaEvent):
                 print(event.data, flush=True)
-            elif isinstance(event, UnknownEvent):
-                print(f"(new event type from a newer server: {event.type})")
             else:
                 print(event.type)
 

@@ -7,6 +7,8 @@ Custom code, never regenerated: ``client.session`` gains ``run`` (and the other 
 
 from __future__ import annotations
 
+from typing_extensions import override
+
 from .._pty import PtyAttachMixin, AsyncPtyAttachMixin, PersistentPtyAttachMixin, AsyncPersistentPtyAttachMixin
 from .._compat import cached_property
 from ._session import SessionHelpers, AsyncSessionHelpers
@@ -55,6 +57,7 @@ class Experimental(ExperimentalResource):
     """``client.experimental``, whose ``persistent_pty`` can ``attach``."""
 
     @cached_property
+    @override
     def persistent_pty(self) -> PersistentPty:  # pyright: ignore[reportIncompatibleVariableOverride]
         return PersistentPty(self._client)
 
@@ -63,5 +66,6 @@ class AsyncExperimental(AsyncExperimentalResource):
     """``client.experimental`` of the async client."""
 
     @cached_property
+    @override
     def persistent_pty(self) -> AsyncPersistentPty:  # pyright: ignore[reportIncompatibleVariableOverride]
         return AsyncPersistentPty(self._client)

@@ -368,7 +368,7 @@ class EventHub:
         finally:
             connection.stream = None
             # End the iteration first, so the response's byte stream is closed with it.
-            stream._iterator.close()  # pyright: ignore[reportPrivateUsage, reportAttributeAccessIssue]
+            stream._iterator.close()  # type: ignore[attr-defined]  # Stream keeps its generator private
             stream.close()
 
 
@@ -667,7 +667,7 @@ class AsyncEventHub:
         finally:
             with anyio.CancelScope(shield=True):
                 # End the iteration first, so the response's byte stream is closed with it.
-                await stream._iterator.aclose()  # pyright: ignore[reportPrivateUsage, reportAttributeAccessIssue]
+                await stream._iterator.aclose()  # type: ignore[attr-defined]  # Stream keeps its generator private
                 await stream.close()
 
 

@@ -1,7 +1,7 @@
 """``client.session.run``: create or reuse a session, prompt it, wait until idle, and collect the result.
 
-The generated ``SessionResource`` / ``AsyncSessionResource`` inherit from the classes here (see
-``codegen/render.py``, ``HELPER_BASES``), so these methods sit next to the generated ones.
+``lib/_resources.py`` mixes these classes into the generated ``SessionResource`` /
+``AsyncSessionResource``, so these methods sit next to the generated ones.
 """
 
 from __future__ import annotations
@@ -12,7 +12,7 @@ from dataclasses import field, dataclass
 
 import anyio
 
-from .._types import NOT_GIVEN, Timeout, NotGiven
+from .._types import Omit, omit
 from .._resource import SyncAPIResource, AsyncAPIResource
 
 if TYPE_CHECKING:
@@ -20,16 +20,15 @@ if TYPE_CHECKING:
 
     from ..types import (
         AgentID,
-        ModelRef,
         SessionID,
         SessionInfo,
         TokenUsageInfo,
         SessionMessageInfo,
         SessionStructuredError,
         SessionMessageAssistant,
-        PromptInputFileAttachment,
     )
     from ..resources.session import SessionResource, AsyncSessionResource
+    from ..types.shared_params import ModelRef, PromptInputFileAttachment
 
 __all__ = ["AsyncSessionHelpers", "RunResult", "SessionHelpers"]
 
@@ -130,9 +129,9 @@ class SessionHelpers(SyncAPIResource):
         *,
         agent: AgentID | None = None,
         model: ModelRef | None = None,
-        files: Sequence[PromptInputFileAttachment] | NotGiven = NOT_GIVEN,
+        files: Sequence[PromptInputFileAttachment] | Omit = omit,
         session_id: SessionID | None = None,
-        timeout: Timeout = None,
+        timeout: float | None = None,
     ) -> RunResult:
         """Runs one prompt to completion and returns what the agent produced.
 
@@ -159,7 +158,7 @@ class SessionHelpers(SyncAPIResource):
         """
         resource = cast("SessionResource", self)
         if session_id is None:
-            session = resource.create(agent=agent or NOT_GIVEN, model=model or NOT_GIVEN)
+            session = resource.create(agent=agent or omit, model=model or omit)
             session_id = session.id
             marker = None
         else:
@@ -195,9 +194,9 @@ class AsyncSessionHelpers(AsyncAPIResource):
         *,
         agent: AgentID | None = None,
         model: ModelRef | None = None,
-        files: Sequence[PromptInputFileAttachment] | NotGiven = NOT_GIVEN,
+        files: Sequence[PromptInputFileAttachment] | Omit = omit,
         session_id: SessionID | None = None,
-        timeout: Timeout = None,
+        timeout: float | None = None,
     ) -> RunResult:
         """Runs one prompt to completion. See :meth:`SessionHelpers.run`.
 
@@ -205,7 +204,7 @@ class AsyncSessionHelpers(AsyncAPIResource):
         """
         resource = cast("AsyncSessionResource", self)
         if session_id is None:
-            session = await resource.create(agent=agent or NOT_GIVEN, model=model or NOT_GIVEN)
+            session = await resource.create(agent=agent or omit, model=model or omit)
             session_id = session.id
             marker = None
         else:

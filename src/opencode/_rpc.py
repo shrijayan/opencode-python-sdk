@@ -39,7 +39,7 @@ from typing_extensions import Self
 
 import pydantic
 
-from ._types import NOT_GIVEN, NotGiven
+from ._types import NOT_GIVEN, Omit, NotGiven, omit
 from ._errors import RpcError, RpcInternalError
 from ._exceptions import OpencodeError
 from .lib._support import type_adapter, validation_summary
@@ -146,7 +146,7 @@ class RpcMethod(Generic[_I, _O]):
             except pydantic.ValidationError:
                 data = body.data
         cls = RpcCallInternalError if isinstance(exc, RpcInternalError) else RpcCallError
-        return cls(rpc_id, self.name, body.type, body.message, data)
+        return cls(rpc_id, self.name, body.type, body.message or "", data)
 
 
 class RpcEventDefinition(Generic[_T]):
@@ -281,7 +281,7 @@ class RpcClient(Generic[_D]):
         method: RpcMethod[None, _O],
         input: None = None,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         extra_headers: Headers | None = None,
         timeout: Timeout | NotGiven = NOT_GIVEN,
     ) -> _O: ...
@@ -291,7 +291,7 @@ class RpcClient(Generic[_D]):
         method: RpcMethod[_I, _O],
         input: _I,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         extra_headers: Headers | None = None,
         timeout: Timeout | NotGiven = NOT_GIVEN,
     ) -> _O: ...
@@ -300,7 +300,7 @@ class RpcClient(Generic[_D]):
         method: RpcMethod[Any, Any],
         input: Any = None,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         extra_headers: Headers | None = None,
         timeout: Timeout | NotGiven = NOT_GIVEN,
     ) -> Any:
@@ -354,7 +354,7 @@ class AsyncRpcClient(Generic[_D]):
         method: RpcMethod[None, _O],
         input: None = None,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         extra_headers: Headers | None = None,
         timeout: Timeout | NotGiven = NOT_GIVEN,
     ) -> _O: ...
@@ -364,7 +364,7 @@ class AsyncRpcClient(Generic[_D]):
         method: RpcMethod[_I, _O],
         input: _I,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         extra_headers: Headers | None = None,
         timeout: Timeout | NotGiven = NOT_GIVEN,
     ) -> _O: ...
@@ -373,7 +373,7 @@ class AsyncRpcClient(Generic[_D]):
         method: RpcMethod[Any, Any],
         input: Any = None,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         extra_headers: Headers | None = None,
         timeout: Timeout | NotGiven = NOT_GIVEN,
     ) -> Any:
@@ -479,7 +479,7 @@ class TypedRpcResource(RpcResource):
 
     def __call__(self, definition: type[_D]) -> RpcClient[_D]:
         """Binds a plugin RPC declaration to this client."""
-        return RpcClient(self._client, definition)
+        return RpcClient(cast("Opencode", self._client), definition)
 
 
 class AsyncTypedRpcResource(AsyncRpcResource):
@@ -487,4 +487,4 @@ class AsyncTypedRpcResource(AsyncRpcResource):
 
     def __call__(self, definition: type[_D]) -> AsyncRpcClient[_D]:
         """Binds a plugin RPC declaration to this client."""
-        return AsyncRpcClient(self._client, definition)
+        return AsyncRpcClient(cast("AsyncOpencode", self._client), definition)

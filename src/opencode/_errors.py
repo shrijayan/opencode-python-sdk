@@ -368,9 +368,13 @@ _BY_STATUS: dict[int, type[APIStatusError]] = {
 }
 
 
+def _tag_of(body: object) -> object:
+    return cast("dict[str, Any]", body).get("_tag") if isinstance(body, dict) else None
+
+
 def tagged_status_error(err_msg: str, *, body: object, response: httpx.Response) -> APIStatusError | None:
     """The error for a ``_tag`` this client knows, or for 413, 501 and 503; ``None`` otherwise."""
-    tag: object = cast("dict[str, Any]", body).get("_tag") if isinstance(body, dict) else None
+    tag = _tag_of(body)
     cls = TAGGED_ERRORS.get(tag) if isinstance(tag, str) else None
     cls = cls or _BY_STATUS.get(response.status_code)
     return None if cls is None else cls(err_msg, response=response, body=body)

@@ -137,8 +137,9 @@ from .pagination import SyncCursorPage, AsyncCursorPage  # noqa: E402
 from .lib._client import Opencode as Opencode, AsyncOpencode as AsyncOpencode  # noqa: E402
 from ._base_client import AsyncPaginator  # noqa: E402
 
-Client = Opencode
-AsyncClient = AsyncOpencode
+# The aliases name the clients with this SDK's features, not the generated base classes.
+Client = Opencode  # type: ignore[misc]
+AsyncClient = AsyncOpencode  # type: ignore[misc]
 
 API_VERSION = "2.1.2"
 """The OpenCode server version this client was generated from."""

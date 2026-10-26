@@ -16,7 +16,7 @@ client they add:
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 from typing_extensions import Self, override
 
 import httpx
@@ -59,7 +59,7 @@ def _with_location(options: FinalRequestOptions, directory: str | None) -> Final
     params = options.params
     if not isinstance(params, dict):
         return options
-    query = cast("dict[str, object]", params)
+    query: dict[str, object] = params
     if "cursor" in query and "order" in query:
         query = {key: value for key, value in query.items() if key != "order"}
     if directory is not None and "location" not in query:

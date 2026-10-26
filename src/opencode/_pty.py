@@ -32,7 +32,7 @@ from typing import TYPE_CHECKING, Any, Literal, cast
 from urllib.parse import urlencode
 from typing_extensions import Self
 
-from ._types import NOT_GIVEN, NotGiven
+from ._types import NOT_GIVEN, Omit, omit
 from ._resource import SyncAPIResource, AsyncAPIResource
 from ._exceptions import OpencodeError
 from .lib._support import encode_query, default_location, encode_path_segment
@@ -46,6 +46,7 @@ if TYPE_CHECKING:
     from websockets.asyncio.client import ClientConnection as AsyncWebSocket
 
     from .types import PtyID
+    from .lib._client import Opencode, AsyncOpencode
     from .lib._support import Location
 
 __all__ = [
@@ -93,12 +94,12 @@ def _ws_url(base_url: httpx.URL, path: str, query: Mapping[str, object]) -> str:
     return str(url.copy_with(scheme=scheme, query=urlencode(encode_query(query)).encode("ascii")))
 
 
-def _headers(username: str, password: str | None, extra: Mapping[str, str] | None) -> dict[str, str]:
+def _headers(username: str | None, password: str | None, extra: Mapping[str, str] | None) -> dict[str, str]:
     import base64
 
     headers: dict[str, str] = {}
     if password is not None:
-        headers["Authorization"] = "Basic " + base64.b64encode(f"{username}:{password}".encode()).decode("ascii")
+        headers["Authorization"] = "Basic " + base64.b64encode(f"{username or ''}:{password}".encode()).decode("ascii")
     headers.update(extra or {})
     return headers
 
@@ -428,7 +429,7 @@ class PtyAttachMixin(SyncAPIResource):
         self,
         pty_id: PtyID,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         cursor: int | None = None,
         open_timeout: float | None = 10,
         extra_headers: Mapping[str, str] | None = None,
@@ -449,7 +450,7 @@ class PtyAttachMixin(SyncAPIResource):
         ``GET /api/pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("Opencode", self._client)
         token = client.pty.connect.token(pty_id, location=location, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,
@@ -471,7 +472,7 @@ class AsyncPtyAttachMixin(AsyncAPIResource):
         self,
         pty_id: PtyID,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         cursor: int | None = None,
         open_timeout: float | None = 10,
         extra_headers: Mapping[str, str] | None = None,
@@ -481,7 +482,7 @@ class AsyncPtyAttachMixin(AsyncAPIResource):
         ``GET /api/pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("AsyncOpencode", self._client)
         token = await client.pty.connect.token(pty_id, location=location, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,
@@ -529,7 +530,7 @@ class PersistentPtyAttachMixin(SyncAPIResource):
         ``GET /api/experimental/persistent-pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("Opencode", self._client)
         token = client.experimental.persistent_pty.connect_token(pty_id, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,
@@ -564,7 +565,7 @@ class AsyncPersistentPtyAttachMixin(AsyncAPIResource):
         ``GET /api/experimental/persistent-pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("AsyncOpencode", self._client)
         token = await client.experimental.persistent_pty.connect_token(pty_id, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,

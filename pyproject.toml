@@ -139,6 +139,16 @@ reportOverlappingOverload = false
 reportImportCycles = false
 reportPrivateUsage = false
 
+[[tool.pyright.executionEnvironments]]
+root = "tests/custom"
+# respx ships without complete type information, and autouse fixtures are never referenced.
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportUnknownLambdaType = false
+reportUnknownParameterType = false
+reportUnusedFunction = false
+
 [tool.mypy]
 pretty = true
 show_error_codes = true
