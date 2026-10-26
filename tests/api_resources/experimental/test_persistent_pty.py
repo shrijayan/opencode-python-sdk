@@ -316,7 +316,7 @@ class TestPersistentPty:
     def test_method_read_with_all_params(self, client: Opencode) -> None:
         persistent_pty = client.experimental.persistent_pty.read(
             session_id="sessionID",
-            lines={},
+            lines=0,
         )
         assert_matches_type(PersistentPtyReadResponse, persistent_pty, path=["response"])
 
@@ -748,7 +748,7 @@ class TestAsyncPersistentPty:
     async def test_method_read_with_all_params(self, async_client: AsyncOpencode) -> None:
         persistent_pty = await async_client.experimental.persistent_pty.read(
             session_id="sessionID",
-            lines={},
+            lines=0,
         )
         assert_matches_type(PersistentPtyReadResponse, persistent_pty, path=["response"])
 

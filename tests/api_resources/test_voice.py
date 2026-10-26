@@ -21,7 +21,11 @@ class TestVoice:
     def test_method_session(self, client: Opencode) -> None:
         voice = client.voice.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
         )
         assert_matches_type(VoiceSessionResponse, voice, path=["response"])
 
@@ -29,7 +33,11 @@ class TestVoice:
     def test_method_session_with_all_params(self, client: Opencode) -> None:
         voice = client.voice.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
             session={"foo": {}},
         )
         assert_matches_type(VoiceSessionResponse, voice, path=["response"])
@@ -38,7 +46,11 @@ class TestVoice:
     def test_raw_response_session(self, client: Opencode) -> None:
         response = client.voice.with_raw_response.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
         )
 
         assert response.is_closed is True
@@ -50,7 +62,11 @@ class TestVoice:
     def test_streaming_response_session(self, client: Opencode) -> None:
         with client.voice.with_streaming_response.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -70,7 +86,11 @@ class TestAsyncVoice:
     async def test_method_session(self, async_client: AsyncOpencode) -> None:
         voice = await async_client.voice.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
         )
         assert_matches_type(VoiceSessionResponse, voice, path=["response"])
 
@@ -78,7 +98,11 @@ class TestAsyncVoice:
     async def test_method_session_with_all_params(self, async_client: AsyncOpencode) -> None:
         voice = await async_client.voice.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
             session={"foo": {}},
         )
         assert_matches_type(VoiceSessionResponse, voice, path=["response"])
@@ -87,7 +111,11 @@ class TestAsyncVoice:
     async def test_raw_response_session(self, async_client: AsyncOpencode) -> None:
         response = await async_client.voice.with_raw_response.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
         )
 
         assert response.is_closed is True
@@ -99,7 +127,11 @@ class TestAsyncVoice:
     async def test_streaming_response_session(self, async_client: AsyncOpencode) -> None:
         async with async_client.voice.with_streaming_response.session(
             model="model",
-            transport={},
+            transport={
+                "dcid": 0,
+                "sdp": "string",
+                "type": "webrtc",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

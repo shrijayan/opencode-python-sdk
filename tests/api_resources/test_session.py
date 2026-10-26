@@ -39,13 +39,25 @@ class TestSession:
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
         session = client.session.create(
-            agent={},
-            id={},
-            location={},
-            metadata={},
-            model={},
-            parent_id={},
-            permissions={},
+            agent="agent",
+            id="id",
+            location={
+                "directory": "string",
+            },
+            metadata={"foo": {}},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
+            parent_id="parentID",
+            permissions=[
+                {
+                    "action": "string",
+                    "effect": "allow",
+                    "resource": "string",
+                }
+            ],
             title="title",
         )
         assert_matches_type(SessionInfo, session, path=["response"])
@@ -82,8 +94,14 @@ class TestSession:
         session = client.session.update(
             session_id="sessionID",
             archived=True,
-            metadata={},
-            permissions={},
+            metadata={"foo": {}},
+            permissions=[
+                {
+                    "action": "string",
+                    "effect": "allow",
+                    "resource": "string",
+                }
+            ],
             title="title",
         )
         assert session is None
@@ -128,14 +146,14 @@ class TestSession:
     def test_method_list_with_all_params(self, client: Opencode) -> None:
         session = client.session.list(
             archived=True,
-            cursor={},
-            directory={},
+            cursor="cursor",
+            directory="directory",
             limit=0,
             order="asc",
-            parent_id={},
-            project={},
+            parent_id="parentID",
+            project="project",
             search="search",
-            subpath={},
+            subpath="subpath",
         )
         assert_matches_type(SessionInfo, session, path=["response"])
 
@@ -237,10 +255,39 @@ class TestSession:
             session_id="sessionID",
             name="name",
             text="text",
-            agents=[{}],
-            delivery={},
-            files=[{}],
-            skills=[{}],
+            agents=[
+                {
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                }
+            ],
+            delivery="steer",
+            files=[
+                {
+                    "description": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                    "uri": "string",
+                }
+            ],
+            skills=[
+                {
+                    "id": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                }
+            ],
         )
         assert session is None
 
@@ -292,8 +339,8 @@ class TestSession:
     def test_method_compact_with_all_params(self, client: Opencode) -> None:
         session = client.session.compact(
             session_id="sessionID",
-            delivery={},
-            id={},
+            delivery="steer",
+            id="id",
         )
         assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
@@ -378,8 +425,8 @@ class TestSession:
         session = client.session.diff(
             session_id="sessionID",
             context=0,
-            from_={},
-            to={},
+            from_="from",
+            to="to",
         )
         assert_matches_type(SessionDiffResponse, session, path=["response"])
 
@@ -513,7 +560,7 @@ class TestSession:
     def test_method_fork_with_all_params(self, client: Opencode) -> None:
         session = client.session.fork(
             session_id="sessionID",
-            before={},
+            before="before",
         )
         assert_matches_type(SessionInfo, session, path=["response"])
 
@@ -631,7 +678,69 @@ class TestSession:
     @parametrize
     def test_method_import_(self, client: Opencode) -> None:
         session = client.session.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
         )
         assert_matches_type(SessionInfo, session, path=["response"])
@@ -639,16 +748,142 @@ class TestSession:
     @parametrize
     def test_method_import__with_all_params(self, client: Opencode) -> None:
         session = client.session.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
-            location={},
+            location={
+                "directory": "string",
+            },
         )
         assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     def test_raw_response_import_(self, client: Opencode) -> None:
         response = client.session.with_raw_response.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
         )
 
@@ -660,7 +895,69 @@ class TestSession:
     @parametrize
     def test_streaming_response_import_(self, client: Opencode) -> None:
         with client.session.with_streaming_response.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
         ) as response:
             assert not response.is_closed
@@ -728,7 +1025,7 @@ class TestSession:
     def test_method_log_with_all_params(self, client: Opencode) -> None:
         session = client.session.log(
             session_id="sessionID",
-            after={},
+            after=0,
             follow=True,
         )
         assert session is None
@@ -777,7 +1074,7 @@ class TestSession:
         session = client.session.move(
             session_id="sessionID",
             directory="directory",
-            delivery={},
+            delivery="steer",
         )
         assert session is None
 
@@ -828,13 +1125,42 @@ class TestSession:
         session = client.session.prompt(
             session_id="sessionID",
             text="text",
-            agents=[{}],
-            delivery={},
-            files=[{}],
-            id={},
+            agents=[
+                {
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                }
+            ],
+            delivery="steer",
+            files=[
+                {
+                    "description": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                    "uri": "string",
+                }
+            ],
+            id="id",
             metadata={"foo": {}},
             resume=True,
-            skills=[{}],
+            skills=[
+                {
+                    "id": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                }
+            ],
         )
         assert_matches_type(SessionInboxUser, session, path=["response"])
 
@@ -923,7 +1249,7 @@ class TestSession:
         session = client.session.shell(
             session_id="sessionID",
             command="command",
-            id={},
+            id="id",
         )
         assert session is None
 
@@ -1021,7 +1347,7 @@ class TestSession:
     def test_method_stats_with_all_params(self, client: Opencode) -> None:
         session = client.session.stats(
             from_=0,
-            project={},
+            project="project",
             timezone="timezone",
             to=0,
             tools="none",
@@ -1094,7 +1420,11 @@ class TestSession:
     def test_method_switch_model(self, client: Opencode) -> None:
         session = client.session.switch_model(
             session_id="sessionID",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         )
         assert session is None
 
@@ -1102,7 +1432,11 @@ class TestSession:
     def test_raw_response_switch_model(self, client: Opencode) -> None:
         response = client.session.with_raw_response.switch_model(
             session_id="sessionID",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         )
 
         assert response.is_closed is True
@@ -1114,7 +1448,11 @@ class TestSession:
     def test_streaming_response_switch_model(self, client: Opencode) -> None:
         with client.session.with_streaming_response.switch_model(
             session_id="sessionID",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -1129,7 +1467,11 @@ class TestSession:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             client.session.with_raw_response.switch_model(
                 session_id="",
-                model={},
+                model={
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
             )
 
     @parametrize
@@ -1145,9 +1487,9 @@ class TestSession:
         session = client.session.synthetic(
             session_id="sessionID",
             text="text",
-            delivery={},
+            delivery="steer",
             description="description",
-            id={},
+            id="id",
             metadata={"foo": {}},
             resume=True,
         )
@@ -1281,13 +1623,25 @@ class TestAsyncSession:
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.create(
-            agent={},
-            id={},
-            location={},
-            metadata={},
-            model={},
-            parent_id={},
-            permissions={},
+            agent="agent",
+            id="id",
+            location={
+                "directory": "string",
+            },
+            metadata={"foo": {}},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
+            parent_id="parentID",
+            permissions=[
+                {
+                    "action": "string",
+                    "effect": "allow",
+                    "resource": "string",
+                }
+            ],
             title="title",
         )
         assert_matches_type(SessionInfo, session, path=["response"])
@@ -1324,8 +1678,14 @@ class TestAsyncSession:
         session = await async_client.session.update(
             session_id="sessionID",
             archived=True,
-            metadata={},
-            permissions={},
+            metadata={"foo": {}},
+            permissions=[
+                {
+                    "action": "string",
+                    "effect": "allow",
+                    "resource": "string",
+                }
+            ],
             title="title",
         )
         assert session is None
@@ -1370,14 +1730,14 @@ class TestAsyncSession:
     async def test_method_list_with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.list(
             archived=True,
-            cursor={},
-            directory={},
+            cursor="cursor",
+            directory="directory",
             limit=0,
             order="asc",
-            parent_id={},
-            project={},
+            parent_id="parentID",
+            project="project",
             search="search",
-            subpath={},
+            subpath="subpath",
         )
         assert_matches_type(SessionInfo, session, path=["response"])
 
@@ -1479,10 +1839,39 @@ class TestAsyncSession:
             session_id="sessionID",
             name="name",
             text="text",
-            agents=[{}],
-            delivery={},
-            files=[{}],
-            skills=[{}],
+            agents=[
+                {
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                }
+            ],
+            delivery="steer",
+            files=[
+                {
+                    "description": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                    "uri": "string",
+                }
+            ],
+            skills=[
+                {
+                    "id": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                }
+            ],
         )
         assert session is None
 
@@ -1534,8 +1923,8 @@ class TestAsyncSession:
     async def test_method_compact_with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.compact(
             session_id="sessionID",
-            delivery={},
-            id={},
+            delivery="steer",
+            id="id",
         )
         assert_matches_type(SessionInboxCompaction, session, path=["response"])
 
@@ -1620,8 +2009,8 @@ class TestAsyncSession:
         session = await async_client.session.diff(
             session_id="sessionID",
             context=0,
-            from_={},
-            to={},
+            from_="from",
+            to="to",
         )
         assert_matches_type(SessionDiffResponse, session, path=["response"])
 
@@ -1755,7 +2144,7 @@ class TestAsyncSession:
     async def test_method_fork_with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.fork(
             session_id="sessionID",
-            before={},
+            before="before",
         )
         assert_matches_type(SessionInfo, session, path=["response"])
 
@@ -1873,7 +2262,69 @@ class TestAsyncSession:
     @parametrize
     async def test_method_import_(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
         )
         assert_matches_type(SessionInfo, session, path=["response"])
@@ -1881,16 +2332,142 @@ class TestAsyncSession:
     @parametrize
     async def test_method_import__with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
-            location={},
+            location={
+                "directory": "string",
+            },
         )
         assert_matches_type(SessionInfo, session, path=["response"])
 
     @parametrize
     async def test_raw_response_import_(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.with_raw_response.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
         )
 
@@ -1902,7 +2479,69 @@ class TestAsyncSession:
     @parametrize
     async def test_streaming_response_import_(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.with_streaming_response.import_(
-            info={},
+            info={
+                "agent": "string",
+                "cost": 0,
+                "fork": {
+                    "boundary": {
+                        "messageID": "string",
+                        "type": "before",
+                    },
+                    "sessionID": "string",
+                },
+                "id": "string",
+                "location": {
+                    "directory": "string",
+                },
+                "metadata": {"foo": {}},
+                "model": {
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
+                "outcome": "succeeded",
+                "parentID": "string",
+                "permissions": [
+                    {
+                        "action": "string",
+                        "effect": "allow",
+                        "resource": "string",
+                    }
+                ],
+                "projectID": "string",
+                "revert": {
+                    "files": [
+                        {
+                            "additions": 0,
+                            "deletions": 0,
+                            "file": "string",
+                            "patch": "string",
+                            "status": "added",
+                        }
+                    ],
+                    "messageID": "string",
+                    "partID": "string",
+                    "snapshot": "string",
+                },
+                "subpath": "string",
+                "time": {
+                    "archived": 0,
+                    "created": 0,
+                    "idle": 0,
+                    "updated": 0,
+                    "viewed": 0,
+                },
+                "title": "string",
+                "tokens": {
+                    "cache": {
+                        "read": 0,
+                        "write": 0,
+                    },
+                    "input": 0,
+                    "output": 0,
+                    "reasoning": 0,
+                },
+            },
             messages=[{}],
         ) as response:
             assert not response.is_closed
@@ -1970,7 +2609,7 @@ class TestAsyncSession:
     async def test_method_log_with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.log(
             session_id="sessionID",
-            after={},
+            after=0,
             follow=True,
         )
         assert session is None
@@ -2019,7 +2658,7 @@ class TestAsyncSession:
         session = await async_client.session.move(
             session_id="sessionID",
             directory="directory",
-            delivery={},
+            delivery="steer",
         )
         assert session is None
 
@@ -2070,13 +2709,42 @@ class TestAsyncSession:
         session = await async_client.session.prompt(
             session_id="sessionID",
             text="text",
-            agents=[{}],
-            delivery={},
-            files=[{}],
-            id={},
+            agents=[
+                {
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                }
+            ],
+            delivery="steer",
+            files=[
+                {
+                    "description": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                    "name": "string",
+                    "uri": "string",
+                }
+            ],
+            id="id",
             metadata={"foo": {}},
             resume=True,
-            skills=[{}],
+            skills=[
+                {
+                    "id": "string",
+                    "mention": {
+                        "end": 0,
+                        "start": 0,
+                        "text": "string",
+                    },
+                }
+            ],
         )
         assert_matches_type(SessionInboxUser, session, path=["response"])
 
@@ -2165,7 +2833,7 @@ class TestAsyncSession:
         session = await async_client.session.shell(
             session_id="sessionID",
             command="command",
-            id={},
+            id="id",
         )
         assert session is None
 
@@ -2263,7 +2931,7 @@ class TestAsyncSession:
     async def test_method_stats_with_all_params(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.stats(
             from_=0,
-            project={},
+            project="project",
             timezone="timezone",
             to=0,
             tools="none",
@@ -2336,7 +3004,11 @@ class TestAsyncSession:
     async def test_method_switch_model(self, async_client: AsyncOpencode) -> None:
         session = await async_client.session.switch_model(
             session_id="sessionID",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         )
         assert session is None
 
@@ -2344,7 +3016,11 @@ class TestAsyncSession:
     async def test_raw_response_switch_model(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.with_raw_response.switch_model(
             session_id="sessionID",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         )
 
         assert response.is_closed is True
@@ -2356,7 +3032,11 @@ class TestAsyncSession:
     async def test_streaming_response_switch_model(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.with_streaming_response.switch_model(
             session_id="sessionID",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -2371,7 +3051,11 @@ class TestAsyncSession:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             await async_client.session.with_raw_response.switch_model(
                 session_id="",
-                model={},
+                model={
+                    "id": "string",
+                    "providerID": "string",
+                    "variant": "string",
+                },
             )
 
     @parametrize
@@ -2387,9 +3071,9 @@ class TestAsyncSession:
         session = await async_client.session.synthetic(
             session_id="sessionID",
             text="text",
-            delivery={},
+            delivery="steer",
             description="description",
-            id={},
+            id="id",
             metadata={"foo": {}},
             resume=True,
         )

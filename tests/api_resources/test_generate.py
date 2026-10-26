@@ -28,7 +28,11 @@ class TestGenerate:
     def test_method_text_with_all_params(self, client: Opencode) -> None:
         generate = client.generate.text(
             prompt="prompt",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         )
         assert_matches_type(GenerateTextResponse, generate, path=["response"])
 
@@ -73,7 +77,11 @@ class TestAsyncGenerate:
     async def test_method_text_with_all_params(self, async_client: AsyncOpencode) -> None:
         generate = await async_client.generate.text(
             prompt="prompt",
-            model={},
+            model={
+                "id": "string",
+                "providerID": "string",
+                "variant": "string",
+            },
         )
         assert_matches_type(GenerateTextResponse, generate, path=["response"])
 

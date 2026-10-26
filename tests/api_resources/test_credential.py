@@ -22,7 +22,14 @@ class TestCredential:
     def test_method_create(self, client: Opencode) -> None:
         credential = client.credential.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
         )
         assert_matches_type(CredentialEntry, credential, path=["response"])
 
@@ -30,7 +37,14 @@ class TestCredential:
     def test_method_create_with_all_params(self, client: Opencode) -> None:
         credential = client.credential.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
             activate=True,
             id="id",
             label="label",
@@ -41,7 +55,14 @@ class TestCredential:
     def test_raw_response_create(self, client: Opencode) -> None:
         response = client.credential.with_raw_response.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
         )
 
         assert response.is_closed is True
@@ -53,7 +74,14 @@ class TestCredential:
     def test_streaming_response_create(self, client: Opencode) -> None:
         with client.credential.with_streaming_response.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -216,7 +244,14 @@ class TestAsyncCredential:
     async def test_method_create(self, async_client: AsyncOpencode) -> None:
         credential = await async_client.credential.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
         )
         assert_matches_type(CredentialEntry, credential, path=["response"])
 
@@ -224,7 +259,14 @@ class TestAsyncCredential:
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
         credential = await async_client.credential.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
             activate=True,
             id="id",
             label="label",
@@ -235,7 +277,14 @@ class TestAsyncCredential:
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
         response = await async_client.credential.with_raw_response.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
         )
 
         assert response.is_closed is True
@@ -247,7 +296,14 @@ class TestAsyncCredential:
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
         async with async_client.credential.with_streaming_response.create(
             integration_id="integrationID",
-            value={},
+            value={
+                "access": "string",
+                "expires": 0,
+                "metadata": {"foo": {}},
+                "methodID": "string",
+                "refresh": "string",
+                "type": "oauth",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
