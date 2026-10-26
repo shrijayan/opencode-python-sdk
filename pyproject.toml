@@ -54,7 +54,7 @@ aiohttp = [
 dev = [
   "dirty-equals>=0.6",
   "mypy>=1.18",
-  "pyright>=1.1.408",
+  "pyright==1.1.399",  # the version the generated code is checked with
   "pytest>=8.4",
   "pytest-asyncio>=1",
   "httpx-aiohttp>=0.1.9",
@@ -245,5 +245,10 @@ known-first-party = ["opencode", "tests"]
 [tool.ruff.lint.per-file-ignores]
 "bin/**.py" = ["T201", "T203"]
 "scripts/**.py" = ["T201", "T203"]
-"tests/**.py" = ["T201", "T203"]
 "examples/**.py" = ["T201", "T203"]
+# Signatures set by their callers: pytest fixtures, respx side effects, mkdocs hooks, the fake
+# server's route handlers and the PTY resize callback.
+"tests/**.py" = ["T201", "T203", "ARG"]
+"docs/**.py" = ["ARG"]
+"src/opencode/testing.py" = ["ARG002"]
+"src/opencode/_pty.py" = ["ARG001", "ARG005"]
