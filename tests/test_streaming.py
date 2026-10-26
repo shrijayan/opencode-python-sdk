@@ -1,78 +1,248 @@
 from __future__ import annotations
 
+from typing import Iterator, AsyncIterator
+
 import httpx
 import pytest
-import respx
 
-from opencode import APIResponseValidationError, AsyncOpencode, Opencode
-from opencode._streaming import _Decoder, _LineSplitter
-from opencode.types import ServerConnectedEvent, UnknownEvent
-
-CONNECTED = '{"type":"server.connected","id":"evt_1","created":1,"data":{}}'
+from opencode import Opencode, AsyncOpencode
+from opencode._streaming import Stream, AsyncStream, ServerSentEvent
 
 
-def _sse(*blocks: str) -> bytes:
-    return "".join(blocks).encode()
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_basic(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b"event: completion\n"
+        yield b'data: {"foo":true}\n'
+        yield b"\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event == "completion"
+    assert sse.json() == {"foo": True}
+
+    await assert_empty_iter(iterator)
 
 
-def test_line_splitter_handles_every_newline_style_across_chunks() -> None:
-    splitter = _LineSplitter()
-    lines = [*splitter.feed("a\r"), *splitter.feed("\nb\rc\nd"), *splitter.feed("e\r\n"), *splitter.flush()]
-    assert lines == ["a", "b", "c", "de", ""]
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_data_missing_event(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b'data: {"foo":true}\n'
+        yield b"\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event is None
+    assert sse.json() == {"foo": True}
+
+    await assert_empty_iter(iterator)
 
 
-def test_decoder_joins_multiline_data_and_ignores_comments() -> None:
-    decoder = _Decoder()
-    events = [decoder.feed_line(line) for line in [": keepalive", "event: x", "data: one", "data:two", "id: 7", ""]]
-    event = events[-1]
-    assert event is not None
-    assert (event.data, event.event, event.id) == ("one\ntwo", "x", "7")
-    assert all(item is None for item in events[:-1])
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_event_missing_data(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b"event: ping\n"
+        yield b"\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event == "ping"
+    assert sse.data == ""
+
+    await assert_empty_iter(iterator)
 
 
-def test_sync_stream_yields_typed_events(client: Opencode, mock_api: respx.MockRouter) -> None:
-    body = _sse(": hi\n\n", f"data: {CONNECTED}\n\n", 'data: {"type":"brand.new","id":"e","created":1}\n\n')
-    route = mock_api.get("/api/event").respond(headers={"content-type": "text/event-stream"}, content=body)
-    with client.event.subscribe() as events:
-        received = list(events)
-    assert isinstance(received[0], ServerConnectedEvent)
-    assert isinstance(received[1], UnknownEvent)
-    assert route.calls.last.request.headers["Accept"] == "text/event-stream"
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_multiple_events(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b"event: ping\n"
+        yield b"\n"
+        yield b"event: completion\n"
+        yield b"\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event == "ping"
+    assert sse.data == ""
+
+    sse = await iter_next(iterator)
+    assert sse.event == "completion"
+    assert sse.data == ""
+
+    await assert_empty_iter(iterator)
 
 
-def test_stream_rejects_wrong_content_type(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/event").respond(json={"not": "a stream"})
-    with pytest.raises(APIResponseValidationError, match="event stream"):
-        client.event.subscribe()
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_multiple_events_with_data(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b"event: ping\n"
+        yield b'data: {"foo":true}\n'
+        yield b"\n"
+        yield b"event: completion\n"
+        yield b'data: {"bar":false}\n'
+        yield b"\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event == "ping"
+    assert sse.json() == {"foo": True}
+
+    sse = await iter_next(iterator)
+    assert sse.event == "completion"
+    assert sse.json() == {"bar": False}
+
+    await assert_empty_iter(iterator)
 
 
-def test_stream_reports_malformed_event(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/event").respond(headers={"content-type": "text/event-stream"}, content=b"data: {oops\n\n")
-    with pytest.raises(APIResponseValidationError, match="Malformed"), client.event.subscribe() as events:
-        list(events)
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_multiple_data_lines_with_empty_line(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b"event: ping\n"
+        yield b"data: {\n"
+        yield b'data: "foo":\n'
+        yield b"data: \n"
+        yield b"data:\n"
+        yield b"data: true}\n"
+        yield b"\n\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event == "ping"
+    assert sse.json() == {"foo": True}
+    assert sse.data == '{\n"foo":\n\n\ntrue}'
+
+    await assert_empty_iter(iterator)
 
 
-def test_stream_has_no_read_timeout_by_default(client: Opencode, mock_api: respx.MockRouter) -> None:
-    route = mock_api.get("/api/event").respond(headers={"content-type": "text/event-stream"}, content=b"")
-    client.event.subscribe().close()
-    timeout = route.calls.last.request.extensions["timeout"]
-    assert timeout["read"] is None
-    assert timeout["connect"] == 10.0
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_data_json_escaped_double_new_line(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b"event: ping\n"
+        yield b'data: {"foo": "my long\\n\\ncontent"}'
+        yield b"\n\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event == "ping"
+    assert sse.json() == {"foo": "my long\n\ncontent"}
+
+    await assert_empty_iter(iterator)
 
 
-@pytest.mark.anyio
-async def test_async_stream(async_client: AsyncOpencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/event").respond(
-        headers={"content-type": "text/event-stream"}, content=_sse(f"data: {CONNECTED}\r\n\r\n")
-    )
-    async with await async_client.event.subscribe() as events:
-        received = [event async for event in events]
-    assert [event.type for event in received] == ["server.connected"]
+@pytest.mark.asyncio
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_multiple_data_lines(sync: bool, client: Opencode, async_client: AsyncOpencode) -> None:
+    def body() -> Iterator[bytes]:
+        yield b"event: ping\n"
+        yield b"data: {\n"
+        yield b'data: "foo":\n'
+        yield b"data: true}\n"
+        yield b"\n\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event == "ping"
+    assert sse.json() == {"foo": True}
+
+    await assert_empty_iter(iterator)
 
 
-def test_stream_error_status_raises(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/event").mock(
-        return_value=httpx.Response(401, json={"_tag": "UnauthorizedError", "message": "no"})
-    )
-    with pytest.raises(Exception, match="no"):
-        client.event.subscribe()
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_special_new_line_character(
+    sync: bool,
+    client: Opencode,
+    async_client: AsyncOpencode,
+) -> None:
+    def body() -> Iterator[bytes]:
+        yield b'data: {"content":" culpa"}\n'
+        yield b"\n"
+        yield b'data: {"content":" \xe2\x80\xa8"}\n'
+        yield b"\n"
+        yield b'data: {"content":"foo"}\n'
+        yield b"\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event is None
+    assert sse.json() == {"content": " culpa"}
+
+    sse = await iter_next(iterator)
+    assert sse.event is None
+    assert sse.json() == {"content": "  "}
+
+    sse = await iter_next(iterator)
+    assert sse.event is None
+    assert sse.json() == {"content": "foo"}
+
+    await assert_empty_iter(iterator)
+
+
+@pytest.mark.parametrize("sync", [True, False], ids=["sync", "async"])
+async def test_multi_byte_character_multiple_chunks(
+    sync: bool,
+    client: Opencode,
+    async_client: AsyncOpencode,
+) -> None:
+    def body() -> Iterator[bytes]:
+        yield b'data: {"content":"'
+        # bytes taken from the string 'известни' and arbitrarily split
+        # so that some multi-byte characters span multiple chunks
+        yield b"\xd0"
+        yield b"\xb8\xd0\xb7\xd0"
+        yield b"\xb2\xd0\xb5\xd1\x81\xd1\x82\xd0\xbd\xd0\xb8"
+        yield b'"}\n'
+        yield b"\n"
+
+    iterator = make_event_iterator(content=body(), sync=sync, client=client, async_client=async_client)
+
+    sse = await iter_next(iterator)
+    assert sse.event is None
+    assert sse.json() == {"content": "известни"}
+
+
+async def to_aiter(iter: Iterator[bytes]) -> AsyncIterator[bytes]:
+    for chunk in iter:
+        yield chunk
+
+
+async def iter_next(iter: Iterator[ServerSentEvent] | AsyncIterator[ServerSentEvent]) -> ServerSentEvent:
+    if isinstance(iter, AsyncIterator):
+        return await iter.__anext__()
+
+    return next(iter)
+
+
+async def assert_empty_iter(iter: Iterator[ServerSentEvent] | AsyncIterator[ServerSentEvent]) -> None:
+    with pytest.raises((StopAsyncIteration, RuntimeError)):
+        await iter_next(iter)
+
+
+def make_event_iterator(
+    content: Iterator[bytes],
+    *,
+    sync: bool,
+    client: Opencode,
+    async_client: AsyncOpencode,
+) -> Iterator[ServerSentEvent] | AsyncIterator[ServerSentEvent]:
+    if sync:
+        return Stream(cast_to=object, client=client, response=httpx.Response(200, content=content))._iter_events()
+
+    return AsyncStream(
+        cast_to=object, client=async_client, response=httpx.Response(200, content=to_aiter(content))
+    )._iter_events()

@@ -1,107 +1,85 @@
 name: CI
-
 on:
+  push:
+    branches:
+      - '**'
+      - '!integrated/**'
+      - '!stl-preview-head/**'
+      - '!stl-preview-base/**'
+      - '!generated'
+      - '!codegen/**'
+      - 'codegen/stl/**'
   pull_request:
-  workflow_dispatch:
-  workflow_call: # the release workflow runs CI before publishing
-
-permissions:
-  contents: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches-ignore:
+      - 'stl-preview-head/**'
+      - 'stl-preview-base/**'
 
 jobs:
   lint:
-    name: Lint, types, generated code
+    timeout-minutes: 10
+    name: lint
     runs-on: ubuntu-latest
+    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-        with:
-          enable-cache: true
-      - run: uv sync --locked
-      - run: uv run ruff check .
-      - run: uv run ruff format --check .
-      - run: uv run pyright
-      - run: uv run mypy
-      - name: Generated code matches spec/contract.json
-        run: uv run python -m codegen --check
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-  test:
-    name: Test (Python ${{ matrix.python }}, ${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
-        include:
-          - os: macos-latest
-            python: "3.13"
-          - os: windows-latest
-            python: "3.13"
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-        with:
-          enable-cache: true
-          python-version: ${{ matrix.python }}
-      - run: uv sync --locked
-      - run: uv run pytest -m "not live" --cov --cov-report=term-missing
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye.astral.sh/get | bash
+          echo "$HOME/.rye/shims" >> $GITHUB_PATH
+        env:
+          RYE_VERSION: '0.44.0'
+          RYE_INSTALL_OPTION: '--yes'
 
-  lowest:
-    name: Test with lowest supported dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-        with:
-          python-version: "3.10"
-      - run: >-
-          uv run --isolated --resolution lowest-direct --with-editable '.[pty,aiohttp]'
-          --with pytest --with respx --with trio
-          pytest -m "not live" -p no:cacheprovider
+      - name: Install dependencies
+        run: rye sync --all-features
 
-  live:
-    name: Live server
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-        with:
-          enable-cache: true
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 22
-      # The OpenCode version is pinned by hash in .github/live/package-lock.json.
-      - run: npm ci --prefix .github/live
-      - run: echo "$GITHUB_WORKSPACE/.github/live/node_modules/.bin" >> "$GITHUB_PATH"
-      - run: opencode --version
-      - run: uv sync --locked
-      - run: uv run pytest -m live -v
+      - name: Run lints
+        run: ./scripts/lint
 
   build:
-    name: Build distributions
+    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    timeout-minutes: 10
+    name: build
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
-      - run: uv build
-      - run: uvx twine check --strict dist/*
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: dist
-          path: dist/
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-  fuzz:
-    name: Fuzz SSE decoder
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye.astral.sh/get | bash
+          echo "$HOME/.rye/shims" >> $GITHUB_PATH
+        env:
+          RYE_VERSION: '0.44.0'
+          RYE_INSTALL_OPTION: '--yes'
+
+      - name: Install dependencies
+        run: rye sync --all-features
+
+      - name: Run build
+        run: rye build
+
+  test:
+    timeout-minutes: 10
+    name: test
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
-        with:
-          python-version: "3.12"
-      - run: uv sync --locked
-      - run: uv run --with atheris python fuzz/fuzz_sse.py -max_total_time=60
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye.astral.sh/get | bash
+          echo "$HOME/.rye/shims" >> $GITHUB_PATH
+        env:
+          RYE_VERSION: '0.44.0'
+          RYE_INSTALL_OPTION: '--yes'
+
+      - name: Bootstrap
+        run: ./scripts/bootstrap
+
+      - name: Run tests
+        run: ./scripts/test

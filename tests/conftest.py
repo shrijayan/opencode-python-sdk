@@ -1,45 +1,91 @@
+# File generated from our OpenAPI spec by Ferrule. See CONTRIBUTING.md for details.
+
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Iterator
+import os
+import logging
+from typing import TYPE_CHECKING, Iterator, AsyncIterator
 
+import httpx
 import pytest
-import respx
+from pytest_asyncio import is_async_test
 
-from opencode import AsyncOpencode, Opencode
+from opencode import Opencode, AsyncOpencode, DefaultAioHttpClient
+from opencode._utils import is_dict
 
-BASE_URL = "http://opencode.test"
-PASSWORD = "test-password"
+if TYPE_CHECKING:
+    from _pytest.fixtures import FixtureRequest  # pyright: ignore[reportPrivateImportUsage]
 
+pytest.register_assert_rewrite("tests.utils")
 
-@pytest.fixture
-def anyio_backend() -> str:
-    return "asyncio"
-
-
-@pytest.fixture
-def mock_api() -> Iterator[respx.MockRouter]:
-    with respx.mock(base_url=BASE_URL, assert_all_called=False) as router:
-        yield router
+logging.getLogger("opencode").setLevel(logging.DEBUG)
 
 
-@pytest.fixture
-def client(mock_api: respx.MockRouter) -> Iterator[Opencode]:
-    with Opencode(BASE_URL, password=PASSWORD, max_retries=2) as instance:
-        yield instance
+# automatically add `pytest.mark.asyncio()` to all of our async tests
+# so we don't have to add that boilerplate everywhere
+def pytest_collection_modifyitems(items: list[pytest.Function]) -> None:
+    pytest_asyncio_tests = (item for item in items if is_async_test(item))
+    session_scope_marker = pytest.mark.asyncio(loop_scope="session")
+    for async_test in pytest_asyncio_tests:
+        async_test.add_marker(session_scope_marker, append=False)
+
+    # We skip tests that use both the aiohttp client and respx_mock as respx_mock
+    # doesn't support custom transports.
+    for item in items:
+        if "async_client" not in item.fixturenames or "respx_mock" not in item.fixturenames:
+            continue
+
+        if not hasattr(item, "callspec"):
+            continue
+
+        async_client_param = item.callspec.params.get("async_client")
+        if is_dict(async_client_param) and async_client_param.get("http_client") == "aiohttp":
+            item.add_marker(pytest.mark.skip(reason="aiohttp client is not compatible with respx_mock"))
 
 
-@pytest.fixture
-async def async_client(mock_api: respx.MockRouter) -> AsyncIterator[AsyncOpencode]:
-    async with AsyncOpencode(BASE_URL, password=PASSWORD, max_retries=2) as instance:
-        yield instance
+base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
+
+username = "My Username"
+password = "My Password"
 
 
-@pytest.fixture(autouse=True)
-def _no_retry_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Retries back off with real sleeps; skip them so tests stay fast."""
+@pytest.fixture(scope="session")
+def client(request: FixtureRequest) -> Iterator[Opencode]:
+    strict = getattr(request, "param", True)
+    if not isinstance(strict, bool):
+        raise TypeError(f"Unexpected fixture parameter type {type(strict)}, expected {bool}")
 
-    async def instant(_: float) -> None:
-        return None
+    with Opencode(
+        base_url=base_url, username=username, password=password, _strict_response_validation=strict
+    ) as client:
+        yield client
 
-    monkeypatch.setattr("opencode._base_client.time.sleep", lambda _: None)
-    monkeypatch.setattr("opencode._base_client.anyio.sleep", instant)
+
+@pytest.fixture(scope="session")
+async def async_client(request: FixtureRequest) -> AsyncIterator[AsyncOpencode]:
+    param = getattr(request, "param", True)
+
+    # defaults
+    strict = True
+    http_client: None | httpx.AsyncClient = None
+
+    if isinstance(param, bool):
+        strict = param
+    elif is_dict(param):
+        strict = param.get("strict", True)
+        assert isinstance(strict, bool)
+
+        http_client_type = param.get("http_client", "httpx")
+        if http_client_type == "aiohttp":
+            http_client = DefaultAioHttpClient()
+    else:
+        raise TypeError(f"Unexpected fixture parameter type {type(param)}, expected bool or dict")
+
+    async with AsyncOpencode(
+        base_url=base_url,
+        username=username,
+        password=password,
+        _strict_response_validation=strict,
+        http_client=http_client,
+    ) as client:
+        yield client

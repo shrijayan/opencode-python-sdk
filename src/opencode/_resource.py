@@ -1,42 +1,43 @@
+# File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
 from __future__ import annotations
 
+import time
 from typing import TYPE_CHECKING
 
-from ._types import NotGiven
+import anyio
 
 if TYPE_CHECKING:
-    from ._client import AsyncOpencode, Opencode
-
-__all__ = ["AsyncAPIResource", "SyncAPIResource"]
+    from ._client import Opencode, AsyncOpencode
 
 
 class SyncAPIResource:
-    """Base class for generated resource groups of the sync client."""
-
     _client: Opencode
 
     def __init__(self, client: Opencode) -> None:
         self._client = client
+        self._get = client.get
+        self._post = client.post
+        self._patch = client.patch
+        self._put = client.put
+        self._delete = client.delete
+        self._get_api_list = client.get_api_list
 
-    def _location(self, location: object) -> object:
-        """Falls back to the client's ``directory`` for endpoints that take a ``location``."""
-        return _default_location(location, self._client.directory)
+    def _sleep(self, seconds: float) -> None:
+        time.sleep(seconds)
 
 
 class AsyncAPIResource:
-    """Base class for generated resource groups of the async client."""
-
     _client: AsyncOpencode
 
     def __init__(self, client: AsyncOpencode) -> None:
         self._client = client
+        self._get = client.get
+        self._post = client.post
+        self._patch = client.patch
+        self._put = client.put
+        self._delete = client.delete
+        self._get_api_list = client.get_api_list
 
-    def _location(self, location: object) -> object:
-        """Falls back to the client's ``directory`` for endpoints that take a ``location``."""
-        return _default_location(location, self._client.directory)
-
-
-def _default_location(location: object, directory: str | None) -> object:
-    if isinstance(location, NotGiven) and directory is not None:
-        return {"directory": directory}
-    return location
+    async def _sleep(self, seconds: float) -> None:
+        await anyio.sleep(seconds)

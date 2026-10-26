@@ -1,0 +1,31 @@
+name: sdk
+
+on:
+  push:
+    branches: [main]
+    paths: [openapi.json, stainless.yml]
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push ferrule/regenerate and the generated branch
+      pull-requests: write # open the PR and label it
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # the previous release and the generated branch
+          persist-credentials: false
+      - uses: shrijayan/ferrule/action@0000000000000000000000000000000000000000
+        with:
+          spec: openapi.json
+          config: stainless.yml
+          verify: true # fails on an unlabeled breaking change
+          open-pr: true # labels major / minor / patch
+          github-token: ${{ secrets.GITHUB_TOKEN }}

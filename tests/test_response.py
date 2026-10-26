@@ -1,155 +1,277 @@
-from __future__ import annotations
+import json
+from typing import Any, List, Union, cast
+from typing_extensions import Annotated
 
+import httpx
 import pytest
-import respx
+import pydantic
 
-from opencode import (
+from opencode import Opencode, BaseModel, AsyncOpencode
+from opencode._response import (
     APIResponse,
+    BaseAPIResponse,
     AsyncAPIResponse,
-    AsyncCursorPage,
-    AsyncOpencode,
-    NotFoundError,
-    Opencode,
-    Stream,
-    SyncCursorPage,
+    BinaryAPIResponse,
+    AsyncBinaryAPIResponse,
+    extract_response_type,
 )
-from opencode.types import ServerConnectedEvent, SessionInfo
-
-from .test_client import SESSION
-
-CONNECTED = '{"type":"server.connected","id":"evt_1","created":1,"data":{}}'
-SSE = {"content-type": "text/event-stream"}
+from opencode._streaming import Stream
+from opencode._base_client import FinalRequestOptions
 
 
-def _page(ids: list[str], next_cursor: str | None) -> dict[str, object]:
-    return {
-        "data": [{"type": "user", "id": item, "time": {"created": 1}, "text": item} for item in ids],
-        "cursor": {"previous": None, "next": next_cursor},
-    }
+class ConcreteBaseAPIResponse(APIResponse[bytes]): ...
 
 
-def test_raw_response(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/session/ses_1").respond(json={"data": SESSION}, headers={"x-request-id": "req_1"})
-    response = client.session.with_raw_response.get("ses_1")
-    assert isinstance(response, APIResponse)
-    assert response.status_code == 200
-    assert response.headers["x-request-id"] == "req_1"
-    assert response.request.method == "GET"
-    assert response.http_response.is_success
-    assert response.json() == {"data": SESSION}
-    assert '"ses_1"' in response.text
-    session = response.parse()
-    assert isinstance(session, SessionInfo)
-    assert session.id == "ses_1"
-    assert response.parse() is session
+class ConcreteAPIResponse(APIResponse[List[str]]): ...
 
 
-def test_raw_response_void_binary_and_nested(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.delete("/api/session/ses_1/revert").respond(204)
-    mock_api.get("/api/fs/read/a.txt").respond(content=b"hello")
-    assert client.session.revert.with_raw_response.clear("ses_1").parse() is None
-    assert client.file.with_raw_response.read("a.txt").parse() == b"hello"
+class ConcreteAsyncAPIResponse(APIResponse[httpx.Response]): ...
 
 
-def test_raw_response_still_raises_status_errors(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/session/ses_9").respond(404, json={"message": "nope"})
-    with pytest.raises(NotFoundError):
-        client.session.with_raw_response.get("ses_9")
+def test_extract_response_type_direct_classes() -> None:
+    assert extract_response_type(BaseAPIResponse[str]) == str
+    assert extract_response_type(APIResponse[str]) == str
+    assert extract_response_type(AsyncAPIResponse[str]) == str
 
 
-def test_raw_mode_does_not_leak(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/session/ses_1").respond(json={"data": SESSION})
-    client.session.with_raw_response.get("ses_1")
-    assert isinstance(client.session.get("ses_1"), SessionInfo)
+def test_extract_response_type_direct_class_missing_type_arg() -> None:
+    with pytest.raises(
+        RuntimeError,
+        match="Expected type <class 'opencode._response.AsyncAPIResponse'> to have a type argument at index 0 but it did not",
+    ):
+        extract_response_type(AsyncAPIResponse)
 
 
-def test_raw_page_parses_to_a_working_page(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/session/ses_1/message").mock(
-        side_effect=[respx.MockResponse(json=_page(["a"], "c1")), respx.MockResponse(json=_page(["b"], None))]
+def test_extract_response_type_concrete_subclasses() -> None:
+    assert extract_response_type(ConcreteBaseAPIResponse) == bytes
+    assert extract_response_type(ConcreteAPIResponse) == List[str]
+    assert extract_response_type(ConcreteAsyncAPIResponse) == httpx.Response
+
+
+def test_extract_response_type_binary_response() -> None:
+    assert extract_response_type(BinaryAPIResponse) == bytes
+    assert extract_response_type(AsyncBinaryAPIResponse) == bytes
+
+
+class PydanticModel(pydantic.BaseModel): ...
+
+
+def test_response_parse_mismatched_basemodel(client: Opencode) -> None:
+    response = APIResponse(
+        raw=httpx.Response(200, content=b"foo"),
+        client=client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
     )
-    response = client.message.with_raw_response.list("ses_1")
-    page = response.parse()
-    assert isinstance(page, SyncCursorPage)
-    assert [message.id for message in page] == ["a", "b"]
+
+    with pytest.raises(
+        TypeError,
+        match="Pydantic models must subclass our base model type, e.g. `from opencode import BaseModel`",
+    ):
+        response.parse(to=PydanticModel)
 
 
-def test_streaming_response(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/fs/read/a.txt").respond(content=b"line 1\nline 2\n")
-    with client.file.with_streaming_response.read("a.txt") as response:
-        assert not response.http_response.is_stream_consumed
-        assert list(response.iter_lines()) == ["line 1", "line 2"]
-    assert response.is_closed
-
-
-def test_streaming_response_parse(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/session/ses_1").respond(json={"data": SESSION})
-    with client.session.with_streaming_response.get("ses_1") as response:
-        assert response.parse().id == "ses_1"
-
-
-def test_raw_event_stream(client: Opencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/event").respond(headers=SSE, content=f"data: {CONNECTED}\n\n".encode())
-    response = client.event.with_raw_response.subscribe()
-    assert response.headers["content-type"] == "text/event-stream"
-    with response.parse() as events:
-        assert isinstance(events, Stream)
-        assert isinstance(next(iter(events)), ServerConnectedEvent)
-
-
-@pytest.mark.anyio
-async def test_async_raw_response(async_client: AsyncOpencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/session/ses_1").respond(json={"data": SESSION}, headers={"x-request-id": "req_1"})
-    response = await async_client.session.with_raw_response.get("ses_1")
-    assert isinstance(response, AsyncAPIResponse)
-    assert response.headers["x-request-id"] == "req_1"
-    assert (await response.json()) == {"data": SESSION}
-    assert (await response.parse()).id == "ses_1"
-
-
-@pytest.mark.anyio
-async def test_async_raw_page(async_client: AsyncOpencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/session/ses_1/message").mock(
-        side_effect=[respx.MockResponse(json=_page(["a"], "c1")), respx.MockResponse(json=_page(["b"], None))]
+@pytest.mark.asyncio
+async def test_async_response_parse_mismatched_basemodel(async_client: AsyncOpencode) -> None:
+    response = AsyncAPIResponse(
+        raw=httpx.Response(200, content=b"foo"),
+        client=async_client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
     )
-    response = await async_client.message.with_raw_response.list("ses_1")
-    page = await response.parse()
-    assert isinstance(page, AsyncCursorPage)
-    assert [message.id async for message in page] == ["a", "b"]
+
+    with pytest.raises(
+        TypeError,
+        match="Pydantic models must subclass our base model type, e.g. `from opencode import BaseModel`",
+    ):
+        await response.parse(to=PydanticModel)
 
 
-@pytest.mark.anyio
-async def test_async_streaming_response(async_client: AsyncOpencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/fs/read/a.txt").respond(content=b"hello")
-    async with async_client.file.with_streaming_response.read("a.txt") as response:
-        assert b"".join([chunk async for chunk in response.iter_bytes()]) == b"hello"
-    assert response.is_closed
-    mock_api.get("/api/session/ses_1").respond(json={"data": SESSION})
-    async with async_client.session.with_streaming_response.get("ses_1") as response:
-        assert (await response.parse()).id == "ses_1"
+def test_response_parse_custom_stream(client: Opencode) -> None:
+    response = APIResponse(
+        raw=httpx.Response(200, content=b"foo"),
+        client=client,
+        stream=True,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    stream = response.parse(to=Stream[int])
+    assert stream._cast_to == int
 
 
-@pytest.mark.anyio
-async def test_async_raw_event_stream(async_client: AsyncOpencode, mock_api: respx.MockRouter) -> None:
-    mock_api.get("/api/event").respond(headers=SSE, content=f"data: {CONNECTED}\n\n".encode())
-    response = await async_client.event.with_raw_response.subscribe()
-    async with await response.parse() as events:
-        async for event in events:
-            assert isinstance(event, ServerConnectedEvent)
-            break
+@pytest.mark.asyncio
+async def test_async_response_parse_custom_stream(async_client: AsyncOpencode) -> None:
+    response = AsyncAPIResponse(
+        raw=httpx.Response(200, content=b"foo"),
+        client=async_client,
+        stream=True,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    stream = await response.parse(to=Stream[int])
+    assert stream._cast_to == int
 
 
-def test_custom_requests(client: Opencode, mock_api: respx.MockRouter) -> None:
-    route = mock_api.post("/api/custom").respond(json={"ok": True})
-    assert client.post("/api/custom", body={"a": 1}, query={"q": "x"}, headers={"X-A": "b"}) == {"ok": True}
-    request = route.calls.last.request
-    assert request.content == b'{"a":1}'
-    assert request.url.params["q"] == "x"
-    assert request.headers["X-A"] == "b"
-    mock_api.get("/api/session/ses_1").respond(json={"data": SESSION})
-    assert client.get("/api/session/ses_1", cast_to=dict[str, SessionInfo])["data"].id == "ses_1"
+class CustomModel(BaseModel):
+    foo: str
+    bar: int
 
 
-@pytest.mark.anyio
-async def test_async_custom_requests(async_client: AsyncOpencode, mock_api: respx.MockRouter) -> None:
-    mock_api.delete("/api/custom").respond(json=[1])
-    assert await async_client.delete("/api/custom", cast_to=list[int]) == [1]
+def test_response_parse_custom_model(client: Opencode) -> None:
+    response = APIResponse(
+        raw=httpx.Response(200, content=json.dumps({"foo": "hello!", "bar": 2})),
+        client=client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    obj = response.parse(to=CustomModel)
+    assert obj.foo == "hello!"
+    assert obj.bar == 2
+
+
+@pytest.mark.asyncio
+async def test_async_response_parse_custom_model(async_client: AsyncOpencode) -> None:
+    response = AsyncAPIResponse(
+        raw=httpx.Response(200, content=json.dumps({"foo": "hello!", "bar": 2})),
+        client=async_client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    obj = await response.parse(to=CustomModel)
+    assert obj.foo == "hello!"
+    assert obj.bar == 2
+
+
+def test_response_parse_annotated_type(client: Opencode) -> None:
+    response = APIResponse(
+        raw=httpx.Response(200, content=json.dumps({"foo": "hello!", "bar": 2})),
+        client=client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    obj = response.parse(
+        to=cast("type[CustomModel]", Annotated[CustomModel, "random metadata"]),
+    )
+    assert obj.foo == "hello!"
+    assert obj.bar == 2
+
+
+async def test_async_response_parse_annotated_type(async_client: AsyncOpencode) -> None:
+    response = AsyncAPIResponse(
+        raw=httpx.Response(200, content=json.dumps({"foo": "hello!", "bar": 2})),
+        client=async_client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    obj = await response.parse(
+        to=cast("type[CustomModel]", Annotated[CustomModel, "random metadata"]),
+    )
+    assert obj.foo == "hello!"
+    assert obj.bar == 2
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        ("false", False),
+        ("true", True),
+        ("False", False),
+        ("True", True),
+        ("TrUe", True),
+        ("FalSe", False),
+    ],
+)
+def test_response_parse_bool(client: Opencode, content: str, expected: bool) -> None:
+    response = APIResponse(
+        raw=httpx.Response(200, content=content),
+        client=client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    result = response.parse(to=bool)
+    assert result is expected
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        ("false", False),
+        ("true", True),
+        ("False", False),
+        ("True", True),
+        ("TrUe", True),
+        ("FalSe", False),
+    ],
+)
+async def test_async_response_parse_bool(client: AsyncOpencode, content: str, expected: bool) -> None:
+    response = AsyncAPIResponse(
+        raw=httpx.Response(200, content=content),
+        client=client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    result = await response.parse(to=bool)
+    assert result is expected
+
+
+class OtherModel(BaseModel):
+    a: str
+
+
+@pytest.mark.parametrize("client", [False], indirect=True)  # loose validation
+def test_response_parse_expect_model_union_non_json_content(client: Opencode) -> None:
+    response = APIResponse(
+        raw=httpx.Response(200, content=b"foo", headers={"Content-Type": "application/text"}),
+        client=client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    obj = response.parse(to=cast(Any, Union[CustomModel, OtherModel]))
+    assert isinstance(obj, str)
+    assert obj == "foo"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("async_client", [False], indirect=True)  # loose validation
+async def test_async_response_parse_expect_model_union_non_json_content(async_client: AsyncOpencode) -> None:
+    response = AsyncAPIResponse(
+        raw=httpx.Response(200, content=b"foo", headers={"Content-Type": "application/text"}),
+        client=async_client,
+        stream=False,
+        stream_cls=None,
+        cast_to=str,
+        options=FinalRequestOptions.construct(method="get", url="/foo"),
+    )
+
+    obj = await response.parse(to=cast(Any, Union[CustomModel, OtherModel]))
+    assert isinstance(obj, str)
+    assert obj == "foo"
