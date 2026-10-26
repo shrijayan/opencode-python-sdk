@@ -34,9 +34,9 @@ from urllib.parse import urlencode
 from typing_extensions import Self
 
 from ._exceptions import OpencodeError
-from ._qs import encode_path_segment, encode_query
 from ._resource import AsyncAPIResource, SyncAPIResource
 from ._types import NOT_GIVEN, NotGiven
+from .lib._support import encode_path_segment, encode_query
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Awaitable, Callable, Iterator, Mapping

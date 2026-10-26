@@ -39,10 +39,10 @@ from typing import TYPE_CHECKING, Any, ClassVar, Generic, TypeVar, cast, overloa
 import pydantic
 from typing_extensions import Self
 
-from ._base_client import type_adapter
 from ._errors import RpcError, RpcInternalError
-from ._exceptions import OpencodeError, validation_summary
+from ._exceptions import OpencodeError
 from ._types import NOT_GIVEN, NotGiven
+from .lib._support import type_adapter, validation_summary
 from .resources.rpc import AsyncRpcResource, RpcResource
 
 if TYPE_CHECKING:
@@ -51,7 +51,8 @@ if TYPE_CHECKING:
 
     from ._client import AsyncOpencode, Opencode
     from ._events import AsyncSubscription, Subscription
-    from ._types import Headers, Timeout
+    from ._types import Headers
+    from .lib._support import Timeout
     from .types import Location, RpcEvent
 
 __all__ = [

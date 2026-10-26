@@ -21,14 +21,14 @@ import httpx
 from typing_extensions import Self
 
 from ._client import AsyncOpencode, Opencode
-from ._constants import DEFAULT_USERNAME
 from ._exceptions import OpencodeError
+from .lib._support import DEFAULT_USERNAME
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
     from types import TracebackType
 
-    from ._types import Timeout
+    from .lib._support import Timeout
 
 __all__ = ["AsyncOpencodeServer", "OpencodeServer", "ServerStartError"]
 

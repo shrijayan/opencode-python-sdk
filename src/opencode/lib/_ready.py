@@ -11,7 +11,8 @@ from typing import TYPE_CHECKING
 
 import anyio
 
-from .._exceptions import APIConnectionError, ServiceUnavailableError
+from .._errors import ServiceUnavailableError
+from .._exceptions import APIConnectionError
 
 if TYPE_CHECKING:
     from collections.abc import Iterable

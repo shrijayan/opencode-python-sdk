@@ -32,8 +32,8 @@ from typing import Any, Literal, TypeAlias, cast
 import httpx
 from anyio import sleep as _async_sleep
 
-from ._constants import DEFAULT_USERNAME
 from ._exceptions import OpencodeError
+from .lib._support import DEFAULT_USERNAME
 
 __all__ = [
     "BasicAuth",
