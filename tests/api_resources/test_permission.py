@@ -39,7 +39,7 @@ class TestPermission:
             save=["string"],
             source={
                 "id": "string",
-                "messageID": "string",
+                "message_id": "string",
                 "type": "tool",
             },
         )
@@ -258,7 +258,7 @@ class TestAsyncPermission:
             save=["string"],
             source={
                 "id": "string",
-                "messageID": "string",
+                "message_id": "string",
                 "type": "tool",
             },
         )

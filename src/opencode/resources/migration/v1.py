@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any, cast
+
 import httpx
 
 from ..._types import Body, Query, Headers, NotGiven, not_given
@@ -50,12 +52,15 @@ class V1Resource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> V1StatusResponse:
         """Return the progress of the V1 to V2 session history migration."""
-        return self._get(
-            "/api/experimental/migration/v1",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+        return cast(
+            V1StatusResponse,
+            self._get(
+                "/api/experimental/migration/v1",
+                options=make_request_options(
+                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                ),
+                cast_to=cast(Any, V1StatusResponse),  # Union types cannot be passed in as arguments in the type system
             ),
-            cast_to=V1StatusResponse,
         )
 
 
@@ -90,12 +95,15 @@ class AsyncV1Resource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = not_given,
     ) -> V1StatusResponse:
         """Return the progress of the V1 to V2 session history migration."""
-        return await self._get(
-            "/api/experimental/migration/v1",
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+        return cast(
+            V1StatusResponse,
+            await self._get(
+                "/api/experimental/migration/v1",
+                options=make_request_options(
+                    extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+                ),
+                cast_to=cast(Any, V1StatusResponse),  # Union types cannot be passed in as arguments in the type system
             ),
-            cast_to=V1StatusResponse,
         )
 
 

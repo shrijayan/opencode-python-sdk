@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional, cast
 from typing_extensions import Literal
 
 import httpx
@@ -119,7 +119,7 @@ class MessageResource(SyncAPIResource):
                     message_list_params.MessageListParams,
                 ),
             ),
-            model=SessionMessageInfo,
+            model=cast(Any, SessionMessageInfo),  # Union types cannot be passed in as arguments in the type system
         )
 
 
@@ -216,7 +216,7 @@ class AsyncMessageResource(AsyncAPIResource):
                     message_list_params.MessageListParams,
                 ),
             ),
-            model=SessionMessageInfo,
+            model=cast(Any, SessionMessageInfo),  # Union types cannot be passed in as arguments in the type system
         )
 
 

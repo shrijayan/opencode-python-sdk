@@ -48,7 +48,7 @@ class TestSession:
             metadata={"foo": {}},
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
             parent_id="parentID",
@@ -684,10 +684,10 @@ class TestSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -696,11 +696,11 @@ class TestSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -708,7 +708,7 @@ class TestSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -719,8 +719,8 @@ class TestSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -754,10 +754,10 @@ class TestSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -766,11 +766,11 @@ class TestSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -778,7 +778,7 @@ class TestSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -789,8 +789,8 @@ class TestSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -827,10 +827,10 @@ class TestSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -839,11 +839,11 @@ class TestSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -851,7 +851,7 @@ class TestSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -862,8 +862,8 @@ class TestSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -901,10 +901,10 @@ class TestSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -913,11 +913,11 @@ class TestSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -925,7 +925,7 @@ class TestSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -936,8 +936,8 @@ class TestSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -1428,7 +1428,7 @@ class TestSession:
             session_id="sessionID",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         )
@@ -1440,7 +1440,7 @@ class TestSession:
             session_id="sessionID",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         )
@@ -1456,7 +1456,7 @@ class TestSession:
             session_id="sessionID",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         ) as response:
@@ -1475,7 +1475,7 @@ class TestSession:
                 session_id="",
                 model={
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
             )
@@ -1637,7 +1637,7 @@ class TestAsyncSession:
             metadata={"foo": {}},
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
             parent_id="parentID",
@@ -2273,10 +2273,10 @@ class TestAsyncSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -2285,11 +2285,11 @@ class TestAsyncSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -2297,7 +2297,7 @@ class TestAsyncSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -2308,8 +2308,8 @@ class TestAsyncSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -2343,10 +2343,10 @@ class TestAsyncSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -2355,11 +2355,11 @@ class TestAsyncSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -2367,7 +2367,7 @@ class TestAsyncSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -2378,8 +2378,8 @@ class TestAsyncSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -2416,10 +2416,10 @@ class TestAsyncSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -2428,11 +2428,11 @@ class TestAsyncSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -2440,7 +2440,7 @@ class TestAsyncSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -2451,8 +2451,8 @@ class TestAsyncSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -2490,10 +2490,10 @@ class TestAsyncSession:
                 "cost": 0,
                 "fork": {
                     "boundary": {
-                        "messageID": "string",
+                        "message_id": "string",
                         "type": "before",
                     },
-                    "sessionID": "string",
+                    "session_id": "string",
                 },
                 "id": "string",
                 "location": {
@@ -2502,11 +2502,11 @@ class TestAsyncSession:
                 "metadata": {"foo": {}},
                 "model": {
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
                 "outcome": "succeeded",
-                "parentID": "string",
+                "parent_id": "string",
                 "permissions": [
                     {
                         "action": "string",
@@ -2514,7 +2514,7 @@ class TestAsyncSession:
                         "resource": "string",
                     }
                 ],
-                "projectID": "string",
+                "project_id": "string",
                 "revert": {
                     "files": [
                         {
@@ -2525,8 +2525,8 @@ class TestAsyncSession:
                             "status": "added",
                         }
                     ],
-                    "messageID": "string",
-                    "partID": "string",
+                    "message_id": "string",
+                    "part_id": "string",
                     "snapshot": "string",
                 },
                 "subpath": "string",
@@ -3017,7 +3017,7 @@ class TestAsyncSession:
             session_id="sessionID",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         )
@@ -3029,7 +3029,7 @@ class TestAsyncSession:
             session_id="sessionID",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         )
@@ -3045,7 +3045,7 @@ class TestAsyncSession:
             session_id="sessionID",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         ) as response:
@@ -3064,7 +3064,7 @@ class TestAsyncSession:
                 session_id="",
                 model={
                     "id": "string",
-                    "providerID": "string",
+                    "provider_id": "string",
                     "variant": "string",
                 },
             )
