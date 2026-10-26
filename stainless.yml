@@ -79,6 +79,10 @@ targets:
     keep_files:
       - .devcontainer/Dockerfile
       - .devcontainer/devcontainer.json
+      # The SDK's own CI (uv) and release workflow; not the generated rye ones.
+      - .github/workflows/ci.yml
+      - .github/workflows/publish-pypi.yml
+      - .github/workflows/release-doctor.yml
       - .gitignore
       - .python-version
       - .release-please-manifest.json
