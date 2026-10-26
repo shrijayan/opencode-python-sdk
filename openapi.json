@@ -624,7 +624,8 @@
         },
         "x-opencode-client-path": [
           "list"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "post": {
         "operationId": "credential.create",
@@ -717,7 +718,8 @@
         },
         "x-opencode-client-path": [
           "create"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/credential/{credentialID}": {
@@ -1326,7 +1328,8 @@
         },
         "x-opencode-client-path": [
           "text"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/integration/wellknown": {
@@ -2153,7 +2156,8 @@
         "x-opencode-client-path": [
           "persistentPty",
           "get"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "put": {
         "operationId": "server.experimental.persistentPty.update",
@@ -2270,7 +2274,8 @@
         "x-opencode-client-path": [
           "persistentPty",
           "update"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "delete": {
         "operationId": "server.experimental.persistentPty.remove",
@@ -2443,7 +2448,8 @@
         "x-opencode-client-path": [
           "persistentPty",
           "connectToken"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/persistent-pty/{ptyID}/snapshot": {
@@ -2526,7 +2532,8 @@
         "x-opencode-client-path": [
           "persistentPty",
           "snapshot"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/session/import": {
@@ -2632,7 +2639,8 @@
         },
         "x-opencode-client-path": [
           "import"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/session/stats": {
@@ -2792,7 +2800,8 @@
         },
         "x-opencode-client-path": [
           "stats"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/session/{sessionID}/export": {
@@ -2891,7 +2900,8 @@
         },
         "x-opencode-client-path": [
           "export"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/session/{sessionID}/instructions/entries": {
@@ -2977,7 +2987,8 @@
           "instructions",
           "entry",
           "list"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/session/{sessionID}/instructions/entries/{key}": {
@@ -3418,7 +3429,8 @@
         "x-opencode-client-path": [
           "persistentPty",
           "list"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "post": {
         "operationId": "server.experimental.persistentPty.create",
@@ -3545,7 +3557,8 @@
         "x-opencode-client-path": [
           "persistentPty",
           "create"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/session/{sessionID}/terminal/read": {
@@ -3642,7 +3655,8 @@
         "x-opencode-client-path": [
           "persistentPty",
           "read"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/experimental/session/{sessionID}/wait": {
@@ -3814,7 +3828,8 @@
         },
         "x-opencode-client-path": [
           "session"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/form": {
@@ -6493,7 +6508,8 @@
         "x-opencode-client-path": [
           "saved",
           "list"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/permission/saved/{id}": {
@@ -6617,7 +6633,8 @@
         "x-opencode-client-path": [
           "saved",
           "update"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "delete": {
         "operationId": "permission.saved.remove",
@@ -8746,7 +8763,8 @@
         },
         "x-opencode-client-path": [
           "create"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/active": {
@@ -8806,7 +8824,8 @@
         },
         "x-opencode-client-path": [
           "active"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}": {
@@ -8880,7 +8899,8 @@
         },
         "x-opencode-client-path": [
           "get"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "delete": {
         "operationId": "session.remove",
@@ -9451,7 +9471,8 @@
         },
         "x-opencode-client-path": [
           "compact"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/context": {
@@ -9538,7 +9559,8 @@
         },
         "x-opencode-client-path": [
           "context"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/diff": {
@@ -9684,7 +9706,8 @@
         },
         "x-opencode-client-path": [
           "diff"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/environment": {
@@ -9869,7 +9892,8 @@
         },
         "x-opencode-client-path": [
           "fork"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/form": {
@@ -9954,7 +9978,8 @@
         "x-opencode-client-path": [
           "form",
           "list"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "post": {
         "operationId": "session.form.create",
@@ -10079,7 +10104,8 @@
         "x-opencode-client-path": [
           "form",
           "create"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/form/{formID}": {
@@ -10172,7 +10198,8 @@
         "x-opencode-client-path": [
           "form",
           "get"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "delete": {
         "operationId": "session.form.cancel",
@@ -10484,7 +10511,8 @@
         },
         "x-opencode-client-path": [
           "generate"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/inbox": {
@@ -10562,7 +10590,8 @@
         "x-opencode-client-path": [
           "inbox",
           "list"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/inbox/{inboxID}": {
@@ -11064,7 +11093,8 @@
         "x-opencode-client-path": [
           "message",
           "get"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/model": {
@@ -11384,7 +11414,8 @@
         },
         "x-opencode-client-path": [
           "create"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       },
       "get": {
         "operationId": "session.permission.list",
@@ -11466,7 +11497,8 @@
         },
         "x-opencode-client-path": [
           "list"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/permission/{requestID}": {
@@ -11558,7 +11590,8 @@
         },
         "x-opencode-client-path": [
           "get"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/permission/{requestID}/reply": {
@@ -11822,7 +11855,8 @@
         },
         "x-opencode-client-path": [
           "prompt"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/revert": {
@@ -12115,7 +12149,8 @@
         "x-opencode-client-path": [
           "revert",
           "stage"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/shell": {
@@ -12360,7 +12395,8 @@
         },
         "x-opencode-client-path": [
           "synthetic"
-        ]
+        ],
+        "x-opencode-unwrap-data": true
       }
     },
     "/api/session/{sessionID}/view": {

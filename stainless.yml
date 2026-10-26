@@ -554,8 +554,12 @@ resources:
       update: patch /api/experimental/config
   credential:
     methods:
-      list: get /api/credential
-      create: post /api/credential
+      list:
+        endpoint: get /api/credential
+        unwrap_response: data
+      create:
+        endpoint: post /api/credential
+        unwrap_response: data
       update: patch /api/credential/{credentialID}
       activate: post /api/credential/{credentialID}/activate
       remove: delete /api/credential/{credentialID}
@@ -577,16 +581,30 @@ resources:
     subresources:
       persistent_pty:
         methods:
-          read: get /api/experimental/session/{sessionID}/terminal/read
-          list: get /api/experimental/session/{sessionID}/terminal
-          create: post /api/experimental/session/{sessionID}/terminal
+          read:
+            endpoint: get /api/experimental/session/{sessionID}/terminal/read
+            unwrap_response: data
+          list:
+            endpoint: get /api/experimental/session/{sessionID}/terminal
+            unwrap_response: data
+          create:
+            endpoint: post /api/experimental/session/{sessionID}/terminal
+            unwrap_response: data
           shutdown: post /api/experimental/persistent-pty/shutdown
           handoff: post /api/experimental/persistent-pty/handoff
-          get: get /api/experimental/persistent-pty/{ptyID}
-          update: put /api/experimental/persistent-pty/{ptyID}
-          snapshot: get /api/experimental/persistent-pty/{ptyID}/snapshot
+          get:
+            endpoint: get /api/experimental/persistent-pty/{ptyID}
+            unwrap_response: data
+          update:
+            endpoint: put /api/experimental/persistent-pty/{ptyID}
+            unwrap_response: data
+          snapshot:
+            endpoint: get /api/experimental/persistent-pty/{ptyID}/snapshot
+            unwrap_response: data
           remove: delete /api/experimental/persistent-pty/{ptyID}
-          connect_token: post /api/experimental/persistent-pty/{ptyID}/connect-token
+          connect_token:
+            endpoint: post /api/experimental/persistent-pty/{ptyID}/connect-token
+            unwrap_response: data
   file:
     methods:
       read: get /api/fs/read/{path}
@@ -598,7 +616,9 @@ resources:
       list: get /api/form
   generate:
     methods:
-      text: post /api/experimental/generate
+      text:
+        endpoint: post /api/experimental/generate
+        unwrap_response: data
   integration:
     methods:
       list: get /api/integration
@@ -651,9 +671,15 @@ resources:
       default: get /api/model/default
   permission:
     methods:
-      create: post /api/session/{sessionID}/permission
-      list: get /api/session/{sessionID}/permission
-      get: get /api/session/{sessionID}/permission/{requestID}
+      create:
+        endpoint: post /api/session/{sessionID}/permission
+        unwrap_response: data
+      list:
+        endpoint: get /api/session/{sessionID}/permission
+        unwrap_response: data
+      get:
+        endpoint: get /api/session/{sessionID}/permission/{requestID}
+        unwrap_response: data
       reply: post /api/session/{sessionID}/permission/{requestID}/reply
     subresources:
       request_:
@@ -661,8 +687,12 @@ resources:
           list: get /api/permission/request
       saved:
         methods:
-          list: get /api/permission/saved
-          update: patch /api/permission/saved/{id}
+          list:
+            endpoint: get /api/permission/saved
+            unwrap_response: data
+          update:
+            endpoint: patch /api/permission/saved/{id}
+            unwrap_response: data
           remove: delete /api/permission/saved/{id}
   plugin:
     methods:
@@ -702,28 +732,54 @@ resources:
   session:
     methods:
       list: get /api/session
-      stats: get /api/experimental/session/stats
-      create: post /api/session
-      import_: post /api/experimental/session/import
-      export: get /api/experimental/session/{sessionID}/export
-      active: get /api/session/active
-      get: get /api/session/{sessionID}
+      stats:
+        endpoint: get /api/experimental/session/stats
+        unwrap_response: data
+      create:
+        endpoint: post /api/session
+        unwrap_response: data
+      import_:
+        endpoint: post /api/experimental/session/import
+        unwrap_response: data
+      export:
+        endpoint: get /api/experimental/session/{sessionID}/export
+        unwrap_response: data
+      active:
+        endpoint: get /api/session/active
+        unwrap_response: data
+      get:
+        endpoint: get /api/session/{sessionID}
+        unwrap_response: data
       remove: delete /api/session/{sessionID}
-      fork: post /api/session/{sessionID}/fork
+      fork:
+        endpoint: post /api/session/{sessionID}/fork
+        unwrap_response: data
       switch_agent: post /api/session/{sessionID}/agent
       switch_model: post /api/session/{sessionID}/model
       update: patch /api/session/{sessionID}
       move: post /api/session/{sessionID}/move
-      prompt: post /api/session/{sessionID}/prompt
+      prompt:
+        endpoint: post /api/session/{sessionID}/prompt
+        unwrap_response: data
       command: post /api/session/{sessionID}/command
       skill: post /api/experimental/session/{sessionID}/skill
-      synthetic: post /api/session/{sessionID}/synthetic
+      synthetic:
+        endpoint: post /api/session/{sessionID}/synthetic
+        unwrap_response: data
       shell: post /api/session/{sessionID}/shell
-      compact: post /api/session/{sessionID}/compact
+      compact:
+        endpoint: post /api/session/{sessionID}/compact
+        unwrap_response: data
       wait: post /api/experimental/session/{sessionID}/wait
-      context: get /api/session/{sessionID}/context
-      diff: get /api/session/{sessionID}/diff
-      generate: post /api/session/{sessionID}/generate
+      context:
+        endpoint: get /api/session/{sessionID}/context
+        unwrap_response: data
+      diff:
+        endpoint: get /api/session/{sessionID}/diff
+        unwrap_response: data
+      generate:
+        endpoint: post /api/session/{sessionID}/generate
+        unwrap_response: data
       log: get /api/experimental/session/{sessionID}/log
       interrupt: post /api/session/{sessionID}/interrupt
       background: post /api/session/{sessionID}/background
@@ -732,29 +788,43 @@ resources:
     subresources:
       revert:
         methods:
-          stage: post /api/session/{sessionID}/revert/stage
+          stage:
+            endpoint: post /api/session/{sessionID}/revert/stage
+            unwrap_response: data
           clear: delete /api/session/{sessionID}/revert
           commit: post /api/session/{sessionID}/revert/commit
       inbox:
         methods:
-          list: get /api/session/{sessionID}/inbox
+          list:
+            endpoint: get /api/session/{sessionID}/inbox
+            unwrap_response: data
           cancel: delete /api/session/{sessionID}/inbox/{inboxID}
           update: patch /api/session/{sessionID}/inbox/{inboxID}
       instructions:
         subresources:
           entry:
             methods:
-              list: get /api/experimental/session/{sessionID}/instructions/entries
+              list:
+                endpoint: get /api/experimental/session/{sessionID}/instructions/entries
+                unwrap_response: data
               put: put /api/experimental/session/{sessionID}/instructions/entries/{key}
               remove: delete /api/experimental/session/{sessionID}/instructions/entries/{key}
       message:
         methods:
-          get: get /api/session/{sessionID}/message/{messageID}
+          get:
+            endpoint: get /api/session/{sessionID}/message/{messageID}
+            unwrap_response: data
       form:
         methods:
-          list: get /api/session/{sessionID}/form
-          create: post /api/session/{sessionID}/form
-          get: get /api/session/{sessionID}/form/{formID}
+          list:
+            endpoint: get /api/session/{sessionID}/form
+            unwrap_response: data
+          create:
+            endpoint: post /api/session/{sessionID}/form
+            unwrap_response: data
+          get:
+            endpoint: get /api/session/{sessionID}/form/{formID}
+            unwrap_response: data
           reply: post /api/session/{sessionID}/form/{formID}/reply
           cancel: delete /api/session/{sessionID}/form/{formID}
   shell:
@@ -780,7 +850,9 @@ resources:
           list: get /api/vcs/branch
   voice:
     methods:
-      session: post /api/experimental/voice/session
+      session:
+        endpoint: post /api/experimental/voice/session
+        unwrap_response: data
   websearch:
     methods:
       providers: get /api/websearch/provider
