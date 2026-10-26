@@ -22,7 +22,37 @@ class TestForm:
     def test_method_create(self, client: Opencode) -> None:
         form = client.session.form.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
         )
         assert_matches_type(FormInfo, form, path=["response"])
@@ -31,9 +61,39 @@ class TestForm:
     def test_method_create_with_all_params(self, client: Opencode) -> None:
         form = client.session.form.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
-            id={},
+            id="id",
             metadata={"foo": {}},
         )
         assert_matches_type(FormInfo, form, path=["response"])
@@ -42,7 +102,37 @@ class TestForm:
     def test_raw_response_create(self, client: Opencode) -> None:
         response = client.session.form.with_raw_response.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
         )
 
@@ -55,7 +145,37 @@ class TestForm:
     def test_streaming_response_create(self, client: Opencode) -> None:
         with client.session.form.with_streaming_response.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
         ) as response:
             assert not response.is_closed
@@ -71,7 +191,37 @@ class TestForm:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             client.session.form.with_raw_response.create(
                 session_id="",
-                fields=[{}],
+                fields=[
+                    {
+                        "custom": True,
+                        "default": "string",
+                        "description": "string",
+                        "format": "email",
+                        "hidden": True,
+                        "key": "string",
+                        "maxLength": 0,
+                        "minLength": 0,
+                        "options": [
+                            {
+                                "description": "string",
+                                "label": "string",
+                                "value": "string",
+                            }
+                        ],
+                        "pattern": "string",
+                        "placeholder": "string",
+                        "required": True,
+                        "title": "string",
+                        "type": "string",
+                        "when": [
+                            {
+                                "key": "string",
+                                "op": "eq",
+                                "value": "string",
+                            }
+                        ],
+                    }
+                ],
                 title="title",
             )
 
@@ -223,7 +373,7 @@ class TestForm:
         form = client.session.form.reply(
             form_id="formID",
             session_id="sessionID",
-            answer={"foo": {}},
+            answer={"foo": "string"},
         )
         assert form is None
 
@@ -232,7 +382,7 @@ class TestForm:
         response = client.session.form.with_raw_response.reply(
             form_id="formID",
             session_id="sessionID",
-            answer={"foo": {}},
+            answer={"foo": "string"},
         )
 
         assert response.is_closed is True
@@ -245,7 +395,7 @@ class TestForm:
         with client.session.form.with_streaming_response.reply(
             form_id="formID",
             session_id="sessionID",
-            answer={"foo": {}},
+            answer={"foo": "string"},
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -261,14 +411,14 @@ class TestForm:
             client.session.form.with_raw_response.reply(
                 form_id="formID",
                 session_id="",
-                answer={"foo": {}},
+                answer={"foo": "string"},
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `form_id` but received ''"):
             client.session.form.with_raw_response.reply(
                 form_id="",
                 session_id="sessionID",
-                answer={"foo": {}},
+                answer={"foo": "string"},
             )
 
 
@@ -281,7 +431,37 @@ class TestAsyncForm:
     async def test_method_create(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
         )
         assert_matches_type(FormInfo, form, path=["response"])
@@ -290,9 +470,39 @@ class TestAsyncForm:
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
         form = await async_client.session.form.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
-            id={},
+            id="id",
             metadata={"foo": {}},
         )
         assert_matches_type(FormInfo, form, path=["response"])
@@ -301,7 +511,37 @@ class TestAsyncForm:
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
         response = await async_client.session.form.with_raw_response.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
         )
 
@@ -314,7 +554,37 @@ class TestAsyncForm:
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
         async with async_client.session.form.with_streaming_response.create(
             session_id="sessionID",
-            fields=[{}],
+            fields=[
+                {
+                    "custom": True,
+                    "default": "string",
+                    "description": "string",
+                    "format": "email",
+                    "hidden": True,
+                    "key": "string",
+                    "maxLength": 0,
+                    "minLength": 0,
+                    "options": [
+                        {
+                            "description": "string",
+                            "label": "string",
+                            "value": "string",
+                        }
+                    ],
+                    "pattern": "string",
+                    "placeholder": "string",
+                    "required": True,
+                    "title": "string",
+                    "type": "string",
+                    "when": [
+                        {
+                            "key": "string",
+                            "op": "eq",
+                            "value": "string",
+                        }
+                    ],
+                }
+            ],
             title="title",
         ) as response:
             assert not response.is_closed
@@ -330,7 +600,37 @@ class TestAsyncForm:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `session_id` but received ''"):
             await async_client.session.form.with_raw_response.create(
                 session_id="",
-                fields=[{}],
+                fields=[
+                    {
+                        "custom": True,
+                        "default": "string",
+                        "description": "string",
+                        "format": "email",
+                        "hidden": True,
+                        "key": "string",
+                        "maxLength": 0,
+                        "minLength": 0,
+                        "options": [
+                            {
+                                "description": "string",
+                                "label": "string",
+                                "value": "string",
+                            }
+                        ],
+                        "pattern": "string",
+                        "placeholder": "string",
+                        "required": True,
+                        "title": "string",
+                        "type": "string",
+                        "when": [
+                            {
+                                "key": "string",
+                                "op": "eq",
+                                "value": "string",
+                            }
+                        ],
+                    }
+                ],
                 title="title",
             )
 
@@ -482,7 +782,7 @@ class TestAsyncForm:
         form = await async_client.session.form.reply(
             form_id="formID",
             session_id="sessionID",
-            answer={"foo": {}},
+            answer={"foo": "string"},
         )
         assert form is None
 
@@ -491,7 +791,7 @@ class TestAsyncForm:
         response = await async_client.session.form.with_raw_response.reply(
             form_id="formID",
             session_id="sessionID",
-            answer={"foo": {}},
+            answer={"foo": "string"},
         )
 
         assert response.is_closed is True
@@ -504,7 +804,7 @@ class TestAsyncForm:
         async with async_client.session.form.with_streaming_response.reply(
             form_id="formID",
             session_id="sessionID",
-            answer={"foo": {}},
+            answer={"foo": "string"},
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -520,12 +820,12 @@ class TestAsyncForm:
             await async_client.session.form.with_raw_response.reply(
                 form_id="formID",
                 session_id="",
-                answer={"foo": {}},
+                answer={"foo": "string"},
             )
 
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `form_id` but received ''"):
             await async_client.session.form.with_raw_response.reply(
                 form_id="",
                 session_id="sessionID",
-                answer={"foo": {}},
+                answer={"foo": "string"},
             )

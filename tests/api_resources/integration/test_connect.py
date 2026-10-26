@@ -28,7 +28,7 @@ class TestConnect:
         connect = client.integration.connect.external(
             integration_id="integrationID",
             method_id="methodID",
-            answer={},
+            answer={"foo": "string"},
             label="label",
             location={
                 "directory": "string",
@@ -83,7 +83,7 @@ class TestConnect:
         connect = client.integration.connect.key(
             integration_id="integrationID",
             key="key",
-            answer={},
+            answer={"foo": "string"},
             label="label",
             location={
                 "directory": "string",
@@ -144,7 +144,7 @@ class TestAsyncConnect:
         connect = await async_client.integration.connect.external(
             integration_id="integrationID",
             method_id="methodID",
-            answer={},
+            answer={"foo": "string"},
             label="label",
             location={
                 "directory": "string",
@@ -199,7 +199,7 @@ class TestAsyncConnect:
         connect = await async_client.integration.connect.key(
             integration_id="integrationID",
             key="key",
-            answer={},
+            answer={"foo": "string"},
             label="label",
             location={
                 "directory": "string",

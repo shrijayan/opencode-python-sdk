@@ -4,5 +4,12 @@ from opencode import Opencode
 
 client = Opencode()
 
-voice = client.voice.session(model="model", transport={})
+voice = client.voice.session(
+    model="model",
+    transport={
+        "dcid": 0,
+        "sdp": "string",
+        "type": "webrtc",
+    },
+)
 print(voice)

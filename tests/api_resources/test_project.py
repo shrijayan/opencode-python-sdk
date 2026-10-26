@@ -30,8 +30,14 @@ class TestProject:
         project = client.project.update(
             project_id="projectID",
             canonical="canonical",
-            commands={},
-            icon={},
+            commands={
+                "start": "string",
+            },
+            icon={
+                "color": "string",
+                "override": "string",
+                "url": "string",
+            },
             name="name",
         )
         assert_matches_type(Project, project, path=["response"])
@@ -117,8 +123,14 @@ class TestAsyncProject:
         project = await async_client.project.update(
             project_id="projectID",
             canonical="canonical",
-            commands={},
-            icon={},
+            commands={
+                "start": "string",
+            },
+            icon={
+                "color": "string",
+                "override": "string",
+                "url": "string",
+            },
             name="name",
         )
         assert_matches_type(Project, project, path=["response"])

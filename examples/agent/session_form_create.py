@@ -4,5 +4,39 @@ from opencode import Opencode
 
 client = Opencode()
 
-form = client.session.form.create(session_id="sessionID", fields=[{}], title="title")
+form = client.session.form.create(
+    session_id="sessionID",
+    fields=[
+        {
+            "custom": True,
+            "default": "string",
+            "description": "string",
+            "format": "email",
+            "hidden": True,
+            "key": "string",
+            "maxLength": 0,
+            "minLength": 0,
+            "options": [
+                {
+                    "description": "string",
+                    "label": "string",
+                    "value": "string",
+                }
+            ],
+            "pattern": "string",
+            "placeholder": "string",
+            "required": True,
+            "title": "string",
+            "type": "string",
+            "when": [
+                {
+                    "key": "string",
+                    "op": "eq",
+                    "value": "string",
+                }
+            ],
+        }
+    ],
+    title="title",
+)
 print(form)

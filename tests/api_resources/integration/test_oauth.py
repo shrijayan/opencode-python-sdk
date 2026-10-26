@@ -149,7 +149,7 @@ class TestOauth:
         oauth = client.integration.oauth.connect(
             integration_id="integrationID",
             method_id="methodID",
-            answer={},
+            answer={"foo": "string"},
             label="label",
             location={
                 "directory": "string",
@@ -388,7 +388,7 @@ class TestAsyncOauth:
         oauth = await async_client.integration.oauth.connect(
             integration_id="integrationID",
             method_id="methodID",
-            answer={},
+            answer={"foo": "string"},
             label="label",
             location={
                 "directory": "string",

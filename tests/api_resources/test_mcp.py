@@ -55,7 +55,20 @@ class TestMcp:
     def test_method_add(self, client: Opencode) -> None:
         mcp = client.mcp.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
         )
         assert mcp is None
 
@@ -63,7 +76,20 @@ class TestMcp:
     def test_method_add_with_all_params(self, client: Opencode) -> None:
         mcp = client.mcp.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
             location={
                 "directory": "string",
             },
@@ -74,7 +100,20 @@ class TestMcp:
     def test_raw_response_add(self, client: Opencode) -> None:
         response = client.mcp.with_raw_response.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
         )
 
         assert response.is_closed is True
@@ -86,7 +125,20 @@ class TestMcp:
     def test_streaming_response_add(self, client: Opencode) -> None:
         with client.mcp.with_streaming_response.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -101,7 +153,20 @@ class TestMcp:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `server` but received ''"):
             client.mcp.with_raw_response.add(
                 server="",
-                config={},
+                config={
+                    "codemode": True,
+                    "command": ["string"],
+                    "cwd": "string",
+                    "disabled": True,
+                    "environment": {"foo": "string"},
+                    "protocol": "legacy",
+                    "timeout": {
+                        "catalog": 0,
+                        "execution": 0,
+                        "startup": 0,
+                    },
+                    "type": "local",
+                },
             )
 
     @parametrize
@@ -292,7 +357,20 @@ class TestAsyncMcp:
     async def test_method_add(self, async_client: AsyncOpencode) -> None:
         mcp = await async_client.mcp.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
         )
         assert mcp is None
 
@@ -300,7 +378,20 @@ class TestAsyncMcp:
     async def test_method_add_with_all_params(self, async_client: AsyncOpencode) -> None:
         mcp = await async_client.mcp.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
             location={
                 "directory": "string",
             },
@@ -311,7 +402,20 @@ class TestAsyncMcp:
     async def test_raw_response_add(self, async_client: AsyncOpencode) -> None:
         response = await async_client.mcp.with_raw_response.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
         )
 
         assert response.is_closed is True
@@ -323,7 +427,20 @@ class TestAsyncMcp:
     async def test_streaming_response_add(self, async_client: AsyncOpencode) -> None:
         async with async_client.mcp.with_streaming_response.add(
             server="server",
-            config={},
+            config={
+                "codemode": True,
+                "command": ["string"],
+                "cwd": "string",
+                "disabled": True,
+                "environment": {"foo": "string"},
+                "protocol": "legacy",
+                "timeout": {
+                    "catalog": 0,
+                    "execution": 0,
+                    "startup": 0,
+                },
+                "type": "local",
+            },
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -338,7 +455,20 @@ class TestAsyncMcp:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `server` but received ''"):
             await async_client.mcp.with_raw_response.add(
                 server="",
-                config={},
+                config={
+                    "codemode": True,
+                    "command": ["string"],
+                    "cwd": "string",
+                    "disabled": True,
+                    "environment": {"foo": "string"},
+                    "protocol": "legacy",
+                    "timeout": {
+                        "catalog": 0,
+                        "execution": 0,
+                        "startup": 0,
+                    },
+                    "type": "local",
+                },
             )
 
     @parametrize

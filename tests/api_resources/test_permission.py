@@ -33,11 +33,15 @@ class TestPermission:
             session_id="sessionID",
             action="action",
             resources=["string"],
-            agent={},
-            id={},
+            agent="agent",
+            id="id",
             metadata={"foo": {}},
             save=["string"],
-            source={},
+            source={
+                "id": "string",
+                "messageID": "string",
+                "type": "tool",
+            },
         )
         assert_matches_type(PermissionCreateResponse, permission, path=["response"])
 
@@ -248,11 +252,15 @@ class TestAsyncPermission:
             session_id="sessionID",
             action="action",
             resources=["string"],
-            agent={},
-            id={},
+            agent="agent",
+            id="id",
             metadata={"foo": {}},
             save=["string"],
-            source={},
+            source={
+                "id": "string",
+                "messageID": "string",
+                "type": "tool",
+            },
         )
         assert_matches_type(PermissionCreateResponse, permission, path=["response"])
 

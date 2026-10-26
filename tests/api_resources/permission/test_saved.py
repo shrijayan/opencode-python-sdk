@@ -73,7 +73,7 @@ class TestSaved:
     @parametrize
     def test_method_list_with_all_params(self, client: Opencode) -> None:
         saved = client.permission.saved.list(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(SavedListResponse, saved, path=["response"])
 
@@ -196,7 +196,7 @@ class TestAsyncSaved:
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncOpencode) -> None:
         saved = await async_client.permission.saved.list(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(SavedListResponse, saved, path=["response"])
 
