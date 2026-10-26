@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import httpx
-
 from .v1 import (
     V1Resource,
     AsyncV1Resource,
@@ -12,7 +10,6 @@ from .v1 import (
     V1ResourceWithStreamingResponse,
     AsyncV1ResourceWithStreamingResponse,
 )
-from ..._types import Body, Query, Headers, NotGiven, not_given
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
 
