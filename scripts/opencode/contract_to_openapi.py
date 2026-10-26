@@ -23,9 +23,8 @@ from __future__ import annotations
 import sys
 import json
 import argparse
-from typing import Any, cast
+from typing import Any, TypeAlias, cast
 from pathlib import Path
-from typing_extensions import TypeAlias
 
 Json: TypeAlias = dict[str, Any]
 
