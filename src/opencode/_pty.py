@@ -26,27 +26,28 @@ Protocol (OpenCode 2.1.2):
 from __future__ import annotations
 
 import json
-import struct
 import uuid
+import struct
 from typing import TYPE_CHECKING, Any, Literal, cast
 from urllib.parse import urlencode
-
 from typing_extensions import Self
 
+from ._types import NOT_GIVEN, Omit, omit
+from ._resource import SyncAPIResource, AsyncAPIResource
 from ._exceptions import OpencodeError
-from ._qs import encode_path_segment, encode_query
-from ._resource import AsyncAPIResource, SyncAPIResource
-from ._types import NOT_GIVEN, NotGiven
+from .lib._support import encode_query, default_location, encode_path_segment
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Awaitable, Callable, Iterator, Mapping
     from types import TracebackType
+    from collections.abc import Mapping, Callable, Iterator, Awaitable, AsyncIterator
 
     import httpx
-    from websockets.asyncio.client import ClientConnection as AsyncWebSocket
     from websockets.sync.client import ClientConnection as SyncWebSocket
+    from websockets.asyncio.client import ClientConnection as AsyncWebSocket
 
-    from .types import Location, PtyID
+    from .types import PtyID
+    from .lib._client import Opencode, AsyncOpencode
+    from .lib._support import Location
 
 __all__ = [
     "AsyncPersistentPtyAttachMixin",
@@ -93,12 +94,12 @@ def _ws_url(base_url: httpx.URL, path: str, query: Mapping[str, object]) -> str:
     return str(url.copy_with(scheme=scheme, query=urlencode(encode_query(query)).encode("ascii")))
 
 
-def _headers(username: str, password: str | None, extra: Mapping[str, str] | None) -> dict[str, str]:
+def _headers(username: str | None, password: str | None, extra: Mapping[str, str] | None) -> dict[str, str]:
     import base64
 
     headers: dict[str, str] = {}
     if password is not None:
-        headers["Authorization"] = "Basic " + base64.b64encode(f"{username}:{password}".encode()).decode("ascii")
+        headers["Authorization"] = "Basic " + base64.b64encode(f"{username or ''}:{password}".encode()).decode("ascii")
     headers.update(extra or {})
     return headers
 
@@ -387,8 +388,8 @@ def _open_sync(url: str, headers: dict[str, str], open_timeout: float | None) ->
 
 async def _open_async(url: str, headers: dict[str, str], open_timeout: float | None) -> AsyncWebSocket:
     try:
-        from websockets.asyncio.client import connect
         from websockets.exceptions import InvalidHandshake
+        from websockets.asyncio.client import connect
     except ImportError:
         raise _missing() from None
     try:
@@ -428,7 +429,7 @@ class PtyAttachMixin(SyncAPIResource):
         self,
         pty_id: PtyID,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         cursor: int | None = None,
         open_timeout: float | None = 10,
         extra_headers: Mapping[str, str] | None = None,
@@ -449,19 +450,17 @@ class PtyAttachMixin(SyncAPIResource):
         ``GET /api/pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("Opencode", self._client)
         token = client.pty.connect.token(pty_id, location=location, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,
             f"/api/pty/{encode_path_segment(pty_id)}/connect",
-            _pty_query(self._location(location), cursor, token.data.ticket),
+            _pty_query(default_location(location, client.directory), cursor, token.data.ticket),
         )
         ws = _open_sync(url, _headers(client.username, client.password, extra_headers), open_timeout)
 
         def resize(cols: int, rows: int) -> object:
-            from .types import PtyUpdateSize
-
-            return client.pty.update(pty_id, location=location, size=PtyUpdateSize(cols=cols, rows=rows))
+            return client.pty.update(pty_id, location=location, size={"cols": cols, "rows": rows})
 
         return PtyConnection(ws, _Protocol(persistent=False, cols=0, rows=0), resize)
 
@@ -473,7 +472,7 @@ class AsyncPtyAttachMixin(AsyncAPIResource):
         self,
         pty_id: PtyID,
         *,
-        location: Location | NotGiven | None = NOT_GIVEN,
+        location: Location | Omit | None = omit,
         cursor: int | None = None,
         open_timeout: float | None = 10,
         extra_headers: Mapping[str, str] | None = None,
@@ -483,19 +482,17 @@ class AsyncPtyAttachMixin(AsyncAPIResource):
         ``GET /api/pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("AsyncOpencode", self._client)
         token = await client.pty.connect.token(pty_id, location=location, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,
             f"/api/pty/{encode_path_segment(pty_id)}/connect",
-            _pty_query(self._location(location), cursor, token.data.ticket),
+            _pty_query(default_location(location, client.directory), cursor, token.data.ticket),
         )
         ws = await _open_async(url, _headers(client.username, client.password, extra_headers), open_timeout)
 
         async def resize(cols: int, rows: int) -> object:
-            from .types import PtyUpdateSize
-
-            return await client.pty.update(pty_id, location=location, size=PtyUpdateSize(cols=cols, rows=rows))
+            return await client.pty.update(pty_id, location=location, size={"cols": cols, "rows": rows})
 
         return AsyncPtyConnection(ws, _Protocol(persistent=False, cols=0, rows=0), resize)
 
@@ -533,7 +530,7 @@ class PersistentPtyAttachMixin(SyncAPIResource):
         ``GET /api/experimental/persistent-pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("Opencode", self._client)
         token = client.experimental.persistent_pty.connect_token(pty_id, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,
@@ -568,7 +565,7 @@ class AsyncPersistentPtyAttachMixin(AsyncAPIResource):
         ``GET /api/experimental/persistent-pty/:ptyID/connect`` (WebSocket)
         """
         _require_websockets()
-        client = self._client
+        client = cast("AsyncOpencode", self._client)
         token = await client.experimental.persistent_pty.connect_token(pty_id, x_opencode_ticket="1")
         url = _ws_url(
             client.base_url,

@@ -1,35 +1,34 @@
 """``client.session.run``: create or reuse a session, prompt it, wait until idle, and collect the result.
 
-The generated ``SessionResource`` / ``AsyncSessionResource`` inherit from the classes here (see
-``codegen/render.py``, ``HELPER_BASES``), so these methods sit next to the generated ones.
+``lib/_resources.py`` mixes these classes into the generated ``SessionResource`` /
+``AsyncSessionResource``, so these methods sit next to the generated ones.
 """
 
 from __future__ import annotations
 
 import contextlib
-from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, cast
+from dataclasses import field, dataclass
 
 import anyio
 
-from .._resource import AsyncAPIResource, SyncAPIResource
-from .._types import NOT_GIVEN, NotGiven, Timeout
+from .._types import Omit, omit
+from .._resource import SyncAPIResource, AsyncAPIResource
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from ..resources.session import AsyncSessionResource, SessionResource
     from ..types import (
         AgentID,
-        ModelRef,
-        PromptInputFileAttachment,
         SessionID,
         SessionInfo,
-        SessionMessageAssistant,
+        TokenUsageInfo,
         SessionMessageInfo,
         SessionStructuredError,
-        TokenUsageInfo,
+        SessionMessageAssistant,
     )
+    from ..resources.session import SessionResource, AsyncSessionResource
+    from ..types.shared_params import ModelRef, PromptInputFileAttachment
 
 __all__ = ["AsyncSessionHelpers", "RunResult", "SessionHelpers"]
 
@@ -74,7 +73,7 @@ class RunResult:
     @property
     def error(self) -> SessionStructuredError | None:
         """Why the run failed, from its idle marker or last assistant message, or ``None``."""
-        from ..types import SessionMessageAssistant, SessionMessageIdle
+        from ..types import SessionMessageIdle, SessionMessageAssistant
 
         for message in reversed(self.messages):
             if isinstance(message, (SessionMessageIdle, SessionMessageAssistant)) and message.error is not None:
@@ -89,7 +88,8 @@ class RunResult:
     @property
     def tokens(self) -> TokenUsageInfo:
         """Token usage of this run, summed over its assistant messages."""
-        from ..types import TokenUsageInfo, TokenUsageInfoCache
+        from ..types import TokenUsageInfo
+        from ..types.shared.token_usage_info import Cache as TokenUsageInfoCache
 
         total = TokenUsageInfo(input=0, output=0, reasoning=0, cache=TokenUsageInfoCache(read=0, write=0))
         for message in self.assistant_messages:
@@ -129,9 +129,9 @@ class SessionHelpers(SyncAPIResource):
         *,
         agent: AgentID | None = None,
         model: ModelRef | None = None,
-        files: Sequence[PromptInputFileAttachment] | NotGiven = NOT_GIVEN,
+        files: Sequence[PromptInputFileAttachment] | Omit = omit,
         session_id: SessionID | None = None,
-        timeout: Timeout = None,
+        timeout: float | None = None,
     ) -> RunResult:
         """Runs one prompt to completion and returns what the agent produced.
 
@@ -158,7 +158,7 @@ class SessionHelpers(SyncAPIResource):
         """
         resource = cast("SessionResource", self)
         if session_id is None:
-            session = resource.create(agent=agent or NOT_GIVEN, model=model or NOT_GIVEN)
+            session = resource.create(agent=agent or omit, model=model or omit)
             session_id = session.id
             marker = None
         else:
@@ -194,9 +194,9 @@ class AsyncSessionHelpers(AsyncAPIResource):
         *,
         agent: AgentID | None = None,
         model: ModelRef | None = None,
-        files: Sequence[PromptInputFileAttachment] | NotGiven = NOT_GIVEN,
+        files: Sequence[PromptInputFileAttachment] | Omit = omit,
         session_id: SessionID | None = None,
-        timeout: Timeout = None,
+        timeout: float | None = None,
     ) -> RunResult:
         """Runs one prompt to completion. See :meth:`SessionHelpers.run`.
 
@@ -204,7 +204,7 @@ class AsyncSessionHelpers(AsyncAPIResource):
         """
         resource = cast("AsyncSessionResource", self)
         if session_id is None:
-            session = await resource.create(agent=agent or NOT_GIVEN, model=model or NOT_GIVEN)
+            session = await resource.create(agent=agent or omit, model=model or omit)
             session_id = session.id
             marker = None
         else:

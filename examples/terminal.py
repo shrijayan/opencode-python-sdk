@@ -8,12 +8,12 @@ Needs the ``pty`` extra (``pip install "opencode-python-sdk[pty]"``) and a POSIX
 from __future__ import annotations
 
 import os
+import sys
+import tty
 import shutil
 import signal
-import sys
 import termios
 import threading
-import tty
 from typing import Any
 
 from opencode import Opencode, PtyConnection

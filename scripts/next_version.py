@@ -16,8 +16,8 @@ Usage: python scripts/next_version.py [--force]
 from __future__ import annotations
 
 import re
-import subprocess
 import sys
+import subprocess
 
 RELEASE_PATHS = ("src/", "pyproject.toml", "spec/")
 BREAKING = re.compile(r"^[a-z]+(\([^)]*\))?!:", re.IGNORECASE)

@@ -19,26 +19,28 @@ history matters.
 
 from __future__ import annotations
 
-import asyncio
-import collections
-import logging
 import random
+import socket
+import asyncio
+import logging
 import threading
-from dataclasses import dataclass
+import contextlib
+import collections
 from typing import TYPE_CHECKING, Any, Generic, TypeVar, cast
-
-import anyio
+from dataclasses import dataclass
 from typing_extensions import Self
 
-from ._exceptions import APIConnectionError, APIStatusError, OpencodeError
+import anyio
+
+from ._exceptions import OpencodeError, APIStatusError, APIConnectionError
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Awaitable, Callable, Iterator
     from types import TracebackType
+    from collections.abc import Callable, Iterator, Awaitable, AsyncIterator
 
-    from ._client import AsyncOpencode, Opencode
-    from ._streaming import AsyncStream, Stream
     from .types import Event, ServerConnectedEvent
+    from ._streaming import Stream, AsyncStream
+    from .lib._client import Opencode, AsyncOpencode
 
 __all__ = [
     "SUBSCRIBER_CAPACITY",
@@ -136,6 +138,46 @@ class _Filters(Generic[_E]):
 
 
 _End = anyio.EndOfStream
+
+
+def _watch_activity(stream: Stream[Event], on_chunk: Callable[[], object]) -> None:
+    """Calls ``on_chunk`` for every chunk the stream receives, keepalive comments included."""
+    response = stream.response
+    chunks = response.iter_bytes
+
+    def iter_bytes(chunk_size: int | None = None) -> Iterator[bytes]:
+        for chunk in chunks(chunk_size):
+            on_chunk()
+            yield chunk
+
+    response.iter_bytes = iter_bytes  # type: ignore[method-assign]
+
+
+def _async_watch_activity(stream: AsyncStream[Event], on_chunk: Callable[[], object]) -> None:
+    """The async form of :func:`_watch_activity`."""
+    response = stream.response
+    chunks = response.aiter_bytes
+
+    async def aiter_bytes(chunk_size: int | None = None) -> AsyncIterator[bytes]:
+        async for chunk in chunks(chunk_size):
+            on_chunk()
+            yield chunk
+
+    response.aiter_bytes = aiter_bytes  # type: ignore[method-assign]
+
+
+def _interrupt(stream: Stream[Event]) -> None:
+    """Unblocks a read in progress on another thread, which then ends with :class:`APIConnectionError`.
+
+    ``close`` must run on the iterating thread. Call this from any other thread first to wake it.
+    """
+    network_stream: Any = stream.response.extensions.get("network_stream")
+    sock: Any = network_stream.get_extra_info("socket") if network_stream is not None else None
+    if isinstance(sock, socket.socket):
+        with contextlib.suppress(OSError):
+            sock.shutdown(socket.SHUT_RDWR)
+
+
 """Raised by :meth:`AsyncSubscription.get` once the stream is over."""
 
 # Completion states of one subscriber.
@@ -260,7 +302,7 @@ class EventHub:
         if self._current is connection:
             self._current = None
         if connection.stream is not None:
-            connection.stream.interrupt()
+            _interrupt(connection.stream)
 
     def _publish(self, connection: _SyncConnection, event: Event) -> None:
         for subscriber in list(connection.subscribers):
@@ -310,7 +352,7 @@ class EventHub:
         try:
             if stopped:
                 return
-            stream.on_activity = connection.activity
+            _watch_activity(stream, connection.activity)
             # A fresh connection replays nothing yet; reconnects must not repeat server.connected.
             seen_connected = connection.connected is not None
             for event in stream:
@@ -325,6 +367,8 @@ class EventHub:
                 self._publish(connection, event)
         finally:
             connection.stream = None
+            # End the iteration first, so the response's byte stream is closed with it.
+            stream._iterator.close()  # type: ignore[attr-defined]  # Stream keeps its generator private
             stream.close()
 
 
@@ -610,7 +654,7 @@ class AsyncEventHub:
 
         stream: AsyncStream[Event] = await self._client.event.subscribe()
         try:
-            stream.on_activity = connection.activity
+            _async_watch_activity(stream, connection.activity)
             seen_connected = connection.connected is not None
             async for event in stream:
                 connection.delivered = True
@@ -622,6 +666,8 @@ class AsyncEventHub:
                 self._publish(connection, event)
         finally:
             with anyio.CancelScope(shield=True):
+                # End the iteration first, so the response's byte stream is closed with it.
+                await stream._iterator.aclose()  # type: ignore[attr-defined]  # Stream keeps its generator private
                 await stream.close()
 
 

@@ -1,95 +1,149 @@
-"""Request encoding: query strings, path segments and JSON bodies.
-
-The rules match the official TypeScript client so both send byte-identical requests:
-
-- ``None`` becomes the string ``"null"``; ``NOT_GIVEN`` leaves the parameter out;
-- booleans become ``"true"`` / ``"false"``;
-- lists repeat the key once per item;
-- objects use deep-object style, ``location[directory]=/repo``.
-"""
-
 from __future__ import annotations
 
-import base64
-import datetime as dt
-import enum
-from collections.abc import Mapping, Sequence
-from typing import Any, cast
-from urllib.parse import quote
+from typing import Any, List, Tuple, Union, Mapping, TypeVar
+from urllib.parse import parse_qs, urlencode
+from typing_extensions import get_args
 
-import pydantic
+from ._types import NotGiven, ArrayFormat, NestedFormat, not_given
+from ._utils import flatten
 
-from ._types import NotGiven
+_T = TypeVar("_T")
 
-__all__ = ["encode_path", "encode_path_segment", "encode_query", "to_jsonable"]
-
-
-def encode_query(params: Mapping[str, object]) -> list[tuple[str, str]]:
-    """Flattens query parameters into ordered ``(key, value)`` pairs."""
-    pairs: list[tuple[str, str]] = []
-    for key, value in params.items():
-        _append(pairs, key, to_jsonable(value))
-    return pairs
+PrimitiveData = Union[str, int, float, bool, None]
+# this should be Data = Union[PrimitiveData, "List[Data]", "Tuple[Data]", "Mapping[str, Data]"]
+# https://github.com/microsoft/pyright/issues/3555
+Data = Union[PrimitiveData, List[Any], Tuple[Any], "Mapping[str, Any]"]
+Params = Mapping[str, Data]
 
 
-def _append(pairs: list[tuple[str, str]], key: str, value: object) -> None:
-    if isinstance(value, NotGiven):
-        return
-    if value is None:
-        pairs.append((key, "null"))
-    elif isinstance(value, bool):
-        pairs.append((key, "true" if value else "false"))
-    elif isinstance(value, (list, tuple)):
-        for item in cast("Sequence[object]", value):
-            _append(pairs, key, item)
-    elif isinstance(value, dict):
-        for child, item in cast("dict[str, object]", value).items():
-            _append(pairs, f"{key}[{child}]", item)
-    else:
-        pairs.append((key, str(value)))
+class Querystring:
+    array_format: ArrayFormat
+    nested_format: NestedFormat
+
+    def __init__(
+        self,
+        *,
+        array_format: ArrayFormat = "repeat",
+        nested_format: NestedFormat = "brackets",
+    ) -> None:
+        self.array_format = array_format
+        self.nested_format = nested_format
+
+    def parse(self, query: str) -> Mapping[str, object]:
+        # Note: custom format syntax is not supported yet
+        return parse_qs(query)
+
+    def stringify(
+        self,
+        params: Params,
+        *,
+        array_format: ArrayFormat | NotGiven = not_given,
+        nested_format: NestedFormat | NotGiven = not_given,
+    ) -> str:
+        return urlencode(
+            self.stringify_items(
+                params,
+                array_format=array_format,
+                nested_format=nested_format,
+            )
+        )
+
+    def stringify_items(
+        self,
+        params: Params,
+        *,
+        array_format: ArrayFormat | NotGiven = not_given,
+        nested_format: NestedFormat | NotGiven = not_given,
+    ) -> list[tuple[str, str]]:
+        opts = Options(
+            qs=self,
+            array_format=array_format,
+            nested_format=nested_format,
+        )
+        return flatten([self._stringify_item(key, value, opts) for key, value in params.items()])
+
+    def _stringify_item(
+        self,
+        key: str,
+        value: Data,
+        opts: Options,
+    ) -> list[tuple[str, str]]:
+        if isinstance(value, Mapping):
+            items: list[tuple[str, str]] = []
+            nested_format = opts.nested_format
+            for subkey, subvalue in value.items():
+                items.extend(
+                    self._stringify_item(
+                        # TODO: error if unknown format
+                        f"{key}.{subkey}" if nested_format == "dots" else f"{key}[{subkey}]",
+                        subvalue,
+                        opts,
+                    )
+                )
+            return items
+
+        if isinstance(value, (list, tuple)):
+            array_format = opts.array_format
+            if array_format == "comma":
+                return [
+                    (
+                        key,
+                        ",".join(self._primitive_value_to_str(item) for item in value if item is not None),
+                    ),
+                ]
+            elif array_format == "repeat":
+                items = []
+                for item in value:
+                    items.extend(self._stringify_item(key, item, opts))
+                return items
+            elif array_format == "indices":
+                items = []
+                for i, item in enumerate(value):
+                    items.extend(self._stringify_item(f"{key}[{i}]", item, opts))
+                return items
+            elif array_format == "brackets":
+                items = []
+                key = key + "[]"
+                for item in value:
+                    items.extend(self._stringify_item(key, item, opts))
+                return items
+            else:
+                raise NotImplementedError(
+                    f"Unknown array_format value: {array_format}, choose from {', '.join(get_args(ArrayFormat))}"
+                )
+
+        serialised = self._primitive_value_to_str(value)
+        if not serialised:
+            return []
+        return [(key, serialised)]
+
+    def _primitive_value_to_str(self, value: PrimitiveData) -> str:
+        # copied from httpx
+        if value is True:
+            return "true"
+        elif value is False:
+            return "false"
+        elif value is None:
+            return ""
+        return str(value)
 
 
-def encode_path_segment(value: object) -> str:
-    """Encodes one path parameter, escaping ``/`` and every other reserved character.
-
-    ``.`` and ``..`` are percent-encoded too, so URL normalization cannot turn a parameter into a different route.
-    """
-    text = str(value)
-    if text == "":
-        raise ValueError("Path parameters must not be empty")
-    return _encode_part(text)
+_qs = Querystring()
+parse = _qs.parse
+stringify = _qs.stringify
+stringify_items = _qs.stringify_items
 
 
-def encode_path(value: str) -> str:
-    """Encodes a trailing wildcard path, keeping ``/`` separators and encoding dot segments."""
-    return "/".join(_encode_part(part) for part in value.split("/"))
+class Options:
+    array_format: ArrayFormat
+    nested_format: NestedFormat
 
-
-def _encode_part(part: str) -> str:
-    if part in (".", ".."):
-        return part.replace(".", "%2E")
-    return quote(part, safe="")
-
-
-def to_jsonable(value: Any) -> Any:
-    """Converts models and standard containers to plain JSON values, dropping ``NOT_GIVEN`` entries."""
-    if isinstance(value, pydantic.BaseModel):
-        return value.model_dump(mode="json", by_alias=True, exclude_unset=True)
-    if isinstance(value, NotGiven) or value is None or isinstance(value, (str, int, float, bool)):
-        return value
-    if isinstance(value, Mapping):
-        mapping = cast("Mapping[object, object]", value)
-        return {str(key): to_jsonable(item) for key, item in mapping.items() if not isinstance(item, NotGiven)}
-    if isinstance(value, (bytes, bytearray, memoryview)):
-        return base64.b64encode(bytes(cast("bytes", value))).decode("ascii")
-    if isinstance(value, Sequence):
-        return [to_jsonable(item) for item in cast("Sequence[object]", value)]
-    if isinstance(value, (set, frozenset)):
-        return [to_jsonable(item) for item in cast("set[object]", value)]
-    if isinstance(value, enum.Enum):
-        return to_jsonable(value.value)
-    if isinstance(value, (dt.datetime, dt.date)):
-        return value.isoformat()
-    value_type: Any = value.__class__
-    adapter: pydantic.TypeAdapter[Any] = pydantic.TypeAdapter(value_type)
-    return adapter.dump_python(value, mode="json", by_alias=True)
+    def __init__(
+        self,
+        qs: Querystring = _qs,
+        *,
+        array_format: ArrayFormat | NotGiven = not_given,
+        nested_format: NestedFormat | NotGiven = not_given,
+    ) -> None:
+        self.array_format = qs.array_format if isinstance(array_format, NotGiven) else array_format
+        self.nested_format = qs.nested_format if isinstance(nested_format, NotGiven) else nested_format

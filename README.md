@@ -521,18 +521,21 @@ changes. See the [releases page](https://github.com/shrijayan/opencode-python-sd
 ## How it is built
 
 ```
-@opencode/protocol (npm)  ──bun codegen/extract──▶  spec/contract.json  ──python -m codegen──▶  src/opencode
+@opencode/protocol (npm) ─bun codegen/extract─▶ spec/contract.json ─scripts/opencode─▶ openapi.json + stainless.yml ─ferrule─▶ src/opencode
 ```
 
 1. `codegen/extract/extract.ts` loads `ClientApi` from the published `@opencode/protocol` package and exports
    every endpoint, its inputs, outputs and declared errors, and every schema as JSON Schema.
-2. `python -m codegen` turns the contract into pydantic models (`opencode/types`), resources
-   (`opencode/resources`), error classes (`opencode/_errors.py`) and [api.md](api.md).
-3. The transport, retries, streaming, pagination and server launcher are written by hand.
+2. `scripts/opencode/contract_to_openapi.py` turns the contract into `openapi.json`, and
+   `scripts/opencode/config_models.py` keeps the model names in `stainless.yml`.
+3. [Ferrule](https://github.com/shrijayan/ferrule) generates the client from those two files: models
+   (`opencode/types`), resources (`opencode/resources`), the runtime (transport, retries, streaming, pagination),
+   the tests under `tests/` and [api.md](api.md). `ferrule.lock` lists every generated file.
+4. This SDK's own features (the event hub, typed RPC, PTY connections, the server launcher, `client.session.run`,
+   typed errors) are written by hand in `src/opencode/lib/` and the modules next to it, and survive regeneration.
 
-Generated code is committed. CI regenerates it and fails if anything changed. See
-[CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT
+MIT for the hand-written code; the generated code and runtime are Apache-2.0. See [NOTICE](NOTICE).

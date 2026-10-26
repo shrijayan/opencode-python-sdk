@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   lint:
-    name: Lint, types, generated code
+    name: Lint and types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -26,8 +26,11 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run pyright
       - run: uv run mypy
-      - name: Generated code matches spec/contract.json
-        run: uv run python -m codegen --check
+      - name: openapi.json and stainless.yml match spec/contract.json
+        run: |
+          uv run --no-project --python 3.12 python scripts/opencode/contract_to_openapi.py spec/contract.json openapi.json
+          uv run --no-project --python 3.12 python scripts/opencode/config_models.py openapi.json stainless.yml
+          git diff --exit-code -- openapi.json stainless.yml
 
   test:
     name: Test (Python ${{ matrix.python }}, ${{ matrix.os }})
@@ -48,8 +51,22 @@ jobs:
         with:
           enable-cache: true
           python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
       - run: uv sync --locked
-      - run: uv run pytest -m "not live" --cov --cov-report=term-missing
+      # The generated tests run against the mock (pytest-asyncio), on Linux as the generated
+      # SDKs' own CI does; the hand-written ones in tests/custom use anyio and trio, so they run
+      # apart, on every OS.
+      - name: Start the mock server
+        if: runner.os == 'Linux'
+        shell: bash
+        run: ./scripts/mock --daemon
+      - if: runner.os == 'Linux'
+        run: uv run pytest --cov --cov-report=term-missing
+      - run: >-
+          uv run pytest --confcutdir=tests/custom -o asyncio_mode=strict -o addopts="-ra --strict-markers"
+          -m "not live" --cov --cov-append --cov-report=term-missing tests/custom
 
   lowest:
     name: Test with lowest supported dependencies
@@ -61,8 +78,13 @@ jobs:
           python-version: "3.10"
       - run: >-
           uv run --isolated --resolution lowest-direct --with-editable '.[pty,aiohttp]'
-          --with pytest --with respx --with trio
-          pytest -m "not live" -p no:cacheprovider
+          --with pytest --with pytest-asyncio --with respx --with trio --with dirty-equals --with time-machine
+          pytest -p no:cacheprovider --ignore=tests/api_resources
+      - run: >-
+          uv run --isolated --resolution lowest-direct --with-editable '.[pty,aiohttp]'
+          --with pytest --with pytest-asyncio --with respx --with trio
+          pytest -p no:cacheprovider --confcutdir=tests/custom -o asyncio_mode=strict
+          -o addopts="-ra --strict-markers" -m "not live" tests/custom
 
   live:
     name: Live server
@@ -80,7 +102,9 @@ jobs:
       - run: echo "$GITHUB_WORKSPACE/.github/live/node_modules/.bin" >> "$GITHUB_PATH"
       - run: opencode --version
       - run: uv sync --locked
-      - run: uv run pytest -m live -v
+      - run: >-
+          uv run pytest --confcutdir=tests/custom -o asyncio_mode=strict -o addopts="-ra --strict-markers"
+          -m live -v tests/custom
 
   build:
     name: Build distributions

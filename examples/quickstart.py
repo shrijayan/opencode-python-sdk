@@ -8,7 +8,7 @@ from __future__ import annotations
 import sys
 
 from opencode import OpencodeServer
-from opencode.types import SessionMessageAssistant, SessionMessageUser
+from opencode.types import SessionMessageUser, SessionMessageAssistant
 
 
 def main(directory: str, prompt: str) -> None:

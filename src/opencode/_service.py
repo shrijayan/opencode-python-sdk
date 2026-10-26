@@ -12,28 +12,28 @@ object.
 
 from __future__ import annotations
 
-import base64
-import contextlib
-import json
-import logging
 import os
-import shutil
-import signal
-import subprocess
 import sys
-import threading
+import json
 import time
 import uuid
-from collections.abc import Callable, Mapping, Sequence
-from dataclasses import dataclass, field
-from pathlib import Path
+import base64
+import shutil
+import signal
+import logging
+import threading
+import contextlib
+import subprocess
 from typing import Any, Literal, TypeAlias, cast
+from pathlib import Path
+from dataclasses import field, dataclass
+from collections.abc import Mapping, Callable, Sequence
 
 import httpx
 from anyio import sleep as _async_sleep
 
-from ._constants import DEFAULT_USERNAME
 from ._exceptions import OpencodeError
+from .lib._support import DEFAULT_USERNAME
 
 __all__ = [
     "BasicAuth",

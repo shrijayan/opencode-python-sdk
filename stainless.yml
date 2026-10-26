@@ -1,0 +1,869 @@
+# stainless.yml for shrijayan/opencode-python-sdk v0.2.3, written as an adopter would.
+# The resource tree is drafted from the SDK's api.md by scripts/opencode/api_md_to_config.py;
+# client settings follow src/opencode/_client.py. The spec comes from
+# scripts/opencode/contract_to_openapi.py (ADR 0015); the models and casings between the
+# ferrule: markers from scripts/opencode/config_models.py, which keeps the SDK's type names.
+organization:
+  name: opencode
+  docs: https://opencode.ai/docs
+  contact: https://github.com/shrijayan/opencode-python-sdk/issues
+
+security:
+  - basicAuth: []
+
+security_schemes:
+  basicAuth:
+    type: http
+    scheme: basic
+
+client_settings:
+  default_client_name: Opencode
+  default_env_prefix: OPENCODE
+  # Agent operations run long: ten minutes, as the SDK's own client had.
+  default_timeout: PT10M
+  opts:
+    username:
+      type: string
+      nullable: true
+      default: opencode
+      auth:
+        security_scheme: basicAuth
+        role: username
+    password:
+      type: string
+      nullable: true
+      read_env: OPENCODE_PASSWORD
+      auth:
+        security_scheme: basicAuth
+        role: password
+
+environments:
+  production: http://127.0.0.1:4096
+
+query_settings:
+  # The server reads arrays as repeated keys and objects as `location[directory]=` (deepObject).
+  array_format: repeat
+  nested_format: brackets
+
+pagination:
+  # `{data: [...], cursor: {next, previous}}`: message.list and session.list.
+  - name: cursor_page
+    type: cursor
+    request:
+      cursor:
+        type: string
+        x-stainless-pagination-property:
+          purpose: next_cursor_param
+    response:
+      data:
+        type: array
+        items: {}
+        x-stainless-pagination-property:
+          purpose: items
+      cursor:
+        type: object
+        properties:
+          next:
+            type: string
+            x-stainless-pagination-property:
+              purpose: next_cursor_field
+
+targets:
+  python:
+    package_name: opencode
+    project_name: opencode-python-sdk
+    publish:
+      pypi: false
+    # The SDK keeps its own project files and tooling (MIT licence, uv, hatch-vcs, its release
+    # workflow); these generated files are never written over or added.
+    keep_files:
+      - .devcontainer/Dockerfile
+      - .devcontainer/devcontainer.json
+      # The SDK's own CI (uv) and release workflow; not the generated rye ones.
+      - .github/workflows/ci.yml
+      - .github/workflows/publish-pypi.yml
+      - .github/workflows/release-doctor.yml
+      - .gitignore
+      - .python-version
+      - .release-please-manifest.json
+      - .stats.yml
+      - .vscode/settings.json
+      - Brewfile
+      - CONTRIBUTING.md
+      - LICENSE
+      - README.md
+      - SECURITY.md
+      - bin/check-release-environment
+      - bin/publish-pypi
+      - examples/.keep
+      - noxfile.py
+      - pyproject.toml
+      - release-please-config.json
+      - requirements-dev.lock
+      - requirements.lock
+      - scripts/bootstrap
+      - scripts/format
+      - scripts/lint
+      - scripts/mock
+      - scripts/test
+      # The version comes from the git tag (hatch-vcs), not from release-please.
+      - src/opencode/_version.py
+
+# <ferrule:casings> written by scripts/opencode/config_models.py
+custom_casings:
+  id1: { initialism: true }
+  lsp: { initialism: true }
+  rtc: { initialism: true }
+  usd: { initialism: true }
+# </ferrule:casings>
+readme:
+  example_requests:
+    default:
+      type: request
+      endpoint: get /api/session
+      params: {}
+    headline:
+      type: request
+      endpoint: get /api/session
+      params: {}
+
+resources:
+  # <ferrule:models> written by scripts/opencode/config_models.py
+  $shared:
+    models:
+      absolute_path: "#/components/schemas/AbsolutePath"
+      agent_color: "#/components/schemas/Agent.Color"
+      agent_id: "#/components/schemas/Agent.ID"
+      agent_info: "#/components/schemas/Agent.Info"
+      agent_not_found_error_body: "#/components/schemas/AgentNotFoundErrorEncoded"
+      agent_updated_event: "#/components/schemas/agent.updated"
+      command_execution_error_body: "#/components/schemas/CommandExecutionErrorEncoded"
+      command_info: "#/components/schemas/Command.Info"
+      command_not_found_error_body: "#/components/schemas/CommandNotFoundErrorEncoded"
+      command_updated_event: "#/components/schemas/command.updated"
+      config_agent: "#/components/schemas/Config.AgentEncoded"
+      config_command: "#/components/schemas/Config.CommandEncoded"
+      config_directory: "#/components/schemas/Config.DirectoryEncoded"
+      config_document: "#/components/schemas/Config.DocumentEncoded"
+      config_entry: "#/components/schemas/Config.Entry"
+      config_formatter_entry: "#/components/schemas/Config.Formatter.EntryEncoded"
+      config_info: "#/components/schemas/Config.InfoEncoded"
+      config_lsp_server: "#/components/schemas/Config.LSP.ServerEncoded"
+      config_model: "#/components/schemas/Config.ModelEncoded"
+      config_model_capabilities: "#/components/schemas/Config.Model.Capabilities"
+      config_model_cost: "#/components/schemas/Config.Model.CostEncoded"
+      config_model_reasoning: "#/components/schemas/Config.Model.Reasoning"
+      config_model_settings: "#/components/schemas/Config.Model.Settings"
+      config_plugin_entry: "#/components/schemas/Config.Plugin.EntryEncoded"
+      config_provider: "#/components/schemas/Config.ProviderEncoded"
+      config_provider_settings: "#/components/schemas/Config.Provider.Settings"
+      config_reference_git: "#/components/schemas/Config.Reference.GitEncoded"
+      config_reference_local: "#/components/schemas/Config.Reference.LocalEncoded"
+      config_shell_option: "#/components/schemas/ConfigShell.Option"
+      config_updated_event: "#/components/schemas/config.updated"
+      config_warming: "#/components/schemas/Config.WarmingEncoded"
+      config_web_search_info: "#/components/schemas/ConfigWebSearch.InfoEncoded"
+      config_worktree: "#/components/schemas/Config.Worktree"
+      conflict_error_body: "#/components/schemas/ConflictErrorEncoded"
+      connection_credential_info: "#/components/schemas/Connection.CredentialInfo"
+      connection_env_info: "#/components/schemas/Connection.EnvInfo"
+      connection_info: "#/components/schemas/Connection.Info"
+      connection_status: "#/components/schemas/Connection.Status"
+      credential_entry: "#/components/schemas/Credential.Entry"
+      credential_external: "#/components/schemas/Credential.External"
+      credential_id: "#/components/schemas/Credential.ID"
+      credential_key: "#/components/schemas/Credential.Key"
+      credential_o_auth: "#/components/schemas/Credential.OAuth"
+      credential_switched_event: "#/components/schemas/credential.switched"
+      credential_updated_event: "#/components/schemas/credential.updated"
+      credential_value: "#/components/schemas/Credential.Value"
+      event: "#/components/schemas/V2Event"
+      event_id: "#/components/schemas/Event.ID"
+      event_log_synced: "#/components/schemas/EventLog.Synced"
+      event_seq: "#/components/schemas/Event.Seq"
+      event_version: "#/components/schemas/Event.VersionEncoded"
+      event_version10: "#/components/schemas/Event.VersionEncoded_10"
+      file_diff_info: "#/components/schemas/FileDiff.Info"
+      file_not_found_error_body: "#/components/schemas/FileNotFoundErrorEncoded"
+      file_system_entry: "#/components/schemas/FileSystem.Entry"
+      file_system_write: "#/components/schemas/FileSystem.Write"
+      filesystem_changed_event: "#/components/schemas/filesystem.changed"
+      forbidden_error_body: "#/components/schemas/ForbiddenErrorEncoded"
+      form_already_settled_error_body: "#/components/schemas/FormAlreadySettledErrorEncoded"
+      form_answer: "#/components/schemas/Form.Answer"
+      form_boolean_field: "#/components/schemas/Form.BooleanField"
+      form_cancelled_event: "#/components/schemas/form.cancelled"
+      form_created_event: "#/components/schemas/form.created"
+      form_detail: "#/components/schemas/Form.Detail"
+      form_external_field: "#/components/schemas/Form.ExternalField"
+      form_field: "#/components/schemas/Form.Field"
+      form_fields: "#/components/schemas/Form.Fields"
+      form_fields1: "#/components/schemas/Form.Fields_1"
+      form_fields2: "#/components/schemas/Form.Fields_2"
+      form_fields3: "#/components/schemas/Form.Fields_3"
+      form_id: "#/components/schemas/Form.ID"
+      form_info: "#/components/schemas/Form.Info"
+      form_integer_field: "#/components/schemas/Form.IntegerField"
+      form_invalid_answer_error_body: "#/components/schemas/FormInvalidAnswerErrorEncoded"
+      form_metadata: "#/components/schemas/Form.Metadata"
+      form_multiselect_field: "#/components/schemas/Form.MultiselectField"
+      form_not_found_error_body: "#/components/schemas/FormNotFoundErrorEncoded"
+      form_number_field: "#/components/schemas/Form.NumberField"
+      form_option: "#/components/schemas/Form.Option"
+      form_replied_event: "#/components/schemas/form.replied"
+      form_state: "#/components/schemas/Form.State"
+      form_string_field: "#/components/schemas/Form.StringField"
+      form_value: "#/components/schemas/Form.Value"
+      form_when: "#/components/schemas/Form.When"
+      installation_update_available_event: "#/components/schemas/installation.update-available"
+      installation_updated_event: "#/components/schemas/installation.updated"
+      instruction_entry_info: "#/components/schemas/InstructionEntry.Info"
+      instruction_entry_key: "#/components/schemas/InstructionEntry.Key"
+      instruction_entry_snapshot: "#/components/schemas/InstructionEntry.Snapshot"
+      instruction_entry_value_too_large_error_body: "#/components/schemas/InstructionEntryValueTooLargeErrorEncoded"
+      instruction_hash: "#/components/schemas/Instruction.Hash"
+      instruction_key: "#/components/schemas/Instruction.Key"
+      integration_attempt: "#/components/schemas/Integration.AttemptEncoded"
+      integration_attempt_id: "#/components/schemas/Integration.AttemptID"
+      integration_attempt_not_found_error_body: "#/components/schemas/IntegrationAttemptNotFoundErrorEncoded"
+      integration_attempt_status: "#/components/schemas/Integration.AttemptStatus"
+      integration_command_attempt: "#/components/schemas/Integration.CommandAttempt"
+      integration_command_attempt_status: "#/components/schemas/Integration.CommandAttemptStatus"
+      integration_command_method: "#/components/schemas/Integration.CommandMethod"
+      integration_env_method: "#/components/schemas/Integration.EnvMethod"
+      integration_external_method: "#/components/schemas/Integration.ExternalMethod"
+      integration_id: "#/components/schemas/Integration.ID"
+      integration_info: "#/components/schemas/Integration.Info"
+      integration_key_method: "#/components/schemas/Integration.KeyMethod"
+      integration_method: "#/components/schemas/Integration.Method"
+      integration_method_id: "#/components/schemas/Integration.MethodID"
+      integration_method_not_found_error_body: "#/components/schemas/IntegrationMethodNotFoundErrorEncoded"
+      integration_not_found_error_body: "#/components/schemas/IntegrationNotFoundErrorEncoded"
+      integration_o_auth_method: "#/components/schemas/Integration.OAuthMethod"
+      integration_updated_event: "#/components/schemas/integration.updated"
+      invalid_cursor_error_body: "#/components/schemas/InvalidCursorErrorEncoded"
+      invalid_request_error_body: "#/components/schemas/InvalidRequestErrorEncoded"
+      location_not_found_error_body: "#/components/schemas/LocationNotFoundErrorEncoded"
+      location_public_info: "#/components/schemas/Location.PublicInfo"
+      location_public_ref: "#/components/schemas/Location.PublicRef"
+      location_ref: "#/components/schemas/Location.Ref"
+      location_shutdown_event: "#/components/schemas/location.shutdown"
+      mcp_local_config: "#/components/schemas/Mcp.LocalConfigEncoded"
+      mcp_o_auth_config: "#/components/schemas/Mcp.OAuthConfigEncoded"
+      mcp_protocol: "#/components/schemas/Mcp.Protocol"
+      mcp_remote_config: "#/components/schemas/Mcp.RemoteConfigEncoded"
+      mcp_resource: "#/components/schemas/Mcp.Resource"
+      mcp_resource_catalog: "#/components/schemas/Mcp.ResourceCatalog"
+      mcp_resource_template: "#/components/schemas/Mcp.ResourceTemplate"
+      mcp_resources_changed_event: "#/components/schemas/mcp.resources.changed"
+      mcp_server: "#/components/schemas/Mcp.Server"
+      mcp_server_not_found_error_body: "#/components/schemas/McpServerNotFoundErrorEncoded"
+      mcp_status_changed_event: "#/components/schemas/mcp.status.changed"
+      mcp_status_connected: "#/components/schemas/Mcp.Status.Connected"
+      mcp_status_disabled: "#/components/schemas/Mcp.Status.Disabled"
+      mcp_status_failed: "#/components/schemas/Mcp.Status.Failed"
+      mcp_status_needs_auth: "#/components/schemas/Mcp.Status.NeedsAuth"
+      mcp_status_pending: "#/components/schemas/Mcp.Status.Pending"
+      message_not_found_error_body: "#/components/schemas/MessageNotFoundErrorEncoded"
+      model_cache_format: "#/components/schemas/Model.CacheFormat"
+      model_capabilities: "#/components/schemas/Model.Capabilities"
+      model_compatibility: "#/components/schemas/Model.Compatibility"
+      model_cost: "#/components/schemas/Model.Cost"
+      model_info: "#/components/schemas/Model.Info"
+      model_max_tokens_field: "#/components/schemas/Model.MaxTokensField"
+      model_reasoning_field: "#/components/schemas/Model.ReasoningField"
+      model_ref: "#/components/schemas/Model.Ref"
+      model_settings: "#/components/schemas/Model.Settings"
+      model_updated_event: "#/components/schemas/model.updated"
+      model_variant: "#/components/schemas/Model.Variant"
+      models_dev_refreshed_event: "#/components/schemas/models-dev.refreshed"
+      money_usd: "#/components/schemas/Money.USD"
+      money_usd_per_million_tokens: "#/components/schemas/Money.USDPerMillionTokens"
+      pairing_code: "#/components/schemas/PairingCode"
+      pairing_session: "#/components/schemas/PairingSession"
+      permission_asked_event: "#/components/schemas/permission.asked"
+      permission_effect: "#/components/schemas/Permission.Effect"
+      permission_id: "#/components/schemas/Permission.ID"
+      permission_not_found_error_body: "#/components/schemas/PermissionNotFoundErrorEncoded"
+      permission_replied_event: "#/components/schemas/permission.replied"
+      permission_reply: "#/components/schemas/Permission.Reply"
+      permission_request: "#/components/schemas/Permission.Request"
+      permission_rule: "#/components/schemas/Permission.Rule"
+      permission_ruleset: "#/components/schemas/Permission.Ruleset"
+      permission_saved_id: "#/components/schemas/PermissionSaved.ID"
+      permission_saved_info: "#/components/schemas/PermissionSaved.Info"
+      permission_saved_not_found_error_body: "#/components/schemas/PermissionSavedNotFoundErrorEncoded"
+      permission_source: "#/components/schemas/Permission.Source"
+      persistent_pty_added_event: "#/components/schemas/persistent-pty.added"
+      persistent_pty_handoff: "#/components/schemas/PersistentPty.Handoff"
+      persistent_pty_info: "#/components/schemas/PersistentPty.Info"
+      persistent_pty_read_lines: "#/components/schemas/PersistentPty.ReadLines"
+      persistent_pty_read_result: "#/components/schemas/PersistentPty.ReadResult"
+      persistent_pty_removed_event: "#/components/schemas/persistent-pty.removed"
+      persistent_pty_snapshot: "#/components/schemas/PersistentPty.Snapshot"
+      plugin_features: "#/components/schemas/Plugin.Features"
+      plugin_info: "#/components/schemas/Plugin.Info"
+      plugin_source: "#/components/schemas/Plugin.Source"
+      plugin_state: "#/components/schemas/Plugin.State"
+      plugin_updated_event: "#/components/schemas/plugin.updated"
+      project: "#/components/schemas/Project"
+      project_commands: "#/components/schemas/Project.Commands"
+      project_icon: "#/components/schemas/Project.Icon"
+      project_id: "#/components/schemas/Project.ID"
+      project_not_found_error_body: "#/components/schemas/ProjectNotFoundErrorEncoded"
+      project_time: "#/components/schemas/Project.Time"
+      project_updated_event: "#/components/schemas/project.updated"
+      project_vcs: "#/components/schemas/Project.Vcs"
+      prompt_agent_attachment: "#/components/schemas/Prompt.AgentAttachment"
+      prompt_base64: "#/components/schemas/Prompt.Base64"
+      prompt_file_attachment: "#/components/schemas/Prompt.FileAttachment"
+      prompt_file_source: "#/components/schemas/Prompt.FileSource"
+      prompt_input_file_attachment: "#/components/schemas/PromptInput.FileAttachment"
+      prompt_input_skill_attachment: "#/components/schemas/PromptInput.SkillAttachment"
+      prompt_mention: "#/components/schemas/Prompt.Mention"
+      prompt_skill_attachment: "#/components/schemas/Prompt.SkillAttachment"
+      provider_compaction: "#/components/schemas/Provider.Compaction"
+      provider_compatibility: "#/components/schemas/Provider.Compatibility"
+      provider_encoding: "#/components/schemas/Provider.Encoding"
+      provider_id: "#/components/schemas/Provider.ID"
+      provider_info: "#/components/schemas/Provider.Info"
+      provider_not_found_error_body: "#/components/schemas/ProviderNotFoundErrorEncoded"
+      provider_request: "#/components/schemas/Provider.Request"
+      provider_settings: "#/components/schemas/Provider.Settings"
+      provider_transport: "#/components/schemas/Provider.Transport"
+      provider_updated_event: "#/components/schemas/provider.updated"
+      pty: "#/components/schemas/Pty"
+      pty_created_event: "#/components/schemas/pty.created"
+      pty_deleted_event: "#/components/schemas/pty.deleted"
+      pty_exited_event: "#/components/schemas/pty.exited"
+      pty_id: "#/components/schemas/Pty.ID"
+      pty_not_found_error_body: "#/components/schemas/PtyNotFoundErrorEncoded"
+      pty_ticket_connect_token: "#/components/schemas/PtyTicket.ConnectToken"
+      pty_updated_event: "#/components/schemas/pty.updated"
+      reference_git_source: "#/components/schemas/Reference.GitSource"
+      reference_info: "#/components/schemas/Reference.Info"
+      reference_local_source: "#/components/schemas/Reference.LocalSource"
+      reference_source: "#/components/schemas/Reference.Source"
+      reference_updated_event: "#/components/schemas/reference.updated"
+      relative_path: "#/components/schemas/RelativePath"
+      rpc_error_body: "#/components/schemas/RpcErrorEncoded"
+      rpc_event: "#/components/schemas/V2Event.rpc"
+      rpc_internal_error_body: "#/components/schemas/RpcInternalErrorEncoded"
+      rpc_output: "#/components/schemas/Rpc.Output"
+      server_connected_event: "#/components/schemas/V2Event.server.connected"
+      server_info: "#/components/schemas/ServerInfo"
+      service_unavailable_error_body: "#/components/schemas/ServiceUnavailableErrorEncoded"
+      session_active: "#/components/schemas/SessionActive"
+      session_agent_selected_event: "#/components/schemas/session.agent.selected"
+      session_archived_event: "#/components/schemas/session.archived"
+      session_busy_error_body: "#/components/schemas/SessionBusyErrorEncoded"
+      session_compaction_delta_event: "#/components/schemas/session.compaction.delta"
+      session_compaction_ended_event: "#/components/schemas/session.compaction.ended"
+      session_compaction_failed_event: "#/components/schemas/session.compaction.failed"
+      session_compaction_started_event: "#/components/schemas/session.compaction.started"
+      session_created_event: "#/components/schemas/session.created"
+      session_deleted_event: "#/components/schemas/session.deleted"
+      session_event_durable: "#/components/schemas/Session.Event.Durable"
+      session_execution_failed_event: "#/components/schemas/session.execution.failed"
+      session_execution_interrupted_event: "#/components/schemas/session.execution.interrupted"
+      session_execution_started_event: "#/components/schemas/session.execution.started"
+      session_execution_succeeded_event: "#/components/schemas/session.execution.succeeded"
+      session_fork_boundary: "#/components/schemas/Session.ForkBoundary"
+      session_forked_event: "#/components/schemas/session.forked"
+      session_id: "#/components/schemas/Session.ID"
+      session_id1: "#/components/schemas/Session.ID_1"
+      session_idle_event: "#/components/schemas/session.idle"
+      session_inbox_cancelled_event: "#/components/schemas/session.inbox.cancelled"
+      session_inbox_compaction: "#/components/schemas/Session.Inbox.Compaction"
+      session_inbox_compaction_payload: "#/components/schemas/Session.Inbox.CompactionPayload"
+      session_inbox_delivered_event: "#/components/schemas/session.inbox.delivered"
+      session_inbox_delivery: "#/components/schemas/Session.Inbox.Delivery"
+      session_inbox_delivery_changed_event: "#/components/schemas/session.inbox.delivery.changed"
+      session_inbox_enqueued_event: "#/components/schemas/session.inbox.enqueued"
+      session_inbox_info: "#/components/schemas/Session.Inbox.Info"
+      session_inbox_item: "#/components/schemas/Session.Inbox.Item"
+      session_inbox_move: "#/components/schemas/Session.Inbox.Move"
+      session_inbox_move_payload: "#/components/schemas/Session.Inbox.MovePayload"
+      session_inbox_move_payload1: "#/components/schemas/Session.Inbox.MovePayload_1"
+      session_inbox_synthetic: "#/components/schemas/Session.Inbox.Synthetic"
+      session_inbox_synthetic_payload: "#/components/schemas/Session.Inbox.SyntheticPayload"
+      session_inbox_user: "#/components/schemas/Session.Inbox.User"
+      session_inbox_user_payload: "#/components/schemas/Session.Inbox.UserPayload"
+      session_info: "#/components/schemas/Session.Info"
+      session_instructions_updated_event: "#/components/schemas/session.instructions.updated"
+      session_interrupt_response: "#/components/schemas/SessionInterruptResponse"
+      session_log_item: "#/components/schemas/SessionLogItem"
+      session_message_agent_selected: "#/components/schemas/Session.Message.AgentSelected"
+      session_message_assistant: "#/components/schemas/Session.Message.Assistant"
+      session_message_assistant_content: "#/components/schemas/Session.Message.AssistantContent.Encoded"
+      session_message_assistant_reasoning: "#/components/schemas/Session.Message.Assistant.Reasoning"
+      session_message_assistant_reasoning1: "#/components/schemas/Session.Message.Assistant.Reasoning_1"
+      session_message_assistant_retry: "#/components/schemas/Session.Message.Assistant.Retry"
+      session_message_assistant_text: "#/components/schemas/Session.Message.Assistant.Text"
+      session_message_assistant_text1: "#/components/schemas/Session.Message.Assistant.Text_1"
+      session_message_assistant_tool: "#/components/schemas/Session.Message.Assistant.Tool"
+      session_message_assistant_tool1: "#/components/schemas/Session.Message.Assistant.Tool_1"
+      session_message_compaction: "#/components/schemas/Session.Message.Compaction"
+      session_message_compaction_completed: "#/components/schemas/Session.Message.Compaction.Completed"
+      session_message_compaction_failed: "#/components/schemas/Session.Message.Compaction.Failed"
+      session_message_compaction_running: "#/components/schemas/Session.Message.Compaction.Running"
+      session_message_content_updated_event: "#/components/schemas/session.message.content.updated"
+      session_message_id: "#/components/schemas/Session.Message.ID"
+      session_message_idle: "#/components/schemas/Session.Message.Idle"
+      session_message_info: "#/components/schemas/Session.Message.Info"
+      session_message_location_switched: "#/components/schemas/Session.Message.LocationSwitched"
+      session_message_model_selected: "#/components/schemas/Session.Message.ModelSelected"
+      session_message_native: "#/components/schemas/Session.Message.Native"
+      session_message_native1: "#/components/schemas/Session.Message.Native_1"
+      session_message_native10: "#/components/schemas/Session.Message.Native_10"
+      session_message_native11: "#/components/schemas/Session.Message.Native_11"
+      session_message_native12: "#/components/schemas/Session.Message.Native_12"
+      session_message_native13: "#/components/schemas/Session.Message.Native_13"
+      session_message_native14: "#/components/schemas/Session.Message.Native_14"
+      session_message_native15: "#/components/schemas/Session.Message.Native_15"
+      session_message_native2: "#/components/schemas/Session.Message.Native_2"
+      session_message_native3: "#/components/schemas/Session.Message.Native_3"
+      session_message_native4: "#/components/schemas/Session.Message.Native_4"
+      session_message_native5: "#/components/schemas/Session.Message.Native_5"
+      session_message_native6: "#/components/schemas/Session.Message.Native_6"
+      session_message_native7: "#/components/schemas/Session.Message.Native_7"
+      session_message_native8: "#/components/schemas/Session.Message.Native_8"
+      session_message_native9: "#/components/schemas/Session.Message.Native_9"
+      session_message_shell: "#/components/schemas/Session.Message.Shell"
+      session_message_skill: "#/components/schemas/Session.Message.Skill"
+      session_message_synthetic: "#/components/schemas/Session.Message.Synthetic"
+      session_message_system: "#/components/schemas/Session.Message.System"
+      session_message_tool_state_completed: "#/components/schemas/Session.Message.ToolState.Completed"
+      session_message_tool_state_completed1: "#/components/schemas/Session.Message.ToolState.Completed_1"
+      session_message_tool_state_error: "#/components/schemas/Session.Message.ToolState.Error"
+      session_message_tool_state_error1: "#/components/schemas/Session.Message.ToolState.Error_1"
+      session_message_tool_state_running: "#/components/schemas/Session.Message.ToolState.Running"
+      session_message_tool_state_running1: "#/components/schemas/Session.Message.ToolState.Running_1"
+      session_message_tool_state_streaming: "#/components/schemas/Session.Message.ToolState.Streaming"
+      session_message_user: "#/components/schemas/Session.Message.User"
+      session_messages_response: "#/components/schemas/SessionMessagesResponse"
+      session_metadata: "#/components/schemas/Session.Metadata"
+      session_metadata_updated_event: "#/components/schemas/session.metadata.updated"
+      session_model_selected_event: "#/components/schemas/session.model.selected"
+      session_moved_event: "#/components/schemas/session.moved"
+      session_not_found_error_body: "#/components/schemas/SessionNotFoundErrorEncoded"
+      session_permissions_event: "#/components/schemas/session.permissions"
+      session_reasoning_delta_event: "#/components/schemas/session.reasoning.delta"
+      session_reasoning_ended_event: "#/components/schemas/session.reasoning.ended"
+      session_reasoning_started_event: "#/components/schemas/session.reasoning.started"
+      session_renamed_event: "#/components/schemas/session.renamed"
+      session_retry_scheduled_event: "#/components/schemas/session.retry.scheduled"
+      session_revert: "#/components/schemas/Session.Revert"
+      session_revert_cleared_event: "#/components/schemas/session.revert.cleared"
+      session_revert_committed_event: "#/components/schemas/session.revert.committed"
+      session_revert_staged_event: "#/components/schemas/session.revert.staged"
+      session_shell_ended_event: "#/components/schemas/session.shell.ended"
+      session_shell_started_event: "#/components/schemas/session.shell.started"
+      session_skill_activated_event: "#/components/schemas/session.skill.activated"
+      session_stats_activity: "#/components/schemas/SessionStats.Activity"
+      session_stats_info: "#/components/schemas/SessionStats.Info"
+      session_stats_model_usage: "#/components/schemas/SessionStats.ModelUsage"
+      session_stats_tool_totals: "#/components/schemas/SessionStats.ToolTotals"
+      session_stats_tool_usage: "#/components/schemas/SessionStats.ToolUsage"
+      session_stats_tools: "#/components/schemas/SessionStats.Tools"
+      session_status: "#/components/schemas/SessionStatus"
+      session_status_updated: "#/components/schemas/SessionStatusUpdated"
+      session_step_ended_event: "#/components/schemas/session.step.ended"
+      session_step_failed_event: "#/components/schemas/session.step.failed"
+      session_step_started_event: "#/components/schemas/session.step.started"
+      session_step_streamed_event: "#/components/schemas/session.step.streamed"
+      session_structured_error: "#/components/schemas/Session.StructuredError"
+      session_structured_error1: "#/components/schemas/Session.StructuredError_1"
+      session_synthetic_event: "#/components/schemas/session.synthetic"
+      session_text_delta_event: "#/components/schemas/session.text.delta"
+      session_text_ended_event: "#/components/schemas/session.text.ended"
+      session_text_started_event: "#/components/schemas/session.text.started"
+      session_tool_called_event: "#/components/schemas/session.tool.called"
+      session_tool_failed_event: "#/components/schemas/session.tool.failed"
+      session_tool_input_delta_event: "#/components/schemas/session.tool.input.delta"
+      session_tool_input_ended_event: "#/components/schemas/session.tool.input.ended"
+      session_tool_input_started_event: "#/components/schemas/session.tool.input.started"
+      session_tool_progress_event: "#/components/schemas/session.tool.progress"
+      session_tool_success_event: "#/components/schemas/session.tool.success"
+      session_transfer_data: "#/components/schemas/SessionTransfer.Data"
+      session_unarchived_event: "#/components/schemas/session.unarchived"
+      session_usage_recorded_event: "#/components/schemas/session.usage.recorded"
+      session_usage_updated_event: "#/components/schemas/session.usage.updated"
+      session_viewed_event: "#/components/schemas/session.viewed"
+      sessions_cursor: "#/components/schemas/SessionsCursor"
+      sessions_response: "#/components/schemas/SessionsResponse"
+      shell_created_event: "#/components/schemas/shell.created"
+      shell_deleted_event: "#/components/schemas/shell.deleted"
+      shell_exited_event: "#/components/schemas/shell.exited"
+      shell_id: "#/components/schemas/Shell.ID"
+      shell_info: "#/components/schemas/Shell.Info"
+      shell_not_found_error_body: "#/components/schemas/ShellNotFoundErrorEncoded"
+      skill_id: "#/components/schemas/Skill.ID"
+      skill_info: "#/components/schemas/Skill.Info"
+      skill_name: "#/components/schemas/Skill.Name"
+      skill_not_found_error_body: "#/components/schemas/SkillNotFoundErrorEncoded"
+      skill_updated_event: "#/components/schemas/skill.updated"
+      snapshot_id: "#/components/schemas/Snapshot.ID"
+      token_usage_info: "#/components/schemas/TokenUsage.Info"
+      tool_content: "#/components/schemas/Tool.Content"
+      tool_file_content: "#/components/schemas/Tool.FileContent"
+      tool_text_content: "#/components/schemas/Tool.TextContent"
+      tui_command_execute_event: "#/components/schemas/tui.command.execute"
+      tui_prompt_append_event: "#/components/schemas/tui.prompt.append"
+      tui_session_select_event: "#/components/schemas/tui.session.select"
+      tui_toast_show_event: "#/components/schemas/tui.toast.show"
+      unauthorized_error_body: "#/components/schemas/UnauthorizedErrorEncoded"
+      unknown_error_body: "#/components/schemas/UnknownErrorEncoded"
+      vcs_base: "#/components/schemas/Vcs.Base"
+      vcs_branch: "#/components/schemas/Vcs.Branch"
+      vcs_branch_list: "#/components/schemas/Vcs.BranchList"
+      vcs_branch_updated_event: "#/components/schemas/vcs.branch.updated"
+      vcs_file_status: "#/components/schemas/Vcs.FileStatus"
+      vcs_info: "#/components/schemas/Vcs.Info"
+      vcs_init_not_supported_error_body: "#/components/schemas/VcsInitNotSupportedErrorEncoded"
+      vcs_mode: "#/components/schemas/Vcs.Mode"
+      voice_transport: "#/components/schemas/VoiceTransport"
+      voice_transport_input: "#/components/schemas/VoiceTransportInput"
+      voice_web_rtc_transport: "#/components/schemas/VoiceWebRTCTransport"
+      voice_web_rtc_transport_input: "#/components/schemas/VoiceWebRTCTransportInput"
+      voice_web_socket_transport: "#/components/schemas/VoiceWebSocketTransport"
+      voice_web_socket_transport_input: "#/components/schemas/VoiceWebSocketTransportInput"
+      web_search_id: "#/components/schemas/WebSearch.ID"
+      web_search_provider: "#/components/schemas/WebSearch.Provider"
+      web_search_response: "#/components/schemas/WebSearch.ResponseEncoded"
+      web_search_result: "#/components/schemas/WebSearch.Result"
+      websearch_updated_event: "#/components/schemas/websearch.updated"
+      workspace_id: "#/components/schemas/Workspace.ID"
+      worktree_directory: "#/components/schemas/Worktree.Directory"
+      worktree_error_body: "#/components/schemas/WorktreeErrorEncoded"
+      worktree_info: "#/components/schemas/Worktree.Info"
+      worktree_list: "#/components/schemas/Worktree.List"
+      worktree_resolved_event: "#/components/schemas/worktree.resolved"
+      worktree_updated_event: "#/components/schemas/worktree.updated"
+  # </ferrule:models>
+  agent:
+    methods:
+      list: get /api/agent
+      get: get /api/agent/{agentID}
+  command:
+    methods:
+      list: get /api/command
+  config:
+    methods:
+      get: get /api/config
+      shells: get /api/config/shell
+      update: patch /api/experimental/config
+  credential:
+    methods:
+      list:
+        endpoint: get /api/credential
+        unwrap_response: data
+      create:
+        endpoint: post /api/credential
+        unwrap_response: data
+      update: patch /api/credential/{credentialID}
+      activate: post /api/credential/{credentialID}/activate
+      remove: delete /api/credential/{credentialID}
+  debug:
+    subresources:
+      location:
+        methods:
+          list: get /api/debug/location
+          evict: delete /api/debug/location
+  event:
+    methods:
+      subscribe:
+        endpoint: get /api/event
+        type: http
+        streaming:
+          param_discriminator: null
+          stream_event_model: $shared.event
+  experimental:
+    subresources:
+      persistent_pty:
+        methods:
+          read:
+            endpoint: get /api/experimental/session/{sessionID}/terminal/read
+            unwrap_response: data
+            skip_test_reason: "The mock server rejects integer query parameters typed through a $ref in anyOf."
+          list:
+            endpoint: get /api/experimental/session/{sessionID}/terminal
+            unwrap_response: data
+          create:
+            endpoint: post /api/experimental/session/{sessionID}/terminal
+            unwrap_response: data
+          shutdown: post /api/experimental/persistent-pty/shutdown
+          handoff: post /api/experimental/persistent-pty/handoff
+          get:
+            endpoint: get /api/experimental/persistent-pty/{ptyID}
+            unwrap_response: data
+          update:
+            endpoint: put /api/experimental/persistent-pty/{ptyID}
+            unwrap_response: data
+          snapshot:
+            endpoint: get /api/experimental/persistent-pty/{ptyID}/snapshot
+            unwrap_response: data
+          remove: delete /api/experimental/persistent-pty/{ptyID}
+          connect_token:
+            endpoint: post /api/experimental/persistent-pty/{ptyID}/connect-token
+            unwrap_response: data
+  file:
+    methods:
+      read: get /api/fs/read/{path}
+      list: get /api/fs/list
+      find: get /api/fs/find
+      write: post /api/experimental/fs/write
+  form:
+    methods:
+      list: get /api/form
+  generate:
+    methods:
+      text:
+        endpoint: post /api/experimental/generate
+        unwrap_response: data
+  integration:
+    methods:
+      list: get /api/integration
+      get: get /api/integration/{integrationID}
+    subresources:
+      wellknown:
+        methods:
+          add: post /api/experimental/integration/wellknown
+      connect:
+        methods:
+          key: post /api/integration/{integrationID}/connect/key
+          external: post /api/integration/{integrationID}/connect/external
+      oauth:
+        methods:
+          connect: post /api/integration/{integrationID}/connect/oauth
+          status: get /api/integration/{integrationID}/connect/oauth/{attemptID}
+          complete: post /api/integration/{integrationID}/connect/oauth/{attemptID}/complete
+          cancel: delete /api/integration/{integrationID}/connect/oauth/{attemptID}
+      command:
+        methods:
+          connect: post /api/integration/{integrationID}/connect/command
+          status: get /api/integration/{integrationID}/connect/command/{attemptID}
+          cancel: delete /api/integration/{integrationID}/connect/command/{attemptID}
+  location:
+    methods:
+      get: get /api/location
+      reload: post /api/location/reload
+  mcp:
+    methods:
+      list: get /api/mcp
+      add: put /api/experimental/mcp/{server}
+      remove: delete /api/experimental/mcp/{server}
+      connect: post /api/experimental/mcp/{server}/connect
+      disconnect: post /api/experimental/mcp/{server}/disconnect
+    subresources:
+      resource:
+        methods:
+          catalog: get /api/mcp/resource
+  message:
+    methods:
+      list: get /api/session/{sessionID}/message
+  migration:
+    subresources:
+      v1:
+        methods:
+          status: get /api/experimental/migration/v1
+  model:
+    methods:
+      list: get /api/model
+      default: get /api/model/default
+  permission:
+    methods:
+      create:
+        endpoint: post /api/session/{sessionID}/permission
+        unwrap_response: data
+      list:
+        endpoint: get /api/session/{sessionID}/permission
+        unwrap_response: data
+      get:
+        endpoint: get /api/session/{sessionID}/permission/{requestID}
+        unwrap_response: data
+      reply: post /api/session/{sessionID}/permission/{requestID}/reply
+    subresources:
+      request_:
+        methods:
+          list: get /api/permission/request
+      saved:
+        methods:
+          list:
+            endpoint: get /api/permission/saved
+            unwrap_response: data
+          update:
+            endpoint: patch /api/permission/saved/{id}
+            unwrap_response: data
+          remove: delete /api/permission/saved/{id}
+  plugin:
+    methods:
+      list: get /api/plugin
+      check: post /api/plugin/check
+      update: post /api/plugin/update
+  project:
+    methods:
+      list: get /api/project
+      update: patch /api/project/{projectID}
+  provider:
+    methods:
+      list: get /api/provider
+      get: get /api/provider/{providerID}
+  pty:
+    methods:
+      list: get /api/pty
+      create: post /api/pty
+      get: get /api/pty/{ptyID}
+      update: put /api/pty/{ptyID}
+      remove: delete /api/pty/{ptyID}
+    subresources:
+      connect:
+        methods:
+          token: post /api/pty/{ptyID}/connect-token
+  reference:
+    methods:
+      list: get /api/reference
+  rpc:
+    methods:
+      call: post /api/rpc/{rpcID}/{method}
+  server:
+    methods:
+      info: get /api/info
+      pair: post /api/pair
+      connect: get /auth/connect/{code}
+  session:
+    methods:
+      list: get /api/session
+      stats:
+        endpoint: get /api/experimental/session/stats
+        unwrap_response: data
+      create:
+        endpoint: post /api/session
+        unwrap_response: data
+      import_:
+        endpoint: post /api/experimental/session/import
+        unwrap_response: data
+      export:
+        endpoint: get /api/experimental/session/{sessionID}/export
+        unwrap_response: data
+      active:
+        endpoint: get /api/session/active
+        unwrap_response: data
+      get:
+        endpoint: get /api/session/{sessionID}
+        unwrap_response: data
+      remove: delete /api/session/{sessionID}
+      fork:
+        endpoint: post /api/session/{sessionID}/fork
+        unwrap_response: data
+      switch_agent: post /api/session/{sessionID}/agent
+      switch_model: post /api/session/{sessionID}/model
+      update: patch /api/session/{sessionID}
+      move: post /api/session/{sessionID}/move
+      prompt:
+        endpoint: post /api/session/{sessionID}/prompt
+        unwrap_response: data
+      command: post /api/session/{sessionID}/command
+      skill: post /api/experimental/session/{sessionID}/skill
+      synthetic:
+        endpoint: post /api/session/{sessionID}/synthetic
+        unwrap_response: data
+      shell: post /api/session/{sessionID}/shell
+      compact:
+        endpoint: post /api/session/{sessionID}/compact
+        unwrap_response: data
+      wait: post /api/experimental/session/{sessionID}/wait
+      context:
+        endpoint: get /api/session/{sessionID}/context
+        unwrap_response: data
+      diff:
+        endpoint: get /api/session/{sessionID}/diff
+        unwrap_response: data
+      generate:
+        endpoint: post /api/session/{sessionID}/generate
+        unwrap_response: data
+      log:
+        endpoint: get /api/experimental/session/{sessionID}/log
+        skip_test_reason: "The mock server rejects integer query parameters typed through a $ref in anyOf."
+      interrupt: post /api/session/{sessionID}/interrupt
+      background: post /api/session/{sessionID}/background
+      environment: put /api/session/{sessionID}/environment
+      view: post /api/session/{sessionID}/view
+    subresources:
+      revert:
+        methods:
+          stage:
+            endpoint: post /api/session/{sessionID}/revert/stage
+            unwrap_response: data
+          clear: delete /api/session/{sessionID}/revert
+          commit: post /api/session/{sessionID}/revert/commit
+      inbox:
+        methods:
+          list:
+            endpoint: get /api/session/{sessionID}/inbox
+            unwrap_response: data
+          cancel: delete /api/session/{sessionID}/inbox/{inboxID}
+          update: patch /api/session/{sessionID}/inbox/{inboxID}
+      instructions:
+        subresources:
+          entry:
+            methods:
+              list:
+                endpoint: get /api/experimental/session/{sessionID}/instructions/entries
+                unwrap_response: data
+              put: put /api/experimental/session/{sessionID}/instructions/entries/{key}
+              remove: delete /api/experimental/session/{sessionID}/instructions/entries/{key}
+      message:
+        methods:
+          get:
+            endpoint: get /api/session/{sessionID}/message/{messageID}
+            unwrap_response: data
+      form:
+        methods:
+          list:
+            endpoint: get /api/session/{sessionID}/form
+            unwrap_response: data
+          create:
+            endpoint: post /api/session/{sessionID}/form
+            unwrap_response: data
+          get:
+            endpoint: get /api/session/{sessionID}/form/{formID}
+            unwrap_response: data
+          reply: post /api/session/{sessionID}/form/{formID}/reply
+          cancel: delete /api/session/{sessionID}/form/{formID}
+  shell:
+    methods:
+      list: get /api/shell
+      create: post /api/shell
+      get: get /api/shell/{id}
+      output: get /api/shell/{id}/output
+      remove: delete /api/shell/{id}
+  skill:
+    methods:
+      list: get /api/skill
+  vcs:
+    methods:
+      init: post /api/vcs/init
+      get: get /api/vcs
+      base: get /api/vcs/base
+      status: get /api/vcs/status
+      diff: get /api/vcs/diff
+    subresources:
+      branch:
+        methods:
+          list: get /api/vcs/branch
+  voice:
+    methods:
+      session:
+        endpoint: post /api/experimental/voice/session
+        unwrap_response: data
+  websearch:
+    methods:
+      providers: get /api/websearch/provider
+      query: post /api/websearch
+  worktree:
+    methods:
+      list: get /api/worktree
+      create: post /api/worktree
+      remove: delete /api/worktree
+      refresh: post /api/worktree/refresh

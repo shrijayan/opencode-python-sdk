@@ -1,178 +1,166 @@
-"""Typed Python client for the OpenCode 2.x server API.
+# File generated from our OpenAPI spec by Ferrule. See CONTRIBUTING.md for details.
 
-Quick start::
+import typing as _t
 
-    from opencode import Opencode, OpencodeServer
-
-    with OpencodeServer() as server, Opencode(server.url, password=server.password) as client:
-        session = client.session.create(agent="build")
-        client.session.prompt(session.id, text="Summarize this repository")
-        client.session.wait(session.id)
-        for message in client.message.list(session.id):
-            print(message.type)
-"""
-
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Any
-
-from . import service
-from ._aiohttp import DefaultAioHttpClient
-from ._client import AsyncOpencode, Opencode
-
-# <generated:error-imports>
-from ._errors import (
-    AgentNotFoundError,
-    CommandExecutionError,
-    CommandNotFoundError,
-    ForbiddenError,
-    FormAlreadySettledError,
-    FormInvalidAnswerError,
-    FormNotFoundError,
-    InstructionEntryValueTooLargeError,
-    IntegrationAttemptNotFoundError,
-    IntegrationMethodNotFoundError,
-    IntegrationNotFoundError,
-    InvalidCursorError,
-    InvalidRequestError,
-    LocationNotFoundError,
-    McpServerNotFoundError,
-    MessageNotFoundError,
-    PermissionNotFoundError,
-    PermissionSavedNotFoundError,
-    ProjectNotFoundError,
-    ProviderNotFoundError,
-    PtyNotFoundError,
-    RemoteFileNotFoundError,
-    RpcError,
-    RpcInternalError,
-    SessionBusyError,
-    SessionNotFoundError,
-    ShellNotFoundError,
-    SkillNotFoundError,
-    UnauthorizedError,
-    UnknownError,
-    VcsInitNotSupportedError,
-    WorktreeError,
+from . import types
+from ._types import NOT_GIVEN, Omit, NoneType, NotGiven, Transport, ProxiesTypes, omit, not_given
+from ._utils import file_from_path
+from ._client import (
+    Client,
+    Stream,
+    Timeout,
+    Opencode,
+    Transport,
+    AsyncClient,
+    AsyncStream,
+    AsyncOpencode,
+    RequestOptions,
 )
-
-# </generated:error-imports>
-from ._exceptions import (
-    APIConnectionError,
-    APIError,
-    APIResponseValidationError,
-    APIStatusError,
-    APITimeoutError,
-    AuthenticationError,
-    BadRequestError,
-    ConflictError,
-    ContentTooLargeError,
-    InternalServerError,
-    NotFoundError,
-    NotImplementedServerError,
-    OpencodeError,
-    PermissionDeniedError,
-    RateLimitError,
-    ServiceUnavailableError,
-    UnprocessableEntityError,
-)
-from ._logs import setup_logging as _setup_logging
 from ._models import BaseModel
-from ._pagination import AsyncCursorPage, AsyncPaginator, SyncCursorPage
-from ._pty import AsyncPtyConnection, PtyConnection, PtyConnectionError
-from ._response import APIResponse, AsyncAPIResponse
-from ._server import AsyncOpencodeServer, OpencodeServer, ServerStartError
-from ._service import Endpoint, ServiceError
-from ._streaming import AsyncStream, Stream
-from ._types import NOT_GIVEN, NotGiven
-from ._version import __version__
-
-# isort: split
-# Hand-written helpers, kept apart from the generated error-import block above.
-from ._events import (
-    SUBSCRIBER_CAPACITY,
-    AsyncEventHub,
-    AsyncSubscription,
-    EventHub,
-    EventOverflowError,
-    Reconnect,
-    Subscription,
-    session_id_of,
+from ._version import __title__, __version__
+from ._response import APIResponse as APIResponse, AsyncAPIResponse as AsyncAPIResponse
+from ._constants import DEFAULT_TIMEOUT, DEFAULT_MAX_RETRIES, DEFAULT_CONNECTION_LIMITS
+from ._exceptions import (
+    APIError,
+    ConflictError,
+    NotFoundError,
+    OpencodeError,
+    APIStatusError,
+    RateLimitError,
+    APITimeoutError,
+    BadRequestError,
+    APIConnectionError,
+    AuthenticationError,
+    InternalServerError,
+    PermissionDeniedError,
+    UnprocessableEntityError,
+    APIResponseValidationError,
 )
-from ._rpc import (
-    AsyncRpcClient,
-    AsyncRpcEvents,
-    RpcCallError,
-    RpcCallInternalError,
+from ._base_client import DefaultHttpxClient, DefaultAioHttpClient, DefaultAsyncHttpxClient
+from ._utils._logs import setup_logging as _setup_logging
+
+__all__ = [
+    "types",
+    "__version__",
+    "__title__",
+    "NoneType",
+    "Transport",
+    "ProxiesTypes",
+    "NotGiven",
+    "NOT_GIVEN",
+    "not_given",
+    "Omit",
+    "omit",
+    "OpencodeError",
+    "APIError",
+    "APIStatusError",
+    "APITimeoutError",
+    "APIConnectionError",
+    "APIResponseValidationError",
+    "BadRequestError",
+    "AuthenticationError",
+    "PermissionDeniedError",
+    "NotFoundError",
+    "ConflictError",
+    "UnprocessableEntityError",
+    "RateLimitError",
+    "InternalServerError",
+    "Timeout",
+    "RequestOptions",
+    "Client",
+    "AsyncClient",
+    "Stream",
+    "AsyncStream",
+    "Opencode",
+    "AsyncOpencode",
+    "file_from_path",
+    "BaseModel",
+    "DEFAULT_TIMEOUT",
+    "DEFAULT_MAX_RETRIES",
+    "DEFAULT_CONNECTION_LIMITS",
+    "DefaultHttpxClient",
+    "DefaultAsyncHttpxClient",
+    "DefaultAioHttpClient",
+]
+
+if not _t.TYPE_CHECKING:
+    from ._utils._resources_proxy import resources as resources
+
+_setup_logging()
+
+# Update the __module__ attribute for exported symbols so that
+# error messages point to this module instead of the module
+# it was originally defined in, e.g.
+# opencode._exceptions.NotFoundError -> opencode.NotFoundError
+__locals = locals()
+for __name in __all__:
+    if not __name.startswith("__"):
+        try:
+            __locals[__name].__module__ = "opencode"
+        except (TypeError, AttributeError):
+            # Some of our exported symbols are builtins which we can't set attributes for.
+            pass
+
+# Custom code, kept by `ferrule regenerate`: the clients with this SDK's own features (lib/_client.py)
+# and the public names of the hand-written modules.
+from . import service  # noqa: E402
+from ._pty import PtyConnection, AsyncPtyConnection, PtyConnectionError  # noqa: E402
+from ._rpc import (  # noqa: E402
     RpcClient,
-    RpcDefinition,
-    RpcEventDefinition,
-    RpcEventPayload,
     RpcEvents,
     RpcMethod,
+    RpcCallError,
+    RpcDefinition,
+    AsyncRpcClient,
+    AsyncRpcEvents,
+    RpcEventPayload,
+    RpcEventDefinition,
+    RpcCallInternalError,
     rpc_event,
     rpc_method,
 )
+from ._errors import *  # noqa: E402, F403
+from ._errors import __all__ as _errors_all  # noqa: E402
+from ._events import (  # noqa: E402
+    SUBSCRIBER_CAPACITY,
+    EventHub,
+    Reconnect,
+    Subscription,
+    AsyncEventHub,
+    AsyncSubscription,
+    EventOverflowError,
+    session_id_of,
+)
+from ._server import OpencodeServer, ServerStartError, AsyncOpencodeServer  # noqa: E402
+from ._service import Endpoint, ServiceError  # noqa: E402
+from .pagination import SyncCursorPage, AsyncCursorPage  # noqa: E402
+from .lib._client import Opencode as Opencode, AsyncOpencode as AsyncOpencode  # noqa: E402
+from ._base_client import AsyncPaginator  # noqa: E402
 
-if TYPE_CHECKING:
-    from . import types
+# The aliases name the clients with this SDK's features, not the generated base classes.
+Client = Opencode  # type: ignore[misc]
+AsyncClient = AsyncOpencode  # type: ignore[misc]
 
-# <generated:api-version>
 API_VERSION = "2.1.2"
 """The OpenCode server version this client was generated from."""
-# </generated:api-version>
 
-__all__ = [
+__all__ += [  # noqa: PLE0605
+    *(_name for _name in _errors_all if _name != "TAGGED_ERRORS"),
     "API_VERSION",
-    "NOT_GIVEN",
-    "APIConnectionError",
-    "APIResponse",
-    "APIError",
-    "APIResponseValidationError",
-    "APIStatusError",
-    "APITimeoutError",
-    "AsyncAPIResponse",
     "AsyncCursorPage",
-    "AsyncOpencode",
+    "AsyncEventHub",
     "AsyncOpencodeServer",
     "AsyncPaginator",
     "AsyncPtyConnection",
-    "AsyncStream",
-    "AuthenticationError",
-    "BadRequestError",
-    "BaseModel",
-    "ConflictError",
-    "ContentTooLargeError",
-    "DefaultAioHttpClient",
-    "Endpoint",
-    "InternalServerError",
-    "NotFoundError",
-    "NotGiven",
-    "NotImplementedServerError",
-    "Opencode",
-    "OpencodeError",
-    "OpencodeServer",
-    "PermissionDeniedError",
-    "PtyConnection",
-    "PtyConnectionError",
-    "RateLimitError",
-    "ServerStartError",
-    "ServiceError",
-    "ServiceUnavailableError",
-    "Stream",
-    "SyncCursorPage",
-    "UnprocessableEntityError",
-    "__version__",
-    "service",
-    "types",
-    # Shared event stream and typed plugin RPC
-    "SUBSCRIBER_CAPACITY",
-    "AsyncEventHub",
     "AsyncRpcClient",
     "AsyncRpcEvents",
     "AsyncSubscription",
+    "Endpoint",
     "EventHub",
     "EventOverflowError",
+    "OpencodeServer",
+    "PtyConnection",
+    "PtyConnectionError",
     "Reconnect",
     "RpcCallError",
     "RpcCallInternalError",
@@ -182,54 +170,13 @@ __all__ = [
     "RpcEventPayload",
     "RpcEvents",
     "RpcMethod",
+    "SUBSCRIBER_CAPACITY",
+    "ServerStartError",
+    "ServiceError",
     "Subscription",
+    "SyncCursorPage",
     "rpc_event",
     "rpc_method",
+    "service",
     "session_id_of",
-    # <generated:error-exports>
-    "AgentNotFoundError",
-    "CommandExecutionError",
-    "CommandNotFoundError",
-    "RemoteFileNotFoundError",
-    "ForbiddenError",
-    "FormAlreadySettledError",
-    "FormInvalidAnswerError",
-    "FormNotFoundError",
-    "InstructionEntryValueTooLargeError",
-    "IntegrationAttemptNotFoundError",
-    "IntegrationMethodNotFoundError",
-    "IntegrationNotFoundError",
-    "InvalidCursorError",
-    "InvalidRequestError",
-    "LocationNotFoundError",
-    "McpServerNotFoundError",
-    "MessageNotFoundError",
-    "PermissionNotFoundError",
-    "PermissionSavedNotFoundError",
-    "ProjectNotFoundError",
-    "ProviderNotFoundError",
-    "PtyNotFoundError",
-    "RpcError",
-    "RpcInternalError",
-    "SessionBusyError",
-    "SessionNotFoundError",
-    "ShellNotFoundError",
-    "SkillNotFoundError",
-    "UnauthorizedError",
-    "UnknownError",
-    "VcsInitNotSupportedError",
-    "WorktreeError",
-    # </generated:error-exports>
 ]
-
-
-def __getattr__(name: str) -> Any:
-    # `opencode.types` builds several hundred models, so it is imported on first use rather than with the package.
-    if name == "types":
-        import importlib
-
-        return importlib.import_module(".types", __name__)
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-
-
-_setup_logging()

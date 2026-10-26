@@ -8,16 +8,17 @@ import sys
 import atheris
 
 with atheris.instrument_imports():
-    from opencode._streaming import _Decoder, _LineSplitter
+    from opencode._streaming import SSEDecoder
 
 
 def test_one_input(data: bytes) -> None:
-    """Feed arbitrary text through the line splitter and SSE decoder."""
-    text = atheris.FuzzedDataProvider(data).ConsumeUnicodeNoSurrogates(len(data))
-    splitter = _LineSplitter()
-    decoder = _Decoder()
-    for line in splitter.feed(text) + splitter.flush():
-        decoder.feed_line(line)
+    """Feed arbitrary bytes through the SSE decoder, as the response stream would."""
+    chunks = [data[i : i + 7] for i in range(0, len(data), 7)]
+    try:
+        for _ in SSEDecoder().iter_bytes(iter(chunks)):
+            pass
+    except UnicodeDecodeError:
+        pass  # the decoder rejects bytes that are not UTF-8, as the event stream must be
 
 
 if __name__ == "__main__":
