@@ -27,9 +27,11 @@ classifiers = [
 ]
 dependencies = [
   "anyio>=4.4,<5",
+  "distro>=1.7,<2",
   "httpx>=0.27,<1",
   "pydantic>=2.12,<3",
-  "typing-extensions>=4.12",
+  "sniffio",
+  "typing-extensions>=4.14,<5",
 ]
 
 [project.urls]
@@ -44,18 +46,22 @@ pty = [
     "websockets>=14,<17",
 ]
 aiohttp = [
+    "aiohttp",
     "httpx-aiohttp>=0.1.9,<0.3",
 ]
 
 [dependency-groups]
 dev = [
+  "dirty-equals>=0.6",
   "mypy>=1.18",
   "pyright>=1.1.408",
   "pytest>=8.4",
+  "pytest-asyncio>=1",
   "httpx-aiohttp>=0.1.9",
   "pytest-cov>=7",
   "respx>=0.22",
   "ruff>=0.14",
+  "time-machine>=2",
   "trio>=0.31",
   "websockets>=14",
 ]
