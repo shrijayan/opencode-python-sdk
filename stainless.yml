@@ -19,6 +19,8 @@ security_schemes:
 client_settings:
   default_client_name: Opencode
   default_env_prefix: OPENCODE
+  # Agent operations run long: ten minutes, as the SDK's own client had.
+  default_timeout: PT10M
   opts:
     username:
       type: string
