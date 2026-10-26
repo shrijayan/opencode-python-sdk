@@ -150,6 +150,8 @@ reportUnknownParameterType = false
 reportUnusedFunction = false
 
 [tool.mypy]
+# Checked on the lowest supported Python, as pyright is (pythonVersion).
+python_version = "3.10"
 pretty = true
 show_error_codes = true
 
