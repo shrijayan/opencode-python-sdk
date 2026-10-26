@@ -91,8 +91,13 @@ include = ["src/opencode", "tests", "README.md", "LICENSE", "CHANGELOG.md", "api
 required-version = ">=0.8"
 
 [tool.pytest.ini_options]
+# `pytest` runs the generated suite (pytest-asyncio). The hand-written tests in tests/custom use
+# anyio and trio, so they run apart, with pytest-asyncio strict and without the generated conftest:
+#   pytest --confcutdir=tests/custom -o asyncio_mode=strict -o addopts="-ra --strict-markers" tests/custom
 testpaths = ["tests"]
-addopts = ["-ra", "--strict-markers", "--strict-config"]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--ignore=tests/custom"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
 xfail_strict = true
 filterwarnings = ["error"]
 markers = [

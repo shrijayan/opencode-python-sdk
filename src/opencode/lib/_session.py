@@ -89,7 +89,8 @@ class RunResult:
     @property
     def tokens(self) -> TokenUsageInfo:
         """Token usage of this run, summed over its assistant messages."""
-        from ..types import TokenUsageInfo, TokenUsageInfoCache
+        from ..types import TokenUsageInfo
+        from ..types.shared.token_usage_info import Cache as TokenUsageInfoCache
 
         total = TokenUsageInfo(input=0, output=0, reasoning=0, cache=TokenUsageInfoCache(read=0, write=0))
         for message in self.assistant_messages:

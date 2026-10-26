@@ -35,11 +35,11 @@ def test_manual_page_control(client: Opencode, mock_api: respx.MockRouter) -> No
     )
     page = client.message.list("ses_1")
     assert page.has_next_page()
-    following = page.next_page()
+    following = page.get_next_page()
     assert [message.id for message in following.data] == ["b"]
     assert not following.has_next_page()
-    with pytest.raises(StopIteration):
-        following.next_page()
+    with pytest.raises(RuntimeError):
+        following.get_next_page()
 
 
 @pytest.mark.anyio
@@ -54,4 +54,5 @@ async def test_async_paginator(async_client: AsyncOpencode, mock_api: respx.Mock
     ids = [message.id async for message in async_client.message.list("ses_1")]
     assert ids == ["a", "b"]
     first = await async_client.message.list("ses_1")
-    assert first.next_cursor == "c1"
+    assert first.cursor is not None
+    assert first.cursor.next == "c1"

@@ -76,7 +76,7 @@ def test_call_without_input_uses_declared_name(client: Opencode, mock_api: respx
 
 def test_generated_call_still_available(client: Opencode, mock_api: respx.MockRouter) -> None:
     mock_api.post("/api/rpc/counter/add").respond(json={"output": 1})
-    assert client.rpc.call("counter", "add", input={"amount": 1}).output == 1
+    assert client.rpc.call("add", rpc_id="counter", input={"amount": 1}).output == 1
 
 
 def test_rpc_error_maps_to_rpc_call_error_with_typed_data(client: Opencode, mock_api: respx.MockRouter) -> None:

@@ -267,14 +267,14 @@ def test_reconnect_dedupes_server_connected(client: Opencode, mock_api: respx.Mo
 def test_reconnect_gives_up_after_max_attempts(client: Opencode, mock_api: respx.MockRouter) -> None:
     route = mock_api.get("/api/event").mock(side_effect=httpx.ConnectError("refused"))
     hub = EventHub(client.with_options(max_retries=0), reconnect=Reconnect(initial_delay=0, max_attempts=2))
-    with pytest.raises(Exception, match="refused"), hub.subscribe() as events:
+    with pytest.raises(Exception, match="Connection error"), hub.subscribe() as events:
         next(events)
     assert route.call_count == 3
 
 
 def test_without_reconnect_errors_end_every_subscription(client: Opencode, mock_api: respx.MockRouter) -> None:
     mock_api.get("/api/event").mock(side_effect=httpx.ConnectError("refused"))
-    with pytest.raises(Exception, match="refused"), client.with_options(max_retries=0).events.subscribe() as events:
+    with pytest.raises(Exception, match="Connection error"), client.with_options(max_retries=0).events.subscribe() as events:
         next(events)
 
 

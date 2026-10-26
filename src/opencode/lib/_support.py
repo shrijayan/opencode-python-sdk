@@ -12,7 +12,9 @@ import datetime as dt
 import enum
 import functools
 from collections.abc import Mapping, Sequence
-from typing import Any, Dict, Union, cast
+from typing import Any, Optional, Union, cast
+
+from typing_extensions import TypedDict
 from urllib.parse import quote
 
 import httpx
@@ -36,8 +38,10 @@ __all__ = [
 DEFAULT_USERNAME = "opencode"
 """The Basic auth user name the OpenCode server expects."""
 
-Location = Dict[str, object]
-"""Where a request runs on the server, for example ``Location(directory="/repo")``."""
+class Location(TypedDict, total=False):
+    """Where a request runs on the server, for example ``Location(directory="/repo")``."""
+
+    directory: Optional[str]
 
 Timeout = Union[float, httpx.Timeout, None]
 """A timeout in seconds, an ``httpx.Timeout``, or ``None`` for none."""

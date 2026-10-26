@@ -17,6 +17,7 @@ from opencode import (
 )
 from opencode.lib import RunResult
 from opencode.testing import FakeServer
+from opencode.types.shared_params import ModelRef as ModelRefParam
 from opencode.types import ModelRef, ServerConnectedEvent, SessionCreatedEvent, SessionIdleEvent
 
 
@@ -35,7 +36,7 @@ def _paths(fake: FakeServer) -> list[str]:
 def test_run_creates_session_and_returns_result() -> None:
     fake = FakeServer(reply=lambda text: f"echo: {text}", cost=0.5, tokens=(100, 20))
     client = Opencode.fake(fake)
-    model = ModelRef.model_validate({"id": "claude", "providerID": "anthropic"})
+    model: ModelRefParam = {"id": "claude", "provider_id": "anthropic"}
 
     result = client.session.run("hello", agent="build", model=model)
 
@@ -46,7 +47,8 @@ def test_run_creates_session_and_returns_result() -> None:
     assert result.cost == 0.5
     assert (result.tokens.input, result.tokens.output) == (100, 20)
     assert result.session.agent == "build"
-    assert result.session.model == model
+    assert result.session.model is not None
+    assert (result.session.model.id, result.session.model.provider_id) == ("claude", "anthropic")
     assert result.session.cost == 0.5
     assert fake.prompts == ["hello"]
 

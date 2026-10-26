@@ -22,6 +22,7 @@ from opencode import (
     rpc_method,
     session_id_of,
 )
+from opencode.types.shared_params import ModelRef as ModelRefParam
 from opencode.types import ModelRef, ServerConnectedEvent
 
 pytestmark = [
@@ -163,7 +164,7 @@ def test_wait_until_ready(client: Opencode) -> None:
 def test_run_with_unroutable_model(client: Opencode) -> None:
     # A model of a provider that does not exist fails before any network call, so no model is called.
     # Never prompt without such a model: the default would use OpenCode's hosted free model.
-    model = ModelRef.model_validate({"id": "none", "providerID": "sdk-test-missing"})
+    model: ModelRefParam = {"id": "none", "provider_id": "sdk-test-missing"}
     result = client.session.run("hello", model=model, timeout=30)
     assert [message.type for message in result.messages] == ["user", "idle"]
     assert result.outcome == "failed"
