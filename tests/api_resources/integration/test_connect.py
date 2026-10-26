@@ -18,16 +18,16 @@ class TestConnect:
     @parametrize
     def test_method_external(self, client: Opencode) -> None:
         connect = client.integration.connect.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
         )
         assert connect is None
 
     @parametrize
     def test_method_external_with_all_params(self, client: Opencode) -> None:
         connect = client.integration.connect.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
             answer={},
             label="label",
             location={
@@ -39,8 +39,8 @@ class TestConnect:
     @parametrize
     def test_raw_response_external(self, client: Opencode) -> None:
         response = client.integration.connect.with_raw_response.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
         )
 
         assert response.is_closed is True
@@ -51,8 +51,8 @@ class TestConnect:
     @parametrize
     def test_streaming_response_external(self, client: Opencode) -> None:
         with client.integration.connect.with_streaming_response.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -67,13 +67,13 @@ class TestConnect:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `integration_id` but received ''"):
             client.integration.connect.with_raw_response.external(
                 integration_id="",
-                method_id={},
+                method_id="methodID",
             )
 
     @parametrize
     def test_method_key(self, client: Opencode) -> None:
         connect = client.integration.connect.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
         )
         assert connect is None
@@ -81,7 +81,7 @@ class TestConnect:
     @parametrize
     def test_method_key_with_all_params(self, client: Opencode) -> None:
         connect = client.integration.connect.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
             answer={},
             label="label",
@@ -94,7 +94,7 @@ class TestConnect:
     @parametrize
     def test_raw_response_key(self, client: Opencode) -> None:
         response = client.integration.connect.with_raw_response.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
         )
 
@@ -106,7 +106,7 @@ class TestConnect:
     @parametrize
     def test_streaming_response_key(self, client: Opencode) -> None:
         with client.integration.connect.with_streaming_response.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
         ) as response:
             assert not response.is_closed
@@ -134,16 +134,16 @@ class TestAsyncConnect:
     @parametrize
     async def test_method_external(self, async_client: AsyncOpencode) -> None:
         connect = await async_client.integration.connect.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
         )
         assert connect is None
 
     @parametrize
     async def test_method_external_with_all_params(self, async_client: AsyncOpencode) -> None:
         connect = await async_client.integration.connect.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
             answer={},
             label="label",
             location={
@@ -155,8 +155,8 @@ class TestAsyncConnect:
     @parametrize
     async def test_raw_response_external(self, async_client: AsyncOpencode) -> None:
         response = await async_client.integration.connect.with_raw_response.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
         )
 
         assert response.is_closed is True
@@ -167,8 +167,8 @@ class TestAsyncConnect:
     @parametrize
     async def test_streaming_response_external(self, async_client: AsyncOpencode) -> None:
         async with async_client.integration.connect.with_streaming_response.external(
-            integration_id={},
-            method_id={},
+            integration_id="integrationID",
+            method_id="methodID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -183,13 +183,13 @@ class TestAsyncConnect:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `integration_id` but received ''"):
             await async_client.integration.connect.with_raw_response.external(
                 integration_id="",
-                method_id={},
+                method_id="methodID",
             )
 
     @parametrize
     async def test_method_key(self, async_client: AsyncOpencode) -> None:
         connect = await async_client.integration.connect.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
         )
         assert connect is None
@@ -197,7 +197,7 @@ class TestAsyncConnect:
     @parametrize
     async def test_method_key_with_all_params(self, async_client: AsyncOpencode) -> None:
         connect = await async_client.integration.connect.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
             answer={},
             label="label",
@@ -210,7 +210,7 @@ class TestAsyncConnect:
     @parametrize
     async def test_raw_response_key(self, async_client: AsyncOpencode) -> None:
         response = await async_client.integration.connect.with_raw_response.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
         )
 
@@ -222,7 +222,7 @@ class TestAsyncConnect:
     @parametrize
     async def test_streaming_response_key(self, async_client: AsyncOpencode) -> None:
         async with async_client.integration.connect.with_streaming_response.key(
-            integration_id={},
+            integration_id="integrationID",
             key="key",
         ) as response:
             assert not response.is_closed

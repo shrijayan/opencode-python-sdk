@@ -20,17 +20,17 @@ class TestWorktree:
     @parametrize
     def test_method_create(self, client: Opencode) -> None:
         worktree = client.worktree.create(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(WorktreeInfo, worktree, path=["response"])
 
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
         worktree = client.worktree.create(
-            project_id={},
+            project_id="projectID",
             branch="branch",
-            directory={},
-            from_={},
+            directory="directory",
+            from_="from",
             name="name",
         )
         assert_matches_type(WorktreeInfo, worktree, path=["response"])
@@ -38,7 +38,7 @@ class TestWorktree:
     @parametrize
     def test_raw_response_create(self, client: Opencode) -> None:
         response = client.worktree.with_raw_response.create(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -49,7 +49,7 @@ class TestWorktree:
     @parametrize
     def test_streaming_response_create(self, client: Opencode) -> None:
         with client.worktree.with_streaming_response.create(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -62,14 +62,14 @@ class TestWorktree:
     @parametrize
     def test_method_list(self, client: Opencode) -> None:
         worktree = client.worktree.list(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(WorktreeList, worktree, path=["response"])
 
     @parametrize
     def test_raw_response_list(self, client: Opencode) -> None:
         response = client.worktree.with_raw_response.list(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -80,7 +80,7 @@ class TestWorktree:
     @parametrize
     def test_streaming_response_list(self, client: Opencode) -> None:
         with client.worktree.with_streaming_response.list(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -93,14 +93,14 @@ class TestWorktree:
     @parametrize
     def test_method_refresh(self, client: Opencode) -> None:
         worktree = client.worktree.refresh(
-            project_id={},
+            project_id="projectID",
         )
         assert worktree is None
 
     @parametrize
     def test_raw_response_refresh(self, client: Opencode) -> None:
         response = client.worktree.with_raw_response.refresh(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -111,7 +111,7 @@ class TestWorktree:
     @parametrize
     def test_streaming_response_refresh(self, client: Opencode) -> None:
         with client.worktree.with_streaming_response.refresh(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -124,18 +124,18 @@ class TestWorktree:
     @parametrize
     def test_method_remove(self, client: Opencode) -> None:
         worktree = client.worktree.remove(
-            directory={},
+            directory="directory",
             force=True,
-            project_id={},
+            project_id="projectID",
         )
         assert worktree is None
 
     @parametrize
     def test_raw_response_remove(self, client: Opencode) -> None:
         response = client.worktree.with_raw_response.remove(
-            directory={},
+            directory="directory",
             force=True,
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -146,9 +146,9 @@ class TestWorktree:
     @parametrize
     def test_streaming_response_remove(self, client: Opencode) -> None:
         with client.worktree.with_streaming_response.remove(
-            directory={},
+            directory="directory",
             force=True,
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -167,17 +167,17 @@ class TestAsyncWorktree:
     @parametrize
     async def test_method_create(self, async_client: AsyncOpencode) -> None:
         worktree = await async_client.worktree.create(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(WorktreeInfo, worktree, path=["response"])
 
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
         worktree = await async_client.worktree.create(
-            project_id={},
+            project_id="projectID",
             branch="branch",
-            directory={},
-            from_={},
+            directory="directory",
+            from_="from",
             name="name",
         )
         assert_matches_type(WorktreeInfo, worktree, path=["response"])
@@ -185,7 +185,7 @@ class TestAsyncWorktree:
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
         response = await async_client.worktree.with_raw_response.create(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -196,7 +196,7 @@ class TestAsyncWorktree:
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
         async with async_client.worktree.with_streaming_response.create(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -209,14 +209,14 @@ class TestAsyncWorktree:
     @parametrize
     async def test_method_list(self, async_client: AsyncOpencode) -> None:
         worktree = await async_client.worktree.list(
-            project_id={},
+            project_id="projectID",
         )
         assert_matches_type(WorktreeList, worktree, path=["response"])
 
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncOpencode) -> None:
         response = await async_client.worktree.with_raw_response.list(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -227,7 +227,7 @@ class TestAsyncWorktree:
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncOpencode) -> None:
         async with async_client.worktree.with_streaming_response.list(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -240,14 +240,14 @@ class TestAsyncWorktree:
     @parametrize
     async def test_method_refresh(self, async_client: AsyncOpencode) -> None:
         worktree = await async_client.worktree.refresh(
-            project_id={},
+            project_id="projectID",
         )
         assert worktree is None
 
     @parametrize
     async def test_raw_response_refresh(self, async_client: AsyncOpencode) -> None:
         response = await async_client.worktree.with_raw_response.refresh(
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -258,7 +258,7 @@ class TestAsyncWorktree:
     @parametrize
     async def test_streaming_response_refresh(self, async_client: AsyncOpencode) -> None:
         async with async_client.worktree.with_streaming_response.refresh(
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -271,18 +271,18 @@ class TestAsyncWorktree:
     @parametrize
     async def test_method_remove(self, async_client: AsyncOpencode) -> None:
         worktree = await async_client.worktree.remove(
-            directory={},
+            directory="directory",
             force=True,
-            project_id={},
+            project_id="projectID",
         )
         assert worktree is None
 
     @parametrize
     async def test_raw_response_remove(self, async_client: AsyncOpencode) -> None:
         response = await async_client.worktree.with_raw_response.remove(
-            directory={},
+            directory="directory",
             force=True,
-            project_id={},
+            project_id="projectID",
         )
 
         assert response.is_closed is True
@@ -293,9 +293,9 @@ class TestAsyncWorktree:
     @parametrize
     async def test_streaming_response_remove(self, async_client: AsyncOpencode) -> None:
         async with async_client.worktree.with_streaming_response.remove(
-            directory={},
+            directory="directory",
             force=True,
-            project_id={},
+            project_id="projectID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

@@ -23,7 +23,7 @@ from opencode import Opencode, AsyncOpencode, APIResponseValidationError
 from opencode._types import Omit
 from opencode._utils import asyncify
 from opencode._models import BaseModel, FinalRequestOptions
-from opencode._exceptions import OpencodeError, APIStatusError, APITimeoutError, APIResponseValidationError
+from opencode._exceptions import APIStatusError, APITimeoutError, APIResponseValidationError
 from opencode._base_client import (
     DEFAULT_TIMEOUT,
     HTTPX_DEFAULT_TIMEOUT,
@@ -433,16 +433,6 @@ class TestOpencode:
 
         test_client.close()
         test_client2.close()
-
-    def test_validate_headers(self) -> None:
-        client = Opencode(base_url=base_url, username=username, password=password, _strict_response_validation=True)
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert "Basic" in request.headers.get("Authorization")
-
-        with pytest.raises(OpencodeError):
-            with update_env(**{"OPENCODE_PASSWORD": Omit()}):
-                client2 = Opencode(base_url=base_url, username=None, password=None, _strict_response_validation=True)
-            _ = client2
 
     def test_default_query_option(self) -> None:
         client = Opencode(
@@ -1424,20 +1414,6 @@ class TestAsyncOpencode:
 
         await test_client.close()
         await test_client2.close()
-
-    def test_validate_headers(self) -> None:
-        client = AsyncOpencode(
-            base_url=base_url, username=username, password=password, _strict_response_validation=True
-        )
-        request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
-        assert "Basic" in request.headers.get("Authorization")
-
-        with pytest.raises(OpencodeError):
-            with update_env(**{"OPENCODE_PASSWORD": Omit()}):
-                client2 = AsyncOpencode(
-                    base_url=base_url, username=None, password=None, _strict_response_validation=True
-                )
-            _ = client2
 
     async def test_default_query_option(self) -> None:
         client = AsyncOpencode(

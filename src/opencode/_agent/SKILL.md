@@ -173,7 +173,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-connect = client.integration.connect.external(integration_id={}, method_id={})
+connect = client.integration.connect.external(integration_id="integrationID", method_id="methodID")
 print(connect)
 ```
 
@@ -184,7 +184,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-oauth = client.integration.oauth.cancel(integration_id={}, attempt_id={})
+oauth = client.integration.oauth.cancel(integration_id="integrationID", attempt_id="attemptID")
 print(oauth)
 ```
 
@@ -195,7 +195,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-command = client.integration.command.cancel(integration_id={}, attempt_id={})
+command = client.integration.command.cancel(integration_id="integrationID", attempt_id="attemptID")
 print(command)
 ```
 
@@ -239,7 +239,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-message = client.message.list(session_id={})
+message = client.message.list(session_id="sessionID")
 print(message)
 ```
 
@@ -272,7 +272,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-permission = client.permission.create(session_id={}, action="action", resources=["string"])
+permission = client.permission.create(session_id="sessionID", action="action", resources=["string"])
 print(permission)
 ```
 
@@ -349,7 +349,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-connect = client.pty.connect.token(pty_id={})
+connect = client.pty.connect.token(pty_id="ptyID")
 print(connect)
 ```
 
@@ -404,7 +404,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-revert = client.session.revert.clear(session_id={})
+revert = client.session.revert.clear(session_id="sessionID")
 print(revert)
 ```
 
@@ -415,7 +415,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-inbox = client.session.inbox.update(session_id={}, inbox_id={}, delivery={})
+inbox = client.session.inbox.update(session_id="sessionID", inbox_id="inboxID", delivery="steer")
 print(inbox)
 ```
 
@@ -426,7 +426,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-entry = client.session.instructions.entry.list(session_id={})
+entry = client.session.instructions.entry.list(session_id="sessionID")
 print(entry)
 ```
 
@@ -437,7 +437,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-message = client.session.message.get(session_id={}, message_id={})
+message = client.session.message.get(session_id="sessionID", message_id="messageID")
 print(message)
 ```
 
@@ -448,7 +448,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-form = client.session.form.create(session_id="sessionID", fields={}, title="title")
+form = client.session.form.create(session_id="sessionID", fields=[{}], title="title")
 print(form)
 ```
 
@@ -525,7 +525,7 @@ from opencode import Opencode
 
 client = Opencode()
 
-worktree = client.worktree.create(project_id={})
+worktree = client.worktree.create(project_id="projectID")
 print(worktree)
 ```
 
@@ -537,7 +537,7 @@ from opencode import Opencode
 client = Opencode()
 
 # Iterating the page fetches the next pages as needed.
-for item in client.message.list(session_id={}):
+for item in client.message.list(session_id="sessionID"):
     print(item)
 ```
 

@@ -54,14 +54,14 @@ class TestAgent:
     @parametrize
     def test_method_get(self, client: Opencode) -> None:
         agent = client.agent.get(
-            agent_id={},
+            agent_id="agentID",
         )
         assert_matches_type(AgentGetResponse, agent, path=["response"])
 
     @parametrize
     def test_method_get_with_all_params(self, client: Opencode) -> None:
         agent = client.agent.get(
-            agent_id={},
+            agent_id="agentID",
             location={
                 "directory": "string",
             },
@@ -71,7 +71,7 @@ class TestAgent:
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
         response = client.agent.with_raw_response.get(
-            agent_id={},
+            agent_id="agentID",
         )
 
         assert response.is_closed is True
@@ -82,7 +82,7 @@ class TestAgent:
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
         with client.agent.with_streaming_response.get(
-            agent_id={},
+            agent_id="agentID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -142,14 +142,14 @@ class TestAsyncAgent:
     @parametrize
     async def test_method_get(self, async_client: AsyncOpencode) -> None:
         agent = await async_client.agent.get(
-            agent_id={},
+            agent_id="agentID",
         )
         assert_matches_type(AgentGetResponse, agent, path=["response"])
 
     @parametrize
     async def test_method_get_with_all_params(self, async_client: AsyncOpencode) -> None:
         agent = await async_client.agent.get(
-            agent_id={},
+            agent_id="agentID",
             location={
                 "directory": "string",
             },
@@ -159,7 +159,7 @@ class TestAsyncAgent:
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
         response = await async_client.agent.with_raw_response.get(
-            agent_id={},
+            agent_id="agentID",
         )
 
         assert response.is_closed is True
@@ -170,7 +170,7 @@ class TestAsyncAgent:
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
         async with async_client.agent.with_streaming_response.get(
-            agent_id={},
+            agent_id="agentID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

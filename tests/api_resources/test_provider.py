@@ -54,14 +54,14 @@ class TestProvider:
     @parametrize
     def test_method_get(self, client: Opencode) -> None:
         provider = client.provider.get(
-            provider_id={},
+            provider_id="providerID",
         )
         assert_matches_type(ProviderGetResponse, provider, path=["response"])
 
     @parametrize
     def test_method_get_with_all_params(self, client: Opencode) -> None:
         provider = client.provider.get(
-            provider_id={},
+            provider_id="providerID",
             location={
                 "directory": "string",
             },
@@ -71,7 +71,7 @@ class TestProvider:
     @parametrize
     def test_raw_response_get(self, client: Opencode) -> None:
         response = client.provider.with_raw_response.get(
-            provider_id={},
+            provider_id="providerID",
         )
 
         assert response.is_closed is True
@@ -82,7 +82,7 @@ class TestProvider:
     @parametrize
     def test_streaming_response_get(self, client: Opencode) -> None:
         with client.provider.with_streaming_response.get(
-            provider_id={},
+            provider_id="providerID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -142,14 +142,14 @@ class TestAsyncProvider:
     @parametrize
     async def test_method_get(self, async_client: AsyncOpencode) -> None:
         provider = await async_client.provider.get(
-            provider_id={},
+            provider_id="providerID",
         )
         assert_matches_type(ProviderGetResponse, provider, path=["response"])
 
     @parametrize
     async def test_method_get_with_all_params(self, async_client: AsyncOpencode) -> None:
         provider = await async_client.provider.get(
-            provider_id={},
+            provider_id="providerID",
             location={
                 "directory": "string",
             },
@@ -159,7 +159,7 @@ class TestAsyncProvider:
     @parametrize
     async def test_raw_response_get(self, async_client: AsyncOpencode) -> None:
         response = await async_client.provider.with_raw_response.get(
-            provider_id={},
+            provider_id="providerID",
         )
 
         assert response.is_closed is True
@@ -170,7 +170,7 @@ class TestAsyncProvider:
     @parametrize
     async def test_streaming_response_get(self, async_client: AsyncOpencode) -> None:
         async with async_client.provider.with_streaming_response.get(
-            provider_id={},
+            provider_id="providerID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

@@ -21,7 +21,7 @@ class TestCredential:
     @parametrize
     def test_method_create(self, client: Opencode) -> None:
         credential = client.credential.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
         )
         assert_matches_type(CredentialEntry, credential, path=["response"])
@@ -29,10 +29,10 @@ class TestCredential:
     @parametrize
     def test_method_create_with_all_params(self, client: Opencode) -> None:
         credential = client.credential.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
             activate=True,
-            id={},
+            id="id",
             label="label",
         )
         assert_matches_type(CredentialEntry, credential, path=["response"])
@@ -40,7 +40,7 @@ class TestCredential:
     @parametrize
     def test_raw_response_create(self, client: Opencode) -> None:
         response = client.credential.with_raw_response.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
         )
 
@@ -52,7 +52,7 @@ class TestCredential:
     @parametrize
     def test_streaming_response_create(self, client: Opencode) -> None:
         with client.credential.with_streaming_response.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
         ) as response:
             assert not response.is_closed
@@ -66,7 +66,7 @@ class TestCredential:
     @parametrize
     def test_method_update(self, client: Opencode) -> None:
         credential = client.credential.update(
-            credential_id={},
+            credential_id="credentialID",
             label="label",
         )
         assert credential is None
@@ -74,7 +74,7 @@ class TestCredential:
     @parametrize
     def test_raw_response_update(self, client: Opencode) -> None:
         response = client.credential.with_raw_response.update(
-            credential_id={},
+            credential_id="credentialID",
             label="label",
         )
 
@@ -86,7 +86,7 @@ class TestCredential:
     @parametrize
     def test_streaming_response_update(self, client: Opencode) -> None:
         with client.credential.with_streaming_response.update(
-            credential_id={},
+            credential_id="credentialID",
             label="label",
         ) as response:
             assert not response.is_closed
@@ -133,14 +133,14 @@ class TestCredential:
     @parametrize
     def test_method_activate(self, client: Opencode) -> None:
         credential = client.credential.activate(
-            {},
+            "credentialID",
         )
         assert credential is None
 
     @parametrize
     def test_raw_response_activate(self, client: Opencode) -> None:
         response = client.credential.with_raw_response.activate(
-            {},
+            "credentialID",
         )
 
         assert response.is_closed is True
@@ -151,7 +151,7 @@ class TestCredential:
     @parametrize
     def test_streaming_response_activate(self, client: Opencode) -> None:
         with client.credential.with_streaming_response.activate(
-            {},
+            "credentialID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -171,14 +171,14 @@ class TestCredential:
     @parametrize
     def test_method_remove(self, client: Opencode) -> None:
         credential = client.credential.remove(
-            {},
+            "credentialID",
         )
         assert credential is None
 
     @parametrize
     def test_raw_response_remove(self, client: Opencode) -> None:
         response = client.credential.with_raw_response.remove(
-            {},
+            "credentialID",
         )
 
         assert response.is_closed is True
@@ -189,7 +189,7 @@ class TestCredential:
     @parametrize
     def test_streaming_response_remove(self, client: Opencode) -> None:
         with client.credential.with_streaming_response.remove(
-            {},
+            "credentialID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -215,7 +215,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_method_create(self, async_client: AsyncOpencode) -> None:
         credential = await async_client.credential.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
         )
         assert_matches_type(CredentialEntry, credential, path=["response"])
@@ -223,10 +223,10 @@ class TestAsyncCredential:
     @parametrize
     async def test_method_create_with_all_params(self, async_client: AsyncOpencode) -> None:
         credential = await async_client.credential.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
             activate=True,
-            id={},
+            id="id",
             label="label",
         )
         assert_matches_type(CredentialEntry, credential, path=["response"])
@@ -234,7 +234,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_raw_response_create(self, async_client: AsyncOpencode) -> None:
         response = await async_client.credential.with_raw_response.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
         )
 
@@ -246,7 +246,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_streaming_response_create(self, async_client: AsyncOpencode) -> None:
         async with async_client.credential.with_streaming_response.create(
-            integration_id={},
+            integration_id="integrationID",
             value={},
         ) as response:
             assert not response.is_closed
@@ -260,7 +260,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_method_update(self, async_client: AsyncOpencode) -> None:
         credential = await async_client.credential.update(
-            credential_id={},
+            credential_id="credentialID",
             label="label",
         )
         assert credential is None
@@ -268,7 +268,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_raw_response_update(self, async_client: AsyncOpencode) -> None:
         response = await async_client.credential.with_raw_response.update(
-            credential_id={},
+            credential_id="credentialID",
             label="label",
         )
 
@@ -280,7 +280,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_streaming_response_update(self, async_client: AsyncOpencode) -> None:
         async with async_client.credential.with_streaming_response.update(
-            credential_id={},
+            credential_id="credentialID",
             label="label",
         ) as response:
             assert not response.is_closed
@@ -327,14 +327,14 @@ class TestAsyncCredential:
     @parametrize
     async def test_method_activate(self, async_client: AsyncOpencode) -> None:
         credential = await async_client.credential.activate(
-            {},
+            "credentialID",
         )
         assert credential is None
 
     @parametrize
     async def test_raw_response_activate(self, async_client: AsyncOpencode) -> None:
         response = await async_client.credential.with_raw_response.activate(
-            {},
+            "credentialID",
         )
 
         assert response.is_closed is True
@@ -345,7 +345,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_streaming_response_activate(self, async_client: AsyncOpencode) -> None:
         async with async_client.credential.with_streaming_response.activate(
-            {},
+            "credentialID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -365,14 +365,14 @@ class TestAsyncCredential:
     @parametrize
     async def test_method_remove(self, async_client: AsyncOpencode) -> None:
         credential = await async_client.credential.remove(
-            {},
+            "credentialID",
         )
         assert credential is None
 
     @parametrize
     async def test_raw_response_remove(self, async_client: AsyncOpencode) -> None:
         response = await async_client.credential.with_raw_response.remove(
-            {},
+            "credentialID",
         )
 
         assert response.is_closed is True
@@ -383,7 +383,7 @@ class TestAsyncCredential:
     @parametrize
     async def test_streaming_response_remove(self, async_client: AsyncOpencode) -> None:
         async with async_client.credential.with_streaming_response.remove(
-            {},
+            "credentialID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

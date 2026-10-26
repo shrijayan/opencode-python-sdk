@@ -20,14 +20,14 @@ class TestMessage:
     @parametrize
     def test_method_list(self, client: Opencode) -> None:
         message = client.message.list(
-            session_id={},
+            session_id="sessionID",
         )
         assert_matches_type(SessionMessageInfo, message, path=["response"])
 
     @parametrize
     def test_method_list_with_all_params(self, client: Opencode) -> None:
         message = client.message.list(
-            session_id={},
+            session_id="sessionID",
             cursor="cursor",
             limit=0,
             order="asc",
@@ -38,7 +38,7 @@ class TestMessage:
     @parametrize
     def test_raw_response_list(self, client: Opencode) -> None:
         response = client.message.with_raw_response.list(
-            session_id={},
+            session_id="sessionID",
         )
 
         assert response.is_closed is True
@@ -49,7 +49,7 @@ class TestMessage:
     @parametrize
     def test_streaming_response_list(self, client: Opencode) -> None:
         with client.message.with_streaming_response.list(
-            session_id={},
+            session_id="sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -75,14 +75,14 @@ class TestAsyncMessage:
     @parametrize
     async def test_method_list(self, async_client: AsyncOpencode) -> None:
         message = await async_client.message.list(
-            session_id={},
+            session_id="sessionID",
         )
         assert_matches_type(SessionMessageInfo, message, path=["response"])
 
     @parametrize
     async def test_method_list_with_all_params(self, async_client: AsyncOpencode) -> None:
         message = await async_client.message.list(
-            session_id={},
+            session_id="sessionID",
             cursor="cursor",
             limit=0,
             order="asc",
@@ -93,7 +93,7 @@ class TestAsyncMessage:
     @parametrize
     async def test_raw_response_list(self, async_client: AsyncOpencode) -> None:
         response = await async_client.message.with_raw_response.list(
-            session_id={},
+            session_id="sessionID",
         )
 
         assert response.is_closed is True
@@ -104,7 +104,7 @@ class TestAsyncMessage:
     @parametrize
     async def test_streaming_response_list(self, async_client: AsyncOpencode) -> None:
         async with async_client.message.with_streaming_response.list(
-            session_id={},
+            session_id="sessionID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

@@ -20,14 +20,14 @@ class TestConnect:
     @parametrize
     def test_method_token(self, client: Opencode) -> None:
         connect = client.pty.connect.token(
-            pty_id={},
+            pty_id="ptyID",
         )
         assert_matches_type(ConnectTokenResponse, connect, path=["response"])
 
     @parametrize
     def test_method_token_with_all_params(self, client: Opencode) -> None:
         connect = client.pty.connect.token(
-            pty_id={},
+            pty_id="ptyID",
             location={
                 "directory": "string",
             },
@@ -38,7 +38,7 @@ class TestConnect:
     @parametrize
     def test_raw_response_token(self, client: Opencode) -> None:
         response = client.pty.connect.with_raw_response.token(
-            pty_id={},
+            pty_id="ptyID",
         )
 
         assert response.is_closed is True
@@ -49,7 +49,7 @@ class TestConnect:
     @parametrize
     def test_streaming_response_token(self, client: Opencode) -> None:
         with client.pty.connect.with_streaming_response.token(
-            pty_id={},
+            pty_id="ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -75,14 +75,14 @@ class TestAsyncConnect:
     @parametrize
     async def test_method_token(self, async_client: AsyncOpencode) -> None:
         connect = await async_client.pty.connect.token(
-            pty_id={},
+            pty_id="ptyID",
         )
         assert_matches_type(ConnectTokenResponse, connect, path=["response"])
 
     @parametrize
     async def test_method_token_with_all_params(self, async_client: AsyncOpencode) -> None:
         connect = await async_client.pty.connect.token(
-            pty_id={},
+            pty_id="ptyID",
             location={
                 "directory": "string",
             },
@@ -93,7 +93,7 @@ class TestAsyncConnect:
     @parametrize
     async def test_raw_response_token(self, async_client: AsyncOpencode) -> None:
         response = await async_client.pty.connect.with_raw_response.token(
-            pty_id={},
+            pty_id="ptyID",
         )
 
         assert response.is_closed is True
@@ -104,7 +104,7 @@ class TestAsyncConnect:
     @parametrize
     async def test_streaming_response_token(self, async_client: AsyncOpencode) -> None:
         async with async_client.pty.connect.with_streaming_response.token(
-            pty_id={},
+            pty_id="ptyID",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
