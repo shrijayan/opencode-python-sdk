@@ -5,17 +5,17 @@ from __future__ import annotations
 import json
 from collections.abc import AsyncIterator
 
-import pytest
 import respx
+import pytest
 from pydantic import BaseModel
 
 from opencode import (
-    AsyncOpencode,
     Opencode,
-    RpcCallError,
-    RpcCallInternalError,
-    RpcDefinition,
     RpcError,
+    RpcCallError,
+    AsyncOpencode,
+    RpcDefinition,
+    RpcCallInternalError,
     rpc_event,
     rpc_method,
 )

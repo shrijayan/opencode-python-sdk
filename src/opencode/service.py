@@ -16,20 +16,20 @@ See :mod:`opencode._service` for how this follows the TypeScript client.
 from __future__ import annotations
 
 from ._service import (
-    BasicAuth,
-    Endpoint,
-    EnsureReason,
     PtyMode,
-    ServiceError,
     Version,
-    async_discover,
-    async_ensure,
-    async_stop,
-    default_file,
-    discover,
+    Endpoint,
+    BasicAuth,
+    EnsureReason,
+    ServiceError,
+    stop,
     ensure,
     headers,
-    stop,
+    discover,
+    async_stop,
+    async_ensure,
+    default_file,
+    async_discover,
 )
 
 __all__ = [

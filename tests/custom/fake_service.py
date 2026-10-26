@@ -10,14 +10,13 @@ mocked probes in test_service.py and by the live test.
 
 from __future__ import annotations
 
-import json
 import os
-import socketserver
 import sys
+import json
 import uuid
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import socketserver
 from pathlib import Path
-
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from typing_extensions import override
 
 

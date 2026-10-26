@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from opencode import API_VERSION, AsyncOpencode, Opencode, service
+from opencode import API_VERSION, Opencode, AsyncOpencode, service
 
 pytestmark = [
     pytest.mark.live,

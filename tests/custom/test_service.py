@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-import json
 import sys
+import json
 import time
-from collections.abc import Iterator
-from dataclasses import replace
 from pathlib import Path
+from dataclasses import replace
+from collections.abc import Iterator
 
 import httpx
-import pytest
 import respx
+import pytest
 
-from opencode import AsyncOpencode, Endpoint, Opencode, ServiceError, _service as impl, service
+from opencode import Endpoint, Opencode, ServiceError, AsyncOpencode, service, _service as impl
 
 FAKE = str(Path(__file__).with_name("fake_service.py"))
 URL = "http://127.0.0.1:4999"

@@ -26,28 +26,27 @@ Protocol (OpenCode 2.1.2):
 from __future__ import annotations
 
 import json
-import struct
 import uuid
+import struct
 from typing import TYPE_CHECKING, Any, Literal, cast
 from urllib.parse import urlencode
-
 from typing_extensions import Self
 
-from ._exceptions import OpencodeError
-from ._resource import AsyncAPIResource, SyncAPIResource
 from ._types import NOT_GIVEN, NotGiven
-from .lib._support import default_location, encode_path_segment, encode_query
+from ._resource import SyncAPIResource, AsyncAPIResource
+from ._exceptions import OpencodeError
+from .lib._support import encode_query, default_location, encode_path_segment
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Awaitable, Callable, Iterator, Mapping
     from types import TracebackType
+    from collections.abc import Mapping, Callable, Iterator, Awaitable, AsyncIterator
 
     import httpx
-    from websockets.asyncio.client import ClientConnection as AsyncWebSocket
     from websockets.sync.client import ClientConnection as SyncWebSocket
+    from websockets.asyncio.client import ClientConnection as AsyncWebSocket
 
-    from .lib._support import Location
     from .types import PtyID
+    from .lib._support import Location
 
 __all__ = [
     "AsyncPersistentPtyAttachMixin",
@@ -388,8 +387,8 @@ def _open_sync(url: str, headers: dict[str, str], open_timeout: float | None) ->
 
 async def _open_async(url: str, headers: dict[str, str], open_timeout: float | None) -> AsyncWebSocket:
     try:
-        from websockets.asyncio.client import connect
         from websockets.exceptions import InvalidHandshake
+        from websockets.asyncio.client import connect
     except ImportError:
         raise _missing() from None
     try:

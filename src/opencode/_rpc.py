@@ -33,28 +33,27 @@ accepts works: models, dataclasses, ``TypedDict``, ``list[int]``. RPC failures r
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, Any, Generic, TypeVar, ClassVar, cast, overload
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, ClassVar, Generic, TypeVar, cast, overload
-
-import pydantic
 from typing_extensions import Self
 
+import pydantic
+
+from ._types import NOT_GIVEN, NotGiven
 from ._errors import RpcError, RpcInternalError
 from ._exceptions import OpencodeError
-from ._types import NOT_GIVEN, NotGiven
 from .lib._support import type_adapter, validation_summary
-from .resources.rpc import AsyncRpcResource, RpcResource
+from .resources.rpc import RpcResource, AsyncRpcResource
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
     from types import TracebackType
+    from collections.abc import Mapping
 
-    from .lib._client import AsyncOpencode, Opencode
-    from ._events import AsyncSubscription, Subscription
-    from ._types import Headers
-    from .lib._support import Timeout
-    from .lib._support import Location
     from .types import RpcEvent
+    from ._types import Headers
+    from ._events import Subscription, AsyncSubscription
+    from .lib._client import Opencode, AsyncOpencode
+    from .lib._support import Timeout, Location
 
 __all__ = [
     "AsyncRpcClient",

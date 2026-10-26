@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Iterator
+from collections.abc import Iterator, AsyncIterator
 
-import pytest
 import respx
+import pytest
 
-from opencode import AsyncOpencode, Opencode
+from opencode import Opencode, AsyncOpencode
 
 BASE_URL = "http://opencode.test"
 PASSWORD = "test-password"

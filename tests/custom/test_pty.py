@@ -2,23 +2,23 @@
 
 from __future__ import annotations
 
+import sys
 import json
 import struct
-import sys
 import threading
-from collections.abc import Iterator
-from dataclasses import dataclass, field
 from typing import Any
+from dataclasses import field, dataclass
 from urllib.parse import parse_qs, urlsplit
+from collections.abc import Iterator
 
 import httpx
-import pytest
 import respx
-from websockets.datastructures import Headers
+import pytest
 from websockets.http11 import Request, Response
 from websockets.sync.server import Server, ServerConnection, serve
+from websockets.datastructures import Headers
 
-from opencode import AsyncOpencode, Opencode, PtyConnectionError
+from opencode import Opencode, AsyncOpencode, PtyConnectionError
 
 PASSWORD = "test-password"
 TICKET = "ticket-1"

@@ -7,20 +7,19 @@ code is never regenerated.
 
 from __future__ import annotations
 
+import enum
 import base64
 import datetime as dt
-import enum
 import functools
-from collections.abc import Mapping, Sequence
-from typing import Any, Optional, Union, cast
-
-from typing_extensions import TypedDict
+from typing import Any, Union, Optional, cast
 from urllib.parse import quote
+from collections.abc import Mapping, Sequence
+from typing_extensions import TypedDict
 
 import httpx
 import pydantic
 
-from .._types import NotGiven, Omit
+from .._types import Omit, NotGiven
 
 __all__ = [
     "DEFAULT_USERNAME",
@@ -38,10 +37,12 @@ __all__ = [
 DEFAULT_USERNAME = "opencode"
 """The Basic auth user name the OpenCode server expects."""
 
+
 class Location(TypedDict, total=False):
     """Where a request runs on the server, for example ``Location(directory="/repo")``."""
 
     directory: Optional[str]
+
 
 Timeout = Union[float, httpx.Timeout, None]
 """A timeout in seconds, an ``httpx.Timeout``, or ``None`` for none."""

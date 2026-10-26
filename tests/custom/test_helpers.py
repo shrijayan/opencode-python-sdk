@@ -2,23 +2,24 @@
 
 from __future__ import annotations
 
+from typing_extensions import override
+
 import anyio
 import httpx
 import pytest
-from typing_extensions import override
 
 from opencode import (
-    AsyncOpencode,
-    InvalidRequestError,
-    NotFoundError,
     Opencode,
-    ServiceUnavailableError,
+    AsyncOpencode,
+    NotFoundError,
+    InvalidRequestError,
     SessionNotFoundError,
+    ServiceUnavailableError,
 )
 from opencode.lib import RunResult
+from opencode.types import SessionIdleEvent, SessionCreatedEvent, ServerConnectedEvent
 from opencode.testing import FakeServer
 from opencode.types.shared_params import ModelRef as ModelRefParam
-from opencode.types import ModelRef, ServerConnectedEvent, SessionCreatedEvent, SessionIdleEvent
 
 
 @pytest.fixture(autouse=True)

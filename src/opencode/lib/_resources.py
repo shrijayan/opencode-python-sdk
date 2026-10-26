@@ -7,13 +7,13 @@ Custom code, never regenerated: ``client.session`` gains ``run`` (and the other 
 
 from __future__ import annotations
 
+from .._pty import PtyAttachMixin, AsyncPtyAttachMixin, PersistentPtyAttachMixin, AsyncPersistentPtyAttachMixin
 from .._compat import cached_property
-from .._pty import AsyncPersistentPtyAttachMixin, AsyncPtyAttachMixin, PersistentPtyAttachMixin, PtyAttachMixin
-from ..resources.experimental.experimental import AsyncExperimentalResource, ExperimentalResource
-from ..resources.experimental.persistent_pty import AsyncPersistentPtyResource, PersistentPtyResource
-from ..resources.pty.pty import AsyncPtyResource, PtyResource
-from ..resources.session.session import AsyncSessionResource, SessionResource
-from ._session import AsyncSessionHelpers, SessionHelpers
+from ._session import SessionHelpers, AsyncSessionHelpers
+from ..resources.pty.pty import PtyResource, AsyncPtyResource
+from ..resources.session.session import SessionResource, AsyncSessionResource
+from ..resources.experimental.experimental import ExperimentalResource, AsyncExperimentalResource
+from ..resources.experimental.persistent_pty import PersistentPtyResource, AsyncPersistentPtyResource
 
 __all__ = [
     "AsyncExperimental",

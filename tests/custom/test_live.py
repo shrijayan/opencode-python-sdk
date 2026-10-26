@@ -6,24 +6,24 @@ Run with `uv run pytest -m live`. They are skipped when the opencode CLI is not 
 from __future__ import annotations
 
 import shutil
-from collections.abc import Iterator
 from pathlib import Path
+from collections.abc import Iterator
 
 import anyio
 import pytest
 
 from opencode import (
-    AsyncOpencodeServer,
     Opencode,
-    OpencodeServer,
     RpcCallError,
     RpcDefinition,
+    OpencodeServer,
+    AsyncOpencodeServer,
     SessionNotFoundError,
     rpc_method,
     session_id_of,
 )
+from opencode.types import ServerConnectedEvent
 from opencode.types.shared_params import ModelRef as ModelRefParam
-from opencode.types import ModelRef, ServerConnectedEvent
 
 pytestmark = [
     pytest.mark.live,

@@ -19,28 +19,28 @@ history matters.
 
 from __future__ import annotations
 
-import asyncio
-import collections
-import contextlib
-import logging
 import random
 import socket
+import asyncio
+import logging
 import threading
-from dataclasses import dataclass
+import contextlib
+import collections
 from typing import TYPE_CHECKING, Any, Generic, TypeVar, cast
-
-import anyio
+from dataclasses import dataclass
 from typing_extensions import Self
 
-from ._exceptions import APIConnectionError, APIStatusError, OpencodeError
+import anyio
+
+from ._exceptions import OpencodeError, APIStatusError, APIConnectionError
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Awaitable, Callable, Iterator
     from types import TracebackType
+    from collections.abc import Callable, Iterator, Awaitable, AsyncIterator
 
-    from .lib._client import AsyncOpencode, Opencode
-    from ._streaming import AsyncStream, Stream
     from .types import Event, ServerConnectedEvent
+    from ._streaming import Stream, AsyncStream
+    from .lib._client import Opencode, AsyncOpencode
 
 __all__ = [
     "SUBSCRIBER_CAPACITY",
@@ -176,6 +176,8 @@ def _interrupt(stream: Stream[Event]) -> None:
     if isinstance(sock, socket.socket):
         with contextlib.suppress(OSError):
             sock.shutdown(socket.SHUT_RDWR)
+
+
 """Raised by :meth:`AsyncSubscription.get` once the stream is over."""
 
 # Completion states of one subscriber.

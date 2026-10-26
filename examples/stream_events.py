@@ -8,7 +8,7 @@ from __future__ import annotations
 import asyncio
 
 from opencode import AsyncOpencode
-from opencode.types import SessionTextDeltaEvent, UnknownEvent
+from opencode.types import UnknownEvent, SessionTextDeltaEvent
 
 
 async def main() -> None:

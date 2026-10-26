@@ -104,12 +104,11 @@ for __name in __all__:
 # Custom code, kept by `ferrule regenerate`: the clients with this SDK's own features (lib/_client.py)
 # and the public names of the hand-written modules.
 from . import service  # noqa: E402
+from ._pty import PtyConnection, AsyncPtyConnection, PtyConnectionError  # noqa: E402
 from ._rpc import (  # noqa: E402
-    RpcMethod,
     RpcClient,
     RpcEvents,
-    rpc_event,
-    rpc_method,
+    RpcMethod,
     RpcCallError,
     RpcDefinition,
     AsyncRpcClient,
@@ -117,24 +116,25 @@ from ._rpc import (  # noqa: E402
     RpcEventPayload,
     RpcEventDefinition,
     RpcCallInternalError,
+    rpc_event,
+    rpc_method,
 )
-from ._pty import PtyConnection, AsyncPtyConnection, PtyConnectionError  # noqa: E402
 from ._errors import *  # noqa: E402, F403
 from ._errors import __all__ as _errors_all  # noqa: E402
 from ._events import (  # noqa: E402
+    SUBSCRIBER_CAPACITY,
     EventHub,
     Reconnect,
     Subscription,
     AsyncEventHub,
-    session_id_of,
     AsyncSubscription,
     EventOverflowError,
-    SUBSCRIBER_CAPACITY,
+    session_id_of,
 )
 from ._server import OpencodeServer, ServerStartError, AsyncOpencodeServer  # noqa: E402
 from ._service import Endpoint, ServiceError  # noqa: E402
-from .lib._client import Opencode as Opencode, AsyncOpencode as AsyncOpencode  # noqa: E402
 from .pagination import SyncCursorPage, AsyncCursorPage  # noqa: E402
+from .lib._client import Opencode as Opencode, AsyncOpencode as AsyncOpencode  # noqa: E402
 from ._base_client import AsyncPaginator  # noqa: E402
 
 Client = Opencode

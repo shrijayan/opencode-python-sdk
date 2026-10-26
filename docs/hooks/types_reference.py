@@ -8,11 +8,11 @@ never drift from the code.
 
 from __future__ import annotations
 
-import ast
 import re
-from collections import defaultdict
-from pathlib import Path
+import ast
 from typing import TYPE_CHECKING, Any
+from pathlib import Path
+from collections import defaultdict
 
 if TYPE_CHECKING:
     from mkdocs.structure.files import Files

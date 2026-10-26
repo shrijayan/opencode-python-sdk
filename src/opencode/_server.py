@@ -2,31 +2,31 @@
 
 from __future__ import annotations
 
-import collections
-import contextlib
-import json
 import os
-import queue
-import secrets
-import shutil
-import subprocess
 import sys
-import threading
+import json
 import time
-from pathlib import Path
+import queue
+import shutil
+import secrets
+import threading
+import contextlib
+import subprocess
+import collections
 from typing import IO, TYPE_CHECKING, Any, cast
-
-import anyio.to_thread
-import httpx
+from pathlib import Path
 from typing_extensions import Self
 
-from .lib._client import AsyncOpencode, Opencode
+import httpx
+import anyio.to_thread
+
 from ._exceptions import OpencodeError
+from .lib._client import Opencode, AsyncOpencode
 from .lib._support import DEFAULT_USERNAME
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
     from types import TracebackType
+    from collections.abc import Mapping
 
     from .lib._support import Timeout
 
@@ -120,14 +120,18 @@ class OpencodeServer:
     def client(self, *, directory: str | os.PathLike[str] | None = None, timeout: Timeout | None = None) -> Opencode:
         """Returns a sync client connected to this server."""
         kwargs: dict[str, Any] = {} if timeout is None else {"timeout": timeout}
-        return Opencode(base_url=self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs)
+        return Opencode(
+            base_url=self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs
+        )
 
     def async_client(
         self, *, directory: str | os.PathLike[str] | None = None, timeout: Timeout | None = None
     ) -> AsyncOpencode:
         """Returns an async client connected to this server."""
         kwargs: dict[str, Any] = {} if timeout is None else {"timeout": timeout}
-        return AsyncOpencode(base_url=self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs)
+        return AsyncOpencode(
+            base_url=self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs
+        )
 
     def _command(self) -> list[str]:
         executable = shutil.which(self.binary)

@@ -21,38 +21,38 @@ has the shape the real server sends. Other routes answer ``404``. Use :meth:`Fak
 
 from __future__ import annotations
 
-import itertools
-import json
 import os
 import re
+import json
 import time
-from collections.abc import Callable, Iterable, Mapping
-from dataclasses import dataclass
+import itertools
 from typing import Any, TypeVar
+from dataclasses import dataclass
+from collections.abc import Mapping, Callable, Iterable
 
 import httpx
 
-from ._models import BaseModel
 from .types import (
-    AgentInfo,
-    AgentListResponse,
-    LocationPublicRef,
-    McpListResponse,
-    McpServer,
     ModelRef,
-    ServerConnectedEvent,
+    AgentInfo,
+    McpServer,
     ServerInfo,
-    SessionCreatedEvent,
+    SessionInfo,
+    TokenUsageInfo,
+    McpListResponse,
     SessionIdleEvent,
     SessionInboxUser,
-    SessionInfo,
-    SessionInterruptResponse,
-    SessionMessageAssistant,
-    SessionMessageAssistantText,
+    AgentListResponse,
+    LocationPublicRef,
     SessionMessageIdle,
     SessionMessageUser,
-    TokenUsageInfo,
+    SessionCreatedEvent,
+    ServerConnectedEvent,
+    SessionMessageAssistant,
+    SessionInterruptResponse,
+    SessionMessageAssistantText,
 )
+from ._models import BaseModel
 
 __all__ = ["DEFAULT_MODEL", "FakeServer"]
 
@@ -220,7 +220,8 @@ class FakeServer(httpx.MockTransport):
         input_tokens, output_tokens = self.tokens
         usage = {"input": input_tokens, "output": output_tokens, "reasoning": 0, "cache": {"read": 0, "write": 0}}
         self.messages[session.id] += [
-            _model(SessionMessageAssistant, 
+            _model(
+                SessionMessageAssistant,
                 {
                     "id": self._id("msg"),
                     "type": "assistant",
@@ -231,39 +232,43 @@ class FakeServer(httpx.MockTransport):
                     "finish": "stop",
                     "cost": self.cost,
                     "tokens": usage,
-                }
+                },
             ),
-            _model(SessionMessageIdle, 
-                {"id": self._id("msg"), "type": "idle", "time": {"created": now}, "outcome": "succeeded"}
+            _model(
+                SessionMessageIdle,
+                {"id": self._id("msg"), "type": "idle", "time": {"created": now}, "outcome": "succeeded"},
             ),
         ]
         session.cost += self.cost
-        session.tokens = _model(TokenUsageInfo, 
+        session.tokens = _model(
+            TokenUsageInfo,
             {
                 "input": session.tokens.input + input_tokens,
                 "output": session.tokens.output + output_tokens,
                 "reasoning": session.tokens.reasoning,
                 "cache": session.tokens.cache.to_dict(),
-            }
+            },
         )
         session.outcome = "succeeded"
         session.time.updated = session.time.idle = now
         self._record(
-            _model(SessionIdleEvent, 
-                {"id": self._id("evt"), "created": now, "type": "session.idle", "data": {"sessionID": session.id}}
+            _model(
+                SessionIdleEvent,
+                {"id": self._id("evt"), "created": now, "type": "session.idle", "data": {"sessionID": session.id}},
             )
         )
 
     # -- routes ---------------------------------------------------------------------------------------------
 
     def _server_info(self, request: httpx.Request, match: re.Match[str]) -> httpx.Response:
-        info = _model(ServerInfo, 
+        info = _model(
+            ServerInfo,
             {
                 "version": "fake",
                 "pid": os.getpid(),
                 "urls": [str(request.url.copy_with(path="/"))],
                 "paths": {"tmp": "/tmp"},
-            }
+            },
         )
         return _json(info)
 
@@ -271,7 +276,8 @@ class FakeServer(httpx.MockTransport):
         self._polls["agent"] += 1
         visible = [agent for agent, after in self._agents if self._polls["agent"] > after]
         agents = [
-            _model(AgentInfo, 
+            _model(
+                AgentInfo,
                 {
                     "id": agent,
                     "name": agent,
@@ -279,7 +285,7 @@ class FakeServer(httpx.MockTransport):
                     "hidden": False,
                     "request": {"settings": {}, "headers": {}, "body": {}},
                     "permissions": [],
-                }
+                },
             )
             for agent in dict.fromkeys(visible)
         ]
@@ -288,8 +294,8 @@ class FakeServer(httpx.MockTransport):
     def _mcp_list(self, request: httpx.Request, match: re.Match[str]) -> httpx.Response:
         self._polls["mcp"] += 1
         servers = [
-            _model(McpServer, 
-                {"name": name, "status": _mcp_status(status if self._polls["mcp"] > after else "pending")}
+            _model(
+                McpServer, {"name": name, "status": _mcp_status(status if self._polls["mcp"] > after else "pending")}
             )
             for name, (status, after) in self._mcp.items()
         ]
@@ -301,7 +307,8 @@ class FakeServer(httpx.MockTransport):
         session_id = body.get("id") or self._id("ses")
         if session_id in self.sessions:
             raise _ErrorResponse(409, {"_tag": "ConflictError", "message": f"Session already exists: {session_id}"})
-        session = _model(SessionInfo, 
+        session = _model(
+            SessionInfo,
             {
                 "id": session_id,
                 "parentID": body.get("parentID"),
@@ -314,13 +321,14 @@ class FakeServer(httpx.MockTransport):
                 "title": body.get("title"),
                 "metadata": body.get("metadata"),
                 "location": self._location.to_dict(),
-            }
+            },
         )
         self.sessions[session.id] = session
         self.messages[session.id] = []
         self.inbox[session.id] = []
         self._record(
-            _model(SessionCreatedEvent, 
+            _model(
+                SessionCreatedEvent,
                 {
                     "id": self._id("evt"),
                     "created": now,
@@ -335,7 +343,7 @@ class FakeServer(httpx.MockTransport):
                         "agent": session.agent,
                         "version": "fake",
                     },
-                }
+                },
             )
         )
         return _json({"data": session.to_dict()})
@@ -376,7 +384,8 @@ class FakeServer(httpx.MockTransport):
         now = self._now()
         message_id = body.get("id") or self._id("msg")
         payload = {key: body[key] for key in ("text", "files", "agents", "skills", "metadata") if key in body}
-        queued = _model(SessionInboxUser, 
+        queued = _model(
+            SessionInboxUser,
             {
                 "id": message_id,
                 "sessionID": session.id,
@@ -384,20 +393,21 @@ class FakeServer(httpx.MockTransport):
                 "type": "user",
                 "payload": payload,
                 "delivery": body.get("delivery") or "queue",
-            }
+            },
         )
         if body.get("resume") is False:
             self.inbox[session.id].append(queued)
         else:
             self.messages[session.id].append(
-                _model(SessionMessageUser, 
+                _model(
+                    SessionMessageUser,
                     {
                         "id": message_id,
                         "type": "user",
                         "time": {"created": now},
                         "text": text,
                         "metadata": body.get("metadata"),
-                    }
+                    },
                 )
             )
             self._run(session, text)

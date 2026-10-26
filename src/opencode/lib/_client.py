@@ -17,31 +17,31 @@ from __future__ import annotations
 
 import os
 from typing import TYPE_CHECKING, Any, cast
-
-import httpx
 from typing_extensions import Self, override
 
-from .._client import AsyncOpencode as _AsyncOpencode, Opencode as _Opencode
+import httpx
+
+from .._rpc import TypedRpcResource, AsyncTypedRpcResource
+from .._types import NOT_GIVEN, NotGiven
+from .._client import Opencode as _Opencode, AsyncOpencode as _AsyncOpencode
 from .._compat import cached_property
 from .._errors import tagged_status_error
-from .._events import AsyncEventHub, EventHub
-from .._exceptions import APIStatusError
-from .._rpc import AsyncTypedRpcResource, TypedRpcResource
+from .._events import EventHub, AsyncEventHub
+from ._support import DEFAULT_USERNAME
 from .._service import (
+    Version,
     EnsureReason,
     ServiceError,
-    Version,
-    async_discover,
-    async_ensure,
-    discover as discover_service,
     ensure as ensure_service,
+    discover as discover_service,
+    async_ensure,
+    async_discover,
 )
-from .._types import NOT_GIVEN, NotGiven
-from ._resources import AsyncExperimental, AsyncPty, AsyncSession, Experimental, Pty, Session
-from ._support import DEFAULT_USERNAME
+from ._resources import Pty, Session, AsyncPty, AsyncSession, Experimental, AsyncExperimental
+from .._exceptions import APIStatusError
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable, Mapping, Sequence
+    from collections.abc import Mapping, Callable, Iterable, Sequence
 
     from .._models import FinalRequestOptions
     from ..testing import FakeServer

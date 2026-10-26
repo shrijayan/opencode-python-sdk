@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import pytest
 import respx
+import pytest
 
-from opencode import AsyncOpencode, Opencode
+from opencode import Opencode, AsyncOpencode
 
 
 def _page(ids: list[str], next_cursor: str | None) -> dict[str, object]:

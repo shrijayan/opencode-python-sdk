@@ -13,16 +13,16 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
 
 import pydantic
 
+from ._models import BaseModel
 from ._exceptions import (
-    APIStatusError,
-    AuthenticationError,
-    BadRequestError,
     ConflictError,
-    InternalServerError,
     NotFoundError,
+    APIStatusError,
+    BadRequestError,
+    AuthenticationError,
+    InternalServerError,
     PermissionDeniedError,
 )
-from ._models import BaseModel
 
 if TYPE_CHECKING:
     import httpx

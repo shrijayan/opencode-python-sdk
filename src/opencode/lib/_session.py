@@ -7,29 +7,29 @@ The generated ``SessionResource`` / ``AsyncSessionResource`` inherit from the cl
 from __future__ import annotations
 
 import contextlib
-from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, cast
+from dataclasses import field, dataclass
 
 import anyio
 
-from .._resource import AsyncAPIResource, SyncAPIResource
-from .._types import NOT_GIVEN, NotGiven, Timeout
+from .._types import NOT_GIVEN, Timeout, NotGiven
+from .._resource import SyncAPIResource, AsyncAPIResource
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from ..resources.session import AsyncSessionResource, SessionResource
     from ..types import (
         AgentID,
         ModelRef,
-        PromptInputFileAttachment,
         SessionID,
         SessionInfo,
-        SessionMessageAssistant,
+        TokenUsageInfo,
         SessionMessageInfo,
         SessionStructuredError,
-        TokenUsageInfo,
+        SessionMessageAssistant,
+        PromptInputFileAttachment,
     )
+    from ..resources.session import SessionResource, AsyncSessionResource
 
 __all__ = ["AsyncSessionHelpers", "RunResult", "SessionHelpers"]
 
@@ -74,7 +74,7 @@ class RunResult:
     @property
     def error(self) -> SessionStructuredError | None:
         """Why the run failed, from its idle marker or last assistant message, or ``None``."""
-        from ..types import SessionMessageAssistant, SessionMessageIdle
+        from ..types import SessionMessageIdle, SessionMessageAssistant
 
         for message in reversed(self.messages):
             if isinstance(message, (SessionMessageIdle, SessionMessageAssistant)) and message.error is not None:

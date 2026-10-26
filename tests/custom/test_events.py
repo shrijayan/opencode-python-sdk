@@ -2,29 +2,29 @@
 
 from __future__ import annotations
 
-import collections
 import json
-from types import SimpleNamespace
 import queue
 import threading
-from collections.abc import AsyncIterator, Iterator
+import collections
+from types import SimpleNamespace
+from collections.abc import Iterator, AsyncIterator
 
 import anyio
 import httpx
-import pytest
 import respx
+import pytest
 
 from opencode import (
-    AsyncEventHub,
-    AsyncOpencode,
     EventHub,
-    EventOverflowError,
     Opencode,
     Reconnect,
+    AsyncEventHub,
+    AsyncOpencode,
     UnauthorizedError,
+    EventOverflowError,
     session_id_of,
 )
-from opencode.types import Event, ServerConnectedEvent, SessionIdleEvent
+from opencode.types import Event, SessionIdleEvent, ServerConnectedEvent
 
 from .conftest import BASE_URL, PASSWORD
 
@@ -274,7 +274,10 @@ def test_reconnect_gives_up_after_max_attempts(client: Opencode, mock_api: respx
 
 def test_without_reconnect_errors_end_every_subscription(client: Opencode, mock_api: respx.MockRouter) -> None:
     mock_api.get("/api/event").mock(side_effect=httpx.ConnectError("refused"))
-    with pytest.raises(Exception, match="Connection error"), client.with_options(max_retries=0).events.subscribe() as events:
+    with (
+        pytest.raises(Exception, match="Connection error"),
+        client.with_options(max_retries=0).events.subscribe() as events,
+    ):
         next(events)
 
 
