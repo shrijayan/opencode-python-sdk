@@ -6,6 +6,7 @@ import respx
 import pytest
 
 from opencode import Opencode, AsyncOpencode
+from opencode._base_client import BaseClient
 
 BASE_URL = "http://opencode.test"
 PASSWORD = "test-password"
@@ -36,11 +37,9 @@ async def async_client(mock_api: respx.MockRouter) -> AsyncIterator[AsyncOpencod
 
 @pytest.fixture(autouse=True)
 def _no_retry_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Retries back off with real sleeps; skip them so tests stay fast."""
+    """Retries back off with real sleeps; make the delay zero so tests stay fast.
 
-    async def instant(_: float) -> None:
-        return None
-
-    monkeypatch.setattr("opencode._base_client.time.sleep", lambda _: None)
-    monkeypatch.setattr("opencode._base_client.anyio.sleep", instant)
-    monkeypatch.setattr("opencode._base_client.asyncio.sleep", instant)
+    Patching ``anyio.sleep`` itself would also patch ``anyio.lowlevel.checkpoint`` on anyio
+    releases that implement it as ``sleep(0)``, and a task polling with it would never yield.
+    """
+    monkeypatch.setattr(BaseClient, "_calculate_retry_timeout", lambda *_args, **_kwargs: 0.0)

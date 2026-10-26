@@ -103,7 +103,7 @@ class Server:
 
 
 class AsyncFeed:
-    """The async counterpart of ``SyncFeed``. It polls, since ``anyio.sleep`` is patched in tests."""
+    """The async counterpart of ``SyncFeed``. It polls with ``anyio.lowlevel.checkpoint``."""
 
     def __init__(self) -> None:
         self.chunks: collections.deque[bytes] = collections.deque()
@@ -304,7 +304,7 @@ def anyio_backend(request: pytest.FixtureRequest) -> str:
 async def _wait_feed(server: Server, count: int) -> AsyncFeed:
     with anyio.fail_after(5):
         while len(server.feeds) < count:
-            await anyio.lowlevel.checkpoint()  # anyio.sleep is patched to return at once
+            await anyio.lowlevel.checkpoint()
     feed = server.feeds[count - 1]
     assert isinstance(feed, AsyncFeed)
     return feed
