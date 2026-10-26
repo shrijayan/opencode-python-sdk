@@ -458,8 +458,8 @@ form = client.session.form.create(
             "format": "email",
             "hidden": True,
             "key": "string",
-            "maxLength": 0,
-            "minLength": 0,
+            "max_length": 0,
+            "min_length": 0,
             "options": [
                 {
                     "description": "string",

@@ -30,7 +30,7 @@ class TestGenerate:
             prompt="prompt",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         )
@@ -79,7 +79,7 @@ class TestAsyncGenerate:
             prompt="prompt",
             model={
                 "id": "string",
-                "providerID": "string",
+                "provider_id": "string",
                 "variant": "string",
             },
         )
