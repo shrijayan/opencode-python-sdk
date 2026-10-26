@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-message = client.session.message.get(session_id={}, message_id={})
+message = client.session.message.get(session_id="sessionID", message_id="messageID")
 print(message)

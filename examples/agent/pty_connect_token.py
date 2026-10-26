@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-connect = client.pty.connect.token(pty_id={})
+connect = client.pty.connect.token(pty_id="ptyID")
 print(connect)

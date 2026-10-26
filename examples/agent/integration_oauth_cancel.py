@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-oauth = client.integration.oauth.cancel(integration_id={}, attempt_id={})
+oauth = client.integration.oauth.cancel(integration_id="integrationID", attempt_id="attemptID")
 print(oauth)

@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-inbox = client.session.inbox.update(session_id={}, inbox_id={}, delivery={})
+inbox = client.session.inbox.update(session_id="sessionID", inbox_id="inboxID", delivery="steer")
 print(inbox)

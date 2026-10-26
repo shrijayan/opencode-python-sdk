@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-form = client.session.form.create(session_id="sessionID", fields={}, title="title")
+form = client.session.form.create(session_id="sessionID", fields=[{}], title="title")
 print(form)

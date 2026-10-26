@@ -4,5 +4,5 @@ from opencode import Opencode
 
 client = Opencode()
 
-revert = client.session.revert.clear(session_id={})
+revert = client.session.revert.clear(session_id="sessionID")
 print(revert)
