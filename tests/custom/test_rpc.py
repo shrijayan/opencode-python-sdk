@@ -19,7 +19,7 @@ from opencode import (
     rpc_event,
     rpc_method,
 )
-from opencode.types import Location
+from opencode.lib import Location
 
 from .conftest import BASE_URL, PASSWORD
 

@@ -17,7 +17,7 @@ from .._exceptions import APIConnectionError
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-    from .._client import AsyncOpencode, Opencode
+    from ._client import AsyncOpencode, Opencode
     from ..types import AgentListResponse, McpListResponse
 
 __all__ = ["POLL_INTERVAL", "async_wait_until_ready", "wait_until_ready"]

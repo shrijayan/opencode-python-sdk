@@ -46,7 +46,8 @@ if TYPE_CHECKING:
     from websockets.asyncio.client import ClientConnection as AsyncWebSocket
     from websockets.sync.client import ClientConnection as SyncWebSocket
 
-    from .types import Location, PtyID
+    from .lib._support import Location
+    from .types import PtyID
 
 __all__ = [
     "AsyncPersistentPtyAttachMixin",

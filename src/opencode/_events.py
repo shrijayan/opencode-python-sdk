@@ -21,8 +21,10 @@ from __future__ import annotations
 
 import asyncio
 import collections
+import contextlib
 import logging
 import random
+import socket
 import threading
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Generic, TypeVar, cast
@@ -36,7 +38,7 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Awaitable, Callable, Iterator
     from types import TracebackType
 
-    from ._client import AsyncOpencode, Opencode
+    from .lib._client import AsyncOpencode, Opencode
     from ._streaming import AsyncStream, Stream
     from .types import Event, ServerConnectedEvent
 
@@ -136,6 +138,18 @@ class _Filters(Generic[_E]):
 
 
 _End = anyio.EndOfStream
+
+
+def _interrupt(stream: Stream[Event]) -> None:
+    """Unblocks a read in progress on another thread, which then ends with :class:`APIConnectionError`.
+
+    ``close`` must run on the iterating thread. Call this from any other thread first to wake it.
+    """
+    network_stream: Any = stream.response.extensions.get("network_stream")
+    sock: Any = network_stream.get_extra_info("socket") if network_stream is not None else None
+    if isinstance(sock, socket.socket):
+        with contextlib.suppress(OSError):
+            sock.shutdown(socket.SHUT_RDWR)
 """Raised by :meth:`AsyncSubscription.get` once the stream is over."""
 
 # Completion states of one subscriber.
@@ -260,7 +274,7 @@ class EventHub:
         if self._current is connection:
             self._current = None
         if connection.stream is not None:
-            connection.stream.interrupt()
+            _interrupt(connection.stream)
 
     def _publish(self, connection: _SyncConnection, event: Event) -> None:
         for subscriber in list(connection.subscribers):

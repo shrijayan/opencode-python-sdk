@@ -24,13 +24,13 @@ def mock_api() -> Iterator[respx.MockRouter]:
 
 @pytest.fixture
 def client(mock_api: respx.MockRouter) -> Iterator[Opencode]:
-    with Opencode(BASE_URL, password=PASSWORD, max_retries=2) as instance:
+    with Opencode(base_url=BASE_URL, password=PASSWORD, max_retries=2) as instance:
         yield instance
 
 
 @pytest.fixture
 async def async_client(mock_api: respx.MockRouter) -> AsyncIterator[AsyncOpencode]:
-    async with AsyncOpencode(BASE_URL, password=PASSWORD, max_retries=2) as instance:
+    async with AsyncOpencode(base_url=BASE_URL, password=PASSWORD, max_retries=2) as instance:
         yield instance
 
 
@@ -43,3 +43,4 @@ def _no_retry_sleep(monkeypatch: pytest.MonkeyPatch) -> None:
 
     monkeypatch.setattr("opencode._base_client.time.sleep", lambda _: None)
     monkeypatch.setattr("opencode._base_client.anyio.sleep", instant)
+    monkeypatch.setattr("opencode._base_client.asyncio.sleep", instant)

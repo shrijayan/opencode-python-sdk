@@ -23,11 +23,16 @@ from opencode import (
     UnauthorizedError,
     session_id_of,
 )
-from opencode.types import Event, ServerConnectedEvent, SessionIdleEvent, UnknownEvent
+from opencode.types import Event, ServerConnectedEvent, SessionIdleEvent
 
 from .conftest import BASE_URL, PASSWORD
 
 SSE = {"content-type": "text/event-stream"}
+
+
+def is_unknown(event: object) -> bool:
+    """An event type this client has no class for still arrives, with its ``type``."""
+    return getattr(event, "type", None) == "brand.new"
 
 
 def frame(payload: dict[str, object]) -> bytes:
@@ -138,7 +143,7 @@ def test_late_subscriber_gets_server_connected_replayed(client: Opencode, mock_a
     with client.events.subscribe() as first:
         threading.Thread(target=lambda: server.wait_open(1).push(connected(), other())).start()
         assert isinstance(first.get(5), ServerConnectedEvent)
-        assert isinstance(first.get(5), UnknownEvent)
+        assert is_unknown(first.get(5))
         with client.events.subscribe() as late:
             assert isinstance(late.get(5), ServerConnectedEvent)
             server.wait_open(1).push(idle("ses_1"))
@@ -163,7 +168,7 @@ def test_slow_subscriber_overflows_alone(
         with pytest.raises(EventOverflowError, match="3-event capacity"):
             slow.get(5)
         feed.push(other())
-        assert isinstance(fast.get(5), UnknownEvent)
+        assert is_unknown(fast.get(5))
         feed.push(END)
 
 

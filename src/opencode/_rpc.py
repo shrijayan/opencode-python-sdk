@@ -49,11 +49,12 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
     from types import TracebackType
 
-    from ._client import AsyncOpencode, Opencode
+    from .lib._client import AsyncOpencode, Opencode
     from ._events import AsyncSubscription, Subscription
     from ._types import Headers
     from .lib._support import Timeout
-    from .types import Location, RpcEvent
+    from .lib._support import Location
+    from .types import RpcEvent
 
 __all__ = [
     "AsyncRpcClient",

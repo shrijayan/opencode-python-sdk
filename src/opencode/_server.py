@@ -20,7 +20,7 @@ import anyio.to_thread
 import httpx
 from typing_extensions import Self
 
-from ._client import AsyncOpencode, Opencode
+from .lib._client import AsyncOpencode, Opencode
 from ._exceptions import OpencodeError
 from .lib._support import DEFAULT_USERNAME
 
@@ -120,14 +120,14 @@ class OpencodeServer:
     def client(self, *, directory: str | os.PathLike[str] | None = None, timeout: Timeout | None = None) -> Opencode:
         """Returns a sync client connected to this server."""
         kwargs: dict[str, Any] = {} if timeout is None else {"timeout": timeout}
-        return Opencode(self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs)
+        return Opencode(base_url=self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs)
 
     def async_client(
         self, *, directory: str | os.PathLike[str] | None = None, timeout: Timeout | None = None
     ) -> AsyncOpencode:
         """Returns an async client connected to this server."""
         kwargs: dict[str, Any] = {} if timeout is None else {"timeout": timeout}
-        return AsyncOpencode(self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs)
+        return AsyncOpencode(base_url=self.url, password=self.password, username=DEFAULT_USERNAME, directory=directory, **kwargs)
 
     def _command(self) -> list[str]:
         executable = shutil.which(self.binary)

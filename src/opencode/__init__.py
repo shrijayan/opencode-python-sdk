@@ -100,3 +100,82 @@ for __name in __all__:
         except (TypeError, AttributeError):
             # Some of our exported symbols are builtins which we can't set attributes for.
             pass
+
+# Custom code, kept by `ferrule regenerate`: the clients with this SDK's own features (lib/_client.py)
+# and the public names of the hand-written modules.
+from . import service  # noqa: E402
+from ._rpc import (  # noqa: E402
+    RpcMethod,
+    RpcClient,
+    RpcEvents,
+    rpc_event,
+    rpc_method,
+    RpcCallError,
+    RpcDefinition,
+    AsyncRpcClient,
+    AsyncRpcEvents,
+    RpcEventPayload,
+    RpcEventDefinition,
+    RpcCallInternalError,
+)
+from ._pty import PtyConnection, AsyncPtyConnection, PtyConnectionError  # noqa: E402
+from ._errors import *  # noqa: E402, F403
+from ._errors import __all__ as _errors_all  # noqa: E402
+from ._events import (  # noqa: E402
+    EventHub,
+    Reconnect,
+    Subscription,
+    AsyncEventHub,
+    session_id_of,
+    AsyncSubscription,
+    EventOverflowError,
+    SUBSCRIBER_CAPACITY,
+)
+from ._server import OpencodeServer, ServerStartError, AsyncOpencodeServer  # noqa: E402
+from ._service import Endpoint, ServiceError  # noqa: E402
+from .lib._client import Opencode as Opencode, AsyncOpencode as AsyncOpencode  # noqa: E402
+from .pagination import SyncCursorPage, AsyncCursorPage  # noqa: E402
+from ._base_client import AsyncPaginator  # noqa: E402
+
+Client = Opencode
+AsyncClient = AsyncOpencode
+
+API_VERSION = "2.1.2"
+"""The OpenCode server version this client was generated from."""
+
+__all__ += [  # noqa: PLE0605
+    *(_name for _name in _errors_all if _name != "TAGGED_ERRORS"),
+    "API_VERSION",
+    "AsyncCursorPage",
+    "AsyncEventHub",
+    "AsyncOpencodeServer",
+    "AsyncPaginator",
+    "AsyncPtyConnection",
+    "AsyncRpcClient",
+    "AsyncRpcEvents",
+    "AsyncSubscription",
+    "Endpoint",
+    "EventHub",
+    "EventOverflowError",
+    "OpencodeServer",
+    "PtyConnection",
+    "PtyConnectionError",
+    "Reconnect",
+    "RpcCallError",
+    "RpcCallInternalError",
+    "RpcClient",
+    "RpcDefinition",
+    "RpcEventDefinition",
+    "RpcEventPayload",
+    "RpcEvents",
+    "RpcMethod",
+    "SUBSCRIBER_CAPACITY",
+    "ServerStartError",
+    "ServiceError",
+    "Subscription",
+    "SyncCursorPage",
+    "rpc_event",
+    "rpc_method",
+    "service",
+    "session_id_of",
+]
